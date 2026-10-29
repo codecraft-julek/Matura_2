@@ -3,7 +3,10 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
-  "rewrites": [{ "source": "/((?!assets/|.*\\.[a-z0-9]+$).*)", "destination": "/spa" }],
+  "rewrites": [
+    { "source": "/cke-arkusze/:path*", "destination": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/:path*" },
+    { "source": "/((?!assets/|cke-arkusze/|.*\\.[a-z0-9]+$).*)", "destination": "/spa" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

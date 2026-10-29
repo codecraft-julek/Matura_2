@@ -1,7 +1,7 @@
 <script setup>
 // /arkusze/:examId/cwiczenia (mode 'practice') and /arkusze/:examId/egzamin (mode 'timed').
-// Port of the old AnswerSheet + the demo trainer's split view: official PDF on the left (loaded by the
-// student, scrolled to the task's page), one task block at a time on the right, map of all blocks.
+// Official PDF loads automatically on the left and scrolls to the task's page;
+// one task block at a time on the right, with a map of all blocks.
 //   practice: no timer; every block has "Sprawdź to zadanie" (grade_exam_answers) and "Zapytaj tutora"
 //   timed:    countdown from a remembered start, auto-submit at 0, beforeunload warning, no checking/tutor
 // Answers live in localStorage while solving (a refresh or lost connection doesn't wipe them) and are
@@ -344,7 +344,7 @@ async function resetPractice() {
 
     <div v-if="!isSplit" ref="tabsEl" class="mobile-tabs" role="group" aria-label="Wybierz widok">
       <button type="button" :class="{ 'is-active': mobileView === 'task' }" :aria-pressed="mobileView === 'task'" @click="setMobileView('task')"><ListChecks :size="16" /> {{ started ? `Zadanie ${current.no}` : 'Start' }}</button>
-      <button type="button" :class="{ 'is-active': mobileView === 'pdf' }" :aria-pressed="mobileView === 'pdf'" @click="setMobileView('pdf')"><FileText :size="16" /> {{ pdfLoaded[pdfSheet] ? `Arkusz${location ? ` · str. ${location.page}` : ''}` : 'Dodaj arkusz' }}</button>
+      <button type="button" :class="{ 'is-active': mobileView === 'pdf' }" :aria-pressed="mobileView === 'pdf'" @click="setMobileView('pdf')"><FileText :size="16" /> {{ pdfLoaded[pdfSheet] ? `Arkusz${location ? ` · str. ${location.page}` : ''}` : 'Arkusz' }}</button>
     </div>
 
     <div class="solve-layout" :class="{ 'is-split': isSplit && pdfVisible, 'is-single': isSplit && !pdfVisible }">
@@ -358,7 +358,7 @@ async function resetPractice() {
           <button type="button" class="icon-button" :disabled="activeIndex === groups.length - 1" aria-label="Następne zadanie" @click="goTo(activeIndex + 1)"><ArrowRight :size="16" /></button>
         </div>
         <ExamPdfViewer
-          v-for="s in sheets" v-show="pdfSheet === s.no" :key="s.no"
+          v-for="s in sheets" v-show="pdfSheet === s.no" :key="`${exam.id}:${s.no}:${s.url}`"
           :ref="c => { if (c) viewers[s.no] = c; else delete viewers[s.no] }"
           :exam-id="exam.id" :sheet-no="s.no" :url="s.url" :label="s.label" :min-pages="s.minPages"
           :target="targetFor(s.no)" :active="showPdf && pdfSheet === s.no"
@@ -377,7 +377,7 @@ async function resetPractice() {
             <li>Bez sprawdzania i tutora — wynik zobaczysz na końcu, jak na maturze.</li>
             <li>Odpowiedzi zapisują się na tym urządzeniu, więc odświeżenie strony ich nie skasuje.</li>
           </ul>
-          <p v-if="!pdfLoaded[1]" class="intro-pdf"><FileText :size="16" /> Najpierw wczytaj arkusz PDF {{ isSplit && pdfVisible ? 'obok' : 'w zakładce „Arkusz”' }}, żeby mieć go pod ręką.</p>
+          <p v-if="!pdfLoaded[1]" class="intro-pdf"><FileText :size="16" /> Arkusz wczytuje się automatycznie {{ isSplit && pdfVisible ? 'obok' : 'w zakładce „Arkusz”' }}. Przed uruchomieniem czasu sprawdź, czy jest gotowy.</p>
           <button type="button" class="button button-lime button-large" @click="startExam">Zaczynam egzamin <ArrowRight :size="18" /></button>
         </section>
 

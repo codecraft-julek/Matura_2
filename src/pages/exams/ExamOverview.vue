@@ -97,7 +97,7 @@ const materials = computed(() => {
 
       <section class="card card-tinted materials" aria-labelledby="sec-materials">
         <h2 id="sec-materials" class="card-title">Materiały CKE</h2>
-        <p class="card-meta">W trakcie rozwiązywania wczytasz pobrany arkusz obok odpowiedzi. Możesz też otworzyć go w drugiej karcie albo wydrukować.</p>
+        <p class="card-meta">W trakcie rozwiązywania arkusz otworzy się automatycznie obok odpowiedzi. Możesz też otworzyć go w drugiej karcie albo wydrukować.</p>
         <ul class="material-list">
           <li v-for="m in materials" :key="m.href">
             <a :href="m.href" target="_blank" rel="noopener noreferrer" class="material"><component :is="m.icon" :size="16" /> {{ m.label }} <ExternalLink :size="13" class="material-ext" /><span class="sr-only">(otwiera się w nowej karcie)</span></a>

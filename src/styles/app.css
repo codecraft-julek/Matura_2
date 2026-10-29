@@ -76,7 +76,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, [tabindex]:fo
 .app-header { position: sticky; top: 0; z-index: 30; background: #fafbf7ee; backdrop-filter: blur(18px); border-bottom: 1px solid #e6e9e0; }
 .app-header-inner { width: min(var(--app-wide), calc(100% - 48px)); margin-inline: auto; min-height: 70px; display: flex; align-items: center; gap: 24px; }
 .app-header .brand { font-size: 17px; }
-.app-header .brand-icon { width: 36px; height: 38px; border-radius: 10px; }
+.app-header .brand-icon { width: 36px; height: 38px; }
 .app-header .brand-icon svg { width: 28px; height: 28px; }
 .app-nav { display: flex; align-items: center; gap: 2px; margin-left: 8px; flex: 1; min-width: 0; }
 .app-nav a { display: inline-flex; align-items: center; gap: 7px; padding: 9px 12px; border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--text-soft); white-space: nowrap; }

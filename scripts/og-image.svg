@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <!-- Source of public/og.png (link previews on Messenger, Discord, Instagram…).
-       Regenerate on macOS: node scripts/make-og-image.mjs -->
+       Regenerate: node scripts/make-og-image.mjs -->
   <rect width="1200" height="630" fill="#fafbf7"/>
   <g opacity="1">
     <rect x="820" y="70" width="430" height="560" rx="46" fill="#e9efde" transform="rotate(8 1035 350)"/>
@@ -41,8 +41,8 @@
   </g>
 
   <!-- Brand -->
-  <rect x="72" y="64" width="64" height="68" rx="18" fill="#1c3c32"/>
-  <path transform="translate(76 70) scale(0.875)" d="M32 7 37.5 23.5 54 18 43.5 32 56 45 38 41 32 58 26.5 41 10 47 20.5 32 8 19 26 23.5Z" fill="#d7f781"/>
+  <path d="M22 3H47Q61 3 61 21V46Q61 61 42 61H17Q3 61 3 42V20Q3 3 22 3Z" transform="translate(69 61) scale(1.1 1.17) rotate(-5 32 32)" fill="#1c3c32"/>
+  <path transform="translate(76 70) scale(0.875)" d="M32.5 5.2C35.3 2.3 40.7 4.1 40.3 8.2L37.8 23.7C43.1 21.3 47.6 17.6 52 17.1C56 16.7 59 21 55.4 24.3L43 33L56 39.4C60.6 41.3 59.2 47.4 54.7 47.7C50.2 48 43.8 44.8 38.7 43L39.5 55.9C39.7 61.2 32.2 62.8 30.2 57.6L25.8 42.9L14.4 52.6C10.4 55.9 5.4 51 8.2 46.8L19.7 34.2L7.2 29.4C2.5 27.4 5.1 20.2 9.9 21.6L23.8 26.1L28.1 10.3C29.2 7.9 30.9 6.5 32.5 5.2Z" fill="#d7f781"/>
   <text x="152" y="94" font-family="Avenir Next, Helvetica Neue, Arial" font-size="29" font-weight="800" fill="#1c3c32" letter-spacing="-1">ogarnij</text>
   <text x="152" y="125" font-family="Avenir Next, Helvetica Neue, Arial" font-size="29" font-weight="800" fill="#1c3c32" letter-spacing="-1">maturę.</text>
 

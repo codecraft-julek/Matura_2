@@ -1,26 +1,18 @@
 <script>
-// PDFs opened in this browser tab, per exam and sheet. Kept in memory (not uploaded anywhere),
-// so moving between /cwiczenia, /egzamin and the overview doesn't ask for the file again.
-// sessionStorage only remembers THAT a file was opened (and its name), for the hint after a refresh.
-const cache = new Map() // `${examId}:${sheetNo}` → { bytes: Uint8Array, filename }
-const sessionKey = (examId, sheetNo) => `om:pdf:${examId}:${sheetNo}`
-
-export function rememberedPdf(examId, sheetNo) {
-  try { return JSON.parse(window.sessionStorage.getItem(sessionKey(examId, sheetNo)) ?? 'null') } catch { return null }
-}
-export const hasPdfInMemory = (examId, sheetNo) => cache.has(`${examId}:${sheetNo}`)
+// Keep opened PDFs in this tab when moving between practice and timed mode.
+const cache = new Map() // exam + sheet + source URL → { bytes: Uint8Array, filename }
 </script>
 
 <script setup>
-// Official CKE sheet next to the answer sheet. CKE blocks embedding, so the student downloads the
-// PDF and picks it here; it is rendered locally with pdf.js and scrolls to the current task's page.
-// Generalised from src/exam/LocalPdfViewer.vue (the public demo keeps its own copy).
+// Official CKE sheet loads automatically through the same-origin proxy. PDF.js renders it locally
+// and scrolls to the current task. Selecting a local file remains a fallback.
 import { computed, markRaw, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
-import { ArrowDownToLine, ArrowLeft, ArrowRight, ExternalLink, FileText, FolderOpen, Link2, LoaderCircle, LockKeyhole, Minus, Plus, RefreshCw, TriangleAlert, Upload } from '@lucide/vue'
+import { ArrowLeft, ArrowRight, ExternalLink, FileText, FolderOpen, Link2, LoaderCircle, Minus, Plus, RefreshCw, TriangleAlert, Upload } from '@lucide/vue'
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 import PdfPage from './PdfPage.vue'
 import { looksLikeSheet, pageUrl, sheetCode } from './sheet'
+import { fetchOfficialPdf, MAX_PDF_BYTES } from '@/lib/exams/pdf'
 
 GlobalWorkerOptions.workerSrc = workerUrl
 
@@ -39,7 +31,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['loaded'])
 
-const cacheKey = computed(() => `${props.examId}:${props.sheetNo}`)
+const cacheKey = computed(() => `${props.examId}:${props.sheetNo}:${props.url}`)
 const code = computed(() => sheetCode(props.url))
 const fileInput = ref(null)
 const scroller = ref(null)
@@ -54,11 +46,10 @@ const zoom = ref(1)
 const availableWidth = ref(600)
 const visiblePage = ref(1)
 const visiblePages = ref([])
-const remembered = ref(rememberedPdf(props.examId, props.sheetNo))
 const pageRefs = new Map()
 const pageWidth = computed(() => Math.max(200, availableWidth.value - 36) * zoom.value)
 const targetUrl = computed(() => pageUrl(props.url, props.target?.page))
-let loadingTask, resizeObserver, scrollFrame, resizeTimer
+let loadingTask, resizeObserver, scrollFrame, resizeTimer, downloadController
 let loadRevision = 0
 let disposed = false
 
@@ -75,16 +66,35 @@ function onDrop(event) {
 }
 
 async function loadFile(file) {
+  if (loading.value || disposed) return
   error.value = ''
   if (!/\.pdf$/i.test(file.name) && file.type !== 'application/pdf') { error.value = 'Wybierz plik PDF pobrany z CKE.'; return }
-  if (file.size > 30 * 1024 * 1024) { error.value = 'Ten plik jest za duży. Wybierz arkusz PDF do 30 MB.'; return }
+  if (file.size > MAX_PDF_BYTES) { error.value = 'Ten plik jest za duży. Wybierz arkusz PDF do 30 MB.'; return }
   if (!file.size) { error.value = 'Plik jest pusty. Pobierz arkusz ponownie.'; return }
+  loading.value = true
   let bytes
-  try { bytes = new Uint8Array(await file.arrayBuffer()) } catch { error.value = 'Nie udało się odczytać pliku. Spróbuj jeszcze raz.'; return }
+  try { bytes = new Uint8Array(await file.arrayBuffer()) } catch { error.value = 'Nie udało się odczytać pliku. Spróbuj jeszcze raz.'; loading.value = false; return }
+  if (disposed) return
   await open(bytes, file.name, true)
 }
 
-async function open(bytes, name, fresh) {
+async function loadOfficial() {
+  if (loading.value || disposed) return
+  loading.value = true
+  error.value = ''
+  downloadController = new AbortController()
+  try {
+    const { bytes, filename } = await fetchOfficialPdf(props.url, { signal: downloadController.signal })
+    if (!disposed) await open(bytes, filename, true, true)
+  } catch {
+    if (!disposed) error.value = 'Nie udało się wczytać arkusza z CKE. Spróbuj ponownie, otwórz go w nowej karcie lub wybierz zapisany PDF.'
+  } finally {
+    if (!disposed) loading.value = false
+    downloadController = null
+  }
+}
+
+async function open(bytes, name, fresh, official = false) {
   const ticket = ++loadRevision
   loading.value = true
   error.value = ''
@@ -106,13 +116,12 @@ async function open(bytes, name, fresh) {
     pages.value = []
     await nextTick()
     await previous?.loadingTask.destroy()
+    if (ticket !== loadRevision || disposed) { await task.destroy(); return }
     pdf.value = markRaw(candidate)
     pages.value = loadedPages.map(markRaw)
     filename.value = name
     zoom.value = 1
     cache.set(cacheKey.value, { bytes, filename: name })
-    try { window.sessionStorage.setItem(sessionKey(props.examId, props.sheetNo), JSON.stringify({ filename: name })) } catch {}
-    remembered.value = { filename: name }
     emit('loaded', true)
     await nextTick()
     measure()
@@ -123,7 +132,9 @@ async function open(bytes, name, fresh) {
         ? `Ten PDF ma za mało stron. Wybierz ${props.label.toLowerCase()} z linku CKE.`
         : failure.name === 'PasswordException'
           ? 'Ten PDF wymaga hasła. Oficjalny arkusz CKE nie jest zabezpieczony hasłem.'
-          : 'Nie udało się odczytać PDF-u. Pobierz arkusz ponownie i wybierz zapisany plik.'
+          : official
+            ? 'Nie udało się otworzyć arkusza z CKE. Spróbuj ponownie lub wybierz zapisany PDF.'
+            : 'Nie udało się odczytać PDF-u. Pobierz arkusz ponownie i wybierz zapisany plik.'
     }
     if (candidate !== pdf.value) await task?.destroy().catch(() => {})
   } finally {
@@ -195,10 +206,12 @@ onMounted(() => {
   measure()
   const cached = cache.get(cacheKey.value)
   if (cached) open(cached.bytes, cached.filename, false)
+  else loadOfficial()
 })
 onBeforeUnmount(() => {
   disposed = true
   loadRevision++
+  downloadController?.abort()
   resizeObserver?.disconnect()
   cancelAnimationFrame(scrollFrame)
   clearTimeout(resizeTimer)
@@ -215,7 +228,7 @@ defineExpose({ jumpToTarget, selectFile, isLoaded: () => Boolean(pdf.value) })
       <span class="pdf-head-icon" aria-hidden="true"><FileText :size="18" /></span>
       <div class="pdf-head-text">
         <h2>{{ label }} CKE</h2>
-        <span :title="filename">{{ pdf ? filename : 'Plik z Twojego urządzenia' }}</span>
+        <span :title="filename">{{ pdf ? filename : 'Oficjalny arkusz · wczytywanie automatyczne' }}</span>
       </div>
       <button v-if="pdf" type="button" class="icon-button pdf-icon" :disabled="loading" aria-label="Zmień plik PDF" title="Zmień plik PDF" @click="selectFile"><RefreshCw :size="16" /></button>
       <a :href="targetUrl" target="_blank" rel="noopener noreferrer" class="icon-button pdf-icon" :aria-label="`Otwórz ${label.toLowerCase()} CKE w nowej karcie`" title="Otwórz w nowej karcie"><ExternalLink :size="16" /></a>
@@ -240,7 +253,7 @@ defineExpose({ jumpToTarget, selectFile, isLoaded: () => Boolean(pdf.value) })
 
     <div v-if="error" class="pdf-note is-error" role="alert">{{ error }}</div>
     <div v-else-if="warning && pdf" class="pdf-note is-warn" role="status"><TriangleAlert :size="16" /><span>{{ warning }} <button type="button" class="link" @click="selectFile">Wybierz inny plik</button></span></div>
-    <div v-if="loading" class="pdf-loading" role="status"><LoaderCircle :size="18" class="spin" /> Otwieram arkusz na Twoim urządzeniu…</div>
+    <div v-if="loading" class="pdf-loading" role="status"><LoaderCircle :size="18" class="spin" /> Wczytuję arkusz…</div>
 
     <div ref="scroller" class="pdf-scroll" :class="{ 'is-empty': !pdf }" :tabindex="pdf ? 0 : -1" :aria-label="pdf ? 'Arkusz PDF — przewijaj, aby czytać kolejne strony' : undefined" @scroll.passive="onScroll">
       <div v-if="pdf" class="pdf-pages">
@@ -252,13 +265,11 @@ defineExpose({ jumpToTarget, selectFile, isLoaded: () => Boolean(pdf.value) })
       <div v-else class="pdf-empty">
         <span class="pdf-empty-kicker">ARKUSZ + ODPOWIEDZI</span>
         <h3>Wszystko obok siebie.</h3>
-        <p>CKE nie pozwala osadzać arkuszy, więc wczytaj pobrany PDF. Gdy zmienisz zadanie, arkusz przewinie się razem z Tobą.</p>
-        <p v-if="remembered?.filename" class="pdf-remembered">Wczytany wcześniej: <strong>{{ remembered.filename }}</strong>. Po odświeżeniu strony wybierz go ponownie.</p>
-        <div class="pdf-steps">
-          <a :href="url" target="_blank" rel="noopener noreferrer" class="pdf-step"><span class="pdf-step-no">1</span><span class="pdf-step-text"><strong>Pobierz {{ label.toLowerCase() }} z CKE</strong><small>Zapisz PDF na urządzeniu.</small></span><ArrowDownToLine :size="18" /></a>
-          <button type="button" class="pdf-step is-primary" :disabled="loading" @click="selectFile"><span class="pdf-step-no">2</span><span class="pdf-step-text"><strong>Wybierz pobrany PDF</strong><small>Lub przeciągnij go tutaj.</small></span><FolderOpen :size="19" /></button>
+        <p>Arkusz otworzy się automatycznie. Gdy zmienisz zadanie, przewinie się razem z Tobą.</p>
+        <div v-if="error && !loading" class="pdf-steps">
+          <button type="button" class="pdf-step is-primary" @click="loadOfficial"><RefreshCw :size="18" /><span class="pdf-step-text"><strong>Spróbuj ponownie</strong><small>Wczytaj oficjalny arkusz z CKE.</small></span></button>
+          <button type="button" class="pdf-step" @click="selectFile"><FolderOpen :size="19" /><span class="pdf-step-text"><strong>Wybierz PDF z urządzenia</strong><small>Możesz też przeciągnąć plik tutaj.</small></span></button>
         </div>
-        <span class="pdf-privacy"><LockKeyhole :size="13" /> Plik zostaje na Twoim urządzeniu.</span>
         <a :href="targetUrl" target="_blank" rel="noopener noreferrer" class="pdf-fallback link">Wolisz bez podglądu? Otwórz arkusz w nowej karcie<template v-if="target?.page"> (str. {{ target.page }})</template></a>
       </div>
     </div>
@@ -302,17 +313,13 @@ defineExpose({ jumpToTarget, selectFile, isLoaded: () => Boolean(pdf.value) })
 .pdf-empty-kicker { font-size: 11px; font-weight: 700; letter-spacing: 1.3px; color: var(--accent); }
 .pdf-empty h3 { font-size: 24px; letter-spacing: -.8px; margin-top: 8px; font-weight: 750; }
 .pdf-empty > p { font-size: 14px; line-height: 1.65; color: var(--text-soft); margin-top: 10px; }
-.pdf-remembered { padding: 10px 12px; border-radius: var(--radius-sm); background: var(--info-bg); border: 1px solid var(--info-line); color: var(--info) !important; font-size: 13px !important; }
 .pdf-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
 .pdf-step { display: flex; align-items: center; gap: 12px; text-align: left; padding: 14px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--surface); color: var(--text); font-size: 14px; transition: box-shadow .15s; }
 .pdf-step:hover { box-shadow: var(--shadow); }
 .pdf-step.is-primary { border-color: var(--green); background: var(--green); color: white; }
-.pdf-step-no { display: grid; place-items: center; width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; background: var(--surface-2); color: var(--green); font-size: 12px; font-weight: 750; }
-.is-primary .pdf-step-no { background: var(--lime); }
 .pdf-step-text { flex: 1; }
 .pdf-step strong { display: block; font-size: 14px; font-weight: 700; }
 .pdf-step small { display: block; font-size: 12px; opacity: .75; margin-top: 3px; }
-.pdf-privacy { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--text-soft); font-size: 12px; margin-top: 16px; }
 .pdf-fallback { display: inline-block; margin-top: 12px; font-size: 13px; }
 .pdf-sync { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; color: var(--accent); background: var(--surface-3); font-size: 13px; border-top: 1px solid var(--line); }
 .pdf-sync > span, .pdf-sync button { display: flex; align-items: center; gap: 6px; }

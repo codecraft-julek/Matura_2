@@ -1,10 +1,11 @@
 <script setup>
 import { computed, markRaw, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
-import { ArrowDownToLine, ArrowLeft, ArrowRight, Check, FileText, FolderOpen, Link2, LoaderCircle, LockKeyhole, Minus, Plus, RefreshCw, Upload } from '@lucide/vue'
+import { ArrowLeft, ArrowRight, Check, ExternalLink, FileText, FolderOpen, Link2, LoaderCircle, Minus, Plus, RefreshCw, Upload } from '@lucide/vue'
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 import PdfSheet from './PdfSheet.vue'
 import { officialExam } from './examData'
+import { fetchOfficialPdf, MAX_PDF_BYTES } from '@/lib/exams/pdf'
 import './pdf-viewer.css'
 
 GlobalWorkerOptions.workerSrc = workerUrl
@@ -25,7 +26,7 @@ const visiblePages = ref([])
 const pdf = shallowRef(null)
 const pageRefs = new Map()
 const pageWidth = computed(() => Math.max(200, availableWidth.value - 36) * zoom.value)
-let loadingTask, resizeObserver, pageResizeObserver, scrollFrame, resizeTimer
+let loadingTask, resizeObserver, pageResizeObserver, scrollFrame, resizeTimer, downloadController
 let loadRevision = 0
 let disposed = false
 
@@ -41,16 +42,41 @@ function onDrop(event) {
   if (file) loadFile(file)
 }
 async function loadFile(file) {
+  if (loading.value || disposed) return
   error.value = ''
   if (!/\.pdf$/i.test(file.name) && file.type !== 'application/pdf') { error.value = 'Wybierz plik PDF pobrany z CKE.'; return }
-  if (file.size > 30 * 1024 * 1024) { error.value = 'Ten plik jest za duży. Wybierz arkusz PDF do 30 MB.'; return }
+  if (file.size > MAX_PDF_BYTES) { error.value = 'Ten plik jest za duży. Wybierz arkusz PDF do 30 MB.'; return }
   if (!file.size) { error.value = 'Plik jest pusty. Pobierz arkusz ponownie.'; return }
+  loading.value = true
+  try {
+    const bytes = new Uint8Array(await file.arrayBuffer())
+    if (!disposed) await open(bytes, file.name)
+  } catch {
+    if (!disposed) error.value = 'Nie udało się odczytać pliku. Spróbuj jeszcze raz.'
+  } finally {
+    if (!disposed) loading.value = false
+  }
+}
+async function loadOfficial() {
+  if (loading.value || disposed) return
+  loading.value = true
+  error.value = ''
+  downloadController = new AbortController()
+  try {
+    const { bytes, filename } = await fetchOfficialPdf(officialExam.url, { signal: downloadController.signal })
+    if (!disposed) await open(bytes, filename, true)
+  } catch {
+    if (!disposed) error.value = 'Nie udało się wczytać arkusza z CKE. Spróbuj ponownie, otwórz go w nowej karcie lub wybierz zapisany PDF.'
+  } finally {
+    if (!disposed) loading.value = false
+    downloadController = null
+  }
+}
+async function open(data, name, official = false) {
   const ticket = ++loadRevision
   loading.value = true
   let candidate, task
   try {
-    const data = new Uint8Array(await file.arrayBuffer())
-    if (ticket !== loadRevision || disposed) return
     task = getDocument({ data })
     loadingTask = task
     candidate = await task.promise
@@ -66,9 +92,10 @@ async function loadFile(file) {
     pages.value = []
     await nextTick()
     await previousPdf?.loadingTask.destroy()
+    if (ticket !== loadRevision || disposed) { await task.destroy(); return }
     pdf.value = markRaw(candidate)
     pages.value = loadedPages.map(markRaw)
-    filename.value = file.name
+    filename.value = name
     zoom.value = 1
     emit('loaded', true)
     await nextTick()
@@ -81,7 +108,9 @@ async function loadFile(file) {
         ? 'To inny arkusz. Wybierz język polski, maj 2026, arkusz 1 (24 strony) z linku CKE.'
         : failure.name === 'PasswordException'
           ? 'Ten PDF wymaga hasła. Oficjalny arkusz CKE nie jest zabezpieczony hasłem.'
-          : 'Nie udało się odczytać PDF-u. Pobierz arkusz ponownie i wybierz zapisany plik.'
+          : official
+            ? 'Nie udało się otworzyć arkusza z CKE. Spróbuj ponownie lub wybierz zapisany PDF.'
+            : 'Nie udało się odczytać PDF-u. Pobierz arkusz ponownie i wybierz zapisany plik.'
     }
     if (candidate !== pdf.value) await task?.destroy().catch(() => {})
   } finally {
@@ -149,10 +178,12 @@ onMounted(() => {
   })
   resizeObserver.observe(scroller.value)
   measure()
+  loadOfficial()
 })
 onBeforeUnmount(() => {
   disposed = true
   loadRevision++
+  downloadController?.abort()
   resizeObserver?.disconnect()
   pageResizeObserver?.disconnect()
   cancelAnimationFrame(scrollFrame)
@@ -174,7 +205,7 @@ defineExpose({ jumpToQuestion, selectFile })
     </div>
 
     <div v-if="error" class="pdf-error" role="alert">{{ error }}</div>
-    <div v-if="loading" class="pdf-loading" role="status"><LoaderCircle :size="18" /> Otwieram arkusz na Twoim urządzeniu…</div>
+    <div v-if="loading" class="pdf-loading" role="status"><LoaderCircle :size="18" /> Wczytuję arkusz…</div>
 
     <div ref="scroller" class="pdf-scroll" :class="{ 'pdf-scroll-empty': !pdf }" tabindex="0" aria-label="Arkusz PDF — przewijaj, aby czytać kolejne strony" @scroll.passive="onScroll">
       <div v-if="pdf" class="pdf-pages">
@@ -182,9 +213,9 @@ defineExpose({ jumpToQuestion, selectFile })
       </div>
       <div v-else class="pdf-empty">
         <div class="pdf-empty-art" aria-hidden="true"><div class="pdf-mini-page"><span></span><i></i><i></i><i></i><b><Check :size="14" /></b></div><span class="pdf-empty-link"><Link2 :size="21" /></span></div>
-        <span class="pdf-empty-kicker">ARKUSZ + ĆWICZENIA</span><h3>Wszystko obok siebie.</h3><p>Wybierz PDF. Gdy zmienisz ćwiczenie,<br />arkusz przewinie się razem z Tobą.</p>
-        <div class="pdf-setup-steps"><a :href="officialExam.url" target="_blank" rel="noopener noreferrer"><span>1</span><div><strong>Pobierz oficjalny arkusz</strong><small>Zapisz PDF z serwisu CKE.</small></div><ArrowDownToLine :size="18" /></a><button :disabled="loading" @click="selectFile"><span>2</span><div><strong>Wybierz pobrany PDF</strong><small>Lub przeciągnij go tutaj.</small></div><FolderOpen :size="19" /></button></div>
-        <span class="pdf-privacy"><LockKeyhole :size="13" /> Plik pozostaje na Twoim urządzeniu.</span><small class="pdf-reload-note">Po odświeżeniu wybierz go ponownie.</small>
+        <span class="pdf-empty-kicker">ARKUSZ + ĆWICZENIA</span><h3>Wszystko obok siebie.</h3><p>Arkusz otworzy się automatycznie. Gdy zmienisz ćwiczenie, przewinie się razem z Tobą.</p>
+        <div v-if="error && !loading" class="pdf-setup-steps"><button type="button" @click="loadOfficial"><RefreshCw :size="18" /><div><strong>Spróbuj ponownie</strong><small>Wczytaj oficjalny arkusz z CKE.</small></div></button><button type="button" @click="selectFile"><FolderOpen :size="19" /><div><strong>Wybierz PDF z urządzenia</strong><small>Możesz też przeciągnąć plik tutaj.</small></div></button></div>
+        <a :href="officialExam.url" target="_blank" rel="noopener noreferrer" class="link pdf-reload-note">Otwórz arkusz w nowej karcie <ExternalLink :size="13" /></a>
       </div>
     </div>
 

@@ -13,6 +13,17 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['src/**/*.test.{ts,js}', 'tests/*.test.{ts,js}', 'supabase/functions/_shared/**/*.test.ts'],
+    projects: [
+      { extends: true, test: {
+        name: 'unit',
+        include: ['src/**/*.test.{ts,js}', 'tests/*.test.{ts,js}', 'supabase/functions/_shared/**/*.test.ts'],
+        exclude: ['src/components/exams/ExamPdfViewer.test.js'],
+      } },
+      { extends: true, test: {
+        name: 'pdf-viewers',
+        include: ['src/components/exams/ExamPdfViewer.test.js'],
+        environment: './tests/vue-host-environment.js',
+      } },
+    ],
   },
 })

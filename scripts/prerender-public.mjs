@@ -37,7 +37,7 @@ const a = (href, text, cls = '') => `<a href="${esc(href)}"${cls ? ` class="${cl
 const ext = (href, text) => `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer" class="link">${esc(text)} ↗</a>`
 const ul = (items, cls = '') => `<ul${cls ? ` class="${cls}"` : ''}>${items.map(i => `<li>${i}</li>`).join('')}</ul>`
 
-const BRAND_SVG = '<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 7 37.5 23.5 54 18 43.5 32 56 45 38 41 32 58 26.5 41 10 47 20.5 32 8 19 26 23.5Z" fill="currentColor"/></svg>'
+const BRAND_SVG = '<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32.5 5.2C35.3 2.3 40.7 4.1 40.3 8.2L37.8 23.7C43.1 21.3 47.6 17.6 52 17.1C56 16.7 59 21 55.4 24.3L43 33L56 39.4C60.6 41.3 59.2 47.4 54.7 47.7C50.2 48 43.8 44.8 38.7 43L39.5 55.9C39.7 61.2 32.2 62.8 30.2 57.6L25.8 42.9L14.4 52.6C10.4 55.9 5.4 51 8.2 46.8L19.7 34.2L7.2 29.4C2.5 27.4 5.1 20.2 9.9 21.6L23.8 26.1L28.1 10.3C29.2 7.9 30.9 6.5 32.5 5.2Z" fill="currentColor"/></svg>'
 const brand = `<a href="/" class="brand" aria-label="${esc(PRODUCT_NAME)} — strona główna"><span class="brand-icon">${BRAND_SVG}</span><span>ogarnij<span class="brand-second">maturę.</span></span></a>`
 
 /** The public site frame (mirrors src/layouts/PublicLayout.vue). */
