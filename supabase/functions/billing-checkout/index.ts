@@ -124,7 +124,9 @@ async function handle(request: Request) {
     ...(plan.mode === "subscription"
       ? { subscription_data: { metadata } }
       : { payment_intent_data: { metadata: { ...metadata, pass_until: MATURA_PASS_UNTIL } } }),
-    allow_promotion_codes: true,
+    // Codes only for the one-time Pakiet: a 100% code on the subscription still asks for a card
+    // and starts charging from the second month, which testers don't expect.
+    allow_promotion_codes: plan.mode === "payment",
     success_url: `${origin}/premium/gotowe?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/premium/platnosc?plan=${planId}&anulowano=1`,
   });
