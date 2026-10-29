@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="logo-title">
   <title id="logo-title">Ogarnij Maturę</title>
-  <path d="M24 7C32 5 44 4 52 6Q58 7 54 12L36 30Q34 32 31 32L10 30Q5 30 8 26ZM30 38L53 35Q59 34 56 40L41 55Q39 58 35 58L14 56Q8 55 12 51Z" fill="#1c3c32"/>
+  <rect x="1" y="1" width="62" height="62" rx="19" fill="#1c3c32"/>
+  <path d="M9 54C6 54 4 52 4 49L8 14C8 10 11 8 15 8C18 8 20 9 22 12L32 28L43 11C45 8 48 7 51 9C54 10 56 12 56 16L60 49C60 52 58 54 55 54H50C47 54 45 52 45 49L43 31L36 42C34 45 30 45 28 42L20 31L18 49C18 52 16 54 13 54Z" fill="#d7f781" transform="translate(9 9) scale(.72)"/>
 </svg>

@@ -68,8 +68,8 @@ button { border: 0; }
 .header-inner { height: 91px; display: flex; justify-content: space-between; align-items: center; gap: 30px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--heading); font-size: 20px; font-weight: 800; line-height: .99; letter-spacing: -.9px; flex-shrink: 0; }
 .brand-second { display: block; margin-top: 3px; }
-.brand-icon { width: 43px; height: 46px; display: grid; place-items: center; color: var(--green); }
-.brand-icon svg { width: 100%; height: 100%; }
+.brand-icon { width: 43px; height: 46px; display: grid; place-items: center; border-radius: 30%; background: var(--green); color: var(--lime); }
+.brand-icon svg { width: 76%; height: 76%; }
 .desktop-navigation { display: flex; align-items: center; gap: 30px; margin-left: 51px; }
 .desktop-navigation a { font-size: 12px; font-weight: 550; position: relative; padding: 10px 0; }
 .desktop-navigation a::after { position: absolute; content: ''; height: 2px; left: 0; right: 0; bottom: 3px; background: var(--green); transform: scaleX(0); transform-origin: left; transition: transform .2s; }
