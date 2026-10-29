@@ -1,0 +1,299 @@
+/* Jasna kolorystyka pochodzi ze style.css. Zachowane wieksze litery i zwarty uklad. */
+:root { color-scheme: light; }
+main { overflow-x: clip; }
+.button { font-size: 14px; }
+.button-large { font-size: 15px; }
+.text-button, .desktop-navigation a { font-size: 13px; }
+.header-cta { font-size: 12px; }
+.header-actions { gap: 22px; }
+.section-eyebrow { font-size: 11px; }
+.hero { isolation: isolate; padding-top: 65px; padding-bottom: 73px; }
+.hero-eyebrow { font-size: 9px; }
+.hero h1 { margin-bottom: 29px; }
+.hero-description { font-size: 18px; line-height: 1.7; }
+.hero-buttons { margin-top: 29px; }
+.hero-secondary { font-size: 13px; }
+.hero-reassurance { font-size: 11px; }
+.hero-scroll { font-size: 9px; }
+.floating-note span { font-size: 12px; }
+.floating-note strong { font-size: 15px; }
+.window-bar > span:nth-child(2) { font-size: 9px; }
+.window-content { padding: 23px 25px 21px; }
+.preview-greeting .mini-eyebrow { font-size: 9px; }
+.preview-greeting h2 { font-size: 22px; }
+.demo-pill { font-size: 8px; }
+.preview-tabs button { font-size: 11px; padding: 9px 12px; }
+.preview-panel { min-height: 295px; }
+.paper-heading { font-size: 9px; }
+.preview-panel h3 { font-size: 22px; }
+.paper-text { font-size: 12px; line-height: 1.8; }
+.paper-annotation { font-size: 10px; margin-top: 8px; }
+.feedback-line { margin-top: 18px; padding: 12px; }
+.feedback-line strong { font-size: 10px; }
+.feedback-line p { font-size: 9px; line-height: 1.6; }
+.preview-action { font-size: 10px; min-height: 43px; }
+.progress-sticker { bottom: -6px; }
+.visual-caption { bottom: -29px; }
+.mini-answer { font-size: 10px; }
+.preview-flashcard { min-height: 227px; }
+.preview-flashcard > span { font-size: 11px; }
+.benefits-inner { justify-content: center; gap: 67px; min-height: 77px; }
+.benefits-inner > span { font-size: 13px; }
+.section-spacing { padding-block: 88px; }
+.section-aside { display: flex; align-items: center; gap: 18px; font-size: 14px; padding-bottom: 7px; }
+.tool-grid { gap: 22px; }
+.tool-card { min-height: 438px; }
+.tool-number { font-size: 9px; }
+.tool-card h3 { font-size: 27px; }
+.tool-card > p { font-size: 14px; line-height: 1.7; }
+.mini-sheet-top { font-size: 9px; }
+.mini-sheet-top > span:last-child { font-size: 8px; }
+.worksheet-mini > strong { font-size: 11px; }
+.mini-sheet-bottom { font-size: 8px; }
+.mini-feedback-label { font-size: 8px; }
+.feedback-mini p { font-size: 10px; }
+.feedback-mini p strong { font-size: 11px; }
+.mini-flashcard > span:first-child { font-size: 8px; }
+.mini-flashcard strong { font-size: 17px; }
+.flip-caption { font-size: 9px; }
+.tool-link { font-size: 13px; min-height: 46px; }
+.how-inner { padding-block: 55px; }
+.how-intro h2 { font-size: 43px; }
+.how-spark { width: 70px; height: 70px; top: -6px; right: 0; opacity: .8; }
+.steps { margin-top: 34px; gap: 38px; }
+.step h3 { font-size: 19px; margin-top: 19px; }
+.step p { font-size: 14px; margin-top: 9px; max-width: none; }
+.pricing-section { padding-block: 86px 65px; }
+.pricing-grid { margin-top: 45px; }
+.pricing-card { padding-top: 29px; }
+.plan-label { font-size: 10px; }
+.pricing-card h3 { font-size: 21px; }
+.plan-price { font-size: 49px; margin-top: 28px; }
+.plan-price > small { font-size: 11px; }
+.plan-features li { font-size: 13px; }
+.pricing-card .button { font-size: 13px; min-height: 49px; }
+.plan-note { font-size: 10px; }
+.recommended-label { font-size: 9px; }
+.pricing-source { font-size: 11px; }
+.faq-section { padding-block: 55px 78px; gap: 80px; }
+.faq-heading h2 { font-size: 38px; }
+.faq-doodle { margin-top: 24px; }
+.faq-item h3 > button { font-size: 15px; padding-block: 24px; }
+.faq-answer { font-size: 14px; }
+.final-cta { padding-block: 46px; }
+.cta-copy > .eyebrow { font-size: 10px; }
+.cta-copy .button { font-size: 14px; margin-top: 30px; }
+.footer-top > p { font-size: 12px; }
+.footer-top nav a { font-size: 12px; }
+.footer-bottom { font-size: 11px; }
+.dialog-topline .eyebrow { font-size: 9px; }
+.dialog-description { font-size: 14px; }
+.demo-navigation button { font-size: 12px; }
+.exercise-controls .mini-eyebrow { font-size: 9px; }
+.exercise-controls select { font-size: 12px; }
+.exercise-category { font-size: 10px; }
+.exercise-option { font-size: 13px; }
+.answer-feedback strong { font-size: 14px; }
+.answer-feedback p { font-size: 13px; }
+.demo-footnote { font-size: 10px; }
+.essay-subject { font-size: 11px; }
+.tag { font-size: 9px; }
+.demo-essay blockquote { font-size: 14px; }
+.feedback-item h4 { font-size: 14px; }
+.feedback-item p { font-size: 13px; }
+.flashcard-topline { font-size: 12px; }
+.flashcard-topline .mini-eyebrow { font-size: 9px; }
+.large-flashcard > span:not(.flashcard-symbol) { font-size: 12px; }
+.flashcard-navigation .button { font-size: 12px; }
+.demo-explainer p { font-size: 13px; }
+.plan-dialog-content > p { font-size: 14px; }
+.plan-dialog-content .plan-features li { font-size: 14px; }
+
+@media (max-width: 1100px) {
+  .hero-description { font-size: 16px; }
+  .hero-secondary { font-size: 12px; }
+  .hero-buttons { gap: 20px; }
+  .hero-buttons .button-large { font-size: 13px; }
+  .preview-greeting h2 { font-size: 19px; }
+  .preview-tabs button { font-size: 10px; padding-inline: 9px; }
+  .paper-text { font-size: 11px; }
+  .tool-card h3 { font-size: 24px; }
+  .tool-card > p { font-size: 13px; }
+  .tool-link { font-size: 12px; }
+  .plan-features li { font-size: 12px; }
+  .pricing-card h3 { font-size: 19px; }
+  .plan-price { font-size: 43px; }
+  .plan-price > small { font-size: 10px; }
+  .pricing-card .button { font-size: 12px; }
+  .benefits-inner { gap: 52px; }
+  .steps { gap: 25px; }
+  .step h3 { font-size: 17px; }
+  .step p { font-size: 13px; }
+  .how-intro h2 { font-size: 39px; }
+  .footer-top { flex-wrap: wrap; }
+  .footer-top nav { gap: 18px; }
+  .footer-top nav a { font-size: 11px; }
+}
+
+@media (max-width: 850px) {
+  .desktop-navigation a { font-size: 12px; }
+  .header-cta { font-size: 11px; }
+  .hero h1 { font-size: 60px; }
+  .hero-buttons { gap: 14px; }
+  .hero-buttons .button-large { font-size: 12px; }
+  .hero-secondary { font-size: 11px; }
+  .hero-reassurance { font-size: 10px; gap: 12px; }
+  .window-content { padding: 18px 16px; }
+  .preview-greeting .mini-eyebrow { font-size: 7px; }
+  .preview-greeting h2 { font-size: 16px; }
+  .preview-tabs button { font-size: 9px; padding-inline: 5px; }
+  .preview-panel h3 { font-size: 19px; }
+  .paper-heading { font-size: 8px; }
+  .feedback-line strong { font-size: 9px; }
+  .feedback-line p { font-size: 8px; }
+  .preview-action { font-size: 9px; }
+  .benefits-inner { gap: 35px; }
+  .benefits-inner > span { font-size: 12px; }
+  .tool-grid { gap: 13px; }
+  .tool-card { padding-inline: 18px; }
+  .tool-card h3 { font-size: 23px; }
+  .tool-number { font-size: 7px; }
+  .tool-card > p { font-size: 12px; min-height: 61px; }
+  .mini-sheet-top { font-size: 8px; }
+  .worksheet-mini > strong { font-size: 9px; }
+  .mini-sheet-bottom { font-size: 6px; }
+  .feedback-mini p { font-size: 8px; }
+  .feedback-mini p strong { font-size: 9px; }
+  .mini-feedback-label { font-size: 7px; }
+  .mini-flashcard strong { font-size: 13px; }
+  .mini-flashcard > span:first-child { font-size: 6px; }
+  .flip-caption { font-size: 8px; }
+  .section-aside { font-size: 12px; }
+  .tool-link { font-size: 11px; }
+  .how-intro h2 { font-size: 34px; }
+  .step h3 { font-size: 15px; }
+  .step p { font-size: 12px; }
+  .how-spark { width: 48px; height: 48px; }
+  .pricing-card h3 { font-size: 17px; }
+  .plan-label { font-size: 8px; }
+  .plan-features li { font-size: 11px; }
+  .plan-price { font-size: 40px; }
+  .plan-price > small { flex-basis: 100%; }
+  .pricing-card .button { font-size: 11px; }
+  .recommended-label { font-size: 8px; }
+  .plan-note { font-size: 9px; }
+  .faq-section { gap: 35px; }
+  .faq-heading h2 { font-size: 34px; }
+  .faq-item h3 > button { font-size: 14px; }
+  .faq-answer { font-size: 13px; }
+  .footer-top > p, .footer-top nav a { font-size: 11px; }
+  .footer-bottom { font-size: 10px; }
+}
+
+@media (max-width: 680px) {
+  .hero { padding-block: 39px 64px; }
+  .hero h1 { font-size: clamp(58px, 12.5vw, 78px); }
+  .hero-eyebrow { font-size: 8px; }
+  .hero-description { font-size: 16px; line-height: 1.75; }
+  .hero-reassurance { font-size: 10px; gap: 19px; }
+  .hero-buttons .button-large { font-size: 13px; gap: 14px; }
+  .hero-secondary { font-size: 12px; }
+  .hero-visual { margin-top: 39px; }
+  .window-content { padding: 22px 19px 15px; }
+  .preview-greeting h2 { font-size: 18px; }
+  .preview-greeting .mini-eyebrow { font-size: 8px; }
+  .preview-tabs button { font-size: 9px; padding: 9px 8px; }
+  .preview-panel { min-height: 297px; }
+  .paper-heading { font-size: 8px; }
+  .paper-text { font-size: 11px; }
+  .preview-panel h3 { font-size: 21px; }
+  .preview-action { font-size: 10px; min-height: 44px; }
+  .progress-sticker { bottom: -4px; }
+  .visual-caption { bottom: -31px; }
+  .floating-note span { font-size: 11px; }
+  .floating-note strong { font-size: 14px; }
+  .benefits-inner { display: flex; justify-content: space-between; gap: 8px; padding-block: 20px; min-height: 70px; }
+  .benefits-inner > span { font-size: 10px; gap: 6px; }
+  .benefits-inner > span svg { width: 16px; }
+  .section-spacing { padding-block: 58px; }
+  .section-heading { gap: 18px; }
+  .section-eyebrow { font-size: 10px; }
+  .section-heading h2, .centered-heading h2 { font-size: 35px; }
+  .section-aside { font-size: 13px; }
+  .tool-grid { gap: 18px; }
+  .tool-card { padding: 25px 26px 22px; min-height: 420px; }
+  .tool-number { font-size: 10px; }
+  .tool-card h3 { font-size: 30px; }
+  .tool-card > p { font-size: 14px; min-height: 0; }
+  .tool-link { font-size: 14px; }
+  .mini-sheet-top { font-size: 10px; }
+  .worksheet-mini > strong { font-size: 13px; }
+  .mini-sheet-bottom { font-size: 9px; }
+  .mini-feedback-label { font-size: 9px; }
+  .feedback-mini p { font-size: 11px; }
+  .feedback-mini p strong { font-size: 12px; }
+  .mini-flashcard strong { font-size: 19px; }
+  .mini-flashcard > span:first-child { font-size: 8px; }
+  .flip-caption { font-size: 10px; }
+  .how-inner { padding-block: 44px; }
+  .how-intro h2 { max-width: 270px; font-size: 37px; }
+  .how-spark { right: -7px; top: 33px; width: 45px; height: 45px; }
+  .steps { gap: 27px; }
+  .step h3 { font-size: 20px; margin-top: 14px; }
+  .step p { font-size: 14px; margin-top: 6px; }
+  .pricing-card h3 { font-size: 23px; }
+  .plan-label { font-size: 11px; }
+  .plan-price { font-size: 49px; margin-top: 22px; }
+  .plan-price > small { flex-basis: auto; font-size: 12px; }
+  .plan-features li { font-size: 14px; }
+  .pricing-card .button { font-size: 14px; }
+  .plan-note { font-size: 11px; }
+  .recommended-label { font-size: 9px; }
+  .pricing-source { font-size: 11px; }
+  .faq-section { gap: 26px; }
+  .faq-heading h2 { font-size: 35px; }
+  .faq-heading h2 br { display: none; }
+  .faq-item h3 > button { font-size: 15px; }
+  .faq-answer { font-size: 14px; }
+  .final-cta { padding-block: 39px; }
+  .cta-copy > .eyebrow { font-size: 9px; }
+  .cta-copy .button { font-size: 14px; }
+  .footer-top > p { font-size: 11px; }
+  .footer-top nav a { font-size: 11px; }
+  .footer-bottom { font-size: 10px; }
+  .dialog-topline .eyebrow { font-size: 8px; letter-spacing: .5px; }
+  .dialog-description { font-size: 13px; }
+  .demo-navigation button { font-size: 11px; }
+  .exercise-controls .mini-eyebrow { font-size: 7px; }
+  .exercise-controls select { font-size: 11px; }
+  .exercise-option { font-size: 12px; }
+  .demo-essay blockquote { font-size: 13px; }
+  .feedback-item p { font-size: 12px; }
+  .flashcard-navigation .button { font-size: 11px; }
+  .large-flashcard > span:not(.flashcard-symbol) { font-size: 11px; }
+}
+
+@media (max-width: 370px) {
+  .header-cta { font-size: 10px; }
+  .hero h1 { font-size: 55px; }
+  .hero-eyebrow { font-size: 7px; }
+  .hero-buttons { gap: 13px; }
+  .hero-buttons .button-large { font-size: 12px; padding-inline: 13px; gap: 9px; }
+  .hero-secondary { font-size: 11px; }
+  .preview-greeting h2 { font-size: 16px; }
+  .preview-greeting .mini-eyebrow { font-size: 7px; }
+  .window-content { padding-inline: 15px; }
+  .preview-tabs button { font-size: 8px; padding-inline: 6px; }
+  .preview-action { font-size: 9px; }
+  .feedback-line strong { font-size: 8px; }
+  .feedback-line p { font-size: 7px; }
+  .hero-reassurance { font-size: 9px; gap: 14px; }
+  .benefits-inner > span { font-size: 9px; gap: 4px; }
+  .benefits-inner > span svg { width: 14px; }
+  .tool-card { padding-inline: 22px; }
+  .tool-card h3 { font-size: 27px; }
+  .plan-features li { font-size: 13px; }
+  .plan-price > small { font-size: 10px; }
+  .section-heading h2, .centered-heading h2, .faq-heading h2 { font-size: 31px; }
+  .footer-top nav a { font-size: 10px; }
+}
