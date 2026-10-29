@@ -64,8 +64,8 @@ const routes = [
 
   // Premium
   { path: '/premium', component: page(() => import('@/pages/premium/Premium.vue')), meta: { layout: 'app', title: 'Premium' } },
-  { path: '/premium/platnosc', component: page(() => import('@/pages/premium/Checkout.vue')), meta: { layout: 'app', title: 'Płatność' } },
-  { path: '/premium/gotowe', component: page(() => import('@/pages/premium/PaymentDone.vue')), meta: { layout: 'app', title: 'Płatność zakończona' } },
+  { path: ROUTES.checkout, component: page(() => import('@/pages/premium/Checkout.vue')), meta: { layout: 'checkout', title: 'Włącz Premium' } },
+  { path: ROUTES.premiumDone, component: page(() => import('@/pages/premium/PaymentDone.vue')), meta: { layout: 'checkout', title: 'Status płatności', skipOnboarding: true } },
 
   // Old hash URL of the demo (#/test/polski-2026) is rewritten in main.js; 404 last.
   { path: '/:pathMatch(.*)*', component: page(() => import('@/pages/NotFound.vue')), meta: { layout: 'public', title: 'Nie ma takiej strony' } },

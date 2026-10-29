@@ -80,6 +80,9 @@ describe("quotaMessage", () => {
 describe("returnOrigin", () => {
   it("prefers SITE_URL, allows localhost, and only https before SITE_URL is set", () => {
     expect(returnOrigin("http://localhost:3000", "https://ogarnijmature.pl")).toBe("http://localhost:3000");
+    expect(returnOrigin("http://127.0.0.1:5173", "https://ogarnijmature.pl")).toBe("http://127.0.0.1:5173");
+    expect(returnOrigin("http://[::1]:5173", "https://ogarnijmature.pl")).toBe("http://[::1]:5173");
+    expect(returnOrigin("http://127.0.0.1.evil.example", "https://ogarnijmature.pl")).toBe("https://ogarnijmature.pl");
     expect(returnOrigin("https://ogarnijmature.pl", "https://ogarnijmature.pl/")).toBe("https://ogarnijmature.pl");
     expect(returnOrigin("https://evil.example", "https://ogarnijmature.pl")).toBe("https://ogarnijmature.pl");
     expect(returnOrigin("https://matura.vercel.app", undefined)).toBe("https://matura.vercel.app");

@@ -10,7 +10,7 @@ Aplikacja do nauki do matury (polski i angielski): arkusze CKE ze sprawdzaniem, 
 - **Cała logika danych jest w Supabase:** RLS decyduje, co widzi uczeń; ocenianie arkuszy w funkcjach Postgresa (klucze odpowiedzi są niedostępne przez API); AI i płatności w Edge Functions (`supabase/functions/*`). Przeglądarka rozmawia z Supabase bezpośrednio, z tokenem ucznia.
 - **Sesja** jest w `localStorage` (supabase-js, PKCE). Guard tras w `src/router/index.js` czeka na odtworzenie sesji, przekierowuje niezalogowanych na `/logowanie?next=…`, a nowe konta na `/witaj`.
 - **Linki z maili** (reset hasła, potwierdzenie) trafiają na `/auth/potwierdz` (`src/pages/auth/AuthConfirm.vue`).
-- **SEO:** po `vite build` skrypt `scripts/prerender-public.mjs` zapisuje statyczny HTML (tytuł, opis, canonical, OG, JSON-LD, treść) dla `/`, `/arkusze-maturalne`, każdego arkusza, `/kontakt`, `/rejestracja`, a także `sitemap.xml` i `robots.txt`. Pozostałe adresy dostają `spa.html` (rewrite w `vercel.json`).
+- **SEO:** po `vite build` skrypt `scripts/prerender-public.mjs` zapisuje statyczny HTML (tytuł, opis, canonical, OG, JSON-LD, treść) dla `/`, `/arkusze-maturalne`, każdego arkusza, `/kontakt`, `/rejestracja`, a także `sitemap.xml` i `robots.txt`. Pozostałe adresy dostają `spa.html` (rewrite do `/spa` w `vercel.json`, bez rozszerzenia przy `cleanUrls: true`). Powroty płatności mają też własne pliki HTML startujące aplikację.
 - Publiczne wartości (URL Supabase, klucz publishable, klucz Turnstile) są w `src/config/site.ts`.
 
 ## Uruchomienie
@@ -118,3 +118,7 @@ Lista „przed startem” (domena, SMTP, Turnstile, Stripe live, przegląd prawn
 ## Demo „Polski 2026”
 
 Publiczny trening bez konta pod `/trening/polski-2026` (stary adres `/#/test/polski-2026` przekierowuje). 8 autorskich ćwiczeń do zagadnień z arkusza CKE z 4 maja 2026, PDF wczytywany lokalnie z urządzenia ucznia (pdf.js), postęp w `localStorage`. Ćwiczenia i objaśnienia są autorskie; nie kopiujemy treści arkusza, a odnośniki do stron i zadań wskazują tylko powiązany temat. Pliki: `src/exam/*`, testy: `tests/exam-session.test.js`.
+
+## Checkout i powrót z płatności
+
+Audyt, źródła badań, decyzje UX i instrukcja weryfikacji wdrożenia: [`docs/CHECKOUT-RESEARCH.md`](docs/CHECKOUT-RESEARCH.md). `npm run build` sprawdza również fallback Vercela i pliki startowe `/premium/gotowe` oraz `/premium/platnosc`.

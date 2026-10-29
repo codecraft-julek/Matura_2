@@ -201,6 +201,12 @@ for (const exam of exams) write(publicExamRoute(exam.id), render({ ...examSeo(ex
 write(ROUTES.contact, render(PAGE_SEO.contact, publicShell(contactBody())))
 write(ROUTES.signup, render(PAGE_SEO.signup, signupPage()))
 
+// External Stripe returns are full document loads, not client-side navigation. Give these
+// entry points their own shell as well as the Vercel fallback; never prerender paid access.
+for (const path of [ROUTES.checkout, ROUTES.premiumDone]) {
+  write(path, template.replace('</head>', '<meta name="robots" content="noindex, nofollow" /></head>'))
+}
+
 // /sitemap.xml: every public page, so Google finds the exam pages quickly. Submit it once in
 // Google Search Console. Terms and privacy join once the lawyer review is done (noindex until then).
 const sitemapEntries = [

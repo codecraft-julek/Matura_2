@@ -1,7 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "cleanUrls": true,
-  "rewrites": [{ "source": "/((?!assets/|.*\\.[a-z0-9]+$).*)", "destination": "/spa.html" }],
+  "rewrites": [{ "source": "/((?!assets/|.*\\.[a-z0-9]+$).*)", "destination": "/spa" }],
   "headers": [
     {
       "source": "/(.*)",

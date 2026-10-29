@@ -5,11 +5,12 @@ import { RouterView, useRoute } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
+import CheckoutLayout from '@/layouts/CheckoutLayout.vue'
 import ToastHost from '@/ui/ToastHost.vue'
 import ConfirmHost from '@/ui/ConfirmHost.vue'
 
 const route = useRoute()
-const layouts = { public: PublicLayout, auth: AuthLayout, app: AppLayout }
+const layouts = { public: PublicLayout, auth: AuthLayout, app: AppLayout, checkout: CheckoutLayout }
 const layout = computed(() => layouts[route.meta.layout] ?? null)
 </script>
 

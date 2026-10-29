@@ -145,7 +145,7 @@ export async function stripe<T = Record<string, unknown>>(
  */
 export function returnOrigin(requestOrigin: string | null, siteUrl: string | undefined): string | null {
   const site = siteUrl?.replace(/\/+$/, "");
-  if (requestOrigin && /^http:\/\/localhost(:\d+)?$/.test(requestOrigin)) return requestOrigin;
+  if (requestOrigin && /^http:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(requestOrigin)) return requestOrigin;
   if (requestOrigin && site && requestOrigin === site) return requestOrigin;
   if (site) return site;
   if (requestOrigin && /^https:\/\/[a-z0-9.-]+$/i.test(requestOrigin)) return requestOrigin;

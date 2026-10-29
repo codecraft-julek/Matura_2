@@ -20,6 +20,7 @@ export const ROUTES = {
   flashcards: "/fiszki",
   newDeck: "/fiszki/nowa",
   premium: "/premium",
+  checkout: "/premium/platnosc",
   premiumDone: "/premium/gotowe",
   /** Public exam pages for Google (no login): structure, official PDFs, "solve it here". */
   publicExams: "/arkusze-maturalne",
@@ -54,7 +55,7 @@ export const examRoutes = {
 export const essayRoute = (id: string) => `${ROUTES.essays}/${id}`;
 export const tutorChatRoute = (id: string) => `${ROUTES.tutor}/${id}`;
 export const noteRoute = (id: string) => `${ROUTES.notes}/${id}`;
-export const checkoutRoute = (plan: string) => `${ROUTES.premium}/platnosc?plan=${plan}`;
+export const checkoutRoute = (plan: string) => `${ROUTES.checkout}?plan=${plan}`;
 export const publicExamRoute = (id: string) => `${ROUTES.publicExams}/${id}`;
 export const deckRoute = (id: string) => `${ROUTES.flashcards}/${id}`;
 export const studyRoute = (id: string, all = false) => `${ROUTES.flashcards}/${id}/nauka${all ? "?wszystkie=1" : ""}`;
