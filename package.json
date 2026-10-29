@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
+    "brand:build": "node scripts/build-brand-assets.mjs && node scripts/render-brand-previews.mjs && node scripts/make-og-image.mjs",
     "dev": "vite --host 127.0.0.1",
     "build": "vite build && node scripts/prerender-public.mjs && node scripts/check-checkout-build.mjs",
     "preview": "vite preview --host 127.0.0.1",
