@@ -37,7 +37,7 @@ const a = (href, text, cls = '') => `<a href="${esc(href)}"${cls ? ` class="${cl
 const ext = (href, text) => `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer" class="link">${esc(text)} ↗</a>`
 const ul = (items, cls = '') => `<ul${cls ? ` class="${cls}"` : ''}>${items.map(i => `<li>${i}</li>`).join('')}</ul>`
 
-const BRAND_SVG = '<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M8 8C17 7 24 10 30 15V58C23 53 16 51 8 52C5 52 3 50 3 47V13C3 10 5 8 8 8ZM34 15C41 10 49 7 57 8C60 8 62 10 62 13V47C62 50 60 52 57 52C49 51 41 53 34 58ZM39 29L42 26L47 31L56 21L59 24L47 38Z" fill="currentColor" fill-rule="evenodd"/></svg>'
+const BRAND_SVG = '<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M43 9C30 1 10 10 8 27C5 46 19 58 35 54C48 51 57 39 53 27C50 17 39 16 32 23C25 30 27 39 35 39" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 const brand = `<a href="/" class="brand" aria-label="${esc(PRODUCT_NAME)} — strona główna"><span class="brand-icon">${BRAND_SVG}</span><span>ogarnij<span class="brand-second">maturę.</span></span></a>`
 
 /** The public site frame (mirrors src/layouts/PublicLayout.vue). */
