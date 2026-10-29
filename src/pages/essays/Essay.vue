@@ -66,7 +66,7 @@ const stale = computed(() => essay.value?.status === 'pending' && !pending())
     <p class="sr-only" role="status" aria-live="polite">{{ justFinished }}</p>
 
     <template v-if="essay.status === 'done' && essay.feedback">
-      <FeedbackView :feedback="essay.feedback" :content="essay.content" />
+      <FeedbackView :feedback="essay.feedback" :content="essay.content" :word-count="essay.word_count" />
       <div class="card rating-card">
         <AiRating :key="essay.id" kind="essay" :target-id="essay.id" :initial="data.rating" question="Czy ten feedback był pomocny?" />
       </div>

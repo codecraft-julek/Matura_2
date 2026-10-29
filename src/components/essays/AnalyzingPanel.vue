@@ -80,7 +80,8 @@ const rows = computed(() => def.value.criteria.map((c, i) => {
       <p class="analyzing-status" role="status" aria-live="polite"><LoaderCircle :size="15" class="spin" aria-hidden="true" />{{ status }}</p>
     </div>
 
-    <template v-if="writing">
+    <!-- Polish basic scores/comments are provisional until error ownership is reconciled. -->
+    <template v-if="writing && rubric !== 'polish_basic'">
       <Transition name="fade"><p v-if="partial.summary" class="analyzing-summary">{{ partial.summary }}</p></Transition>
       <ul class="criteria">
         <li v-for="c in rows" :key="c.id" class="criterion" :class="{ 'is-done': c.got, 'is-active': c.active }">

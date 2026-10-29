@@ -4,15 +4,20 @@
 import { computed } from 'vue'
 import { Check, Lightbulb, TriangleAlert } from '@lucide/vue'
 import { segments } from './segments'
+import { criterionStatus, feedbackForDisplay, priorityImprovements } from '@shared/essay'
 
 const props = defineProps({
   /** StoredFeedback from @shared/essay */
   feedback: { type: Object, required: true },
   content: { type: String, required: true },
+  wordCount: { type: Number, default: undefined },
 })
 
-const parts = computed(() => segments(props.content, props.feedback.highlights ?? []))
-const VERDICT = { good: { label: 'dobrze', cls: 'is-good' }, ok: { label: 'w porządku', cls: 'is-ok' }, fix: { label: 'do poprawy', cls: 'is-fix' } }
+const feedback = computed(() => feedbackForDisplay(props.feedback, props.wordCount))
+const priorities = computed(() => priorityImprovements(feedback.value))
+const notes = computed(() => (feedback.value.notes ?? []).filter(n => !feedback.value.wordLimit || (n !== feedback.value.wordLimit.message && !n.startsWith(`Tekst ma ${feedback.value.wordLimit.words} wyrazów`))))
+const parts = computed(() => segments(props.content, feedback.value.highlights ?? []))
+const VERDICT = { good: { cls: 'is-good' }, ok: { cls: 'is-ok' }, fix: { cls: 'is-fix' }, not_assessed: { cls: 'is-unassessed' } }
 const verdict = v => VERDICT[v] ?? VERDICT.fix
 const pct = c => (c.max ? Math.round((c.points / c.max) * 100) : 0)
 </script>
@@ -25,8 +30,14 @@ const pct = c => (c.max ? Math.round((c.points / c.max) * 100) : 0)
       <p v-if="feedback.summary" class="score-summary">{{ feedback.summary }}</p>
     </section>
 
-    <ul v-if="feedback.notes?.length" class="stack notes" style="--gap: 8px">
-      <li v-for="n in feedback.notes" :key="n" class="alert alert-warn"><TriangleAlert :size="17" /><span>{{ n }}</span></li>
+    <section v-if="priorities.length" class="top-tip card" :class="feedback.wordLimit ? 'word-limit-priority' : 'card-purple'" aria-labelledby="improvements-title">
+      <h2 id="improvements-title" class="top-tip-title"><TriangleAlert v-if="feedback.wordLimit" :size="20" /><Lightbulb v-else :size="18" /> Najważniejsze do poprawy</h2>
+      <p v-if="feedback.wordLimit" class="word-count tabular">{{ feedback.wordLimit.words }} / {{ feedback.wordLimit.minimum }} wyrazów</p>
+      <ol class="priority-list"><li v-for="(item, i) in priorities" :key="i" :class="{ 'word-limit-warning': feedback.wordLimit && i === 0 }">{{ item }}</li></ol>
+    </section>
+
+    <ul v-if="notes.length" class="stack notes" style="--gap: 8px">
+      <li v-for="n in notes" :key="n" class="alert alert-warn"><TriangleAlert :size="17" /><span>{{ n }}</span></li>
     </ul>
 
     <section>
@@ -34,23 +45,23 @@ const pct = c => (c.max ? Math.round((c.points / c.max) * 100) : 0)
       <ul class="criteria card">
         <li v-for="c in feedback.criteria" :key="c.id" class="criterion">
           <span class="verdict-dot" :class="verdict(c.verdict).cls" aria-hidden="true">
-            <Check v-if="c.verdict === 'good'" :size="14" /><template v-else>{{ c.verdict === 'ok' ? '~' : '!' }}</template>
+            <Check v-if="c.verdict === 'good'" :size="14" /><template v-else>{{ c.verdict === 'not_assessed' ? '–' : c.verdict === 'ok' ? '~' : '!' }}</template>
           </span>
           <div class="criterion-body">
             <div class="criterion-head">
-              <p class="criterion-label">{{ c.label }} <span class="sr-only">({{ verdict(c.verdict).label }})</span></p>
+              <p class="criterion-label">{{ c.label }}</p>
               <span class="criterion-points tabular">{{ c.assessed ? `${c.points}/${c.max}` : '–' }}<span v-if="!c.assessed" class="sr-only"> nie oceniono</span></span>
             </div>
-            <p v-if="c.comment" class="criterion-comment">{{ c.comment }}</p>
-            <div v-if="c.assessed" class="progress criterion-bar" :class="verdict(c.verdict).cls" aria-hidden="true"><span :style="{ width: `${pct(c)}%` }"></span></div>
+            <p class="criterion-status" :class="verdict(c.verdict).cls">{{ criterionStatus(c) }}</p>
+            <p v-if="c.scoreExplanation" class="criterion-reason">{{ c.scoreExplanation }}</p>
+            <p v-if="c.comment" class="criterion-comment"><strong v-if="c.scoreReason">{{ c.scoreReason === 'word_limit' ? 'Informacyjnie — gdyby tekst spełniał limit: ' : 'Uwaga informacyjna (nie zmienia punktacji): ' }}</strong>{{ c.comment }}</p>
+            <ul v-if="feedback.errors?.some(e => e.criterion === c.id)" class="criterion-errors">
+              <li v-for="e in feedback.errors.filter(e => e.criterion === c.id)" :key="e.id"><q>{{ e.quote }}</q> — {{ e.comment }}<span v-if="e.correction"> Poprawnie: <q>{{ e.correction }}</q>.</span></li>
+            </ul>
+            <div v-if="c.assessed && !c.scoreReason" class="progress criterion-bar" :class="verdict(c.verdict).cls" aria-hidden="true"><span :style="{ width: `${pct(c)}%` }"></span></div>
           </div>
         </li>
       </ul>
-    </section>
-
-    <section v-if="feedback.topTip" class="top-tip card card-purple">
-      <h2 class="top-tip-title"><Lightbulb :size="18" /> Najważniejsze do poprawy</h2>
-      <p>{{ feedback.topTip }}</p>
     </section>
 
     <section>
@@ -88,6 +99,12 @@ const pct = c => (c.max ? Math.round((c.points / c.max) * 100) : 0)
 .verdict-dot.is-good { background: var(--ok-bg); color: var(--ok); }
 .verdict-dot.is-ok { background: var(--warn-bg); color: var(--warn); }
 .verdict-dot.is-fix { background: var(--error-bg); color: var(--error); }
+.verdict-dot.is-unassessed { background: var(--surface-2); color: var(--text-soft); }
+.criterion-status { margin-top: 5px; font-size: 12px; font-weight: 700; }
+.criterion-status.is-unassessed { color: var(--text-soft); }
+.criterion-reason { margin-top: 8px; padding: 10px 12px; border-left: 3px solid var(--warn); background: var(--warn-bg); font-size: 14px; line-height: 1.5; }
+.criterion-errors { margin: 10px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; }
+.criterion-errors li + li { margin-top: 8px; }
 .criterion-body { flex: 1; min-width: 0; }
 .criterion-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .criterion-label { font-weight: 650; line-height: 1.35; }
@@ -101,6 +118,12 @@ const pct = c => (c.max ? Math.round((c.points / c.max) * 100) : 0)
 .top-tip { border-style: dashed; border-color: var(--info); }
 .top-tip-title { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 750; color: var(--info); }
 .top-tip p { margin-top: 6px; color: var(--text); line-height: 1.6; }
+.priority-list { margin: 12px 0 0; padding-left: 22px; line-height: 1.65; }
+.priority-list li + li { margin-top: 12px; }
+.word-limit-priority { background: var(--warn-bg); border: 2px solid var(--warn-line); border-left: 5px solid var(--warn); }
+.word-limit-priority .top-tip-title { color: var(--warn); }
+.word-limit-warning { font-weight: 650; }
+.word-count { font-size: 20px; font-weight: 750; }
 
 .essay-text { white-space: pre-wrap; line-height: 1.8; font-size: 16px; overflow-wrap: anywhere; }
 .hl { border-radius: 4px; padding: 1px 2px; color: var(--text); }

@@ -19,7 +19,6 @@ import {
   MIN_WORDS_FOR_FEEDBACK,
   RUBRICS,
   aiFeedbackSchema,
-  applyCkeRules,
   buildInput,
   buildInstructions,
   countWords,
@@ -29,6 +28,7 @@ import {
   type AiFeedback,
   type RubricId,
 } from "../_shared/essay.ts";
+import { finalizeDetectedFeedback, REVISION_INSTRUCTIONS, revisionJsonSchema, revisionSchema, type RevisionRequest } from "../_shared/essay-reconciliation.ts";
 
 const DEFAULT_MODEL = "gpt-6.1-sol";
 const OPENAI_TIMEOUT_MS = 110_000; // Supabase stops functions at 150 s
@@ -207,19 +207,30 @@ type Job = {
 /** Asks the AI, applies the CKE rules and saves the result. Never throws. */
 async function runJob(job: Job, onDelta: (text: string) => void): Promise<{ ok: true } | { ok: false; error: string }> {
   const startedAt = Date.now();
+  const deadline = startedAt + OPENAI_TIMEOUT_MS;
   try {
     const { ai, usage } = job.fake
       ? await fakeStream(job.rubric, job.content, onDelta)
-      : await askOpenAI({ ...job, apiKey: job.apiKey! }, onDelta);
-    const feedback = applyCkeRules(job.rubric, ai, {
+      : await askOpenAI({ ...job, apiKey: job.apiKey! }, onDelta, deadline);
+    let totalUsage = usage;
+    const feedback = await finalizeDetectedFeedback(job.rubric, ai, {
       content: job.content,
       words: job.words,
       hasPrompt: job.topic.trim().length > 0,
       minWords: job.minWords,
+    }, async request => {
+      const revised = await reconcileComments(job.apiKey!, job.model, request, deadline);
+      if (revised.usage) totalUsage = {
+        input_tokens: (totalUsage?.input_tokens ?? 0) + revised.usage.input_tokens,
+        cached_tokens: (totalUsage?.cached_tokens ?? 0) + revised.usage.cached_tokens,
+        output_tokens: (totalUsage?.output_tokens ?? 0) + revised.usage.output_tokens,
+        reasoning_tokens: (totalUsage?.reasoning_tokens ?? 0) + revised.usage.reasoning_tokens,
+      };
+      return revised.revision;
     });
     await admin
       .from("essays")
-      .update({ status: "done", feedback, usage, duration_ms: Date.now() - startedAt, completed_at: new Date().toISOString() })
+      .update({ status: "done", feedback, usage: totalUsage, duration_ms: Date.now() - startedAt, completed_at: new Date().toISOString() })
       .eq("id", job.essayId);
     return { ok: true };
   } catch (err) {
@@ -241,9 +252,10 @@ type Usage = { input_tokens: number; cached_tokens: number; output_tokens: numbe
 async function askOpenAI(
   o: { apiKey: string; model: string; rubric: RubricId; topic: string; content: string; words: number; minWords?: number; rules: string[] },
   onDelta: (text: string) => void,
+  deadline = Date.now() + OPENAI_TIMEOUT_MS,
 ): Promise<{ ai: AiFeedback; usage: Usage }> {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), Math.max(1, deadline - Date.now()));
   try {
     const res = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -290,6 +302,34 @@ async function askOpenAI(
   } finally {
     clearTimeout(timer);
   }
+}
+
+// Only runs when canonical ownership removed a duplicate. Detection is never re-run here.
+async function reconcileComments(apiKey: string, model: string, request: RevisionRequest, deadline: number) {
+  if (Date.now() >= deadline) throw new Error("Essay reconciliation timed out");
+  const res = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    signal: AbortSignal.timeout(Math.max(1, deadline - Date.now())),
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model,
+      instructions: REVISION_INSTRUCTIONS,
+      input: JSON.stringify(request),
+      text: { format: { type: "json_schema", name: "essay_issue_reconciliation", schema: revisionJsonSchema, strict: true } },
+      reasoning: { effort: Deno.env.get("AI_REASONING_EFFORT") ?? "low" },
+      max_output_tokens: 4000,
+      store: false,
+    }),
+  });
+  if (!res.ok) throw new Error(`Essay reconciliation: OpenAI ${res.status}`);
+  const data = await res.json();
+  if (data.status !== "completed") throw new Error("Incomplete essay reconciliation");
+  const text = (data.output ?? []).flatMap((item: { content?: { type: string; text?: string }[] }) => item.content ?? [])
+    .filter((item: { type: string }) => item.type === "output_text")
+    .map((item: { text: string }) => item.text).join("");
+  const u = data.usage;
+  const usage: Usage = u ? { input_tokens: u.input_tokens ?? 0, cached_tokens: u.input_tokens_details?.cached_tokens ?? 0, output_tokens: u.output_tokens ?? 0, reasoning_tokens: u.output_tokens_details?.reasoning_tokens ?? 0 } : null;
+  return { revision: revisionSchema.parse(JSON.parse(text)), usage };
 }
 
 // Minimal Server-Sent Events reader: yields each `data: {...}` JSON payload.
@@ -346,5 +386,6 @@ function fakeFeedback(rubric: RubricId, content: string): AiFeedback {
       ...(issue ? [{ quote: issue, type: "issue" as const, comment: "Przykład: ten fragment warto poprawić." }] : []),
     ],
     top_tip: "Przykładowa wskazówka: rozwiń drugi argument.",
+    ...(rubric === "polish_basic" ? { errors: issue ? [{ id: "example", criterion: "language" as const, quote: issue, occurrence: 1, correction: null, comment: "Przykład: ten fragment warto poprawić.", styleAfterCorrection: null }] : [] } : {}),
   };
 }

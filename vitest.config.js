@@ -1,9 +1,11 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitest/config'
+import vue from '@vitejs/plugin-vue'
 
 // Unit tests: fast, no network. `npm test`.
 // Integration tests (tests/integration) talk to the real Supabase project: `npm run test:integration`.
 export default defineConfig({
+  plugins: [vue()],
   resolve: {
     alias: {
       '@shared': fileURLToPath(new URL('./supabase/functions/_shared', import.meta.url)),
