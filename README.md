@@ -72,13 +72,17 @@ Adres: `/#/test/polski-2026` (lokalnie np. `http://localhost:5173/#/test/polski-
 - Można pobrać własne odpowiedzi jako plik TXT. Aplikacja nie przesyła odpowiedzi do serwera ani AI.
 - Nawigacja oparta na fragmencie adresu działa także na hostingu statycznym, bez reguł przekierowania ścieżek.
 
+Widok na komputerze: arkusz po lewej, autorskie ćwiczenie po prawej. Na telefonie przełączniki „Ćwiczenie” i „Arkusz” zachowują wczytany dokument. Zmiana ćwiczenia automatycznie przewija PDF do strony i wysokości powiązanego zadania (`sourcePage` i `sourceTop`). Można również ręcznie wybrać stronę, powiększyć dokument oraz wrócić do powiązanego zadania. Wybór innego arkusza lub uszkodzonego pliku wyświetla komunikat.
+
+Podgląd: `src/exam/LocalPdfViewer.vue`, `src/exam/PdfSheet.vue`, `src/exam/pdf-viewer.css`.
+
 Pliki: `src/exam/ExamPage.vue` (widok), `src/exam/exam.css` (layout), `src/exam/examData.js` (autorskie pytania i źródła), `src/exam/session.js` (punktacja i zapis), `src/Root.vue` (wybór strony).
 
 ### Źródła i sposób korzystania z materiałów
 
 Oficjalny materiał: [CKE — język polski, poziom podstawowy, 4 maja 2026, arkusz 1](https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-A-2605-arkusz.pdf). [Katalog materiałów CKE](https://egzaminy.gov.pl/index.php/egzamin-maturalny/materialy-egzaminacyjne?exam_session=2026-maj&formula=F2023).
 
-PDF pozostaje na serwerze CKE i otwiera się w osobnej karcie. Zweryfikowana odpowiedź serwera zawiera `X-Frame-Options: SAMEORIGIN`, dlatego aplikacja nie próbuje osadzać dokumentu w ramce ani obchodzić tej blokady. Nie kopiujemy PDF-u, jego tekstów, ilustracji, układu graficznego ani oficjalnych poleceń do aplikacji czy paczki publikacyjnej. Materiały odczytane lokalnie do weryfikacji są w ignorowanym katalogu `tmp/`.
+Link do oficjalnego PDF-u prowadzi do CKE. Uczeń zapisuje plik na urządzeniu, a następnie wybiera go przyciskiem „Wybierz pobrany PDF” lub przeciąga do podglądu. PDF.js wyświetla wyłącznie lokalne dane pliku, z lokalnie dostarczanym workerem. Dokument nie jest przesyłany na serwer ani zapisywany w localStorage. Po odświeżeniu należy wybrać plik ponownie; zapisane odpowiedzi pozostają. Wyświetlanie nie osadza serwera CKE i nie obchodzi jego `X-Frame-Options: SAMEORIGIN`. Nie kopiujemy PDF-u, jego tekstów, ilustracji, układu graficznego ani oficjalnych poleceń do aplikacji czy paczki publikacyjnej. Materiały odczytane lokalnie do weryfikacji są w ignorowanym katalogu `tmp/`.
 
 Zadania i objaśnienia aplikacji zostały napisane samodzielnie. Numery stron i zadań w odnośnikach oznaczają powiązany temat, nie tożsamość z pytaniem CKE. Przykłady „myszy”, sytuacji Oli, zdania o wieczorze, wypowiedzi o Kasi oraz urzędu „Bezpieczna Pamięć” są własne. Punktacja jest punktacją treningu, nie przeliczeniem wyniku matury. Nie używamy logo CKE i nie sugerujemy afiliacji.
 

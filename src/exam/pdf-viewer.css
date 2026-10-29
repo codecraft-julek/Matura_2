@@ -1,0 +1,160 @@
+.exam-app .exam-container { width: min(1480px, calc(100% - 64px)); max-width: 1480px; }
+.exam-app .exam-main { overflow: visible; }
+.exam-app .exam-breadcrumbs { margin-bottom: 20px; }
+.exam-app .exam-title-row h1 { font-size: 36px; }
+.exam-app .exam-meta { padding-bottom: 18px; }
+.study-bar { display: flex; align-items: center; gap: 30px; margin-top: 23px; padding: 15px 20px; background: #fff; border: 1px solid #e0e6d8; border-radius: 12px; }
+.study-progress { width: 175px; flex-shrink: 0; }
+.study-progress > div:first-child { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
+.study-progress strong { font-weight: 600; }
+.study-progress > div > span { color: #6a7f58; font-variant-numeric: tabular-nums; }
+.study-progress .session-progress { margin-top: 9px; height: 4px; }
+.study-question-nav { display: grid; grid-template-columns: repeat(8, 38px); gap: 7px; }
+.study-question-nav button { display: grid; place-items: center; height: 36px; position: relative; border: 1px solid #e3e8dd; border-radius: 7px; background: #f9fbf6; color: #788770; font-size: 12px; font-weight: 600; }
+.study-question-nav button:hover { background: #eef4e5; }
+.study-question-nav button.answered { background: #edf4e3; color: #4d6b34; }
+.study-question-nav button.active { background: #294634; color: #e7f7cf; border-color: #294634; box-shadow: 0 2px 6px #29463415; }
+.study-nav-flag { position: absolute; right: 2px; top: 2px; }
+.study-session-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.study-time { display: flex; align-items: center; gap: 7px; margin-right: 6px; font-size: 12px; color: #70815e; font-variant-numeric: tabular-nums; }
+.study-session-actions > button { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 6px; color: #738568; background: #f1f5eb; }
+.study-session-actions > button:hover:not(:disabled) { background: #e4edd8; }
+.exam-layout.study-layout { grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: 26px; padding-top: 24px; scroll-margin-top: 100px; }
+.study-document { position: sticky; top: 100px; min-width: 0; }
+.study-document-label { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 33px; margin-bottom: 15px; font-size: 10px; letter-spacing: 1px; font-weight: 650; color: #62794e; }
+.study-document-label > span:last-child { letter-spacing: 0; font-size: 11px; font-weight: 400; color: #8a977c; }
+.study-layout .question-card { padding: 26px; }
+.study-layout .question-card h2 { font-size: 29px; margin-top: 20px; }
+.study-layout .question-prompt { font-size: 17px; }
+.study-layout .answer-copy { font-size: 14px; }
+.study-layout .question-actions { flex-wrap: wrap; }
+.study-layout .question-source { text-align: left; background: none; }
+.study-layout.study-complete { grid-template-columns: minmax(0, 900px); justify-content: center; }
+.study-mobile-tabs, .mobile-question-pager { display: none; }
+.pdf-viewer { position: relative; border: 1px solid #dce3d3; border-radius: 14px; background: #fff; overflow: hidden; box-shadow: 0 5px 25px #28462b04; }
+.pdf-heading { display: flex; align-items: center; gap: 10px; padding: 17px 18px; border-bottom: 1px solid #e5e9e0; }
+.pdf-heading-icon { display: grid; place-items: center; background: #eef3e6; color: #829b61; height: 37px; width: 37px; flex-shrink: 0; border-radius: 8px; }
+.pdf-heading > div { min-width: 0; flex: 1; }
+.pdf-heading h2 { font-size: 14px; font-weight: 650; letter-spacing: -.2px; }
+.pdf-heading > div > span { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; color: #86937b; margin-top: 4px; }
+.pdf-badge { background: #f3f5ee; padding: 5px 7px; border: 1px solid #e0e6d6; border-radius: 5px; font-size: 9px; color: #8a9979; letter-spacing: .5px; }
+.pdf-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 14px; background: #fbfcf8; border-bottom: 1px solid #e1e6d9; }
+.pdf-page-controls, .pdf-zoom-controls { display: flex; align-items: center; gap: 4px; }
+.pdf-icon-button { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 6px; background: transparent; color: #647a51; }
+.pdf-icon-button:hover:not(:disabled) { background: #eaf0e0; }
+.pdf-icon-button:disabled { opacity: .35; cursor: default; }
+.pdf-page-select { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #7f8e72; }
+.pdf-page-select select { border: 1px solid #d9e2ce; background: #fff; border-radius: 5px; min-width: 45px; height: 27px; padding-inline: 4px; font: inherit; color: #36532e; }
+.pdf-fit-button { padding: 6px 3px; min-width: 43px; border-radius: 5px; color: #657c52; background: none; font-size: 11px; font-variant-numeric: tabular-nums; }
+.pdf-fit-button:hover { background: #edf2e4; }
+.pdf-scroll { position: relative; height: clamp(300px, calc(100dvh - 340px), 720px); min-height: 300px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #acbaa0 #e7ebdf; background: #e9ede3; overflow-anchor: none; }
+.pdf-scroll:focus-visible { outline: 3px solid #b3a1cb; outline-offset: -3px; }
+.pdf-pages { width: max-content; min-width: 100%; padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.pdf-page-wrap { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+.pdf-sheet { position: relative; background: white; box-shadow: 0 2px 8px #253b2514; flex-shrink: 0; overflow: hidden; }
+.pdf-sheet canvas { display: block; }
+.pdf-sheet-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #fff; color: #899582; font-size: 13px; }
+.pdf-sheet-placeholder button { padding: 8px 12px; border-radius: 6px; background: #eff4e7; color: #486332; font-size: 12px; }
+.pdf-page-caption { font-size: 10px; color: #7a8870; font-variant-numeric: tabular-nums; }
+/* TextLayer layout follows Mozilla PDF.js (Apache-2.0). Kept scoped to this viewer. */
+.pdf-text-layer { position: absolute; inset: 0; overflow: clip; text-align: initial; line-height: 1; letter-spacing: normal; word-spacing: normal; text-size-adjust: none; forced-color-adjust: none; transform-origin: 0 0; --min-font-size: 1; --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size)); --min-font-size-inv: calc(1 / var(--min-font-size)); }
+.pdf-text-layer :is(span, br) { color: transparent; position: absolute; white-space: pre; cursor: text; transform-origin: 0 0; user-select: text; }
+.pdf-text-layer > :not(.markedContent), .pdf-text-layer .markedContent span:not(.markedContent) { z-index: 1; --font-height: 0; font-size: calc(var(--text-scale-factor) * var(--font-height)); --scale-x: 1; --rotate: 0deg; transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv)); }
+.pdf-text-layer .markedContent { display: contents; }
+.pdf-text-layer ::selection { color: transparent; background: #a3bc7e66; }
+.pdf-scroll-empty { display: grid; place-items: center; background: #fafbf7; min-height: 460px; }
+.pdf-empty { width: min(390px, 100%); padding: 24px 30px; text-align: center; }
+.pdf-empty-art { position: relative; width: 105px; height: 91px; margin: 0 auto 20px; }
+.pdf-mini-page { position: absolute; width: 61px; height: 80px; background: white; border: 1px solid #d6e0ca; border-radius: 5px; top: 0; left: 14px; transform: rotate(-8deg); box-shadow: 0 6px 15px #49632a0c; padding: 16px 10px; }
+.pdf-mini-page > span { display: block; width: 20px; height: 5px; background: #b6cba0; border-radius: 2px; margin-bottom: 11px; }
+.pdf-mini-page > i { display: block; width: 100%; height: 3px; background: #e7ecdf; border-radius: 2px; margin-bottom: 5px; }
+.pdf-mini-page > i:last-of-type { width: 70%; }
+.pdf-mini-page > b { display: grid; place-items: center; position: absolute; bottom: -5px; left: -11px; width: 25px; height: 25px; background: #d9ebbf; border: 3px solid #fafbf7; border-radius: 50%; color: #668548; }
+.pdf-empty-link { position: absolute; right: 1px; bottom: 3px; display: grid; place-items: center; width: 40px; height: 40px; color: #9881af; background: #eee7f6; border: 4px solid #fafbf7; border-radius: 12px; transform: rotate(9deg); }
+.pdf-empty-kicker { font-size: 9px; font-weight: 650; letter-spacing: 1.3px; color: #899d70; }
+.pdf-empty h3 { font-size: 25px; letter-spacing: -.8px; margin-top: 8px; font-weight: 750; }
+.pdf-empty > p { font-size: 13px; line-height: 1.8; color: #7b8a6e; margin-top: 12px; }
+.pdf-setup-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+.pdf-setup-steps > a, .pdf-setup-steps > button { display: flex; align-items: center; gap: 13px; text-align: left; padding: 15px; border: 1px solid #e0e6d7; border-radius: 9px; color: #4b6636; background: white; }
+.pdf-setup-steps > button { border-color: #294634; background: #294634; color: #ecf7dc; }
+.pdf-setup-steps > :hover { box-shadow: 0 3px 10px #29463412; }
+.pdf-setup-steps > a > span, .pdf-setup-steps > button > span { display: grid; place-items: center; width: 23px; height: 23px; flex-shrink: 0; border-radius: 50%; background: #f0f5e8; font-size: 11px; font-weight: 600; }
+.pdf-setup-steps > button > span { background: #ffffff16; }
+.pdf-setup-steps > :is(a, button) > div { flex: 1; }
+.pdf-setup-steps strong { display: block; font-size: 12px; font-weight: 650; }
+.pdf-setup-steps small { display: block; font-size: 11px; opacity: .7; margin-top: 4px; }
+.pdf-privacy { display: flex; align-items: center; justify-content: center; gap: 5px; color: #7b8c68; font-size: 10px; margin-top: 20px; }
+.pdf-reload-note { display: block; margin-top: 7px; font-size: 10px; color: #96a08b; }
+.pdf-sync-bar { display: flex; align-items: center; justify-content: space-between; gap: 9px; padding: 12px 16px; color: #75895d; background: #f1f6e9; font-size: 10px; border-top: 1px solid #dce5d1; }
+.pdf-sync-bar > span, .pdf-sync-bar button { display: flex; align-items: center; gap: 6px; }
+.pdf-sync-bar > span { min-width: 0; }
+.pdf-sync-bar button { background: none; font-size: 10px; font-weight: 650; color: #55733c; white-space: nowrap; }
+.pdf-error { margin: 10px 14px; padding: 11px 13px; background: #fff3e9; border: 1px solid #ecd4c1; color: #875737; border-radius: 7px; font-size: 12px; line-height: 1.6; }
+.pdf-loading { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px; background: #f3f6ed; color: #71875a; font-size: 12px; }
+.pdf-loading svg { animation: pdf-spin 1.2s linear infinite; }
+.pdf-drop-overlay { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: #edf5e3f2; border: 2px dashed #91ad6c; border-radius: 12px; color: #5d7c40; pointer-events: none; }
+.pdf-viewer button:focus-visible, .pdf-viewer a:focus-visible, .pdf-viewer select:focus-visible, .study-bar button:focus-visible, .study-mobile-tabs button:focus-visible, .mobile-question-pager button:focus-visible { outline: 3px solid #a18bb9; outline-offset: 2px; }
+@keyframes pdf-spin { to { transform: rotate(360deg); } }
+@media (max-width: 1100px) and (min-width: 851px) {
+  .exam-app .exam-container { width: calc(100% - 40px); }
+  .exam-layout.study-layout { gap: 18px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .study-layout .question-card { padding: 22px; }
+  .study-layout .question-prompt { font-size: 16px; }
+  .study-layout .answer-copy { font-size: 13px; }
+  .study-bar { gap: 20px; padding-inline: 16px; }
+  .study-progress { width: 150px; }
+  .study-question-nav { grid-template-columns: repeat(8, 34px); gap: 5px; }
+  .pdf-empty { padding-inline: 22px; }
+  .pdf-sync-bar { padding-inline: 11px; font-size: 9px; }
+  .pdf-sync-bar button { font-size: 9px; }
+}
+@media (max-width: 850px) {
+  .exam-app .exam-container { width: calc(100% - 36px); }
+  .study-bar { display: grid; grid-template-columns: 1fr auto; gap: 16px 20px; padding: 16px; }
+  .study-progress { width: min(250px, 100%); }
+  .study-session-actions { grid-column: 2; grid-row: 1; }
+  .study-question-nav { grid-column: 1 / -1; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 7px; }
+  .study-question-nav button { height: 39px; }
+  .study-mobile-tabs { display: flex; gap: 5px; padding: 5px; margin-top: 18px; border-radius: 10px; background: #eaf0e1; scroll-margin-top: 85px; }
+  .study-mobile-tabs > button { display: flex; align-items: center; justify-content: center; gap: 7px; flex: 1; min-height: 42px; font-size: 12px; color: #81966b; background: none; border-radius: 7px; }
+  .study-mobile-tabs > button.active { background: white; color: #3f5b2d; box-shadow: 0 2px 5px #31461d0a; font-weight: 600; }
+  .exam-layout.study-layout { display: block; padding-top: 17px; }
+  .study-document { display: none; position: static; }
+  .study-show-pdf .study-document { display: block; }
+  .study-show-pdf .study-exercise { display: none; }
+  .study-complete .study-exercise { display: block; }
+  .study-document-label { display: none; }
+  .mobile-question-pager { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .mobile-question-pager span { flex: 1; text-align: center; font-size: 11px; color: #728463; }
+  .mobile-question-pager button { display: grid; place-items: center; width: 34px; height: 34px; background: #eaf1df; color: #668648; border-radius: 7px; }
+  .mobile-question-pager button:disabled { opacity: .35; }
+  .pdf-scroll { height: 60dvh; min-height: 360px; }
+  .pdf-scroll-empty { height: auto; min-height: 480px; }
+  .pdf-empty { padding-block: 30px; }
+  .pdf-toolbar { padding-inline: 10px; }
+}
+@media (max-width: 600px) {
+  .exam-app .exam-container { width: calc(100% - 28px); }
+  .exam-app .exam-title-row h1 { font-size: 34px; }
+  .study-bar { margin-top: 18px; padding: 14px; gap: 14px 15px; }
+  .study-progress > div:first-child { font-size: 11px; }
+  .study-session-actions { gap: 5px; }
+  .study-time { font-size: 11px; gap: 4px; margin-right: 2px; }
+  .study-time svg { display: none; }
+  .study-session-actions > button { width: 28px; height: 28px; }
+  .study-question-nav { gap: 5px; }
+  .study-question-nav button { height: 36px; font-size: 11px; }
+  .study-layout .question-card { padding: 23px 18px; }
+  .study-layout .question-card h2 { font-size: 27px; }
+  .study-layout .question-prompt { font-size: 16px; }
+  .study-layout .answer-copy { font-size: 13px; }
+  .pdf-heading { padding: 13px; }
+  .pdf-heading h2 { font-size: 13px; }
+  .pdf-heading > div > span { font-size: 9px; }
+  .pdf-empty { padding-inline: 20px; }
+  .pdf-empty h3 { font-size: 24px; }
+  .pdf-sync-bar { font-size: 9px; padding: 12px 10px; }
+  .pdf-sync-bar button { font-size: 9px; gap: 3px; }
+  .pdf-sync-bar > span > svg { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .pdf-loading svg { animation: none; } }

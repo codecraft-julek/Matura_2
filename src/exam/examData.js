@@ -14,7 +14,7 @@ export const officialExam = {
 export const questions = [
   {
     id: 'znaczenie', title: 'Nowe znaczenie', section: 'Język w użyciu', type: 'choice',
-    sourceTask: '5', sourcePage: 7, sourceTopic: 'Neologizm znaczeniowy',
+    sourceTask: '5', sourcePage: 7, sourceTop: 0.58, sourceTopic: 'Neologizm znaczeniowy',
     prompt: 'Co stało się ze znaczeniem słowa „mysz”, kiedy zaczęto nim nazywać urządzenie komputerowe?',
     instruction: 'Wybierz jedną odpowiedź. To nasz przykład do zagadnienia z arkusza.',
     options: [
@@ -29,7 +29,7 @@ export const questions = [
   },
   {
     id: 'synteza', title: 'Notatka w pigułce', section: 'Język w użyciu', type: 'choice',
-    sourceTask: '6', sourcePage: 8, sourceTopic: 'Notatka syntetyzująca',
+    sourceTask: '6', sourcePage: 8, sourceTop: 0.084, sourceTopic: 'Notatka syntetyzująca',
     prompt: 'Dwie autorki inaczej oceniają ten sam problem. Który plan pomoże połączyć ich stanowiska w notatce syntetyzującej?',
     instruction: 'Wybierz plan, który pokazuje relację między tekstami.',
     options: [
@@ -44,7 +44,7 @@ export const questions = [
   },
   {
     id: 'antygona', title: 'Konflikt wartości', section: 'Literatura', type: 'open',
-    sourceTask: '7', sourcePage: 9, sourceTopic: 'Sofokles, „Antygona”',
+    sourceTask: '7', sourcePage: 9, sourceTop: 0.103, sourceTopic: 'Sofokles, „Antygona”',
     prompt: 'Przygotuj krótką notatkę dla aktorki grającej Antygonę. Jakie dwa obowiązki zderzają się w decyzji o pochówku brata i dlaczego ten wybór ma swoją cenę?',
     instruction: 'Napisz 2–3 zdania własnymi słowami. Odwołaj się do znajomości tragedii.',
     hint: 'Pomyśl o prawie ustanowionym przez władcę oraz o obowiązkach rodzinnych i religijnych.',
@@ -53,7 +53,7 @@ export const questions = [
   },
   {
     id: 'stoicyzm', title: 'Spokój stoika', section: 'Literatura', type: 'choice',
-    sourceTask: '9', sourcePage: 11, sourceTopic: 'Stoicyzm w literaturze',
+    sourceTask: '9', sourcePage: 11, sourceTop: 0.257, sourceTopic: 'Stoicyzm w literaturze',
     prompt: 'Ola po słabszym wyniku spokojnie analizuje błędy i planuje powtórkę. Na czym polega stoicki rys tej postawy?',
     instruction: 'Wybierz najlepsze wyjaśnienie tej autorskiej sytuacji.',
     options: [
@@ -68,7 +68,7 @@ export const questions = [
   },
   {
     id: 'rzecki', title: 'Punkt widzenia', section: 'Literatura', type: 'choice',
-    sourceTask: '11', sourcePage: 13, sourceTopic: 'Bolesław Prus, „Lalka” — Ignacy Rzecki',
+    sourceTask: '11', sourcePage: 13, sourceTop: 0.274, sourceTopic: 'Bolesław Prus, „Lalka” — Ignacy Rzecki',
     prompt: 'Co wnosi do „Lalki” oddanie części opowieści Ignacemu Rzeckiemu w jego pamiętniku?',
     instruction: 'Wskaż znaczenie perspektywy tego bohatera dla czytelnika.',
     options: [
@@ -83,7 +83,7 @@ export const questions = [
   },
   {
     id: 'personifikacja', title: 'Język poezji', section: 'Literatura', type: 'choice',
-    sourceTask: '12.2', sourcePage: 15, sourceTopic: 'Środki stylistyczne',
+    sourceTask: '12.2', sourcePage: 15, sourceTop: 0.084, sourceTopic: 'Środki stylistyczne',
     excerpt: 'Wieczór usiadł przy oknie i słuchał deszczu.',
     prompt: 'Jaki środek stylistyczny jest najważniejszy w tym zdaniu?',
     instruction: 'To zdanie napisaliśmy na potrzeby ćwiczenia.',
@@ -99,7 +99,7 @@ export const questions = [
   },
   {
     id: 'argument', title: 'Siła argumentu', section: 'Argumentacja', type: 'boolean',
-    sourceTask: '13.2', sourcePage: 16, sourceTopic: 'Rozpoznawanie typu argumentu',
+    sourceTask: '13.2', sourcePage: 16, sourceTop: 0.084, sourceTopic: 'Rozpoznawanie typu argumentu',
     excerpt: 'Nie słuchaj Kasi w dyskusji o ekologii. Przecież ma fatalny gust muzyczny.',
     prompt: 'Oceń sposób argumentowania w tej wypowiedzi.',
     instruction: 'Zaznacz „Prawda” lub „Fałsz” przy obu stwierdzeniach. Sytuacja jest autorska.',
@@ -112,7 +112,7 @@ export const questions = [
   },
   {
     id: 'propaganda', title: 'Słowa a władza', section: 'Interpretacja', type: 'open',
-    sourceTask: '16', sourcePage: 18, sourceTopic: 'George Orwell, „Rok 1984” — język propagandy',
+    sourceTask: '16', sourcePage: 18, sourceTop: 0.274, sourceTopic: 'George Orwell, „Rok 1984” — język propagandy',
     excerpt: 'Fikcyjny urząd „Bezpieczna Pamięć” usuwa z miejskiej kroniki informacje niewygodne dla władzy.',
     prompt: 'Jak nazwa tego urzędu może wpływać na odbiorców? Wyjaśnij mechanizm w 2–3 zdaniach i powiąż go z propagandą w „Roku 1984”.',
     instruction: 'Urząd z przykładu jest wymyślony. Nie cytuj powieści — wyjaśnij mechanizm własnymi słowami.',

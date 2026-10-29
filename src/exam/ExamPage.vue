@@ -1,8 +1,9 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Bookmark, Check, CheckCheck, ChevronDown, ChevronRight, CircleHelp, Clock3, ExternalLink, FileText, Flag, Lightbulb, ListChecks, Pause, Play, RotateCcw, Save, Sparkles, X } from '@lucide/vue'
+import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Bookmark, Check, CheckCheck, ChevronDown, ChevronRight, CircleHelp, Clock3, ExternalLink, FileText, Lightbulb, ListChecks, Pause, Play, RotateCcw, Save, Sparkles, X } from '@lucide/vue'
 import BrandMark from '../components/BrandMark.vue'
-import { officialExam, questions, sourceUrl } from './examData'
+import LocalPdfViewer from './LocalPdfViewer.vue'
+import { officialExam, questions } from './examData'
 import { STORAGE_KEY, createSession, isAnswered, pointsFor, restoreSession, totalScore } from './session'
 import './exam.css'
 
@@ -15,7 +16,6 @@ const session = reactive(initialSession())
 const currentIndex = computed(() => Math.max(0, questions.findIndex(question => question.id === session.activeId)))
 const current = computed(() => questions[currentIndex.value])
 const answeredCount = computed(() => questions.filter(question => isAnswered(question, session.answers[question.id])).length)
-const checkedCount = computed(() => session.checked.length)
 const isCurrentAnswered = computed(() => isAnswered(current.value, session.answers[current.value.id]))
 const isChecked = computed(() => session.checked.includes(current.value.id))
 const currentPoints = computed(() => pointsFor(current.value, session.answers[current.value.id]))
@@ -24,6 +24,9 @@ const openQuestions = computed(() => questions.filter(question => question.type 
 const selfAssessedCount = computed(() => openQuestions.value.filter(question => session.selfAssessments[question.id]).length)
 const wordCount = computed(() => String(session.answers[current.value.id] || '').trim().split(/\s+/).filter(Boolean).length)
 const hintOpen = ref(false)
+const pdfViewer = ref(null)
+const mobileView = ref('question')
+const pdfLoaded = ref(false)
 const timerRunning = ref(!session.complete)
 const questionHeading = ref(null)
 const summaryHeading = ref(null)
@@ -69,8 +72,17 @@ async function goToQuestion(id) {
   session.complete = false
   hintOpen.value = false
   await nextTick()
-  questionHeading.value?.focus({ preventScroll: true })
-  if (window.innerWidth <= 850) questionHeading.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  if (window.innerWidth > 850 || mobileView.value === 'question') {
+    questionHeading.value?.focus({ preventScroll: true })
+    if (window.innerWidth <= 850) document.querySelector('.study-mobile-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    else if (questionHeading.value?.getBoundingClientRect().top < 100) document.querySelector('.study-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+async function viewSource() {
+  mobileView.value = 'pdf'
+  await nextTick()
+  await pdfViewer.value?.jumpToQuestion()
+  if (window.innerWidth <= 850) document.querySelector('.study-mobile-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 function updateClock() {
   const now = Date.now()
@@ -118,6 +130,7 @@ async function reset() {
   closeConfirm()
   Object.assign(session, createSession())
   hintOpen.value = false
+  mobileView.value = 'question'
   timerRunning.value = true
   lastTick = Date.now()
   elapsedCarryMs = 0
@@ -171,24 +184,25 @@ onBeforeUnmount(() => {
       <div class="exam-title-row"><div><span class="exam-kicker"><span class="status-dot"></span> TRENING AUTORSKI</span><h1>Polski? <span>Ćwiczymy.</span></h1><p>8 krótkich ćwiczeń do zagadnień z arkusza CKE.</p></div><div class="exam-title-actions"><a :href="officialExam.url" target="_blank" rel="noopener noreferrer" class="button button-outline"><FileText :size="17" /> Oficjalny arkusz <ArrowUpRight :size="17" /></a><span class="exam-save-state" :class="{ 'save-unavailable': !storageAvailable }"><Save :size="12" />{{ storageAvailable ? 'Postęp zapisuje się na tym urządzeniu' : 'Zapis niedostępny — pobierz odpowiedzi przed wyjściem' }}</span></div></div>
       <div class="exam-meta"><span>Język polski</span><i></i><span>Poziom podstawowy</span><i></i><span>Maj 2026</span><span class="exam-mode"><Sparkles :size="13" /> Tryb nauki</span></div>
 
-      <div class="exam-layout">
-        <aside class="exam-sidebar" aria-label="Nawigacja i materiały">
-          <section class="session-card"><div class="session-card-title"><h2>Twój progres</h2><span>{{ answeredCount }}<small> / {{ questions.length }}</small></span></div><div class="session-progress" role="progressbar" aria-label="Uzupełnione ćwiczenia" :aria-valuenow="answeredCount" :aria-valuemax="questions.length" aria-valuemin="0"><span :style="{ width: `${answeredCount / questions.length * 100}%` }"></span></div><p class="session-progress-caption">{{ answeredCount === questions.length ? 'Wszystkie odpowiedzi zapisane. Dobra robota!' : 'Po jednym ćwiczeniu. W Twoim tempie.' }}</p>
-            <nav class="question-nav" aria-label="Ćwiczenia"><button v-for="(question, index) in questions" :key="question.id" :class="{ active: session.activeId === question.id && !session.complete, answered: isAnswered(question, session.answers[question.id]), checked: session.checked.includes(question.id) }" :aria-current="session.activeId === question.id && !session.complete ? 'step' : undefined" :aria-label="`Ćwiczenie ${index + 1}: ${question.title}${session.flags.includes(question.id) ? ', oznaczone do powrotu' : ''}`" @click="goToQuestion(question.id)"><span class="question-nav-number"><Check v-if="session.checked.includes(question.id)" :size="13" /><template v-else>{{ String(index + 1).padStart(2, '0') }}</template></span><span class="question-nav-title">{{ question.title }}</span><Bookmark v-if="session.flags.includes(question.id)" :size="13" class="nav-flag" fill="currentColor" /><span v-else-if="session.activeId === question.id && !session.complete" class="nav-active-dot"></span></button></nav>
-            <div class="session-clock"><span><Clock3 :size="15" /> {{ timeLabel }}</span><button :disabled="session.complete" :aria-label="timerRunning ? 'Wstrzymaj licznik czasu' : 'Wznów licznik czasu'" @click="toggleTimer"><Pause v-if="timerRunning && !session.complete" :size="15" /><Play v-else :size="15" /></button></div>
-          </section>
-
-          <section class="source-card"><div class="source-card-icon"><FileText :size="24" /><span>PDF</span></div><span class="source-label">MATERIAŁ ŹRÓDŁOWY</span><h2>Oryginalny arkusz</h2><p>CKE · maj 2026<br />Arkusz 1 — testy</p><a :href="officialExam.url" target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie <ArrowUpRight :size="16" /></a><span class="source-domain"><span></span> cke.gov.pl</span></section>
-          <button class="reset-session" @click="showConfirm('reset')"><RotateCcw :size="13" /> Zacznij od nowa</button>
-        </aside>
-
-        <div class="exam-workspace">
+      <section class="study-bar" aria-label="Postęp i wybór ćwiczenia">
+        <div class="study-progress"><div><strong>Twój progres</strong><span>{{ answeredCount }} / {{ questions.length }}</span></div><div class="session-progress" role="progressbar" aria-label="Uzupełnione ćwiczenia" :aria-valuenow="answeredCount" :aria-valuemax="questions.length" aria-valuemin="0"><span :style="{ width: `${answeredCount / questions.length * 100}%` }"></span></div></div>
+        <nav class="study-question-nav" aria-label="Ćwiczenia"><button v-for="(question, index) in questions" :key="question.id" :class="{ active: session.activeId === question.id && !session.complete, answered: isAnswered(question, session.answers[question.id]) }" :aria-current="session.activeId === question.id && !session.complete ? 'step' : undefined" :aria-label="`Ćwiczenie ${index + 1}: ${question.title}${session.flags.includes(question.id) ? ', oznaczone do powrotu' : ''}`" :title="question.title" @click="goToQuestion(question.id)"><Check v-if="session.checked.includes(question.id)" :size="15" /><template v-else>{{ String(index + 1).padStart(2, '0') }}</template><Bookmark v-if="session.flags.includes(question.id)" :size="8" class="study-nav-flag" fill="currentColor" /></button></nav>
+        <div class="study-session-actions"><span class="study-time"><Clock3 :size="15" />{{ timeLabel }}</span><button :disabled="session.complete" :aria-label="timerRunning ? 'Wstrzymaj licznik czasu' : 'Wznów licznik czasu'" @click="toggleTimer"><Pause v-if="timerRunning && !session.complete" :size="15" /><Play v-else :size="15" /></button><button aria-label="Zacznij od nowa" title="Zacznij od nowa" @click="showConfirm('reset')"><RotateCcw :size="15" /></button></div>
+      </section>
+      <div v-if="!session.complete" class="study-mobile-tabs" role="group" aria-label="Wybierz widok"><button :class="{ active: mobileView === 'question' }" :aria-pressed="mobileView === 'question'" @click="mobileView = 'question'"><ListChecks :size="16" /> Ćwiczenie {{ currentIndex + 1 }}</button><button :class="{ active: mobileView === 'pdf' }" :aria-pressed="mobileView === 'pdf'" @click="viewSource"><FileText :size="16" />{{ pdfLoaded ? `Arkusz · str. ${current.sourcePage}` : 'Dodaj arkusz' }}</button></div>
+      <div class="exam-layout study-layout" :class="{ 'study-show-pdf': mobileView === 'pdf', 'study-complete': session.complete }">
+        <div v-show="!session.complete" class="study-document">
+          <div class="study-document-label"><span>TWÓJ ARKUSZ</span><span>Synchronizacja z ćwiczeniem</span></div>
+          <div class="mobile-question-pager"><button :disabled="currentIndex === 0" aria-label="Poprzednie ćwiczenie przy PDF" @click="goToQuestion(questions[currentIndex - 1].id)"><ArrowLeft :size="16" /></button><span>Ćwiczenie {{ currentIndex + 1 }} z {{ questions.length }} · {{ current.title }}</span><button :disabled="currentIndex === questions.length - 1" aria-label="Następne ćwiczenie przy PDF" @click="goToQuestion(questions[currentIndex + 1].id)"><ArrowRight :size="16" /></button></div>
+          <LocalPdfViewer ref="pdfViewer" :question="current" :active="!session.complete && mobileView === 'pdf'" @loaded="pdfLoaded = $event" />
+        </div>
+        <div class="exam-workspace study-exercise">
           <template v-if="!session.complete">
             <div class="workspace-topline"><span>ĆWICZENIE {{ String(currentIndex + 1).padStart(2, '0') }} <span>/ {{ String(questions.length).padStart(2, '0') }}</span></span><button class="flag-button" :class="{ flagged: session.flags.includes(current.id) }" :aria-pressed="session.flags.includes(current.id)" @click="toggleFlag"><Bookmark :size="15" :fill="session.flags.includes(current.id) ? 'currentColor' : 'none'" />{{ session.flags.includes(current.id) ? 'Wrócę do tego' : 'Oznacz do powrotu' }}</button></div>
             <section id="exam-question" class="question-card" aria-labelledby="question-heading">
               <div class="question-meta"><span class="question-category">{{ current.section }}</span><span class="question-type">{{ current.type === 'open' ? 'Odpowiedź otwarta · samoocena' : current.type === 'boolean' ? 'Prawda / fałsz · 2 pkt' : 'Jedna odpowiedź · 1 pkt' }}</span></div>
               <h2 id="question-heading" ref="questionHeading" tabindex="-1">{{ current.title }}<span>.</span></h2>
-              <a :href="sourceUrl(current)" target="_blank" rel="noopener noreferrer" class="question-source"><BookOpen :size="14" /> Powiązany temat: zad. {{ current.sourceTask }} · str. {{ current.sourcePage }} w PDF <ArrowUpRight :size="13" /></a>
+              <button class="question-source" @click="viewSource"><BookOpen :size="14" /> Pokaż powiązane zad. {{ current.sourceTask }} · str. {{ current.sourcePage }} w PDF <ArrowUpRight :size="13" /></button>
               <blockquote v-if="current.excerpt" class="authored-excerpt"><span>NASZ PRZYKŁAD</span>{{ current.excerpt }}</blockquote>
               <p class="question-prompt">{{ current.prompt }}</p><p class="question-instruction">{{ current.instruction }}</p>
 
@@ -212,7 +226,7 @@ onBeforeUnmount(() => {
 
           <section v-else class="results-card" aria-labelledby="results-heading"><span class="results-icon"><CheckCheck :size="30" /></span><span class="exam-kicker">TWÓJ MAŁY KROK ZROBIONY</span><h2 id="results-heading" ref="summaryHeading" tabindex="-1">O jeden trening dalej<span>.</span></h2><p class="results-description">Sprawdź, co już umiesz i do czego warto wrócić.</p><div class="results-metrics"><div><span>Pytania zamknięte</span><strong>{{ score.earned }}<small> / {{ score.max }} pkt</small></strong></div><div><span>Uzupełnione</span><strong>{{ answeredCount }}<small> / {{ questions.length }}</small></strong></div><div><span>Czas nauki</span><strong>{{ timeLabel }}</strong></div></div><p class="score-explainer">Wynik autorskiego treningu, nie egzaminu CKE. Dwie odpowiedzi otwarte ocenisz samodzielnie ({{ selfAssessedCount }}/2 ocenione).</p><div class="results-list"><button v-for="(question, index) in questions" :key="question.id" @click="goToQuestion(question.id)"><span class="result-number">{{ String(index + 1).padStart(2, '0') }}</span><strong>{{ question.title }}</strong><span class="result-label" :class="{ 'result-success': question.type !== 'open' && pointsFor(question, session.answers[question.id]).earned === pointsFor(question, session.answers[question.id]).max }">{{ !isAnswered(question, session.answers[question.id]) ? 'Pominięte' : question.type === 'open' ? session.selfAssessments[question.id] === 'understood' ? 'Ogarnięte · samoocena' : session.selfAssessments[question.id] === 'review' ? 'Do powtórki' : 'Do samooceny' : `${pointsFor(question, session.answers[question.id]).earned}/${pointsFor(question, session.answers[question.id]).max} pkt` }}</span><ArrowUpRight :size="15" /></button></div><div class="results-actions"><button class="button button-dark" @click="exportAnswers"><ArrowDownToLine :size="17" /> Pobierz odpowiedzi</button><button class="button button-outline" @click="showConfirm('reset')"><RotateCcw :size="16" /> Nowy trening</button></div></section>
 
-          <details class="exam-rights"><summary><CircleHelp :size="14" /> Źródła i prawa autorskie <ChevronDown :size="14" /></summary><div><p>Ćwiczenia, przykłady i objaśnienia w tym treningu są autorskie. Nie są zadaniami ani oficjalnym kluczem oceniania CKE. Odnośniki wskazują wyłącznie powiązane zagadnienia w arkuszu.</p><p><strong>Materiał źródłowy:</strong> Centralna Komisja Egzaminacyjna, język polski, poziom podstawowy, arkusz 1 (testy), {{ officialExam.date }}. Kod pliku: {{ officialExam.code }}.</p><p>Oryginalne teksty, ilustracje i polecenia są dostępne w PDF-ie na serwerze CKE. Nie publikujemy ich kopii. Autorzy i źródła wykorzystanych w arkuszu materiałów są wskazani w oryginalnym dokumencie. Ogarnij Maturę jest niezależnym projektem, niepowiązanym z CKE.</p><div class="rights-links"><a :href="officialExam.url" target="_blank" rel="noopener noreferrer">Arkusz źródłowy <ExternalLink :size="12" /></a><a :href="officialExam.catalogUrl" target="_blank" rel="noopener noreferrer">Katalog CKE <ExternalLink :size="12" /></a><a :href="officialExam.legalUrl" target="_blank" rel="noopener noreferrer">Ustawa o prawie autorskim <ExternalLink :size="12" /></a></div></div></details>
+          <details class="exam-rights"><summary><CircleHelp :size="14" /> Źródła i prawa autorskie <ChevronDown :size="14" /></summary><div><p>Ćwiczenia, przykłady i objaśnienia w tym treningu są autorskie. Nie są zadaniami ani oficjalnym kluczem oceniania CKE. Synchronizacja wskazuje wyłącznie powiązane zagadnienia w arkuszu.</p><p><strong>Materiał źródłowy:</strong> Centralna Komisja Egzaminacyjna, język polski, poziom podstawowy, arkusz 1 (testy), {{ officialExam.date }}. Kod pliku: {{ officialExam.code }}.</p><p>PDF wybierasz z własnego urządzenia. Podgląd działa lokalnie w przeglądarce, bez przesyłania pliku na serwer. Po odświeżeniu wybierz plik ponownie; odpowiedzi pozostają zapisane. Nie publikujemy kopii arkusza. Autorzy i źródła jego materiałów są wskazani w oryginalnym dokumencie. Ogarnij Maturę jest niezależnym projektem, niepowiązanym z CKE.</p><div class="rights-links"><a :href="officialExam.url" target="_blank" rel="noopener noreferrer">Arkusz źródłowy <ExternalLink :size="12" /></a><a :href="officialExam.catalogUrl" target="_blank" rel="noopener noreferrer">Katalog CKE <ExternalLink :size="12" /></a><a :href="officialExam.legalUrl" target="_blank" rel="noopener noreferrer">Ustawa o prawie autorskim <ExternalLink :size="12" /></a></div></div></details>
         </div>
       </div>
     </main>
