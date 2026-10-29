@@ -72,7 +72,8 @@ async function handle(event: StripeEvent, secretKey: string) {
     case "checkout.session.async_payment_succeeded": {
       if (o.mode === "subscription" && o.subscription) {
         await syncSubscription(secretKey, String(o.subscription), o.metadata?.user_id);
-      } else if (o.mode === "payment" && o.payment_status === "paid" && o.metadata?.plan === "matura") {
+      } else if (o.mode === "payment" && ["paid", "no_payment_required"].includes(o.payment_status) && o.metadata?.plan === "matura") {
+        // no_payment_required: a 100% promotion code (e.g. for testers), nothing was charged.
         await grantPass(await userIdFor(o.metadata?.user_id, o.customer), String(o.customer));
       }
       return;
