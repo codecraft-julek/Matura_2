@@ -1,0 +1,325 @@
+{
+  "id": "2023-maj-angielski-pp",
+  "subject": "english",
+  "level": "basic",
+  "year": 2023,
+  "session": "main",
+  "title": "Język angielski, poziom podstawowy, maj 2023",
+  "durationMinutes": 120,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-2305.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-2305-zasady.pdf",
+    "audio": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-2305.mp3",
+    "transcript": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-2305-transkrypcja.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Zaznacz, które zdania są prawdziwe (T), a które fałszywe (F)",
+      "hint": "Usłyszysz nagranie dwa razy. Przy każdym zdaniu z arkusza zaznacz T, jeśli zgadza się z nagraniem, albo F, jeśli nie.",
+      "page": 4,
+      "options": "TF",
+      "items": {
+        "1.1": "T",
+        "1.2": "F",
+        "1.3": "F",
+        "1.4": "F",
+        "1.5": "T"
+      }
+    },
+    {
+      "no": 2,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Dopasuj zdania (A–F) do wypowiedzi",
+      "hint": "Usłyszysz kilka krótkich wypowiedzi (każdą dwa razy). Do każdej dobierz pasujące zdanie z arkusza. Jedno zdanie zostaje.",
+      "page": 4,
+      "options": "ABCDEF",
+      "items": {
+        "2.1": "E",
+        "2.2": "C",
+        "2.3": "F",
+        "2.4": "D",
+        "2.5": "A"
+      }
+    },
+    {
+      "no": 3,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 5,
+      "options": "ABC",
+      "items": {
+        "3.1": "C",
+        "3.2": "A",
+        "3.3": "C",
+        "3.4": "C",
+        "3.5": "B"
+      }
+    },
+    {
+      "no": 4,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dobierz nagłówki (A–F) do części tekstu",
+      "hint": "Przeczytaj tekst w arkuszu i do każdej jego części dobierz nagłówek. Dwa nagłówki zostają.",
+      "page": 6,
+      "options": "ABCDEF",
+      "items": {
+        "4.1": "F",
+        "4.2": "E",
+        "4.3": "A",
+        "4.4": "C"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dopasuj zdania do tekstów (A–D)",
+      "hint": "Przeczytaj krótkie teksty A–D i do każdego zdania z arkusza dobierz tekst, którego ono dotyczy.",
+      "page": 8,
+      "options": "ABCD",
+      "items": {
+        "5.1": "B",
+        "5.2": "A",
+        "5.3": "D"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "open",
+      "label": "Uzupełnij luki po angielsku",
+      "hint": "Uzupełnij luki po angielsku informacjami z tekstu. Odpowiedź musi pasować do zdania i być zgodna z tekstem.",
+      "page": 8,
+      "items": {
+        "5.4": {
+          "answer": "an art gallery",
+          "note": "Na lotnisku w Stambule jest galeria sztuki (tekst C).",
+          "accepted": [
+            "art gallery",
+            "a art gallery",
+            "the art gallery",
+            "gallery",
+            "picture gallery",
+            "museum",
+            "art museum",
+            "exhibition",
+            "art exhibition",
+            "galery",
+            "art galery",
+            "an art galery"
+          ]
+        },
+        "5.5": {
+          "answer": "the airport / Istanbul airport",
+          "note": "Materiały do obrazów zebrano na lotnisku (tekst C).",
+          "accepted": [
+            "airport",
+            "an airport",
+            "a airport",
+            "the istanbul airport",
+            "an istanbul airport",
+            "the airport itself",
+            "this airport",
+            "that airport",
+            "the same airport",
+            "airport in istanbul",
+            "terminal",
+            "airport terminal",
+            "airport area",
+            "istambul airport",
+            "instanbul airport",
+            "airport bins",
+            "airport rubbish bins",
+            "airport garbage bins",
+            "airport's bins",
+            "airport trash cans",
+            "the airport's garbage",
+            "the airport's rubbish"
+          ]
+        },
+        "5.6": {
+          "answer": "a Sunday",
+          "note": "Najtaniej kupisz bilet, rezerwując w niedzielę (tekst A).",
+          "accepted": [
+            "sunday",
+            "sundays",
+            "any sunday",
+            "on a sunday"
+          ]
+        },
+        "5.7": {
+          "answer": "an airplane mechanic",
+          "note": "Bohater był mechanikiem samolotowym w czasie II wojny światowej (tekst D).",
+          "accepted": [
+            "airplane mechanic",
+            "plane mechanic",
+            "aircraft mechanic",
+            "a plane mechanic",
+            "an aircraft mechanic",
+            "aeroplane mechanic",
+            "an aeroplane mechanic"
+          ]
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z tekstem",
+      "hint": "Przeczytaj tekst i przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z jego treścią.",
+      "page": 12,
+      "options": "ABCD",
+      "items": {
+        "6.1": "B",
+        "6.2": "C",
+        "6.3": "C",
+        "6.4": "B",
+        "6.5": "D"
+      }
+    },
+    {
+      "no": 7,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wstaw brakujące zdania (A–E) w luki",
+      "hint": "Z tekstu usunięto fragmenty. Do każdej luki wpisz literę fragmentu, który pasuje logicznie. Jeden zostaje.",
+      "page": 14,
+      "options": "ABCDE",
+      "items": {
+        "7.1": "D",
+        "7.2": "A",
+        "7.3": "B",
+        "7.4": "E"
+      }
+    },
+    {
+      "no": 8,
+      "section": "language",
+      "kind": "choice",
+      "label": "Uzupełnij minidialogi",
+      "hint": "Do każdego krótkiego dialogu z arkusza wybierz wypowiedź, która pasuje w lukę.",
+      "page": 15,
+      "options": "ABC",
+      "items": {
+        "8.1": "C",
+        "8.2": "A",
+        "8.3": "C"
+      }
+    },
+    {
+      "no": 9,
+      "section": "language",
+      "kind": "choice",
+      "label": "Wybierz wyraz pasujący do obu zdań",
+      "hint": "Wybierz jeden wyraz, który poprawnie uzupełnia oba zdania z arkusza.",
+      "page": 16,
+      "options": "ABC",
+      "items": {
+        "9.1": "C",
+        "9.2": "B",
+        "9.3": "A",
+        "9.4": "C"
+      }
+    },
+    {
+      "no": 10,
+      "section": "language",
+      "kind": "open",
+      "label": "Wpisz jeden wyraz w każdą lukę",
+      "hint": "Wpisz w każdą lukę jeden wyraz. Liczy się pełna poprawność gramatyczna i ortograficzna.",
+      "page": 17,
+      "items": {
+        "10.1": {
+          "answer": "to",
+          "accepted": []
+        },
+        "10.2": {
+          "answer": "who / that",
+          "accepted": []
+        },
+        "10.3": {
+          "answer": "in",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "language",
+      "kind": "open",
+      "label": "Przetłumacz fragmenty z nawiasów na angielski",
+      "hint": "Przetłumacz na angielski fragmenty w nawiasach tak, żeby zdania były poprawne i logiczne.",
+      "page": 18,
+      "items": {
+        "11.1": {
+          "answer": "May/Can/Could/Might I use",
+          "accepted": [
+            "may i use",
+            "can i use",
+            "could i use",
+            "might i use"
+          ]
+        },
+        "11.2": {
+          "answer": "have never seen",
+          "accepted": [
+            "have never seen",
+            "never have seen",
+            "haven't ever seen",
+            "never saw"
+          ]
+        },
+        "11.3": {
+          "answer": "so much noise",
+          "accepted": [
+            "so much noise",
+            "that much noise",
+            "this much noise"
+          ]
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "writing",
+      "kind": "writing",
+      "label": "E-mail (80–130 wyrazów)",
+      "hint": "Napisz wypowiedź według polecenia z arkusza. Pilnuj liczby wyrazów i zrealizuj wszystkie podpunkty.",
+      "page": 19,
+      "points": 12,
+      "meta": {
+        "words": [
+          80,
+          130
+        ],
+        "criteria": [
+          {
+            "name": "Treść",
+            "points": 5
+          },
+          {
+            "name": "Spójność i logika wypowiedzi",
+            "points": 2
+          },
+          {
+            "name": "Zakres środków językowych",
+            "points": 3
+          },
+          {
+            "name": "Poprawność środków językowych",
+            "points": 2
+          }
+        ]
+      }
+    }
+  ]
+}

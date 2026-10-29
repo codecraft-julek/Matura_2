@@ -1,0 +1,54 @@
+{
+  "id": "2024-maj-polski-pr",
+  "subject": "polish",
+  "level": "extended",
+  "year": 2024,
+  "session": "main",
+  "title": "Język polski, poziom rozszerzony, maj 2024",
+  "durationMinutes": 210,
+  "maxPoints": 35,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_polski/poziom_rozszerzony/MPOP-R0-100-A-2405-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_polski/poziom_rozszerzony/MPOP-R0-100-2405-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypracowanie (min. 500 wyrazów)",
+      "hint": "Wybierz jeden z dwóch tematów (str. 5): 1) synkretyzm i jego rola w utworach, 2) jak kreowana jest przestrzeń i jaka jest funkcja tej kreacji (z opowiadaniem ze „Sklepów cynamonowych”). Lista lektur obowiązkowych jest na str. 3–4.",
+      "page": 5,
+      "points": 35,
+      "meta": {
+        "words": [
+          500,
+          0
+        ],
+        "criteria": [
+          {
+            "name": "Spełnienie formalnych warunków polecenia",
+            "points": 1
+          },
+          {
+            "name": "Kompetencje literackie i kulturowe",
+            "points": 16
+          },
+          {
+            "name": "Kompozycja wypowiedzi",
+            "points": 7
+          },
+          {
+            "name": "Język wypowiedzi",
+            "points": 11
+          }
+        ],
+        "rules": [
+          "Odwołaj się do lektury obowiązkowej z listy w arkuszu, innych utworów literackich i wybranego kontekstu. Najwyżej oceniane są trzy utwory wykorzystane w pełni funkcjonalnie.",
+          "Omów nie tylko problematykę utworów, ale też sposób przedstawienia problemu (np. konwencję, narrację, kompozycję).",
+          "Przywołane utwory muszą pochodzić z co najmniej dwóch różnych epok literackich. Bez tego wypracowanie dostaje 0 pkt."
+        ]
+      }
+    }
+  ]
+}

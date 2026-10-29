@@ -1,0 +1,425 @@
+{
+  "id": "2025-maj-angielski-pr",
+  "subject": "english",
+  "level": "extended",
+  "year": 2025,
+  "session": "main",
+  "title": "Język angielski, poziom rozszerzony, maj 2025",
+  "durationMinutes": 150,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-A-2505-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MJAP-R0-100-200-660-2505-zasady.pdf",
+    "audio": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Jezyk_angielski/poziom_rozszerzony/MJAP-R-100-2505_MJAU-R-100-2505.mp3",
+    "transcript": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-200-660-2505-transkrypcja.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 3,
+      "options": "ABC",
+      "items": {
+        "1.1": "C",
+        "1.2": "A"
+      }
+    },
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 3,
+      "options": "ABCD",
+      "items": {
+        "1.3": "C",
+        "1.4": "D",
+        "1.5": "C",
+        "1.6": "B"
+      }
+    },
+    {
+      "no": 2,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Dopasuj zdania (A–F) do wypowiedzi",
+      "hint": "Usłyszysz kilka krótkich wypowiedzi (każdą dwa razy). Do każdej dobierz pasujące zdanie z arkusza. Jedno zdanie zostaje.",
+      "page": 4,
+      "options": "ABCDEF",
+      "items": {
+        "2.1": "D",
+        "2.2": "A",
+        "2.3": "B",
+        "2.4": "F",
+        "2.5": "C"
+      }
+    },
+    {
+      "no": 3,
+      "section": "listening",
+      "kind": "open",
+      "label": "Uzupełnij notatkę po angielsku",
+      "hint": "Na podstawie nagrania wpisz po angielsku brakujące informacje. Wystarczy kilka słów, ale muszą pasować do zdania.",
+      "page": 5,
+      "items": {
+        "3.1": {
+          "answer": "in silent mode",
+          "note": "Telefon trzeba wyciszyć.",
+          "accepted": [
+            "silent mode",
+            "put into silent mode",
+            "put in silent mode",
+            "put on silent mode",
+            "put to silent mode",
+            "put on silent",
+            "put on mute",
+            "on silent",
+            "on silent mode"
+          ]
+        },
+        "3.2": {
+          "answer": "the (library) security gate",
+          "note": "Trzeba przejść przez bramkę/kontrolę bezpieczeństwa.",
+          "accepted": [
+            "the security gate",
+            "the library security gate",
+            "a security gate",
+            "security gate",
+            "security gate of the library",
+            "library's security gate",
+            "security entrance",
+            "security checkpoint",
+            "security",
+            "security check",
+            "security section"
+          ]
+        },
+        "3.3": {
+          "answer": "a week",
+          "note": "Tydzień wcześniej.",
+          "accepted": [
+            "a week",
+            "the week",
+            "7 days",
+            "seven days",
+            "week",
+            "one week",
+            "week ahead",
+            "week in advance",
+            "a week in advance",
+            "a week ahead"
+          ]
+        },
+        "3.4": {
+          "answer": "pay (for the use of a locker)",
+          "note": "Za szafkę trzeba zapłacić.",
+          "accepted": [
+            "pay",
+            "pay for the use of a locker",
+            "pay to use a locker",
+            "pay for it",
+            "pay for them",
+            "pay a fee",
+            "pay the fee",
+            "pay a locker fee",
+            "pay the locker fee",
+            "pay a fee for using lockers",
+            "pay a charge for using lockers",
+            "pay charges",
+            "pay for using it",
+            "pay for using them",
+            "pay the fee for using it",
+            "pay for access to the lockers",
+            "pay money",
+            "pay some money",
+            "pay any money",
+            "pay for a locker",
+            "pay for the lockers",
+            "pay for locker fee"
+          ]
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dopasuj części tekstu (A–D) do pytań",
+      "hint": "Przeczytaj tekst podzielony na części A–D i do każdego pytania dobierz część, w której jest odpowiedź.",
+      "page": 6,
+      "options": "ABCD",
+      "items": {
+        "4.1": "C",
+        "4.2": "B",
+        "4.3": "D",
+        "4.4": "A",
+        "4.5": "C"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wstaw brakujące fragmenty (A–F) w luki",
+      "hint": "Z tekstu usunięto fragmenty. Do każdej luki wpisz literę fragmentu, który pasuje logicznie. Jeden zostaje.",
+      "page": 8,
+      "options": "ABCDEF",
+      "items": {
+        "5.1": "B",
+        "5.2": "F",
+        "5.3": "A",
+        "5.4": "E",
+        "5.5": "C"
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z tekstem",
+      "hint": "Przeczytaj tekst i przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z jego treścią.",
+      "page": 10,
+      "options": "ABCD",
+      "items": {
+        "6.1": "C",
+        "6.2": "A",
+        "6.3": "A",
+        "6.4": "B"
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "open",
+      "label": "Uzupełnij luki po angielsku (maks. 6 wyrazów)",
+      "hint": "Uzupełnij luki po angielsku informacjami z tekstu. Odpowiedź musi pasować do zdania i być zgodna z tekstem.",
+      "page": 10,
+      "items": {
+        "6.5": {
+          "answer": "aggressive dogs",
+          "accepted": [
+            "aggression in dogs",
+            "dog aggression",
+            "dog's aggression",
+            "dogs' aggression",
+            "dogs full of aggression",
+            "dogs which are aggressive",
+            "dogs that have problems with aggression",
+            "dogs that have problem with aggression",
+            "dogs' aggressive behaviour",
+            "dogs with aggressive behaviour",
+            "aggressive dog behaviours",
+            "dogs manifesting aggressive behaviour",
+            "aggressive behaviour in dogs"
+          ]
+        },
+        "6.6": {
+          "answer": "advance to the next level faster",
+          "note": "Szybsze przejście na kolejny poziom kursu.",
+          "accepted": [
+            "advance to the next level sooner",
+            "progress to the next one sooner",
+            "attend the following one sooner",
+            "move to the next level sooner",
+            "get to the next level sooner",
+            "reach the next level sooner",
+            "start the next level sooner",
+            "do the next level sooner",
+            "advance for the next level faster",
+            "advance on the next level faster",
+            "jump to the next level sooner",
+            "skip to the next level sooner",
+            "move on faster",
+            "move further faster",
+            "go forward faster",
+            "advance faster",
+            "progress faster",
+            "advance through the course sooner"
+          ]
+        },
+        "6.7": {
+          "answer": "pass the (knowledge) test",
+          "accepted": [
+            "pass the test",
+            "pass the knowledge test",
+            "manage to pass the test",
+            "manage to pass the tests",
+            "manage to pass the exam",
+            "manage to pass the exams",
+            "succeed in the test",
+            "pass the test given",
+            "come through the test successfully",
+            "pass test"
+          ]
+        },
+        "6.8": {
+          "answer": "cost more / not be discounted",
+          "accepted": [
+            "cost more",
+            "not be discounted",
+            "cost you more",
+            "cost you more in total",
+            "be more expensive",
+            "be more expensive for you",
+            "cost $1,000 more",
+            "cost you $1,000 more",
+            "be $1,000 more expensive",
+            "cost much more",
+            "be much pricier",
+            "cost the standard amount",
+            "cost the standard amount of money",
+            "cost more than the pre-paid one",
+            "cost more than pre-paid one"
+          ]
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "language",
+      "kind": "choice",
+      "label": "Wybierz poprawne uzupełnienie tekstu",
+      "hint": "Przy każdej luce wybierz opcję, która daje logiczny i poprawny gramatycznie tekst.",
+      "page": 14,
+      "options": "ABCD",
+      "items": {
+        "7.1": "C",
+        "7.2": "B",
+        "7.3": "C",
+        "7.4": "D",
+        "7.5": "A",
+        "7.6": "B"
+      }
+    },
+    {
+      "no": 8,
+      "section": "language",
+      "kind": "open",
+      "label": "Przekształć wyrazy z ramki",
+      "hint": "Wpisz w lukę podany wyraz w odpowiedniej formie (np. jako inną część mowy). Liczy się pełna poprawność.",
+      "page": 15,
+      "items": {
+        "8.1": {
+          "answer": "concerning",
+          "accepted": []
+        },
+        "8.2": {
+          "answer": "clearly",
+          "accepted": []
+        },
+        "8.3": {
+          "answer": "importance",
+          "accepted": []
+        },
+        "8.4": {
+          "answer": "harmful",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "language",
+      "kind": "open",
+      "label": "Uzupełnij zdania wyrazami z nawiasu (maks. 5 wyrazów)",
+      "hint": "Uzupełnij zdanie wyrazami z nawiasu w podanej kolejności, dodając brakujące słowa i zmieniając formę, jeśli trzeba.",
+      "page": 16,
+      "items": {
+        "9.1": {
+          "answer": "weren't informed of/about",
+          "accepted": [
+            "weren't informed of",
+            "weren't informed about",
+            "were not informed of",
+            "were not informed about",
+            "were not given information about",
+            "weren't informed before"
+          ]
+        },
+        "9.2": {
+          "answer": "is likely to continue",
+          "accepted": [
+            "is likely to continue",
+            "is very likely to continue",
+            "is most likely to continue",
+            "is likely going to continue",
+            "is likely to be continuing",
+            "will be likely to continue",
+            "might be likely to continue",
+            "may be likely to continue"
+          ]
+        },
+        "9.3": {
+          "answer": "talking about Peter's idea",
+          "accepted": [
+            "talking about peter's idea",
+            "talking, peter, about this idea",
+            "talking peter through this idea",
+            "talking over peter's idea",
+            "talking peter into this idea",
+            "overtalking peter's idea",
+            "talking peter's idea out",
+            "talking with peter about ideology"
+          ]
+        },
+        "9.4": {
+          "answer": "would deal with the problem",
+          "accepted": [
+            "would deal with the problem",
+            "would deal with this problem",
+            "would deal with that problem",
+            "would deal with every problem",
+            "would deal with each problem",
+            "would deal with any problem",
+            "would deal with the problems",
+            "would deal with these problems",
+            "would deal with those problems",
+            "would deal with such problems",
+            "would deal with any problems",
+            "would deal with some problems",
+            "would be dealing with problems",
+            "could deal with the problem",
+            "might deal with the problem"
+          ]
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypowiedź pisemna na jeden z dwóch tematów (200–250 wyrazów)",
+      "hint": "Napisz wypowiedź według polecenia z arkusza. Pilnuj liczby wyrazów i zrealizuj wszystkie podpunkty.",
+      "page": 17,
+      "points": 13,
+      "meta": {
+        "words": [
+          200,
+          250
+        ],
+        "criteria": [
+          {
+            "name": "Zgodność z poleceniem",
+            "points": 5
+          },
+          {
+            "name": "Spójność i logika wypowiedzi",
+            "points": 2
+          },
+          {
+            "name": "Zakres środków językowych",
+            "points": 3
+          },
+          {
+            "name": "Poprawność środków językowych",
+            "points": 3
+          }
+        ]
+      }
+    }
+  ]
+}

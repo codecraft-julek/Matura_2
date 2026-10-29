@@ -1,4 +1,4 @@
-export const EXAM_ROUTE = '#/test/polski-2026'
+export const EXAM_ROUTE = '/trening/polski-2026'
 
 export const officialExam = {
   title: 'Język polski — poziom podstawowy',

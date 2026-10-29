@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Source of public/og.png (link previews on Messenger, Discord, Instagram…).
+       Regenerate on macOS: node scripts/make-og-image.mjs -->
+  <rect width="1200" height="630" fill="#fafbf7"/>
+  <g opacity="1">
+    <rect x="820" y="70" width="430" height="560" rx="46" fill="#e9efde" transform="rotate(8 1035 350)"/>
+    <ellipse cx="930" cy="330" rx="330" ry="210" fill="none" stroke="#cbd5c0" stroke-width="2" stroke-dasharray="7 9" transform="rotate(-20 930 330)"/>
+  </g>
+
+  <!-- Exam card mock-up -->
+  <g transform="rotate(-3 960 330)">
+    <rect x="800" y="168" width="330" height="300" rx="26" fill="#ffffff" stroke="#d1dbca" stroke-width="2"/>
+    <rect x="800" y="168" width="330" height="54" rx="26" fill="#edf2e8"/>
+    <rect x="800" y="196" width="330" height="26" fill="#edf2e8"/>
+    <circle cx="830" cy="195" r="5" fill="#b5c5aa"/><circle cx="848" cy="195" r="5" fill="none" stroke="#aebda6" stroke-width="2"/><circle cx="866" cy="195" r="5" fill="none" stroke="#aebda6" stroke-width="2"/>
+    <text x="830" y="262" font-family="Avenir Next, Helvetica Neue, Arial" font-size="15" font-weight="600" fill="#667758" letter-spacing="1.5">JĘZYK POLSKI · CKE</text>
+    <text x="830" y="300" font-family="Avenir Next, Helvetica Neue, Arial" font-size="25" font-weight="700" fill="#1c3c32">Zadanie 1.</text>
+    <rect x="830" y="322" width="270" height="44" rx="10" fill="#f8f9f5" stroke="#e6eadd" stroke-width="2"/>
+    <circle cx="854" cy="344" r="11" fill="none" stroke="#d4ddc9" stroke-width="2"/>
+    <text x="849" y="350" font-family="Avenir Next, Helvetica Neue, Arial" font-size="13" font-weight="700" fill="#8b997c">A</text>
+    <rect x="876" y="338" width="150" height="10" rx="5" fill="#edf0e9"/>
+    <rect x="830" y="378" width="270" height="44" rx="10" fill="#eff7e8" stroke="#c5dbac" stroke-width="2"/>
+    <circle cx="854" cy="400" r="11" fill="#1c3c32"/>
+    <text x="849" y="406" font-family="Avenir Next, Helvetica Neue, Arial" font-size="13" font-weight="700" fill="#ffffff">B</text>
+    <rect x="876" y="394" width="130" height="10" rx="5" fill="#d6e6c4"/>
+    <path d="M1070 392l8 8 15-16" fill="none" stroke="#6b8a4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- Sticker -->
+  <g transform="rotate(4 790 500)">
+    <rect x="700" y="470" width="250" height="74" rx="16" fill="#edfad6" stroke="#d1dfb8" stroke-width="2"/>
+    <circle cx="738" cy="507" r="20" fill="#d8efb6"/>
+    <path d="M728 507l7 7 13-14" fill="none" stroke="#55783a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="770" y="501" font-family="Avenir Next, Helvetica Neue, Arial" font-size="19" font-weight="700" fill="#1c3c32">1/1 pkt</text>
+    <text x="770" y="525" font-family="Avenir Next, Helvetica Neue, Arial" font-size="15" fill="#6a7e54">od razu wiesz</text>
+  </g>
+  <!-- AI note -->
+  <g transform="rotate(7 1040 140)">
+    <rect x="925" y="100" width="236" height="70" rx="14" fill="#e6dcf4" stroke="#dbcee8" stroke-width="2"/>
+    <text x="947" y="130" font-family="Avenir Next, Helvetica Neue, Arial" font-size="15" fill="#625079">feedback AI</text>
+    <text x="947" y="154" font-family="Avenir Next, Helvetica Neue, Arial" font-size="18" font-weight="700" fill="#625079">kryterium po kryterium</text>
+  </g>
+
+  <!-- Brand -->
+  <rect x="72" y="64" width="64" height="68" rx="18" fill="#1c3c32"/>
+  <path transform="translate(76 70) scale(0.875)" d="M32 7 37.5 23.5 54 18 43.5 32 56 45 38 41 32 58 26.5 41 10 47 20.5 32 8 19 26 23.5Z" fill="#d7f781"/>
+  <text x="152" y="94" font-family="Avenir Next, Helvetica Neue, Arial" font-size="29" font-weight="800" fill="#1c3c32" letter-spacing="-1">ogarnij</text>
+  <text x="152" y="125" font-family="Avenir Next, Helvetica Neue, Arial" font-size="29" font-weight="800" fill="#1c3c32" letter-spacing="-1">maturę.</text>
+
+  <!-- Headline -->
+  <text x="72" y="268" font-family="Avenir Next, Helvetica Neue, Arial" font-size="84" font-weight="700" fill="#1c3c32" letter-spacing="-3">Matura?</text>
+  <text x="72" y="362" font-family="Avenir Next, Helvetica Neue, Arial" font-size="84" font-weight="700" fill="#1c3c32" letter-spacing="-3">Spokojnie,</text>
+  <rect x="62" y="395" width="446" height="78" rx="12" fill="#d7f781" transform="rotate(-1.6 278 434)"/>
+  <text x="72" y="456" font-family="Avenir Next, Helvetica Neue, Arial" font-size="84" font-weight="700" fill="#1c3c32" letter-spacing="-3">ogarniesz.</text>
+
+  <text x="74" y="532" font-family="Avenir Next, Helvetica Neue, Arial" font-size="27" font-weight="500" fill="#5e6f5f">Arkusze CKE · feedback AI · notatki · fiszki</text>
+  <rect x="72" y="556" width="300" height="44" rx="22" fill="#1c3c32"/>
+  <text x="96" y="585" font-family="Avenir Next, Helvetica Neue, Arial" font-size="19" font-weight="700" fill="#d7f781">Darmowe konto na start</text>
+</svg>

@@ -1,98 +1,120 @@
-# Ogarnij Maturę — nowy design
+# Ogarnij Maturę 2.0
 
-Responsywna aplikacja **Vue 3 + Vite**, przygotowana na podstawie https://matura-theta.vercel.app/. Projekt skupia się na wyglądzie i interakcjach w przeglądarce. Nie wymaga backendu, bazy danych, kluczy API ani konta.
+Aplikacja do nauki do matury (polski i angielski): arkusze CKE ze sprawdzaniem, feedback AI do wypracowań, tutor AI, notatki AI i fiszki z powtórkami. Wersja 2.0 to nowy interfejs w **Vue 3 + Vite** na **tym samym backendzie Supabase** co poprzednia aplikacja Next.js (`~/Documents/Web-Projects/Matura`). Zakres i decyzje migracji: [`docs/MIGRATION-PLAN.md`](docs/MIGRATION-PLAN.md), konwencje kodu: [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md).
 
-Design: jasne tło, ciemna zieleń, limonkowy akcent, większe litery i krótkie opisy. Dodatkowe informacje są dostępne w rozwijanym FAQ i oknie demo.
+**Stos:** Vue 3.5 · vue-router 4 (history) · Pinia · supabase-js · zod 4 · Lucide · pdf.js · Vite 8 · Supabase (Postgres + RLS + Edge Functions + pg_cron) · Vercel
+
+## Jak to działa
+
+- **Vercel hostuje tylko statyczną stronę** (`dist/`). Bez zmiennych środowiskowych i sekretów.
+- **Cała logika danych jest w Supabase:** RLS decyduje, co widzi uczeń; ocenianie arkuszy w funkcjach Postgresa (klucze odpowiedzi są niedostępne przez API); AI i płatności w Edge Functions (`supabase/functions/*`). Przeglądarka rozmawia z Supabase bezpośrednio, z tokenem ucznia.
+- **Sesja** jest w `localStorage` (supabase-js, PKCE). Guard tras w `src/router/index.js` czeka na odtworzenie sesji, przekierowuje niezalogowanych na `/logowanie?next=…`, a nowe konta na `/witaj`.
+- **Linki z maili** (reset hasła, potwierdzenie) trafiają na `/auth/potwierdz` (`src/pages/auth/AuthConfirm.vue`).
+- **SEO:** po `vite build` skrypt `scripts/prerender-public.mjs` zapisuje statyczny HTML (tytuł, opis, canonical, OG, JSON-LD, treść) dla `/`, `/arkusze-maturalne`, każdego arkusza, `/kontakt`, `/rejestracja`, a także `sitemap.xml` i `robots.txt`. Pozostałe adresy dostają `spa.html` (rewrite w `vercel.json`).
+- Publiczne wartości (URL Supabase, klucz publishable, klucz Turnstile) są w `src/config/site.ts`.
 
 ## Uruchomienie
 
-Wymagania: Node.js **22.18+ lub 24.12+** oraz npm. Projekt został przygotowany na Node.js 24.13.1.
+Wymagania: Node.js **22.18+ lub 24.12+**.
 
-Otwórz PowerShell w katalogu projektu i uruchom:
-
-```powershell
-cd "C:\Users\flamm\Desktop\test Julek"
+```bash
 npm install
-npm run dev
-```
-
-Otwórz adres pokazany w terminalu — domyślnie **http://localhost:5173**. Jeśli port jest zajęty, Vite wybierze kolejny i poda aktualny adres. Zatrzymanie serwera: `Ctrl+C`.
-
-Gdyby PowerShell blokował plik `npm.ps1`, użyj `npm.cmd install` i `npm.cmd run dev`.
-
-## Wersja produkcyjna
-
-```powershell
-npm run build
+npm run dev        # http://localhost:5173 — korzysta z PRAWDZIWEGO projektu Supabase
+npm run build      # vite build + prerender stron publicznych → dist/
 npm run preview
 ```
 
-Build zapisuje gotową statyczną stronę w `dist/`. Podgląd domyślnie działa pod **http://localhost:4173**. Na hosting statyczny wgrywasz zawartość `dist/`. Nie otwieraj pliku `index.html` dwuklikiem — korzystaj z serwera Vite lub hostingu.
+Żeby logowanie i linki z maili działały lokalnie, w Supabase → Authentication → URL Configuration musi być `http://localhost:5173/**` (patrz „Przełączenie” niżej).
 
-## Co działa
-
-- Responsywny layout na telefonie, tablecie i komputerze.
-- Mobilne menu, nawigacja do sekcji i rozwijane FAQ.
-- Przełączanie narzędzi w podglądzie na pierwszym ekranie.
-- Okno demo z przykładowym zadaniem z polskiego lub angielskiego, sprawdzeniem odpowiedzi i wyjaśnieniem.
-- Przykładowy feedback do wypracowania.
-- Odwracanie i przewijanie fiszek.
-- Podgląd planów z cennika bez realizacji zakupu.
-- Obsługa klawiatury, zamykanie okna klawiszem Escape i ograniczenie animacji zgodnie z ustawieniami systemu.
-
-Demo używa wyłącznie gotowych danych. Nie wysyła tekstów do AI, nie rejestruje kont i nie pobiera płatności. Okno demo na stronie głównej resetuje się po odświeżeniu; osobna strona treningu zapisuje postęp lokalnie. Zadania demonstracyjne są autorskie i nie stanowią oficjalnego arkusza CKE. Opis produktu i ceny pochodzą ze strony źródłowej, odczytanej 29.10.2026.
-
-Fonty Manrope i DM Sans oraz ikony Lucide są dostarczane lokalnie z zależnościami npm. Strona nie wymaga zewnętrznych usług do wyświetlania interfejsu.
-
-## Najważniejsze pliki
+## Struktura
 
 ```text
 src/
-  App.vue                        # sekcje strony i nawigacja
-  style.css                      # kolory, typografia, layout i responsywność
-  theme.css                      # większa typografia i zwarty układ
-  data.js                        # cennik, FAQ, zadania i fiszki
-  main.js                        # punkt wejścia i fonty
-  components/
-    BrandMark.vue                # znak marki
-    ProductPreview.vue           # interaktywny podgląd na pierwszym ekranie
-    DemoDialog.vue               # okno demo z zadaniami i fiszkami
+  main.js, Root.vue          # start aplikacji, wybór layoutu wg route.meta.layout
+  router/index.js            # wszystkie trasy (polskie slugi jak w starej apce) + guard
+  stores/                    # auth (sesja, profil), billing (plan, limity AI), ui (toasty, confirm, tutor)
+  lib/supabase.js            # jedyny klient Supabase
+  lib/edge.js, lib/ai.js     # wywołania Edge Functions (JSON i SSE)
+  lib/api/*.js               # funkcje danych per moduł (dawne queries.ts + Server Actions)
+  lib/**/*.ts                # kod przeniesiony 1:1 (srs, format tutora, ekstrakcja plików, walidacja, typy bazy)
+  config/                    # routes.ts, site.ts, plans.ts
+  ui/                        # kit komponentów (pola, dialog, toasty, skeleton, oceny AI, limity, captcha)
+  layouts/                   # PublicLayout, AuthLayout, AppLayout (z dolnym paskiem na telefonie)
+  pages/                     # public, auth, app, exams, essays, tutor, notes, flashcards, premium
+  components/<moduł>/        # komponenty funkcji
+  styles/app.css             # tokeny i klasy aplikacji (na bazie style.css / theme.css z landingu)
+  exam/                      # publiczne demo „Polski 2026” (/trening/polski-2026)
+content/exams/*.json         # struktura arkuszy + klucze (synchronizowane do bazy)
+supabase/                    # migracje, Edge Functions, szablony maili, config.toml — źródło prawdy backendu
+scripts/                     # sync-exams.mts, prerender-public.mjs, public-exams-plugin.mjs, make-og-image.mjs
+tests/                       # testy jednostkowe + integration/ (przeciw prawdziwej bazie)
 ```
 
-Kolory zmienisz w zmiennych `:root` na początku `src/style.css`. Większa typografia i zwarty układ są w `src/theme.css`. Treści i ceny edytujesz w `src/data.js` i `src/App.vue`.
+Kolory i typografia: tokeny w `:root` w `src/style.css` i `src/styles/app.css`. Role kolorów: AI = fiolet, fiszki = piasek, arkusze = zieleń; poprawne / do porównania / błędne = `--ok` / `--warn` / `--error`.
 
-## Trening z arkuszem CKE 2026
+## Moduły
 
-Adres: `/#/test/polski-2026` (lokalnie np. `http://localhost:5173/#/test/polski-2026`). Na stronie głównej prowadzą do niego link „Arkusz 2026” i przyciski rozpoczęcia nauki.
+| Obszar | Trasy | Najważniejsze pliki |
+|---|---|---|
+| Konto | `/rejestracja`, `/logowanie`, `/nie-pamietam-hasla`, `/nowe-haslo`, `/auth/potwierdz`, `/witaj`, `/konto` | `pages/auth/*`, `pages/app/{Welcome,Account}.vue`, `lib/api/account.js` (eksport danych JSON, usunięcie konta) |
+| Pulpit | `/panel` | `pages/app/Dashboard.vue`, `lib/api/dashboard.js` |
+| Arkusze | `/arkusze`, `/arkusze/:id`, `/cwiczenia`, `/egzamin`, `/wynik/:attemptId` | `pages/exams/*`, `components/exams/*` (TaskInput, ExamPdfViewer, QuestionMap, SelfCheck, AiGradeOpenAnswers), `lib/api/exams.js` |
+| Wypracowania | `/wypracowania`, `/nowe`, `/:id` | `pages/essays/*`, `components/essays/*` (AnalyzingPanel, FeedbackView, ExamWritingFeedback) |
+| Tutor | `/tutor`, `/tutor/:chatId`, panel „Zapytaj tutora” | `pages/tutor/*`, `components/tutor/*` (AskTutor dokowany ≥1024px, TutorChat) |
+| Notatki | `/notatki`, `/nowa`, `/:id` | `pages/notes/*`, `components/notes/*` (8 typów bloków, quiz, zapis jako talia) |
+| Fiszki | `/fiszki`, `/nowa`, `/:deckId`, `/:deckId/nauka` | `pages/flashcards/*`, `components/flashcards/*`, `lib/flashcards/srs.ts` |
+| Premium | `/premium`, `/premium/platnosc?plan=`, `/premium/gotowe` | `pages/premium/*`, `components/premium/*` |
+| Publiczne | `/`, `/arkusze-maturalne(/:id)`, `/kontakt`, `/regulamin`, `/polityka-prywatnosci`, `/do-zobaczenia`, `/trening/polski-2026` | `pages/public/*`, `src/exam/*` |
 
-- 8 autorskich ćwiczeń do zagadnień z arkusza: 5 pytań jednokrotnego wyboru, 1 zestaw P/F oraz 2 odpowiedzi otwarte.
-- 7 punktów za pytania zamknięte; odpowiedzi otwarte wymagają samooceny i nie zwiększają automatycznej punktacji.
-- Wyjaśnienia, podpowiedzi, zaznaczanie pytań do powrotu, licznik czasu i podsumowanie.
-- Odpowiedzi są zapisywane w `localStorage`, wyłącznie w bieżącej przeglądarce. „Zacznij od nowa” wymaga potwierdzenia i resetuje tylko ten trening.
-- Można pobrać własne odpowiedzi jako plik TXT. Aplikacja nie przesyła odpowiedzi do serwera ani AI.
-- Nawigacja oparta na fragmencie adresu działa także na hostingu statycznym, bez reguł przekierowania ścieżek.
+Szczegóły działania backendu (AI, limity, Stripe, ScrapeCreators, pg_cron, zapytania SQL do monitorowania) są bez zmian — opisuje je README starej aplikacji; dotyczą tych samych funkcji w `supabase/`.
 
-Widok na komputerze: arkusz po lewej, autorskie ćwiczenie po prawej. Na telefonie przełączniki „Ćwiczenie” i „Arkusz” zachowują wczytany dokument. Zmiana ćwiczenia automatycznie przewija PDF do strony i wysokości powiązanego zadania (`sourcePage` i `sourceTop`). Można również ręcznie wybrać stronę, powiększyć dokument oraz wrócić do powiązanego zadania. Wybór innego arkusza lub uszkodzonego pliku wyświetla komunikat.
+## Supabase
 
-Podgląd: `src/exam/LocalPdfViewer.vue`, `src/exam/PdfSheet.vue`, `src/exam/pdf-viewer.css`.
+Projekt **Matura**, ref `mwtqlqbzsxeakqrjyxwg` (Frankfurt). Zawsze podawaj `--project-ref mwtqlqbzsxeakqrjyxwg`.
 
-Pliki: `src/exam/ExamPage.vue` (widok), `src/exam/exam.css` (layout), `src/exam/examData.js` (autorskie pytania i źródła), `src/exam/session.js` (punktacja i zapis), `src/Root.vue` (wybór strony).
+```bash
+npx supabase@latest db push --password "$SUPABASE_DB_PASSWORD"                      # nowa migracja
+npx supabase@latest functions deploy <nazwa> --project-ref mwtqlqbzsxeakqrjyxwg --use-api --no-verify-jwt
+npx supabase@latest secrets set --project-ref mwtqlqbzsxeakqrjyxwg NAZWA=wartość
+npm run db:types                                                                     # typy po migracji
+npm run content:check / content:sync                                                 # arkusze z content/exams
+```
 
-### Źródła i sposób korzystania z materiałów
+Hasło do bazy: `.env.local` (wzór w `.env.example`, ignorowany przez git).
 
-Oficjalny materiał: [CKE — język polski, poziom podstawowy, 4 maja 2026, arkusz 1](https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-A-2605-arkusz.pdf). [Katalog materiałów CKE](https://egzaminy.gov.pl/index.php/egzamin-maturalny/materialy-egzaminacyjne?exam_session=2026-maj&formula=F2023).
+## Testy
 
-Link do oficjalnego PDF-u prowadzi do CKE. Uczeń zapisuje plik na urządzeniu, a następnie wybiera go przyciskiem „Wybierz pobrany PDF” lub przeciąga do podglądu. PDF.js wyświetla wyłącznie lokalne dane pliku, z lokalnie dostarczanym workerem. Dokument nie jest przesyłany na serwer ani zapisywany w localStorage. Po odświeżeniu należy wybrać plik ponownie; zapisane odpowiedzi pozostają. Wyświetlanie nie osadza serwera CKE i nie obchodzi jego `X-Frame-Options: SAMEORIGIN`. Nie kopiujemy PDF-u, jego tekstów, ilustracji, układu graficznego ani oficjalnych poleceń do aplikacji czy paczki publikacyjnej. Materiały odczytane lokalnie do weryfikacji są w ignorowanym katalogu `tmp/`.
-
-Zadania i objaśnienia aplikacji zostały napisane samodzielnie. Numery stron i zadań w odnośnikach oznaczają powiązany temat, nie tożsamość z pytaniem CKE. Przykłady „myszy”, sytuacji Oli, zdania o wieczorze, wypowiedzi o Kasi oraz urzędu „Bezpieczna Pamięć” są własne. Punktacja jest punktacją treningu, nie przeliczeniem wyniku matury. Nie używamy logo CKE i nie sugerujemy afiliacji.
-
-Przy wyborze sposobu prezentacji uwzględniono rozróżnienie między ideą a sposobem jej wyrażenia, opracowaniem i inspiracją oraz prawami do materiałów osób trzecich. Podstawa do dalszej weryfikacji: [ustawa o prawie autorskim i prawach pokrewnych, art. 1 ust. 2¹, art. 2, art. 4](https://eli.gov.pl/eli/DU/2025/24/ogl). Sama publiczna dostępność PDF-u nie została potraktowana jako licencja na ponowną publikację jego zawartości.
-
-### Sprawdzenie
-
-```powershell
-npm test
+```bash
+npm test                  # testy jednostkowe (walidacja, trasy, SRS, format tutora, treść arkuszy, _shared, demo)
+npm run test:integration  # RLS, ukryte klucze, ocenianie — przeciw PRAWDZIWEJ bazie (zakłada i usuwa konta testowe)
+npm run content:check
 npm run build
 ```
 
-Testy obejmują punktację, niekompletne odpowiedzi P/F, brak automatycznej oceny tekstów otwartych i odtwarzanie poprawnych oraz uszkodzonych zapisów.
+CI (`.github/workflows/ci.yml`): testy, `content:check`, build.
+
+## Przełączenie z poprzedniej aplikacji (ręcznie, poza kodem)
+
+1. **Supabase → Authentication → URL Configuration:** dodaj `http://localhost:5173/**` i adres nowej aplikacji na Vercelu do Redirect URLs; po przepięciu domeny Site URL = domena. Bez tego reset hasła i potwierdzenia nie zadziałają.
+2. **Sekret Edge Functions `SITE_URL`** = adres nowej aplikacji (powroty ze Stripe na `/premium/gotowe` i `/premium/platnosc`).
+3. Szablony maili korzystają z `{{ .SiteURL }}/auth/potwierdz…`, więc po zmianie Site URL działają bez edycji.
+4. **Vercel:** nowy projekt z tego repo (bez zmiennych), włącz Web Analytics; po weryfikacji przepnij domenę. Po wdrożeniu sprawdź, że `/kontakt` i `/arkusze-maturalne/<id>` serwują prerenderowany HTML (źródło strony), a np. `/panel` — `spa.html`.
+5. Po przełączeniu zostaw starą aplikację jako archiwum (notka w jej README) i zgłoś `sitemap.xml` w Google Search Console.
+
+Lista „przed startem” (domena, SMTP, Turnstile, Stripe live, przegląd prawny) jest w README starej aplikacji i nadal obowiązuje.
+
+## Lista kontrolna po wdrożeniu
+
+- [ ] Rejestracja → `/witaj` → `/panel` wita po imieniu; `/panel` bez logowania → logowanie → z powrotem na `/panel`
+- [ ] Złe hasło: „Nieprawidłowy e-mail lub hasło.”; reset hasła z maila otwiera `/nowe-haslo`
+- [ ] `/konto`: zmiana profilu i hasła, „Pobierz moje dane” (JSON), „Usuń konto” z `USUŃ` → `/do-zobaczenia`
+- [ ] Arkusz w trybie ćwiczeń: wczytanie PDF-u CKE obok, „Sprawdź to zadanie”, odświeżenie zachowuje odpowiedzi, „Zapytaj tutora”
+- [ ] Egzamin na czas: odliczanie, oddanie, wynik z samooceną i „Oceń z AI” (polski)
+- [ ] Wypracowanie: podgląd kryteriów na żywo, wynik, 👍/👎
+- [ ] Notatka ze zdjęcia i z PDF-u, druk, „Zapisz jako talię”; talia z pliku / YouTube / importu, sesja nauki (Spacja, 1–4)
+- [ ] Premium: płatność testową kartą `4242 4242 4242 4242`, `/premium/gotowe`, portal Stripe z `/konto`
+- [ ] Telefon (także przeglądarka w TikToku/Instagramie): dolny pasek, tutor pełnoekranowy, brak przewijania w bok
+
+## Demo „Polski 2026”
+
+Publiczny trening bez konta pod `/trening/polski-2026` (stary adres `/#/test/polski-2026` przekierowuje). 8 autorskich ćwiczeń do zagadnień z arkusza CKE z 4 maja 2026, PDF wczytywany lokalnie z urządzenia ucznia (pdf.js), postęp w `localStorage`. Ćwiczenia i objaśnienia są autorskie; nie kopiujemy treści arkusza, a odnośniki do stron i zadań wskazują tylko powiązany temat. Pliki: `src/exam/*`, testy: `tests/exam-session.test.js`.

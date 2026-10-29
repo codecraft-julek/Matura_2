@@ -1,50 +1,33 @@
-export const plans = [
-  {
-    name: 'Dobry start',
-    label: 'DARMOWY',
-    price: '0',
-    period: 'na zawsze',
-    description: 'Wchodzisz i robisz swoje. Bez zobowiązań.',
-    features: ['Arkusze i fiszki bez limitu', '2 oceny wypracowania / tydzień', 'Tutor: 10 wiadomości / dzień'],
-    button: 'Zaczynam za darmo',
-  },
-  {
-    name: 'Więcej możliwości',
-    label: 'PREMIUM',
-    price: '24,99',
-    period: '/ miesiąc',
-    description: 'Więcej wsparcia, kiedy łapiesz rytm.',
-    features: ['Wszystko z planu darmowego', '2 oceny dziennie + notatki AI', 'Tutor: 50 wiadomości / dzień'],
-    button: 'Wybieram Premium',
-    featured: true,
-  },
-  {
-    name: 'Do samej matury',
-    label: 'PAKIET DO MATURY',
-    price: '129',
-    period: 'jednorazowo',
-    description: 'Jeden zakup. Dostęp do 31 maja 2027.',
-    features: ['Wszystkie korzyści Premium', 'Dostęp do 31 maja 2027', 'Jedna płatność, bez subskrypcji'],
-    button: 'Wybieram pakiet',
-  },
-]
+// Static copy of the homepage and its demo dialog (also read by scripts/prerender-public.mjs,
+// so only relative imports here).
+import { PLANS } from './config/plans.ts'
+
+const price = id => PLANS.find(p => p.id === id)?.price
 
 export const faqs = [
   {
     question: 'Czy mogę zacząć za darmo?',
-    answer: 'Tak. Arkusze i fiszki są darmowe bez limitu. Interaktywne demo wypróbujesz od razu, bez konta i karty płatniczej.',
+    answer: 'Tak. Arkusze CKE i fiszki są darmowe bez limitu, a narzędzia AI mają darmowy limit. Konto zakładasz bez karty płatniczej, a przykładowy trening wypróbujesz nawet bez konta.',
   },
   {
-    question: 'Jakie przedmioty mogę ogarniać?',
-    answer: 'Język polski i angielski. W demo czekają przykładowe zadania z obu przedmiotów oraz fiszki z lektur.',
+    question: 'Jakie przedmioty są dostępne?',
+    answer: 'Polski i angielski, poziom podstawowy i rozszerzony: majowe arkusze 2023–2026. Matematyka jest w planach.',
+  },
+  {
+    question: 'Jak sprawdzacie otwarte odpowiedzi?',
+    answer: 'Z angielskiego porównujemy je z listą odpowiedzi z klucza CKE. Z polskiego możesz poprosić AI o ocenę według zasad oceniania. Jeśli napiszesz coś poprawnego, czego nie ma w kluczu, pokażemy Ci go i to Ty decydujesz, czy zaliczasz. CKE też akceptuje każdą odpowiedź poprawną merytorycznie.',
   },
   {
     question: 'Jak wygląda feedback do wypracowania?',
-    answer: 'Dostajesz wskazówki dotyczące tezy, argumentów i języka. W demo zobaczysz gotowy przykład oceny fragmentu wypracowania.',
+    answer: 'Dostajesz uwagi kryterium po kryterium według zasad CKE: co już działa, co poprawić i od czego zacząć. Z polskiego i z angielskiego. Wynik jest orientacyjny, ale pokazuje, nad czym pracować.',
   },
   {
-    question: 'Czy to oficjalna strona CKE?',
-    answer: 'Nie. Ogarnij Maturę to niezależny projekt. Korzysta z materiałów CKE, ale nie jest powiązany z Komisją.',
+    question: 'Ile to kosztuje?',
+    answer: `Arkusze CKE i fiszki są darmowe bez limitu, a narzędzia AI mają darmowy limit. Premium za ${price('monthly')} miesięcznie albo Pakiet do matury za ${price('matura')} jednorazowo daje więcej sprawdzeń wypracowań, notatek i rozmów z tutorem.`,
+  },
+  {
+    question: 'Czy to oficjalne narzędzie CKE?',
+    answer: 'Nie. Korzystamy z oficjalnych, publicznych arkuszy i zasad oceniania CKE, ale nie jesteśmy z CKE powiązani i nie wystawiamy oficjalnych ocen. Nasz wynik jest orientacyjny.',
   },
 ]
 

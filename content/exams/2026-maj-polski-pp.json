@@ -1,0 +1,342 @@
+{
+  "id": "2026-maj-polski-pp",
+  "subject": "polish",
+  "level": "basic",
+  "year": 2026,
+  "session": "main",
+  "title": "Język polski, poziom podstawowy, maj 2026",
+  "durationMinutes": 240,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-A-2605-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-2605-zasady.pdf",
+    "sheet2": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_polski/poziom_podstawowy/MPOP-P2-100-A-2605-arkusz.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Za każdy błędny wiersz tracisz punkt.",
+      "page": 6,
+      "options": "PF",
+      "items": {
+        "1": {
+          "answer": "PPP",
+          "rows": [
+            "1.",
+            "2.",
+            "3."
+          ],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 2,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 6,
+      "items": {
+        "2": {
+          "answer": "Wyjaśnij na podstawie tekstu 2 (np. tradycyjne nośniki nie upowszechniały wiedzy tak łatwo jak nowoczesne urządzenia).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 3,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 7,
+      "items": {
+        "3": {
+          "answer": "Rozstrzygnij i uzasadnij w odniesieniu do obu tekstów (np. nie – jeden autor pisze głównie o zaletach papieru, drugi o jego wadach).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 7,
+      "items": {
+        "4": {
+          "answer": "Rozstrzygnij i uzasadnij w odniesieniu do obu tekstów (np. nie – w tekście 1 sentencja dotyczy utrwalania wydarzeń pismem, a w tekście 2 ma inny sens).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 5,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 7,
+      "items": {
+        "5": {
+          "answer": "Uzasadnij, że chodzi o nowe znaczenie słowa „chmura”, nadane na potrzeby technologii.",
+          "accepted": [],
+          "note": "Samo podanie nowego znaczenia nie wystarczy."
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "test",
+      "kind": "open",
+      "label": "Notatka syntetyzująca (60–90 wyrazów)",
+      "hint": "Napisz notatkę syntetyzującą (60–90 wyrazów), która zestawia stanowiska obu autorów wobec problemu z polecenia.",
+      "page": 8,
+      "items": {
+        "6": {
+          "answer": "Notatka (60–90 wyrazów) przedstawia stanowisko każdego autora wobec problemu z polecenia, oparte na kluczowych informacjach, i zestawia je ze sobą. 3 pkt za treść + 1 pkt za poprawność językową, ortograficzną i interpunkcyjną. Przekroczenie limitu wyrazów obniża ocenę.",
+          "accepted": [],
+          "points": 4
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 9,
+      "items": {
+        "7": {
+          "answer": "Wyjaśnij sens dwóch elementów graficznych w kontekście „Antygony” (np. waga – równorzędne racje Antygony i Kreona).",
+          "accepted": [],
+          "note": "1 pkt za jeden element.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 10,
+      "items": {
+        "8": {
+          "answer": "Rozstrzygnij i uzasadnij (np. Roland traktuje Boga jak władcę – oddaje mu rękawicę na znak hołdu).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "test",
+      "kind": "choice",
+      "label": "Zadanie zamknięte",
+      "hint": "Wybierz jedną odpowiedź spośród podanych w arkuszu.",
+      "page": 11,
+      "options": "ABCD",
+      "items": {
+        "9": "B"
+      }
+    },
+    {
+      "no": 10,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 12,
+      "items": {
+        "10": {
+          "answer": "Rozstrzygnij i uzasadnij w odniesieniu do bajki ORAZ muralu (np. ta sama wymowa: prawo silniejszego obowiązuje także wśród ludzi).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 13,
+      "items": {
+        "11.1": {
+          "answer": "Rzecki (Ignacy Rzecki).",
+          "accepted": [
+            "Rzecki",
+            "Ignacy Rzecki",
+            "I. Rzecki"
+          ],
+          "note": "Pomyłka w imieniu lub nazwisku = 0 pkt."
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 13,
+      "items": {
+        "11.2": {
+          "answer": "Wykaż przywiązanie Rzeckiego do ludzi na przykładzie relacji z innym bohaterem „Lalki” (np. bardzo przeżył śmierć przyjaciela Katza i często go wspominał).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 14,
+      "items": {
+        "12.1": {
+          "answer": "Rozstrzygnij i uzasadnij (np. postawa dekadencka – pesymistyczne spojrzenie na własne życie).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 15,
+      "items": {
+        "12.2": {
+          "answer": "Uzupełnij oba wiersze tabeli nazwą środka wyrazu (zależnie od przykładu np. przenośnia/metafora, ożywienie/animizacja, uosobienie/personifikacja).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 13,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 15,
+      "items": {
+        "13.1": {
+          "answer": "Wyjaśnij (np. przekonanie, że klasa robotnicza ma przewodzić odnowie społeczeństwa).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 13,
+      "section": "test",
+      "kind": "choice",
+      "label": "Zadanie zamknięte",
+      "hint": "Wybierz jedną odpowiedź spośród podanych w arkuszu.",
+      "page": 16,
+      "options": "ABCD",
+      "items": {
+        "13.2": "D"
+      }
+    },
+    {
+      "no": 14,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 16,
+      "items": {
+        "14": {
+          "answer": "Wyjaśnij (np. osoba dominująca narzuca innym swój sposób widzenia świata i postępowania).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 17,
+      "items": {
+        "15.1": {
+          "answer": "Wyjaśnij (np. łagier doprowadził Jewrieja do złamania zasad moralnych obowiązujących poza obozem).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 18,
+      "items": {
+        "15.2": {
+          "answer": "Wyjaśnij (np. powiedzenie „rozumiem” oznaczałoby akceptację zasad łagru także na wolności).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 16,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 18,
+      "items": {
+        "16": {
+          "answer": "Rozstrzygnij i uzasadnij (np. nie – Ministerstwo Prawdy fałszuje przeszłość: Winston poprawia dawne wydania gazet).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 17,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypracowanie (Arkusz 2, min. 300 wyrazów)",
+      "hint": "Wybierz jeden temat z Arkusza 2 i napisz wypracowanie (min. 300 wyrazów), odwołując się do lektury obowiązkowej.",
+      "page": 5,
+      "sheet": 2,
+      "points": 35,
+      "meta": {
+        "words": [
+          300,
+          0
+        ],
+        "criteria": [
+          {
+            "name": "Spełnienie formalnych warunków polecenia",
+            "points": 1
+          },
+          {
+            "name": "Kompetencje literackie i kulturowe",
+            "points": 16
+          },
+          {
+            "name": "Kompozycja wypowiedzi",
+            "points": 7
+          },
+          {
+            "name": "Język wypowiedzi",
+            "points": 11
+          }
+        ]
+      }
+    }
+  ]
+}

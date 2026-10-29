@@ -1,0 +1,454 @@
+{
+  "id": "2025-maj-angielski-pp",
+  "subject": "english",
+  "level": "basic",
+  "year": 2025,
+  "session": "main",
+  "title": "Język angielski, poziom podstawowy, maj 2025",
+  "durationMinutes": 120,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-A-2505-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MJAP-P0-100-200-660-2505_MJAU-P0-100-2505-zasady.pdf",
+    "audio": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Jezyk_angielski/poziom_podstawowy/MJAP-P-100-2505_MJAU-P-100-2505.mp3",
+    "transcript": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-200-660-2505_MJAU-P0-100-2505-transkrypcja.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Dopasuj zdania (A–F) do wypowiedzi",
+      "hint": "Usłyszysz kilka krótkich wypowiedzi (każdą dwa razy). Do każdej dobierz pasujące zdanie z arkusza. Jedno zdanie zostaje.",
+      "page": 3,
+      "options": "ABCDEF",
+      "items": {
+        "1.1": "B",
+        "1.2": "D",
+        "1.3": "A",
+        "1.4": "F",
+        "1.5": "C"
+      }
+    },
+    {
+      "no": 2,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 4,
+      "options": "ABC",
+      "items": {
+        "2.1": "B",
+        "2.2": "C",
+        "2.3": "A",
+        "2.4": "A",
+        "2.5": "B",
+        "2.6": "A"
+      }
+    },
+    {
+      "no": 3,
+      "section": "listening",
+      "kind": "open",
+      "label": "Uzupełnij notatkę po angielsku",
+      "hint": "Na podstawie nagrania wpisz po angielsku brakujące informacje. Wystarczy kilka słów, ale muszą pasować do zdania.",
+      "page": 5,
+      "items": {
+        "3.1": {
+          "answer": "three weeks",
+          "note": "Pobyt trwa trzy tygodnie.",
+          "accepted": [
+            "3 weeks",
+            "21 days",
+            "three week",
+            "3 week",
+            "for three weeks",
+            "for 3 weeks",
+            "a minimum of three weeks",
+            "minimum three weeks",
+            "three-week stay",
+            "three weeks' stay",
+            "three week stay",
+            "three weeks stay"
+          ]
+        },
+        "3.2": {
+          "answer": "healthy meals",
+          "note": "Uczestnik uczy przygotowywania zdrowych posiłków.",
+          "accepted": [
+            "meals which are healthy",
+            "meals good for your health",
+            "nutritious meals",
+            "fit meals",
+            "healthy meal",
+            "a healthy meal",
+            "the healthy meal",
+            "a healthy meals",
+            "healthy food",
+            "healthy dishes",
+            "dishes based on healthy food"
+          ]
+        },
+        "3.3": {
+          "answer": "with a host family",
+          "note": "Uczestnik mieszka u rodziny goszczącej.",
+          "accepted": [
+            "host family",
+            "family",
+            "families",
+            "at host family",
+            "host family's house",
+            "in the host family home",
+            "in host family",
+            "hosting family",
+            "with a local family",
+            "with local families in their houses",
+            "local family house",
+            "in local family's home",
+            "in the houses of local families",
+            "local household",
+            "living with host families",
+            "staying with host families",
+            "live with host family",
+            "the home of a host family",
+            "host family house",
+            "host family home",
+            "with a local host",
+            "in local people's houses",
+            "in local people's homes",
+            "hoast family",
+            "houst family"
+          ]
+        },
+        "3.4": {
+          "answer": "public transport",
+          "note": "Na zajęcia dojeżdża się transportem publicznym.",
+          "accepted": [
+            "by public transport",
+            "using public transport",
+            "going by public transport",
+            "riding public transport",
+            "travelling in public transport",
+            "take public transport",
+            "public transportation",
+            "safe and reliable public transport",
+            "public transit",
+            "with public transport",
+            "on public transport",
+            "via public transport",
+            "in public transport",
+            "by public transport at 8.30"
+          ]
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dobierz nagłówki (A–F) do części tekstu",
+      "hint": "Przeczytaj tekst w arkuszu i do każdej jego części dobierz nagłówek. Dwa nagłówki zostają.",
+      "page": 6,
+      "options": "ABCDEF",
+      "items": {
+        "4.1": "A",
+        "4.2": "F",
+        "4.3": "B",
+        "4.4": "E"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dopasuj zdania do tekstów (A–D)",
+      "hint": "Przeczytaj krótkie teksty A–D i do każdego zdania z arkusza dobierz tekst, którego ono dotyczy.",
+      "page": 8,
+      "options": "ABCD",
+      "items": {
+        "5.1": "B",
+        "5.2": "D",
+        "5.3": "C"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "open",
+      "label": "Uzupełnij luki po angielsku",
+      "hint": "Uzupełnij luki po angielsku informacjami z tekstu. Odpowiedź musi pasować do zdania i być zgodna z tekstem.",
+      "page": 8,
+      "items": {
+        "5.4": {
+          "answer": "how old / what age",
+          "note": "Wiek członka klubu nie ma znaczenia (tekst D).",
+          "accepted": [
+            "how old",
+            "what age",
+            "how old or young",
+            "the age",
+            "the age that",
+            "how young",
+            "at what age",
+            "in what age",
+            "in what age group",
+            "in which age group",
+            "what age group",
+            "how old you are",
+            "what age you are"
+          ]
+        },
+        "5.5": {
+          "answer": "a Wimbledon (tennis) player",
+          "note": "Metody wypracowano z pomocą gracza z Wimbledonu (tekst D). Jeden gracz, nie kilku.",
+          "accepted": [
+            "a wimbledon player",
+            "a wimbledon tennis player",
+            "wimbledon player",
+            "wimbledon tennis player",
+            "a wimbledon competitor",
+            "a wimbledon participant",
+            "a professional wimbledon player",
+            "the professional wimbledon player",
+            "professional wimbledon player",
+            "the player from wimbledon",
+            "a wimbledon player's advice",
+            "wimbledon player advice",
+            "wimbledon player advise",
+            "advice from wimbledon player",
+            "advice from a wimbledon player"
+          ]
+        },
+        "5.6": {
+          "answer": "white clothes",
+          "note": "Na Wimbledonie gracze muszą być ubrani na biało (tekst A).",
+          "accepted": [
+            "white",
+            "white set of clothes",
+            "clothes in white color",
+            "clothes in white colour",
+            "clothes in white",
+            "white colour",
+            "white color",
+            "white clothing",
+            "whites",
+            "all white",
+            "white sporting clothes",
+            "white sports clothes",
+            "white clothes and shoes",
+            "plain white clothes"
+          ]
+        },
+        "5.7": {
+          "answer": "sell (tennis) balls",
+          "note": "Na Wimbledonie sprzedaje się piłki (tekst C).",
+          "accepted": [
+            "sell balls",
+            "sell tennis balls",
+            "are selling balls",
+            "'ve been selling balls",
+            "have been selling balls",
+            "offer to sell balls",
+            "sell cans of balls",
+            "sell can of balls",
+            "sell balls which were",
+            "sell balls that are",
+            "sell as souvenir balls",
+            "sell the balls they",
+            "sell the balls players",
+            "sell yellow balls",
+            "let you buy balls"
+          ]
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z tekstem",
+      "hint": "Przeczytaj tekst i przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z jego treścią.",
+      "page": 12,
+      "options": "ABCD",
+      "items": {
+        "6.1": "C",
+        "6.2": "D",
+        "6.3": "A",
+        "6.4": "D",
+        "6.5": "D"
+      }
+    },
+    {
+      "no": 7,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wstaw brakujące zdania (A–E) w luki",
+      "hint": "Z tekstu usunięto fragmenty. Do każdej luki wpisz literę fragmentu, który pasuje logicznie. Jeden zostaje.",
+      "page": 14,
+      "options": "ABCDE",
+      "items": {
+        "7.1": "C",
+        "7.2": "E",
+        "7.3": "B",
+        "7.4": "A"
+      }
+    },
+    {
+      "no": 8,
+      "section": "language",
+      "kind": "choice",
+      "label": "Uzupełnij minidialogi",
+      "hint": "Do każdego krótkiego dialogu z arkusza wybierz wypowiedź, która pasuje w lukę.",
+      "page": 15,
+      "options": "ABC",
+      "items": {
+        "8.1": "C",
+        "8.2": "A",
+        "8.3": "C"
+      }
+    },
+    {
+      "no": 9,
+      "section": "language",
+      "kind": "choice",
+      "label": "Wybierz wyraz pasujący do obu zdań",
+      "hint": "Wybierz jeden wyraz, który poprawnie uzupełnia oba zdania z arkusza.",
+      "page": 16,
+      "options": "ABC",
+      "items": {
+        "9.1": "B",
+        "9.2": "B",
+        "9.3": "A",
+        "9.4": "C"
+      }
+    },
+    {
+      "no": 10,
+      "section": "language",
+      "kind": "open",
+      "label": "Wpisz jeden wyraz w każdą lukę",
+      "hint": "Wpisz w każdą lukę jeden wyraz. Liczy się pełna poprawność gramatyczna i ortograficzna.",
+      "page": 17,
+      "items": {
+        "10.1": {
+          "answer": "them / these / those",
+          "accepted": [
+            "them",
+            "these",
+            "those"
+          ]
+        },
+        "10.2": {
+          "answer": "in / around / across / throughout / of",
+          "accepted": [
+            "in",
+            "around",
+            "across",
+            "throughout",
+            "of"
+          ]
+        },
+        "10.3": {
+          "answer": "if / when / once / provided …",
+          "accepted": [
+            "if",
+            "when",
+            "after",
+            "before",
+            "once",
+            "should",
+            "assuming",
+            "supposing",
+            "suppose",
+            "provided",
+            "providing",
+            "as",
+            "whenever"
+          ]
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "language",
+      "kind": "open",
+      "label": "Przekształć zdania (maks. 5 wyrazów, z wyrazem podanym)",
+      "hint": "Uzupełnij zdanie tak, żeby znaczyło to samo co zdanie wyjściowe. Użyj podanego wyrazu bez zmiany jego formy.",
+      "page": 18,
+      "items": {
+        "11.1": {
+          "answer": "I had to go",
+          "accepted": [
+            "i had to go",
+            "i had to get",
+            "i had to head to",
+            "i really had to go",
+            "i had to urgently go",
+            "finally i had to go"
+          ]
+        },
+        "11.2": {
+          "answer": "promised to repair",
+          "accepted": [
+            "promised to repair",
+            "promised to fix",
+            "promised to mend",
+            "promised he would repair",
+            "promised that he would repair",
+            "promised me he would repair",
+            "promised me that he'd repair",
+            "promised he will repair",
+            "promised me to repair",
+            "promised me a repair of"
+          ]
+        },
+        "11.3": {
+          "answer": "don't have enough money",
+          "accepted": [
+            "don't have enough money",
+            "do not have enough money",
+            "haven't got enough money",
+            "haven't enough money",
+            "are not rich enough",
+            "don't have enough funds",
+            "don't have enough cash"
+          ]
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wpis na blogu (100–150 wyrazów)",
+      "hint": "Napisz wypowiedź według polecenia z arkusza. Pilnuj liczby wyrazów i zrealizuj wszystkie podpunkty.",
+      "page": 19,
+      "points": 12,
+      "meta": {
+        "words": [
+          100,
+          150
+        ],
+        "criteria": [
+          {
+            "name": "Treść",
+            "points": 5
+          },
+          {
+            "name": "Spójność i logika wypowiedzi",
+            "points": 2
+          },
+          {
+            "name": "Zakres środków językowych",
+            "points": 3
+          },
+          {
+            "name": "Poprawność środków językowych",
+            "points": 2
+          }
+        ]
+      }
+    }
+  ]
+}

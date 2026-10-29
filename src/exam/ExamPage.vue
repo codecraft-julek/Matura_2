@@ -1,6 +1,7 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Bookmark, Check, CheckCheck, ChevronDown, ChevronRight, CircleHelp, Clock3, ExternalLink, FileText, Lightbulb, ListChecks, Pause, Play, RotateCcw, Save, Sparkles, X } from '@lucide/vue'
+import { RouterLink } from 'vue-router'
 import BrandMark from '../components/BrandMark.vue'
 import LocalPdfViewer from './LocalPdfViewer.vue'
 import { officialExam, questions } from './examData'
@@ -174,13 +175,13 @@ onBeforeUnmount(() => {
   <div class="exam-app">
     <a href="#exam-question" class="skip-link" @click.prevent="(session.complete ? summaryHeading : questionHeading)?.focus()">Przejdź do ćwiczenia</a>
     <header class="exam-header"><div class="exam-container exam-header-inner">
-      <a href="#/" class="brand" aria-label="Ogarnij Maturę — strona główna"><span class="brand-icon"><BrandMark /></span><span>ogarnij<span class="brand-second">maturę.</span></span></a>
+      <RouterLink to="/" class="brand" aria-label="Ogarnij Maturę — strona główna"><span class="brand-icon"><BrandMark /></span><span>ogarnij<span class="brand-second">maturę.</span></span></RouterLink>
       <div class="exam-header-label"><span></span> TWOJA STREFA NAUKI</div>
-      <a href="#/" class="exam-back-link"><ArrowLeft :size="16" /> Strona główna</a>
+      <RouterLink to="/" class="exam-back-link"><ArrowLeft :size="16" /> Strona główna</RouterLink>
     </div></header>
 
     <main class="exam-container exam-main">
-      <nav class="exam-breadcrumbs" aria-label="Okruszki nawigacyjne"><a href="#/">Start</a><ChevronRight :size="12" /><a href="#narzedzia">Arkusze</a><ChevronRight :size="12" /><span aria-current="page">Polski 2026</span></nav>
+      <nav class="exam-breadcrumbs" aria-label="Okruszki nawigacyjne"><RouterLink to="/">Start</RouterLink><ChevronRight :size="12" /><RouterLink to="/arkusze-maturalne">Arkusze</RouterLink><ChevronRight :size="12" /><span aria-current="page">Polski 2026</span></nav>
       <div class="exam-title-row"><div><span class="exam-kicker"><span class="status-dot"></span> TRENING AUTORSKI</span><h1>Polski? <span>Ćwiczymy.</span></h1><p>8 krótkich ćwiczeń do zagadnień z arkusza CKE.</p></div><div class="exam-title-actions"><a :href="officialExam.url" target="_blank" rel="noopener noreferrer" class="button button-outline"><FileText :size="17" /> Oficjalny arkusz <ArrowUpRight :size="17" /></a><span class="exam-save-state" :class="{ 'save-unavailable': !storageAvailable }"><Save :size="12" />{{ storageAvailable ? 'Postęp zapisuje się na tym urządzeniu' : 'Zapis niedostępny — pobierz odpowiedzi przed wyjściem' }}</span></div></div>
       <div class="exam-meta"><span>Język polski</span><i></i><span>Poziom podstawowy</span><i></i><span>Maj 2026</span><span class="exam-mode"><Sparkles :size="13" /> Tryb nauki</span></div>
 
@@ -230,7 +231,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </main>
-    <footer class="exam-container exam-footer"><span>© {{ new Date().getFullYear() }} Ogarnij Maturę</span><span>Autorski trening · oficjalny arkusz u źródła</span><a href="#/">Wróć na stronę główną <ArrowUpRight :size="13" /></a></footer>
+    <footer class="exam-container exam-footer"><span>© {{ new Date().getFullYear() }} Ogarnij Maturę</span><span>Autorski trening · oficjalny arkusz u źródła</span><RouterLink to="/">Wróć na stronę główną <ArrowUpRight :size="13" /></RouterLink></footer>
 
     <dialog ref="confirmDialog" class="exam-confirm-dialog" aria-labelledby="exam-confirm-title" @close="onConfirmClosed"><button class="confirm-close icon-button" aria-label="Zamknij okno" @click="closeConfirm"><X :size="20" /></button><span class="confirm-symbol"><RotateCcw v-if="confirmAction === 'reset'" :size="25" /><ListChecks v-else :size="25" /></span><h2 id="exam-confirm-title">{{ confirmAction === 'reset' ? 'Zaczynamy od nowa?' : 'Zostawiasz coś na później?' }}</h2><p>{{ confirmAction === 'reset' ? 'Usuniesz odpowiedzi i czas tylko z tego treningu, na tym urządzeniu.' : `Uzupełnione ćwiczenia: ${answeredCount} z ${questions.length}. Pominięte pytania zamknięte otrzymają 0 punktów. Do odpowiedzi możesz później wrócić.` }}</p><div><button class="button button-outline" @click="closeConfirm">{{ confirmAction === 'reset' ? 'Zostaję przy odpowiedziach' : 'Wracam do pytań' }}</button><button class="button button-dark" @click="confirmAction === 'reset' ? reset() : finish()">{{ confirmAction === 'reset' ? 'Tak, nowy trening' : 'Pokaż podsumowanie' }} <ArrowRight :size="16" /></button></div></dialog>
   </div>

@@ -1,0 +1,335 @@
+{
+  "id": "2023-maj-polski-pp",
+  "subject": "polish",
+  "level": "basic",
+  "year": 2023,
+  "session": "main",
+  "title": "Język polski, poziom podstawowy, maj 2023",
+  "durationMinutes": 240,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-2305.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-2305-zasady.pdf",
+    "sheet2": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_polski/poziom_podstawowy/MPOP-P2-100-2305.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 6,
+      "items": {
+        "1": {
+          "answer": "Rozstrzygnij, czy podróż zmienia człowieka, i uzasadnij na podstawie tekstu (np. w podróży wyglądamy i zachowujemy się inaczej niż na co dzień).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 2,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 6,
+      "items": {
+        "2": {
+          "answer": "Podaj jedną korzyść i jedno ryzyko wyjścia turysty poza „bańkę turystyczną”, oba na podstawie tekstu (korzyść np.: zobaczysz świat taki, jaki jest, a nie przygotowany dla turystów).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 3,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 7,
+      "items": {
+        "3": {
+          "answer": "Rozstrzygnij i uzasadnij, odwołując się do obu tekstów (np. zwiedzanie jako „zawłaszczanie” – tłumy turystów naruszają prywatność mieszkańców).",
+          "accepted": [],
+          "note": "1 pkt, jeśli uzasadnienie dotyczy tylko jednego tekstu.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Punkt dostajesz tylko za wszystkie poprawne.",
+      "page": 7,
+      "options": "PF",
+      "items": {
+        "4": {
+          "answer": "PP",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      }
+    },
+    {
+      "no": 5,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 7,
+      "items": {
+        "5": {
+          "answer": "Wyjaśnij, na czym polega ironia: podniosłe określenia opisują sztuczną rzeczywistość stworzoną dla turystów.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "test",
+      "kind": "open",
+      "label": "Notatka syntetyzująca (60–90 wyrazów)",
+      "hint": "Napisz notatkę syntetyzującą (60–90 wyrazów), która zestawia stanowiska obu autorów wobec problemu z polecenia.",
+      "page": 8,
+      "items": {
+        "6": {
+          "answer": "Notatka (60–90 wyrazów) przedstawia stanowisko każdego autora wobec problemu z polecenia, oparte na kluczowych informacjach, i zestawia je ze sobą. 3 pkt za treść + 1 pkt za poprawność językową, ortograficzną i interpunkcyjną. Przekroczenie limitu wyrazów obniża ocenę.",
+          "accepted": [],
+          "points": 4
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 9,
+      "items": {
+        "7": {
+          "answer": "Uzasadnij trafność nazwy wirusa, odwołując się do mitu o koniu trojańskim (np. wirus się ukrywa albo udaje coś niegroźnego, tak jak wojownicy ukryci w koniu-podarunku).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 9,
+      "items": {
+        "8": {
+          "answer": "Rozstrzygnij i podaj dwa argumenty odnoszące się do obu tekstów (np. w wierszu Miłosza koniec świata dostrzega tylko siwy staruszek, a w Apokalipsie jest on wydarzeniem widocznym dla wszystkich).",
+          "accepted": [],
+          "note": "1 pkt za jeden argument.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 11,
+      "items": {
+        "9": {
+          "answer": "Określ postawę (np. nadzieja, zaufanie Bogu) i uzasadnij (np. nieszczęścia nie trwają wiecznie).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 12,
+      "items": {
+        "10": {
+          "answer": "Podaj wspólny motyw (np. vanitas: przemijanie, marność rzeczy doczesnych) i uzasadnij, odnosząc się do symboliki obrazu i wymowy wiersza.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Punkt dostajesz tylko za wszystkie poprawne.",
+      "page": 13,
+      "options": "PF",
+      "items": {
+        "11": {
+          "answer": "PP",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 14,
+      "items": {
+        "12.1": {
+          "answer": "Fragment A: „Dziady” cz. III, fragment B: „Kordian”.",
+          "accepted": [],
+          "note": "Oba tytuły muszą być poprawne."
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 14,
+      "items": {
+        "12.2": {
+          "answer": "Wyjaśnij różnicę ról Polski: we fragmencie A ma cierpieć jak Chrystus (mesjanizm), we fragmencie B – czynnie walczyć ze złem.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 13,
+      "section": "test",
+      "kind": "choice",
+      "label": "Uzupełnij tabelę",
+      "hint": "Uzupełnij tabelę z arkusza: przy każdym wierszu wybierz właściwy numer. Punkt za oba wiersze poprawnie.",
+      "page": 15,
+      "options": "123",
+      "items": {
+        "13": {
+          "answer": "13",
+          "rows": [
+            "A",
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 16,
+      "items": {
+        "14": {
+          "answer": "Rozstrzygnij i uzasadnij, uwzględniając symbolikę plakatu (noga w stroju inteligenta założona na nogę w stroju chłopa) ORAZ wymowę „Wesela” (fragmentu albo całego dramatu).",
+          "accepted": [],
+          "note": "1 pkt za samą trafną interpretację relacji inteligencja–chłopi.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 18,
+      "items": {
+        "15": {
+          "answer": "Wyjaśnij sens wybranego tytułu części „Przedwiośnia” (np. ostrzeżenie przed komunistyczną ideologią ze Wschodu).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 16,
+      "section": "test",
+      "kind": "choice",
+      "label": "Zadanie zamknięte",
+      "hint": "Wybierz jedną odpowiedź spośród podanych w arkuszu.",
+      "page": 19,
+      "options": "ABCD",
+      "items": {
+        "16.1": "B"
+      }
+    },
+    {
+      "no": 16,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 19,
+      "items": {
+        "16.2": {
+          "answer": "Wyjaśnij, że bogactwo języka (wyrazy bliskoznaczne, możliwość interpretacji) daje wolność myśli, a nowomowa miała ją ograniczyć.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 17,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 20,
+      "items": {
+        "17": {
+          "answer": "Podaj postawę wspólną Artura i bohatera wybranego dramatu romantycznego (np. bunt – jak Konrad w „Dziadach” cz. III) i uzasadnij.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 18,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypracowanie (Arkusz 2, min. 300 wyrazów)",
+      "hint": "Wybierz jeden temat z Arkusza 2 i napisz wypracowanie (min. 300 wyrazów), odwołując się do lektury obowiązkowej.",
+      "page": 5,
+      "sheet": 2,
+      "points": 35,
+      "meta": {
+        "words": [
+          300,
+          0
+        ],
+        "criteria": [
+          {
+            "name": "Spełnienie formalnych warunków polecenia",
+            "points": 1
+          },
+          {
+            "name": "Kompetencje literackie i kulturowe",
+            "points": 16
+          },
+          {
+            "name": "Kompozycja wypowiedzi",
+            "points": 7
+          },
+          {
+            "name": "Język wypowiedzi",
+            "points": 11
+          }
+        ]
+      }
+    }
+  ]
+}

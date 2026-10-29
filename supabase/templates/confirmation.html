@@ -1,0 +1,10 @@
+<!-- Supabase Auth → Emails → "Confirm signup". Subject: Potwierdź adres e-mail w Ogarnij Maturę -->
+<div style="font-family: Arial, Helvetica, sans-serif; max-width: 520px; margin: 0 auto; color: #1d2340; line-height: 1.5;">
+  <h1 style="font-size: 22px; margin: 0 0 12px;">Hej, jeszcze jeden klik!</h1>
+  <p style="margin: 0 0 20px;">Potwierdź, że ten adres jest Twój, i możesz zaczynać naukę w Ogarnij Maturę.</p>
+  <p style="margin: 0 0 24px;">
+    <a href="{{ .SiteURL }}/auth/potwierdz?token_hash={{ .TokenHash }}&type=email&next=/witaj"
+       style="display: inline-block; background: #d63a2f; color: #ffffff; text-decoration: none; font-weight: bold; padding: 12px 20px; border-radius: 10px;">Potwierdzam adres</a>
+  </p>
+  <p style="margin: 0; font-size: 14px; color: #4a5070;">Nie zakładałeś konta? Zignoruj tę wiadomość.</p>
+</div>

@@ -1,0 +1,384 @@
+{
+  "id": "2024-maj-angielski-pp",
+  "subject": "english",
+  "level": "basic",
+  "year": 2024,
+  "session": "main",
+  "title": "Język angielski, poziom podstawowy, maj 2024",
+  "durationMinutes": 120,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-A-2405-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-200-660-K00-MJAU-100-2405-zasady.pdf",
+    "audio": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_angielski/poziom_podstawowy/MJA-P-100-2405.mp3",
+    "transcript": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-660-K00-2405-transkrypcja.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Zaznacz, które zdania są prawdziwe (T), a które fałszywe (F)",
+      "hint": "Usłyszysz nagranie dwa razy. Przy każdym zdaniu z arkusza zaznacz T, jeśli zgadza się z nagraniem, albo F, jeśli nie.",
+      "page": 4,
+      "options": "TF",
+      "items": {
+        "1.1": "F",
+        "1.2": "F",
+        "1.3": "T",
+        "1.4": "T",
+        "1.5": "T"
+      }
+    },
+    {
+      "no": 2,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Dopasuj zdania (A–F) do wypowiedzi",
+      "hint": "Usłyszysz kilka krótkich wypowiedzi (każdą dwa razy). Do każdej dobierz pasujące zdanie z arkusza. Jedno zdanie zostaje.",
+      "page": 4,
+      "options": "ABCDEF",
+      "items": {
+        "2.1": "F",
+        "2.2": "D",
+        "2.3": "C",
+        "2.4": "A",
+        "2.5": "E"
+      }
+    },
+    {
+      "no": 3,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 5,
+      "options": "ABC",
+      "items": {
+        "3.1": "A",
+        "3.2": "C",
+        "3.3": "B",
+        "3.4": "C",
+        "3.5": "B"
+      }
+    },
+    {
+      "no": 4,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dobierz nagłówki (A–F) do części tekstu",
+      "hint": "Przeczytaj tekst w arkuszu i do każdej jego części dobierz nagłówek. Dwa nagłówki zostają.",
+      "page": 6,
+      "options": "ABCDEF",
+      "items": {
+        "4.1": "C",
+        "4.2": "E",
+        "4.3": "F",
+        "4.4": "D"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dopasuj zdania do tekstów (A–D)",
+      "hint": "Przeczytaj krótkie teksty A–D i do każdego zdania z arkusza dobierz tekst, którego ono dotyczy.",
+      "page": 8,
+      "options": "ABCD",
+      "items": {
+        "5.1": "D",
+        "5.2": "C",
+        "5.3": "A"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "open",
+      "label": "Uzupełnij luki po angielsku",
+      "hint": "Uzupełnij luki po angielsku informacjami z tekstu. Odpowiedź musi pasować do zdania i być zgodna z tekstem.",
+      "page": 8,
+      "items": {
+        "5.4": {
+          "answer": "an electric one / an electric bike",
+          "note": "Rower przerobiono na elektryczny (tekst B).",
+          "accepted": [
+            "an electric one",
+            "an electric bike",
+            "an electric bicycle",
+            "electric",
+            "an electric",
+            "a electric",
+            "an electrical bike",
+            "an electric vehicle",
+            "electric vehicle",
+            "an ev",
+            "an e-bike",
+            "e-bike",
+            "motor bike",
+            "a motor bike",
+            "a bike with electric motor",
+            "a bike with electric engine",
+            "electric bike",
+            "the electric bike",
+            "a electric bike",
+            "a great electric bike",
+            "a cheaper electric bike",
+            "an ecological bike",
+            "an electric cycle",
+            "an electric two-wheeler",
+            "a new electric bike"
+          ]
+        },
+        "5.5": {
+          "answer": "fast / very fast",
+          "note": "Rowery miejskie nie są (tak) szybkie (tekst D).",
+          "accepted": [
+            "fast",
+            "very fast",
+            "as fast as others",
+            "as fast as other bikes",
+            "fast as other bikes",
+            "fast like other bikes",
+            "as fast like other bikes",
+            "faster",
+            "much faster",
+            "faster than other bikes",
+            "quickest on the road",
+            "fastest",
+            "the fastest",
+            "the fastest ones",
+            "the fastest one",
+            "fast compared to other bikes",
+            "speedy",
+            "quick",
+            "swift",
+            "too fast",
+            "really fast",
+            "so fast",
+            "that fast",
+            "as fast",
+            "riding fast"
+          ]
+        },
+        "5.6": {
+          "answer": "box / packaging",
+          "note": "Paczka wygląda, jakby był w niej telewizor (tekst A).",
+          "accepted": [
+            "box",
+            "packaging",
+            "the box",
+            "box with the bike inside",
+            "packaging with the bike inside",
+            "box they send",
+            "box it'll arrive in",
+            "box that it comes in",
+            "box containing it",
+            "shape and size of box",
+            "shape of the package",
+            "package",
+            "parcel",
+            "box where the bike is",
+            "box it will be in",
+            "box that contains the bike",
+            "box with the bike",
+            "box with my bike inside",
+            "box containing the bike"
+          ]
+        },
+        "5.7": {
+          "answer": "the weather is bad / there is bad weather",
+          "note": "Zła pogoda lub inne trudności (tekst C).",
+          "accepted": [
+            "the weather is bad",
+            "there is bad weather",
+            "there are bad weather conditions",
+            "bad weather conditions appear",
+            "bad weather conditions occur",
+            "in bad weather",
+            "in bad weather conditions",
+            "it is snowing",
+            "it rains a lot",
+            "anything bad happens",
+            "anything happens",
+            "some problems happen",
+            "my chain breaks",
+            "my tyre breaks",
+            "the tires need changing",
+            "the weather is poor",
+            "the weather is difficult",
+            "the weather isn't good",
+            "the weather conditions aren't good",
+            "the weather conditions get bad",
+            "the weather won't be good",
+            "it's bad weather",
+            "is bad weather"
+          ]
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z tekstem",
+      "hint": "Przeczytaj tekst i przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z jego treścią.",
+      "page": 12,
+      "options": "ABCD",
+      "items": {
+        "6.1": "D",
+        "6.2": "C",
+        "6.3": "B",
+        "6.4": "A",
+        "6.5": "C"
+      }
+    },
+    {
+      "no": 7,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wstaw brakujące zdania (A–E) w luki",
+      "hint": "Z tekstu usunięto fragmenty. Do każdej luki wpisz literę fragmentu, który pasuje logicznie. Jeden zostaje.",
+      "page": 14,
+      "options": "ABCDE",
+      "items": {
+        "7.1": "D",
+        "7.2": "E",
+        "7.3": "C",
+        "7.4": "B"
+      }
+    },
+    {
+      "no": 8,
+      "section": "language",
+      "kind": "choice",
+      "label": "Uzupełnij minidialogi",
+      "hint": "Do każdego krótkiego dialogu z arkusza wybierz wypowiedź, która pasuje w lukę.",
+      "page": 15,
+      "options": "ABC",
+      "items": {
+        "8.1": "B",
+        "8.2": "C",
+        "8.3": "A"
+      }
+    },
+    {
+      "no": 9,
+      "section": "language",
+      "kind": "choice",
+      "label": "Wybierz opcję o tym samym znaczeniu",
+      "hint": "Wybierz opcję, która znaczy to samo co wyróżniony fragment zdania.",
+      "page": 16,
+      "options": "ABC",
+      "items": {
+        "9.1": "B",
+        "9.2": "C",
+        "9.3": "A",
+        "9.4": "B"
+      }
+    },
+    {
+      "no": 10,
+      "section": "language",
+      "kind": "open",
+      "label": "Wpisz wyrazy z ramki w odpowiedniej formie",
+      "hint": "Wpisz w lukę podany wyraz w odpowiedniej formie (np. jako inną część mowy). Liczy się pełna poprawność.",
+      "page": 17,
+      "items": {
+        "10.1": {
+          "answer": "called",
+          "accepted": []
+        },
+        "10.2": {
+          "answer": "attraction",
+          "accepted": []
+        },
+        "10.3": {
+          "answer": "jumping",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "language",
+      "kind": "open",
+      "label": "Przekształć zdania (maks. 4 wyrazy, z wyrazem podanym)",
+      "hint": "Uzupełnij zdanie tak, żeby znaczyło to samo co zdanie wyjściowe. Użyj podanego wyrazu bez zmiany jego formy.",
+      "page": 18,
+      "items": {
+        "11.1": {
+          "answer": "haven't changed since",
+          "accepted": [
+            "have not changed since",
+            "haven't changed since",
+            "have not changed from",
+            "haven't changed from",
+            "haven't changed compared to",
+            "haven't changed comparing to",
+            "aren't changed compared to",
+            "haven't been changed since",
+            "haven't changed during the",
+            "haven't changed in the",
+            "haven't changed for the",
+            "haven't changed over the",
+            "weren't changed since",
+            "weren't changed from",
+            "weren't changed during the",
+            "didn't get changed since",
+            "remained not changed since"
+          ]
+        },
+        "11.2": {
+          "answer": "for them to book",
+          "accepted": [
+            "for them to book",
+            "for them to reserve"
+          ]
+        },
+        "11.3": {
+          "answer": "mind if I / mind letting me",
+          "accepted": [
+            "mind if i",
+            "mind it if i",
+            "mind letting me",
+            "mind allowing me to"
+          ]
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wpis na blogu (80–130 wyrazów)",
+      "hint": "Napisz wypowiedź według polecenia z arkusza. Pilnuj liczby wyrazów i zrealizuj wszystkie podpunkty.",
+      "page": 19,
+      "points": 12,
+      "meta": {
+        "words": [
+          80,
+          130
+        ],
+        "criteria": [
+          {
+            "name": "Treść",
+            "points": 5
+          },
+          {
+            "name": "Spójność i logika wypowiedzi",
+            "points": 2
+          },
+          {
+            "name": "Zakres środków językowych",
+            "points": 3
+          },
+          {
+            "name": "Poprawność środków językowych",
+            "points": 2
+          }
+        ]
+      }
+    }
+  ]
+}

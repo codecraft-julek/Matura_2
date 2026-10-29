@@ -1,0 +1,461 @@
+{
+  "id": "2024-maj-angielski-pr",
+  "subject": "english",
+  "level": "extended",
+  "year": 2024,
+  "session": "main",
+  "title": "Język angielski, poziom rozszerzony, maj 2024",
+  "durationMinutes": 150,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-A-2405-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-200-660-K00-2405-zasady.pdf",
+    "audio": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_angielski/poziom_rozszerzony/MJA-R-100-2405.mp3",
+    "transcript": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-660-K00-2405-transkrypcja.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 3,
+      "options": "ABC",
+      "items": {
+        "1.1": "B",
+        "1.2": "C"
+      }
+    },
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 3,
+      "options": "ABCD",
+      "items": {
+        "1.3": "B",
+        "1.4": "D",
+        "1.5": "B",
+        "1.6": "A"
+      }
+    },
+    {
+      "no": 2,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Dopasuj zdania (A–F) do wypowiedzi",
+      "hint": "Usłyszysz kilka krótkich wypowiedzi (każdą dwa razy). Do każdej dobierz pasujące zdanie z arkusza. Jedno zdanie zostaje.",
+      "page": 4,
+      "options": "ABCDEF",
+      "items": {
+        "2.1": "D",
+        "2.2": "E",
+        "2.3": "C",
+        "2.4": "F",
+        "2.5": "A"
+      }
+    },
+    {
+      "no": 3,
+      "section": "listening",
+      "kind": "open",
+      "label": "Uzupełnij notatkę po angielsku",
+      "hint": "Na podstawie nagrania wpisz po angielsku brakujące informacje. Wystarczy kilka słów, ale muszą pasować do zdania.",
+      "page": 5,
+      "items": {
+        "3.1": {
+          "answer": "teamwork / cooperation",
+          "note": "Praca w grupach.",
+          "accepted": [
+            "teamwork",
+            "cooperation",
+            "co-operation",
+            "teamwork and cooperation",
+            "working together",
+            "work together",
+            "working as a team",
+            "working in teams",
+            "team working",
+            "teamwork skills",
+            "team skills",
+            "learning in a team",
+            "learning as a team",
+            "learning with a team",
+            "working with others",
+            "collaboration",
+            "collaborating",
+            "cooperating",
+            "working on the team",
+            "team building",
+            "team project work",
+            "group work",
+            "working in groups",
+            "working in group projects",
+            "working in the group projects",
+            "taking part in group projects",
+            "group activities",
+            "team work"
+          ]
+        },
+        "3.2": {
+          "answer": "(traditional) Scottish dances",
+          "note": "Tradycyjne szkockie tańce.",
+          "accepted": [
+            "traditional scottish dances",
+            "scottish dances",
+            "scottish dancing",
+            "traditional scottish dancing",
+            "scottish way of dancing",
+            "dances from scotland",
+            "dances of scotland",
+            "to dance scottish dances",
+            "dances traditional in scotland",
+            "scots dances",
+            "traditional scottish dance",
+            "typical scotish dances",
+            "traditional scotland dances",
+            "traditional scotland's dances"
+          ]
+        },
+        "3.3": {
+          "answer": "which are next to each other",
+          "note": "Pokoje obok siebie.",
+          "accepted": [
+            "which are next to each other",
+            "adjacent to each other",
+            "adjoining each other",
+            "located next to one another",
+            "next door to one another",
+            "next door to each other",
+            "next to each other",
+            "right next to each other",
+            "side by side",
+            "beside each other",
+            "next to eachother",
+            "placed next door to each other",
+            "next-door to each other",
+            "next to each others"
+          ]
+        },
+        "3.4": {
+          "answer": "the reception desk / (the) reception",
+          "note": "Informacje są w recepcji (ulotki).",
+          "accepted": [
+            "the reception desk",
+            "reception desk",
+            "the reception",
+            "reception",
+            "reception's desk",
+            "a reception desk",
+            "front desk",
+            "registration desk",
+            "a leaflet",
+            "leaflets",
+            "leaflets at the reception desk",
+            "the desk of a reception",
+            "reception desks"
+          ]
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dopasuj części tekstu (A–D) do pytań",
+      "hint": "Przeczytaj tekst podzielony na części A–D i do każdego pytania dobierz część, w której jest odpowiedź.",
+      "page": 6,
+      "options": "ABCD",
+      "items": {
+        "4.1": "B",
+        "4.2": "D",
+        "4.3": "C",
+        "4.4": "D",
+        "4.5": "A"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wstaw brakujące fragmenty (A–F) w luki",
+      "hint": "Z tekstu usunięto fragmenty. Do każdej luki wpisz literę fragmentu, który pasuje logicznie. Jeden zostaje.",
+      "page": 8,
+      "options": "ABCDEF",
+      "items": {
+        "5.1": "F",
+        "5.2": "E",
+        "5.3": "A",
+        "5.4": "C",
+        "5.5": "B"
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z tekstem",
+      "hint": "Przeczytaj tekst i przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z jego treścią.",
+      "page": 10,
+      "options": "ABCD",
+      "items": {
+        "6.1": "A",
+        "6.2": "D",
+        "6.3": "C",
+        "6.4": "D"
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "open",
+      "label": "Uzupełnij luki po angielsku",
+      "hint": "Uzupełnij luki po angielsku informacjami z tekstu. Odpowiedź musi pasować do zdania i być zgodna z tekstem.",
+      "page": 10,
+      "items": {
+        "6.5": {
+          "answer": "were not (actually) filmed",
+          "note": "Sceny kręcono w replice, nie w prawdziwej księgarni.",
+          "accepted": [
+            "were not filmed",
+            "weren't filmed",
+            "were not actually filmed",
+            "weren't actually filmed",
+            "weren't shot",
+            "weren't recorded",
+            "did not take place",
+            "were not happening",
+            "weren't captured",
+            "weren't set",
+            "weren't staged",
+            "weren't located",
+            "were not done",
+            "were not being filmed",
+            "are not filmed",
+            "are not taking place",
+            "are not happening",
+            "don't take place",
+            "hadn't been filmed",
+            "haven't been filmed",
+            "couldn't be filmed",
+            "haven't taken place",
+            "hadn't taken place"
+          ]
+        },
+        "6.6": {
+          "answer": "a failure / unsuccessful",
+          "note": "Kampania nie uratowała księgarni.",
+          "accepted": [
+            "a failure",
+            "unsuccessful",
+            "not successful enough",
+            "not quite successful",
+            "not really successful",
+            "not truly successful",
+            "unsuccessful in the end",
+            "in vain",
+            "no success",
+            "an unsuccessful attempt to save it",
+            "not good enough",
+            "not helpful at all",
+            "ineffective",
+            "futile",
+            "worthless",
+            "unhelpful",
+            "not very helpful",
+            "not helpful",
+            "not helpful enough",
+            "useless",
+            "pointless"
+          ]
+        },
+        "6.7": {
+          "answer": "travel books (any longer)",
+          "note": "Księgarnia nie sprzedaje już tylko książek podróżniczych.",
+          "accepted": [
+            "travel books",
+            "travel books any longer",
+            "travel books any more",
+            "selling only travel books",
+            "travel content",
+            "travel literature",
+            "literature focused on travelling",
+            "books about travelling",
+            "travel-themed books",
+            "travel books and magazines",
+            "selling travel books",
+            "selling books about travel",
+            "selling books that help in travelling",
+            "being a travel bookshop",
+            "travelling books",
+            "travel guides",
+            "a particular genre of books",
+            "a particular type of books",
+            "one particular type of books",
+            "one specific book subject",
+            "travel",
+            "travels",
+            "travelling",
+            "travelling topic",
+            "travelling theme",
+            "the subject of travelling"
+          ]
+        },
+        "6.8": {
+          "answer": "propose (to their partners)",
+          "note": "Ludzie się tam oświadczają.",
+          "accepted": [
+            "propose",
+            "propose to their partners",
+            "propose to their significant others",
+            "propose to their loved ones",
+            "propose marriage",
+            "make a proposal",
+            "make a marriage proposal",
+            "ask their partners for marriage",
+            "ask their partners to marry them",
+            "get engaged",
+            "pop the question to their partners",
+            "ask for their partner's hand",
+            "hold their engagement",
+            "ask to marry their partners",
+            "propose to their fiances",
+            "get engage",
+            "asking their partners to marry"
+          ]
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "language",
+      "kind": "choice",
+      "label": "Wybierz poprawne uzupełnienie tekstu",
+      "hint": "Przy każdej luce wybierz opcję, która daje logiczny i poprawny gramatycznie tekst.",
+      "page": 14,
+      "options": "ABCD",
+      "items": {
+        "7.1": "B",
+        "7.2": "C",
+        "7.3": "D",
+        "7.4": "C",
+        "7.5": "A",
+        "7.6": "A"
+      }
+    },
+    {
+      "no": 8,
+      "section": "language",
+      "kind": "open",
+      "label": "Przekształć wyrazy z nawiasu",
+      "hint": "Wpisz w lukę podany wyraz w odpowiedniej formie (np. jako inną część mowy). Liczy się pełna poprawność.",
+      "page": 15,
+      "items": {
+        "8.1": {
+          "answer": "widely",
+          "accepted": []
+        },
+        "8.2": {
+          "answer": "addiction",
+          "accepted": []
+        },
+        "8.3": {
+          "answer": "ensure / insure / assure",
+          "accepted": [
+            "ensure",
+            "insure",
+            "assure"
+          ]
+        },
+        "8.4": {
+          "answer": "preference",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "language",
+      "kind": "open",
+      "label": "Uzupełnij zdania, wykorzystując wyrazy z nawiasu",
+      "hint": "Uzupełnij zdanie wyrazami z nawiasu w podanej kolejności, dodając brakujące słowa i zmieniając formę, jeśli trzeba.",
+      "page": 16,
+      "items": {
+        "9.1": {
+          "answer": "was involved in organising",
+          "accepted": [
+            "was involved in organising",
+            "was involved in organizing",
+            "was involved to organize"
+          ]
+        },
+        "9.2": {
+          "answer": "have taken an umbrella",
+          "accepted": [
+            "have taken an umbrella",
+            "have taken her umbrella",
+            "have taken his umbrella",
+            "have taken your umbrella",
+            "have taken the umbrella",
+            "have taken this umbrella",
+            "have taken that umbrella",
+            "'ve taken an umbrella",
+            "have taken some umbrella",
+            "have taken any umbrella"
+          ]
+        },
+        "9.3": {
+          "answer": "to find an easier",
+          "accepted": [
+            "to find an easier",
+            "to find any easier",
+            "to find some easier"
+          ]
+        },
+        "9.4": {
+          "answer": "was out of order",
+          "accepted": [
+            "was out of order",
+            "wasn't in working order"
+          ]
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypowiedź pisemna na jeden z dwóch tematów (200–250 wyrazów)",
+      "hint": "Napisz wypowiedź według polecenia z arkusza. Pilnuj liczby wyrazów i zrealizuj wszystkie podpunkty.",
+      "page": 17,
+      "points": 13,
+      "meta": {
+        "words": [
+          200,
+          250
+        ],
+        "criteria": [
+          {
+            "name": "Zgodność z poleceniem",
+            "points": 5
+          },
+          {
+            "name": "Spójność i logika wypowiedzi",
+            "points": 2
+          },
+          {
+            "name": "Zakres środków językowych",
+            "points": 3
+          },
+          {
+            "name": "Poprawność środków językowych",
+            "points": 3
+          }
+        ]
+      }
+    }
+  ]
+}

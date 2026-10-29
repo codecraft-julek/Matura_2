@@ -6,3 +6,7 @@ dist/
 preview-*.log
 tmp/
 site-release.tar.gz
+.env*
+!.env.example
+.vercel
+coverage/

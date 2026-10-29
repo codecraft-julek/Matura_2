@@ -1,0 +1,407 @@
+{
+  "id": "2026-maj-angielski-pp",
+  "subject": "english",
+  "level": "basic",
+  "year": 2026,
+  "session": "main",
+  "title": "Język angielski, poziom podstawowy, maj 2026",
+  "durationMinutes": 120,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-A-2605-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-200-660-2605-zasady.pdf",
+    "audio": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_angielski/poziom_podstawowy/MJAP-P-100-2605.mp3",
+    "transcript": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_angielski/poziom_podstawowy/MJAP-P0-100-200-660-2605-transkrypcja.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Dopasuj zdania (A–F) do wypowiedzi",
+      "hint": "Usłyszysz kilka krótkich wypowiedzi (każdą dwa razy). Do każdej dobierz pasujące zdanie z arkusza. Jedno zdanie zostaje.",
+      "page": 4,
+      "options": "ABCDEF",
+      "items": {
+        "1.1": "E",
+        "1.2": "D",
+        "1.3": "C",
+        "1.4": "F",
+        "1.5": "A"
+      }
+    },
+    {
+      "no": 2,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 5,
+      "options": "ABC",
+      "items": {
+        "2.1": "A",
+        "2.2": "C",
+        "2.3": "B",
+        "2.4": "B",
+        "2.5": "A",
+        "2.6": "C"
+      }
+    },
+    {
+      "no": 3,
+      "section": "listening",
+      "kind": "open",
+      "label": "Uzupełnij ulotkę po angielsku",
+      "hint": "Na podstawie nagrania wpisz po angielsku brakujące informacje. Wystarczy kilka słów, ale muszą pasować do zdania.",
+      "page": 6,
+      "items": {
+        "3.1": {
+          "answer": "eight / 8 (people)",
+          "note": "Maksymalnie osiem osób.",
+          "accepted": [
+            "eight",
+            "8",
+            "eight people",
+            "8 people",
+            "8 persons",
+            "8 participants",
+            "eight people at once",
+            "only 8 people",
+            "8 person"
+          ]
+        },
+        "3.2": {
+          "answer": "gloves",
+          "note": "Rękawiczki nie są wliczone w cenę.",
+          "accepted": [
+            "gloves",
+            "special gloves",
+            "safety gloves",
+            "special work gloves",
+            "required special gloves",
+            "hand gloves",
+            "the gloves",
+            "gloves which are",
+            "cost of gloves",
+            "specific gloves",
+            "lunch and gloves",
+            "protection gloves",
+            "protective gloves",
+            "special gloves to protect hands"
+          ]
+        },
+        "3.3": {
+          "answer": "earrings",
+          "note": "Uczestnicy robią kolczyki.",
+          "accepted": [
+            "earrings",
+            "pair of earrings",
+            "matching earrings",
+            "ear-rings",
+            "ear rings",
+            "earings"
+          ]
+        },
+        "3.4": {
+          "answer": "art gallery",
+          "note": "Warsztaty są naprzeciwko galerii sztuki.",
+          "accepted": [
+            "art gallery",
+            "gallery",
+            "city art gallery",
+            "galery",
+            "art galery"
+          ]
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dobierz nagłówki (A–F) do części tekstu",
+      "hint": "Przeczytaj tekst w arkuszu i do każdej jego części dobierz nagłówek. Dwa nagłówki zostają.",
+      "page": 7,
+      "options": "ABCDEF",
+      "items": {
+        "4.1": "F",
+        "4.2": "C",
+        "4.3": "D",
+        "4.4": "A"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dopasuj zdania do tekstów (A–D)",
+      "hint": "Przeczytaj krótkie teksty A–D i do każdego zdania z arkusza dobierz tekst, którego ono dotyczy.",
+      "page": 8,
+      "options": "ABCD",
+      "items": {
+        "5.1": "D",
+        "5.2": "C",
+        "5.3": "A"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "open",
+      "label": "Uzupełnij luki po angielsku",
+      "hint": "Uzupełnij luki po angielsku informacjami z tekstu. Odpowiedź musi pasować do zdania i być zgodna z tekstem.",
+      "page": 8,
+      "items": {
+        "5.4": {
+          "answer": "15% of secondary school students",
+          "note": "15% uczniów szkół średnich nie planuje pracy w wakacje (tekst B).",
+          "accepted": [
+            "15% of secondary school students",
+            "15% teenagers",
+            "15% teens",
+            "fifteen per cent of teens",
+            "fifteen percent of teenagers",
+            "15% among secondary school students",
+            "15% of senior school students",
+            "15% of high school students",
+            "15% of secondary students",
+            "15% of secondary schoolers",
+            "15% of secondary school students are",
+            "15% of the secondary school students",
+            "15 percents of secondary school students",
+            "15 per cent of secondary school students",
+            "15 percent of the secondary school students"
+          ]
+        },
+        "5.5": {
+          "answer": "(valuable) life skills",
+          "note": "Praca wakacyjna daje umiejętności życiowe (tekst B).",
+          "accepted": [
+            "valuable life skills",
+            "life skills",
+            "important life skills",
+            "some important life skills",
+            "valuable skills",
+            "new skills",
+            "new life skills",
+            "beneficial skills",
+            "skills",
+            "a lot of skills",
+            "many skills",
+            "some skills",
+            "and develop new skills",
+            "essential abilities",
+            "new skills in life",
+            "a valuable life skills"
+          ]
+        },
+        "5.6": {
+          "answer": "house-sitter",
+          "note": "Można pilnować domu sąsiadów (tekst A).",
+          "accepted": [
+            "house-sitter",
+            "housesitter",
+            "house sitter",
+            "homesitter",
+            "house-sitter and take care of plants",
+            "house-sitter for",
+            "house watcher",
+            "caretaker",
+            "house-siter"
+          ]
+        },
+        "5.7": {
+          "answer": "got (some) vegetables / was given (some) vegetables",
+          "note": "Zamiast pieniędzy dostał warzywa (tekst C).",
+          "accepted": [
+            "got vegetables",
+            "got some vegetables",
+            "was given vegetables",
+            "was given some vegetables",
+            "was paid with vegetables",
+            "was paid in vegetables",
+            "got rewarded with veggies",
+            "received vegetables",
+            "gained vegetables",
+            "got paid with vegetables",
+            "earned vegetables",
+            "had vegetables",
+            "had vegetables as a payment",
+            "used to get vegetables",
+            "got gifted vegetables",
+            "would get fresh vegetables",
+            "kept getting vegetables",
+            "had vegetables given",
+            "had got vegetables",
+            "had been given vegetables",
+            "had been receiving vegetables",
+            "had been paid with vegetables",
+            "was being given vegetables"
+          ]
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z tekstem",
+      "hint": "Przeczytaj tekst i przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z jego treścią.",
+      "page": 12,
+      "options": "ABCD",
+      "items": {
+        "6.1": "C",
+        "6.2": "B",
+        "6.3": "A",
+        "6.4": "C",
+        "6.5": "D"
+      }
+    },
+    {
+      "no": 7,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wstaw brakujące zdania (A–E) w luki",
+      "hint": "Z tekstu usunięto fragmenty. Do każdej luki wpisz literę fragmentu, który pasuje logicznie. Jeden zostaje.",
+      "page": 14,
+      "options": "ABCDE",
+      "items": {
+        "7.1": "E",
+        "7.2": "B",
+        "7.3": "A",
+        "7.4": "D"
+      }
+    },
+    {
+      "no": 8,
+      "section": "language",
+      "kind": "choice",
+      "label": "Uzupełnij minidialogi",
+      "hint": "Do każdego krótkiego dialogu z arkusza wybierz wypowiedź, która pasuje w lukę.",
+      "page": 15,
+      "options": "ABC",
+      "items": {
+        "8.1": "B",
+        "8.2": "B",
+        "8.3": "C"
+      }
+    },
+    {
+      "no": 9,
+      "section": "language",
+      "kind": "choice",
+      "label": "Wybierz opcję o tym samym znaczeniu",
+      "hint": "Wybierz opcję, która znaczy to samo co wyróżniony fragment zdania.",
+      "page": 16,
+      "options": "ABC",
+      "items": {
+        "9.1": "A",
+        "9.2": "C",
+        "9.3": "C",
+        "9.4": "B"
+      }
+    },
+    {
+      "no": 10,
+      "section": "language",
+      "kind": "open",
+      "label": "Wpisz wyrazy z ramki w odpowiedniej formie",
+      "hint": "Wpisz w lukę podany wyraz w odpowiedniej formie (np. jako inną część mowy). Liczy się pełna poprawność.",
+      "page": 17,
+      "items": {
+        "10.1": {
+          "answer": "leaves",
+          "accepted": []
+        },
+        "10.2": {
+          "answer": "eating / having eaten",
+          "accepted": []
+        },
+        "10.3": {
+          "answer": "actually",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "language",
+      "kind": "open",
+      "label": "Przekształć zdania (maks. 4 wyrazy, z wyrazem podanym)",
+      "hint": "Uzupełnij zdanie tak, żeby znaczyło to samo co zdanie wyjściowe. Użyj podanego wyrazu bez zmiany jego formy.",
+      "page": 18,
+      "items": {
+        "11.1": {
+          "answer": "let me know",
+          "accepted": [
+            "let me know",
+            "please let me know",
+            "do let me know",
+            "just let me know",
+            "let me know please",
+            "you let me know"
+          ]
+        },
+        "11.2": {
+          "answer": "was surprised by",
+          "accepted": [
+            "was surprised by",
+            "got surprised by",
+            "was really surprised by",
+            "was very surprised by",
+            "was taken aback by",
+            "was shocked by",
+            "was amazed by",
+            "was stunned by",
+            "was astonished by",
+            "was shaken by"
+          ]
+        },
+        "11.3": {
+          "answer": "were no free",
+          "accepted": [
+            "were no free",
+            "were not any free",
+            "weren't any free",
+            "were no more free",
+            "were no available free",
+            "were zero free"
+          ]
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "writing",
+      "kind": "writing",
+      "label": "E-mail (100–150 wyrazów)",
+      "hint": "Napisz wypowiedź według polecenia z arkusza. Pilnuj liczby wyrazów i zrealizuj wszystkie podpunkty.",
+      "page": 19,
+      "points": 12,
+      "meta": {
+        "words": [
+          100,
+          150
+        ],
+        "criteria": [
+          {
+            "name": "Treść",
+            "points": 5
+          },
+          {
+            "name": "Spójność i logika wypowiedzi",
+            "points": 2
+          },
+          {
+            "name": "Zakres środków językowych",
+            "points": 3
+          },
+          {
+            "name": "Poprawność środków językowych",
+            "points": 2
+          }
+        ]
+      }
+    }
+  ]
+}

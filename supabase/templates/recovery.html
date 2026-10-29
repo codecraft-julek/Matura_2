@@ -1,0 +1,11 @@
+<!-- Supabase Auth → Emails → "Reset password". Subject: Ustaw nowe hasło w Ogarnij Maturę -->
+<div style="font-family: Arial, Helvetica, sans-serif; max-width: 520px; margin: 0 auto; color: #1d2340; line-height: 1.5;">
+  <h1 style="font-size: 22px; margin: 0 0 12px;">Ustaw nowe hasło</h1>
+  <p style="margin: 0 0 20px;">Ktoś (mamy nadzieję, że Ty) poprosił o zmianę hasła do konta w Ogarnij Maturę. Kliknij przycisk, żeby ustawić nowe.</p>
+  <p style="margin: 0 0 24px;">
+    <a href="{{ .SiteURL }}/auth/potwierdz?token_hash={{ .TokenHash }}&type=recovery&next=/nowe-haslo"
+       style="display: inline-block; background: #d63a2f; color: #ffffff; text-decoration: none; font-weight: bold; padding: 12px 20px; border-radius: 10px;">Ustaw nowe hasło</a>
+  </p>
+  <p style="margin: 0 0 8px; font-size: 14px; color: #4a5070;">Link działa przez godzinę i tylko raz.</p>
+  <p style="margin: 0; font-size: 14px; color: #4a5070;">Nie prosiłeś o to? Zignoruj tę wiadomość, Twoje hasło się nie zmieni.</p>
+</div>

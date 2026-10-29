@@ -1,0 +1,322 @@
+{
+  "id": "2024-maj-polski-pp",
+  "subject": "polish",
+  "level": "basic",
+  "year": 2024,
+  "session": "main",
+  "title": "Język polski, poziom podstawowy, maj 2024",
+  "durationMinutes": 240,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-A-2405-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-2405-zasady.pdf",
+    "sheet2": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Jezyk_polski/poziom_podstawowy/MPOP-P2-100-A-2405-arkusz.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Punkt dostajesz tylko za wszystkie poprawne.",
+      "page": 6,
+      "options": "PF",
+      "items": {
+        "1": {
+          "answer": "FF",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      }
+    },
+    {
+      "no": 2,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 6,
+      "items": {
+        "2": {
+          "answer": "Wyjaśnij paradoks na podstawie tekstu 1: ludzie tracą czas na to, żeby go zaoszczędzić.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 3,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 6,
+      "items": {
+        "3": {
+          "answer": "Podaj dwa uwarunkowania z tekstu 2 (np. wiek, nowe doświadczenia).",
+          "accepted": [],
+          "note": "Jeśli podasz więcej niż dwa i któreś będzie błędne – 0 pkt."
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 7,
+      "items": {
+        "4": {
+          "answer": "Wyjaśnij rolę uważności w tekście 2 (świadome przeżywanie chwili sprawia, że wydaje się dłuższa) ORAZ rozstrzygnij i uzasadnij w odniesieniu do tekstu 1.",
+          "accepted": [],
+          "note": "1 pkt za samą część o tekście 2 albo za wyjaśnienie uważności z rozstrzygnięciem wobec tekstu 1.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 5,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Punkt dostajesz tylko za wszystkie poprawne.",
+      "page": 7,
+      "options": "PF",
+      "items": {
+        "5": {
+          "answer": "PP",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "test",
+      "kind": "open",
+      "label": "Notatka syntetyzująca (60–90 wyrazów)",
+      "hint": "Napisz notatkę syntetyzującą (60–90 wyrazów), która zestawia stanowiska obu autorów wobec problemu z polecenia.",
+      "page": 8,
+      "items": {
+        "6": {
+          "answer": "Notatka (60–90 wyrazów) przedstawia stanowisko każdego autora wobec problemu z polecenia, oparte na kluczowych informacjach, i zestawia je ze sobą. 3 pkt za treść + 1 pkt za poprawność językową, ortograficzną i interpunkcyjną. Przekroczenie limitu wyrazów obniża ocenę.",
+          "accepted": [],
+          "points": 4
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 9,
+      "items": {
+        "7": {
+          "answer": "Rozstrzygnij i uzasadnij zgodność obrazu z wymową Księgi Koheleta (np. motyw marności i przemijania: porozrzucane przedmioty, szkielet).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 10,
+      "items": {
+        "8": {
+          "answer": "Rozstrzygnij i uzasadnij w odniesieniu do obu tekstów (np. postawa podmiotu w „Trenie X” jest podobna do postawy Demeter – rozpacz po stracie dziecka).",
+          "accepted": [],
+          "note": "1 pkt, jeśli uzasadnienie dotyczy jednego tekstu.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Punkt dostajesz tylko za wszystkie poprawne.",
+      "page": 11,
+      "options": "PF",
+      "items": {
+        "9": {
+          "answer": "FP",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 12,
+      "items": {
+        "10": {
+          "answer": "Wyjaśnij, odwołując się do treści albo budowy utworu (np. kobieta jest inaczej postrzegana przez ukochanego w zgodzie, a inaczej w kłótni).",
+          "accepted": [],
+          "note": "Samo wymienienie środków stylistycznych = 0 pkt."
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 12,
+      "items": {
+        "11.1": {
+          "answer": "Wykaż profetyczny charakter „Dziadów” cz. III (np. widzenie księdza Piotra, który ogląda przyszłe losy Polski).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Punkt dostajesz tylko za wszystkie poprawne.",
+      "page": 13,
+      "options": "PF",
+      "items": {
+        "11.2": {
+          "answer": "PP",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 14,
+      "items": {
+        "12": {
+          "answer": "Wyjaśnij sens dwóch elementów graficznych plakatu w kontekście „Kordiana” (np. biel i czerwień – poświęcenie w imię niepodległości).",
+          "accepted": [],
+          "note": "1 pkt za jeden element.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 13,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Punkt dostajesz tylko za wszystkie poprawne.",
+      "page": 15,
+      "options": "PF",
+      "items": {
+        "13": {
+          "answer": "FP",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 16,
+      "items": {
+        "14": {
+          "answer": "Wyjaśnij symbolikę złotego rogu (np. jedność narodu, dzięki której możliwa jest zwycięska walka o niepodległość).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 17,
+      "items": {
+        "15": {
+          "answer": "Rozstrzygnij i uzasadnij, odnosząc się do fragmentu i do „Przedwiośnia”, i przywołaj konkretną sytuację z powieści (np. trudne położenie społeczne w II Rzeczypospolitej).",
+          "accepted": [],
+          "note": "1 pkt bez przywołania sytuacji z „Przedwiośnia” albo bez uzasadnienia wobec fragmentu.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 16,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 18,
+      "items": {
+        "16": {
+          "answer": "Wyjaśnij rolę pamięci (np. pamięć o Umschlagplatzu sprawiła, że Edelman jako lekarz dalej ratował ludzi) i powiąż ją z sensem tytułu.",
+          "accepted": [],
+          "note": "1 pkt bez odniesienia do tytułu.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 17,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypracowanie (Arkusz 2, min. 300 wyrazów)",
+      "hint": "Wybierz jeden temat z Arkusza 2 i napisz wypracowanie (min. 300 wyrazów), odwołując się do lektury obowiązkowej.",
+      "page": 5,
+      "sheet": 2,
+      "points": 35,
+      "meta": {
+        "words": [
+          300,
+          0
+        ],
+        "criteria": [
+          {
+            "name": "Spełnienie formalnych warunków polecenia",
+            "points": 1
+          },
+          {
+            "name": "Kompetencje literackie i kulturowe",
+            "points": 16
+          },
+          {
+            "name": "Kompozycja wypowiedzi",
+            "points": 7
+          },
+          {
+            "name": "Język wypowiedzi",
+            "points": 11
+          }
+        ]
+      }
+    }
+  ]
+}

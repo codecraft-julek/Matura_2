@@ -1,0 +1,443 @@
+{
+  "id": "2023-maj-angielski-pr",
+  "subject": "english",
+  "level": "extended",
+  "year": 2023,
+  "session": "main",
+  "title": "Język angielski, poziom rozszerzony, maj 2023",
+  "durationMinutes": 150,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-2305.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-2305-zasady.pdf",
+    "audio": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-2305.mp3",
+    "transcript": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-2305-transkrypcja.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 3,
+      "options": "ABC",
+      "items": {
+        "1.1": "A",
+        "1.2": "C"
+      }
+    },
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 3,
+      "options": "ABCD",
+      "items": {
+        "1.3": "A",
+        "1.4": "C",
+        "1.5": "D",
+        "1.6": "B"
+      }
+    },
+    {
+      "no": 2,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Dopasuj zdania (A–F) do wypowiedzi",
+      "hint": "Usłyszysz kilka krótkich wypowiedzi (każdą dwa razy). Do każdej dobierz pasujące zdanie z arkusza. Jedno zdanie zostaje.",
+      "page": 4,
+      "options": "ABCDEF",
+      "items": {
+        "2.1": "D",
+        "2.2": "B",
+        "2.3": "E",
+        "2.4": "A",
+        "2.5": "F"
+      }
+    },
+    {
+      "no": 3,
+      "section": "listening",
+      "kind": "open",
+      "label": "Uzupełnij notatkę po angielsku",
+      "hint": "Na podstawie nagrania wpisz po angielsku brakujące informacje. Wystarczy kilka słów, ale muszą pasować do zdania.",
+      "page": 5,
+      "items": {
+        "3.1": {
+          "answer": "white glue",
+          "note": "Biały klej.",
+          "accepted": [
+            "a white glue",
+            "the white glue",
+            "some white glue",
+            "glue that must be white",
+            "white coloured glue",
+            "white colored glue",
+            "white colour glue",
+            "white color glue",
+            "glue in colour white",
+            "glue in color white"
+          ]
+        },
+        "3.2": {
+          "answer": "how long it takes",
+          "note": "Pieczenie trwa za długo.",
+          "accepted": [
+            "long time it takes",
+            "6 hours needed for that",
+            "the length of time it takes",
+            "6 hours time of roasting",
+            "how much time it would take",
+            "the amount of time spent to do it",
+            "time it needs in the oven to be roasted",
+            "time of preparation",
+            "roasting taking too much time",
+            "long waiting to have it roasted",
+            "long time of waiting",
+            "waiting time"
+          ]
+        },
+        "3.3": {
+          "answer": "create/produce steam",
+          "note": "Wytworzenie pary.",
+          "accepted": [
+            "create steam",
+            "produce steam",
+            "create a steam",
+            "create the steam",
+            "create some steam",
+            "make steam",
+            "provide steam",
+            "create vapour",
+            "give the effect of steaming",
+            "have the steam",
+            "get steam",
+            "show steam",
+            "make the dish steam",
+            "let out steam",
+            "let off steam",
+            "create steem",
+            "produce staem"
+          ]
+        },
+        "3.4": {
+          "answer": "fruit / pieces of fruit",
+          "note": "Kawałki owoców.",
+          "accepted": [
+            "fruit",
+            "pieces of fruit",
+            "a fruit",
+            "the fruit",
+            "fruits",
+            "fruit pieces",
+            "a piece of fruit",
+            "a fruits",
+            "a pieces of fruit",
+            "fresh fruit",
+            "fruit topping",
+            "chopped fruit on the top",
+            "different fruit"
+          ]
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dopasuj części tekstu (A–D) do pytań",
+      "hint": "Przeczytaj tekst podzielony na części A–D i do każdego pytania dobierz część, w której jest odpowiedź.",
+      "page": 6,
+      "options": "ABCD",
+      "items": {
+        "4.1": "B",
+        "4.2": "A",
+        "4.3": "D",
+        "4.4": "B",
+        "4.5": "C"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wstaw brakujące fragmenty (A–F) w luki",
+      "hint": "Z tekstu usunięto fragmenty. Do każdej luki wpisz literę fragmentu, który pasuje logicznie. Jeden zostaje.",
+      "page": 8,
+      "options": "ABCDEF",
+      "items": {
+        "5.1": "E",
+        "5.2": "D",
+        "5.3": "F",
+        "5.4": "A",
+        "5.5": "C"
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z tekstem",
+      "hint": "Przeczytaj tekst i przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z jego treścią.",
+      "page": 10,
+      "options": "ABCD",
+      "items": {
+        "6.1": "D",
+        "6.2": "B",
+        "6.3": "A",
+        "6.4": "C"
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "open",
+      "label": "Uzupełnij luki po angielsku",
+      "hint": "Uzupełnij luki po angielsku informacjami z tekstu. Odpowiedź musi pasować do zdania i być zgodna z tekstem.",
+      "page": 10,
+      "items": {
+        "6.5": {
+          "answer": "power/electricity",
+          "note": "Dostarczanie prądu.",
+          "accepted": [
+            "power",
+            "electricity",
+            "lighting",
+            "light",
+            "lights",
+            "electrical",
+            "energy",
+            "kind of power",
+            "power supply",
+            "light system",
+            "delivery of light",
+            "electricity circuit",
+            "electric"
+          ]
+        },
+        "6.6": {
+          "answer": "airplane crash sites",
+          "note": "Miejsca katastrof lotniczych.",
+          "accepted": [
+            "plane accident sites",
+            "places where airplanes had crashed before",
+            "sites of plane crashes",
+            "crashed planes",
+            "airplane crash cases",
+            "airplane accidents",
+            "airplane wrecks",
+            "airplane wreckage",
+            "aircraft crashes",
+            "crashed aircraft",
+            "plane collisions",
+            "airplane crash causes",
+            "aeroplane accident",
+            "airplane crash",
+            "airplane accident",
+            "planes crash site",
+            "an airplane crashes",
+            "of airplane crash sites",
+            "about airplane crash sites",
+            "in airplane crash sites",
+            "at airplane crash sites",
+            "of airplane accidents",
+            "into airplane accidents"
+          ]
+        },
+        "6.7": {
+          "answer": "its age",
+          "note": "Wiek statku lub czas katastrofy.",
+          "accepted": [
+            "its age",
+            "its real age",
+            "its exact age",
+            "its precise age",
+            "its age accurately",
+            "how old it is",
+            "the age of the object",
+            "how old the spaceship really is",
+            "her age",
+            "how old is the ship",
+            "when the spacecraft crashed",
+            "the time of the spacecraft's crash",
+            "the date it fell down",
+            "the time when it happened",
+            "the moment of the crash",
+            "the date of that crash",
+            "when it crashed on the earth"
+          ]
+        },
+        "6.8": {
+          "answer": "was sent for / was summoned",
+          "note": "Dr Johnson został wezwany do sprawy.",
+          "accepted": [
+            "was sent for",
+            "was summoned",
+            "was contacted",
+            "was ordered to come",
+            "was invited",
+            "was hired",
+            "was employed",
+            "was chosen",
+            "was chosen to help",
+            "was called",
+            "got called in",
+            "was called up",
+            "was chosen to this case",
+            "was sought out",
+            "was picked",
+            "has been called in",
+            "has been brought",
+            "had been sent for",
+            "was appreciated",
+            "was requested",
+            "was asked for"
+          ]
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "language",
+      "kind": "choice",
+      "label": "Wybierz poprawne uzupełnienie tekstu",
+      "hint": "Przy każdej luce wybierz opcję, która daje logiczny i poprawny gramatycznie tekst.",
+      "page": 14,
+      "options": "ABCD",
+      "items": {
+        "7.1": "D",
+        "7.2": "B",
+        "7.3": "D",
+        "7.4": "C",
+        "7.5": "C",
+        "7.6": "A"
+      }
+    },
+    {
+      "no": 8,
+      "section": "language",
+      "kind": "open",
+      "label": "Przekształć wyrazy z nawiasu",
+      "hint": "Wpisz w lukę podany wyraz w odpowiedniej formie (np. jako inną część mowy). Liczy się pełna poprawność.",
+      "page": 15,
+      "items": {
+        "8.1": {
+          "answer": "shortage",
+          "accepted": []
+        },
+        "8.2": {
+          "answer": "action",
+          "accepted": []
+        },
+        "8.3": {
+          "answer": "encourage",
+          "accepted": []
+        },
+        "8.4": {
+          "answer": "successful",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "language",
+      "kind": "open",
+      "label": "Uzupełnij zdania, wykorzystując wyrazy z nawiasu",
+      "hint": "Uzupełnij zdanie wyrazami z nawiasu w podanej kolejności, dodając brakujące słowa i zmieniając formę, jeśli trzeba.",
+      "page": 16,
+      "items": {
+        "9.1": {
+          "answer": "finds it hard to get",
+          "accepted": [
+            "finds it hard to get",
+            "finds it harder to get",
+            "finds it hardest to get",
+            "finds it hard getting"
+          ]
+        },
+        "9.2": {
+          "answer": "was held later",
+          "accepted": [
+            "was held later",
+            "was held much later",
+            "was held a bit later",
+            "was held a little later",
+            "was being held later",
+            "had been held later",
+            "was to be held later"
+          ]
+        },
+        "9.3": {
+          "answer": "should have mentioned",
+          "accepted": [
+            "should have mentioned",
+            "should've mentioned",
+            "should have made mention of",
+            "should have been mentioning"
+          ]
+        },
+        "9.4": {
+          "answer": "had any doubt(s)",
+          "accepted": [
+            "had any doubt",
+            "had any doubts",
+            "had the slightest doubt",
+            "had doubts",
+            "had a doubt",
+            "did have any doubts",
+            "had had any doubt",
+            "had had any doubts",
+            "was having any doubts",
+            "had some doubt",
+            "had some doubts",
+            "had been in doubt",
+            "did have a doubt",
+            "were to have any doubts",
+            "had that doubt",
+            "had been doubtful",
+            "happened to have a doubt",
+            "had been having doubts",
+            "had a single doubt"
+          ]
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypowiedź pisemna na jeden z dwóch tematów (200–250 wyrazów)",
+      "hint": "Napisz wypowiedź według polecenia z arkusza. Pilnuj liczby wyrazów i zrealizuj wszystkie podpunkty.",
+      "page": 17,
+      "points": 13,
+      "meta": {
+        "words": [
+          200,
+          250
+        ],
+        "criteria": [
+          {
+            "name": "Zgodność z poleceniem",
+            "points": 5
+          },
+          {
+            "name": "Spójność i logika wypowiedzi",
+            "points": 2
+          },
+          {
+            "name": "Zakres środków językowych",
+            "points": 3
+          },
+          {
+            "name": "Poprawność środków językowych",
+            "points": 3
+          }
+        ]
+      }
+    }
+  ]
+}

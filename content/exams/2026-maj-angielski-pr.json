@@ -1,0 +1,426 @@
+{
+  "id": "2026-maj-angielski-pr",
+  "subject": "english",
+  "level": "extended",
+  "year": 2026,
+  "session": "main",
+  "title": "Język angielski, poziom rozszerzony, maj 2026",
+  "durationMinutes": 150,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-A-2605-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-200-2605-zasady.pdf",
+    "audio": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_angielski/poziom_rozszerzony/MJAP-R-100-2605.mp3",
+    "transcript": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Jezyk_angielski/poziom_rozszerzony/MJAP-R0-100-200-660-2605-transkrypcja.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 3,
+      "options": "ABC",
+      "items": {
+        "1.1": "A",
+        "1.2": "C"
+      }
+    },
+    {
+      "no": 1,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z nagraniem",
+      "hint": "Usłyszysz nagrania dwa razy. Przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z tym, co słychać.",
+      "page": 3,
+      "options": "ABCD",
+      "items": {
+        "1.3": "D",
+        "1.4": "A",
+        "1.5": "D",
+        "1.6": "C"
+      }
+    },
+    {
+      "no": 2,
+      "section": "listening",
+      "kind": "choice",
+      "label": "Dopasuj zdania (A–F) do wypowiedzi",
+      "hint": "Usłyszysz kilka krótkich wypowiedzi (każdą dwa razy). Do każdej dobierz pasujące zdanie z arkusza. Jedno zdanie zostaje.",
+      "page": 4,
+      "options": "ABCDEF",
+      "items": {
+        "2.1": "C",
+        "2.2": "F",
+        "2.3": "E",
+        "2.4": "A",
+        "2.5": "D"
+      }
+    },
+    {
+      "no": 3,
+      "section": "listening",
+      "kind": "open",
+      "label": "Uzupełnij zdania po angielsku",
+      "hint": "Na podstawie nagrania wpisz po angielsku brakujące informacje. Wystarczy kilka słów, ale muszą pasować do zdania.",
+      "page": 5,
+      "items": {
+        "3.1": {
+          "answer": "in 1966",
+          "note": "Wyścig odbył się pierwszy raz w 1966 r.",
+          "accepted": [
+            "in 1966",
+            "in nineteen sixty-six",
+            "in nineteen sixty six",
+            "60 years ago",
+            "in the year 1966",
+            "in june 1966",
+            "on the second saturday in june 1966",
+            "on the second saturday of june 1966",
+            "in uk in 1966",
+            "in 1966 year",
+            "in 1966 in knaresborough"
+          ]
+        },
+        "3.2": {
+          "answer": "there is a parade (through the town)",
+          "note": "Po wyścigu jest parada przez miasteczko.",
+          "accepted": [
+            "there is a parade",
+            "there is a parade through the town",
+            "a parade takes place",
+            "there's a parade in the streets",
+            "there is a bed parade",
+            "there is a parade for contestants",
+            "the teams parade",
+            "the teams parade through the town",
+            "the teams take part in a parade",
+            "a parade begins",
+            "a parade follows",
+            "a parade sets off",
+            "a parade is held",
+            "a parade is held in the town",
+            "the parade takes place",
+            "the parade begins",
+            "the teams create a parade",
+            "the teams go to the parade",
+            "the teams join the parade",
+            "a parade is taking place"
+          ]
+        },
+        "3.3": {
+          "answer": "10/ten seconds",
+          "note": "Drużyny startują co 10 sekund.",
+          "accepted": [
+            "10 seconds",
+            "ten seconds",
+            "10 sec",
+            "10 s",
+            "10 seconds, one after another",
+            "10 seconds one team at a time"
+          ]
+        },
+        "3.4": {
+          "answer": "the low temperature of the water",
+          "note": "Niska temperatura wody w rzece.",
+          "accepted": [
+            "the low temperature of the water",
+            "the fact that the water is icy cold",
+            "the coldness of the river",
+            "the coldness of the water",
+            "the cold water",
+            "the ice cold water",
+            "cold water",
+            "ice-cold water",
+            "icy water",
+            "icy river",
+            "the water being icy-cold",
+            "water temperature",
+            "the temperature of the water",
+            "its low temperature",
+            "its freezing temperature",
+            "its cold water",
+            "its coldness"
+          ]
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Dopasuj części tekstu (A–D) do pytań",
+      "hint": "Przeczytaj tekst podzielony na części A–D i do każdego pytania dobierz część, w której jest odpowiedź.",
+      "page": 6,
+      "options": "ABCD",
+      "items": {
+        "4.1": "D",
+        "4.2": "C",
+        "4.3": "B",
+        "4.4": "C",
+        "4.5": "A"
+      }
+    },
+    {
+      "no": 5,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wstaw brakujące zdania (A–F) w luki",
+      "hint": "Z tekstu usunięto fragmenty. Do każdej luki wpisz literę fragmentu, który pasuje logicznie. Jeden zostaje.",
+      "page": 8,
+      "options": "ABCDEF",
+      "items": {
+        "5.1": "D",
+        "5.2": "B",
+        "5.3": "A",
+        "5.4": "F",
+        "5.5": "E"
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "choice",
+      "label": "Wybierz odpowiedź zgodną z tekstem",
+      "hint": "Przeczytaj tekst i przy każdym pytaniu z arkusza wybierz odpowiedź zgodną z jego treścią.",
+      "page": 10,
+      "options": "ABCD",
+      "items": {
+        "6.1": "B",
+        "6.2": "C",
+        "6.3": "D",
+        "6.4": "A"
+      }
+    },
+    {
+      "no": 6,
+      "section": "reading",
+      "kind": "open",
+      "label": "Uzupełnij luki po angielsku",
+      "hint": "Uzupełnij luki po angielsku informacjami z tekstu. Odpowiedź musi pasować do zdania i być zgodna z tekstem.",
+      "page": 10,
+      "items": {
+        "6.5": {
+          "answer": "modern violins and those created by Stradivari",
+          "note": "Porównanie nowych skrzypiec ze Stradivariusami.",
+          "accepted": [
+            "modern violins and those created by stradivari",
+            "stradivari violins and modern violins",
+            "stradivari's violins and modern violins",
+            "stradivari violins compared to the modern ones",
+            "stradivari violins and violins produced recently",
+            "modern violins and those of stradivari",
+            "modern violins and those crafted by stradivari",
+            "a stradivari violin and a modern one",
+            "modern violins and those by stradivari"
+          ]
+        },
+        "6.6": {
+          "answer": "the oldest (Stradivari) violin",
+          "note": "Chodzi o najstarsze skrzypce.",
+          "accepted": [
+            "the oldest violin",
+            "the oldest stradivari violin",
+            "the oldest instrument",
+            "the oldest of those violins",
+            "the oldest one",
+            "the oldest stradivari",
+            "the oldest",
+            "the oldest of them",
+            "the oldest of these",
+            "the oldest of these instruments",
+            "the oldest of violins",
+            "oldest",
+            "oldest violin",
+            "the oldest stradivari's violin"
+          ]
+        },
+        "6.7": {
+          "answer": "the comments he made about the instruments",
+          "note": "Rozbawiły go jego własne (błędne) komentarze.",
+          "accepted": [
+            "the comments he made about the instruments",
+            "his wrong impressions of the violins he played",
+            "his comments",
+            "his comments recorded",
+            "his comments made about the violins",
+            "the certainty of his comments",
+            "the incorrectness of his comments",
+            "his comments being wrong",
+            "his misconceptions",
+            "his wrong convictions",
+            "how wrong his comments were",
+            "how sure he was of his comments",
+            "the recording of his comments",
+            "his impressions",
+            "his impressions about the violins"
+          ]
+        },
+        "6.8": {
+          "answer": "the instruments/violins (for) long enough",
+          "note": "Skrzypkowie grali za krótko.",
+          "accepted": [
+            "the instruments long enough",
+            "the violins long enough",
+            "the instruments for long enough",
+            "the violins for long enough",
+            "the violins for enough time",
+            "the instruments for enough time",
+            "violins more",
+            "more",
+            "more time",
+            "longer than 20 minutes",
+            "for more than 20 minutes",
+            "for a long enough time",
+            "for enough time",
+            "for a long time",
+            "for a really long time"
+          ]
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "language",
+      "kind": "choice",
+      "label": "Wybierz poprawne uzupełnienie tekstu",
+      "hint": "Przy każdej luce wybierz opcję, która daje logiczny i poprawny gramatycznie tekst.",
+      "page": 14,
+      "options": "ABCD",
+      "items": {
+        "7.1": "D",
+        "7.2": "B",
+        "7.3": "A",
+        "7.4": "A",
+        "7.5": "B",
+        "7.6": "C"
+      }
+    },
+    {
+      "no": 8,
+      "section": "language",
+      "kind": "open",
+      "label": "Przekształć wyrazy z nawiasu",
+      "hint": "Wpisz w lukę podany wyraz w odpowiedniej formie (np. jako inną część mowy). Liczy się pełna poprawność.",
+      "page": 16,
+      "items": {
+        "8.1": {
+          "answer": "industrial",
+          "accepted": [
+            "industrial",
+            "post-industrial",
+            "postindustrial",
+            "industrialised",
+            "industrialized"
+          ]
+        },
+        "8.2": {
+          "answer": "strength",
+          "accepted": [
+            "strength",
+            "strongness",
+            "strengths"
+          ]
+        },
+        "8.3": {
+          "answer": "neighbourhood",
+          "accepted": [
+            "neighbourhood",
+            "neighbourhoods",
+            "neighborhood"
+          ]
+        },
+        "8.4": {
+          "answer": "gradually",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "language",
+      "kind": "open",
+      "label": "Przekształć zdania z wyrazem podanym (maks. 5 wyrazów)",
+      "hint": "Uzupełnij zdanie tak, żeby znaczyło to samo co zdanie wyjściowe. Użyj podanego wyrazu bez zmiany jego formy.",
+      "page": 17,
+      "items": {
+        "9.1": {
+          "answer": "was being served",
+          "accepted": [
+            "was being served",
+            "was being served by them",
+            "was being served to me",
+            "was being delivered",
+            "was being brought"
+          ]
+        },
+        "9.2": {
+          "answer": "rather you sent",
+          "accepted": [
+            "rather you sent",
+            "rather that you sent",
+            "rather you send",
+            "rather that you send",
+            "rather have you send",
+            "rather you did send"
+          ]
+        },
+        "9.3": {
+          "answer": "accused John of entering",
+          "accepted": [
+            "accused john of entering",
+            "accused him of entering",
+            "accused john of having entered",
+            "accused him of having entered",
+            "accused john of coming into",
+            "accused john of going into",
+            "accused john of getting into",
+            "accused john of coming inside",
+            "accused john of going inside"
+          ]
+        },
+        "9.4": {
+          "answer": "must have left",
+          "accepted": [
+            "must have left",
+            "must've left"
+          ]
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypowiedź pisemna na jeden z dwóch tematów (200–250 wyrazów)",
+      "hint": "Napisz wypowiedź według polecenia z arkusza. Pilnuj liczby wyrazów i zrealizuj wszystkie podpunkty.",
+      "page": 18,
+      "points": 13,
+      "meta": {
+        "words": [
+          200,
+          250
+        ],
+        "criteria": [
+          {
+            "name": "Zgodność z poleceniem",
+            "points": 5
+          },
+          {
+            "name": "Spójność i logika wypowiedzi",
+            "points": 2
+          },
+          {
+            "name": "Zakres środków językowych",
+            "points": 3
+          },
+          {
+            "name": "Poprawność środków językowych",
+            "points": 3
+          }
+        ]
+      }
+    }
+  ]
+}

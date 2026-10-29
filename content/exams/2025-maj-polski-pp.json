@@ -1,0 +1,307 @@
+{
+  "id": "2025-maj-polski-pp",
+  "subject": "polish",
+  "level": "basic",
+  "year": 2025,
+  "session": "main",
+  "title": "Język polski, poziom podstawowy, maj 2025",
+  "durationMinutes": 240,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Jezyk_polski/poziom_podstawowy/MPOP-P1-100-A-2505-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MPOP-P1-100-2505-zasady.pdf",
+    "sheet2": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Jezyk_polski/poziom_podstawowy/MPOP-P2-100-A-2505-arkusz.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 6,
+      "items": {
+        "1": {
+          "answer": "Wyjaśnij sens zdania na podstawie tekstu 1: słowo „planeta” wywodzi się od greckiego „wędrujący”, więc chodzi o podróże kosmiczne – ludzie-wędrowcy podróżują między planetami.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 2,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 6,
+      "items": {
+        "2": {
+          "answer": "Rozstrzygnij i uzasadnij, odwołując się do obu tekstów i przyczyn zainteresowania kosmosem (np. ciekawość, szukanie warunków do życia).",
+          "accepted": [],
+          "note": "1 pkt za rozstrzygnięcie i przyczynę z jednego tekstu.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 3,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 7,
+      "items": {
+        "3": {
+          "answer": "Wyjaśnij zgodnie z tekstem 1 (np. ograniczają nas koszty) ORAZ rozstrzygnij i uzasadnij w odniesieniu do tekstu 2 (np. tam przeszkodą są warunki w kosmosie).",
+          "accepted": [],
+          "note": "1 pkt za samo wyjaśnienie zgodne z tekstem 1.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "test",
+      "kind": "choice",
+      "label": "Prawda czy fałsz",
+      "hint": "Oceń każde stwierdzenie z arkusza: P – prawdziwe, F – fałszywe. Punkt dostajesz tylko za wszystkie poprawne.",
+      "page": 7,
+      "options": "PF",
+      "items": {
+        "4": {
+          "answer": "PF",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      }
+    },
+    {
+      "no": 5,
+      "section": "test",
+      "kind": "open",
+      "label": "Notatka syntetyzująca (60–90 wyrazów)",
+      "hint": "Napisz notatkę syntetyzującą (60–90 wyrazów), która zestawia stanowiska obu autorów wobec problemu z polecenia.",
+      "page": 8,
+      "items": {
+        "5": {
+          "answer": "Notatka (60–90 wyrazów) przedstawia stanowisko każdego autora wobec problemu z polecenia, oparte na kluczowych informacjach, i zestawia je ze sobą. 3 pkt za treść + 1 pkt za poprawność językową, ortograficzną i interpunkcyjną. Przekroczenie limitu wyrazów obniża ocenę.",
+          "accepted": [],
+          "points": 4
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "test",
+      "kind": "choice",
+      "label": "Uzupełnij tabelę",
+      "hint": "Uzupełnij tabelę z arkusza: przy każdym wierszu wybierz właściwy numer. Punkt za oba wiersze poprawnie.",
+      "page": 9,
+      "options": "1234",
+      "items": {
+        "6": {
+          "answer": "14",
+          "rows": [
+            "A",
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 10,
+      "items": {
+        "7.1": {
+          "answer": "Wyjaśnij, czym różni się postawa życiowa zalecana w tekście 1 (lekceważenie dóbr doczesnych, bo i tak przeminą) od postawy zalecanej w tekście 2.",
+          "accepted": [],
+          "note": "Musisz odnieść się do postawy życiowej."
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 10,
+      "items": {
+        "7.2": {
+          "answer": "Nazwa epoki: średniowiecze, plus wykazanie, że postawa z tekstu 1 pasuje do jego światopoglądu (np. pogarda dla świata doczesnego).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 11,
+      "items": {
+        "8.1": {
+          "answer": "Podaj dwa argumenty z tekstu (np. rządzący zastępują na ziemi Boga, więc mają troszczyć się o ludzi tak jak On).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 12,
+      "items": {
+        "8.2": {
+          "answer": "Uzupełnij oba wiersze tabeli: nazwa środka retorycznego i przykład z tekstu (dla epitetu wystarczy sam wyraz określający).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 12,
+      "items": {
+        "9": {
+          "answer": "Rozstrzygnij i podaj dwa argumenty odnoszące się do obu tekstów (np. w obu fragmentach pokazano cierpiącą matkę).",
+          "accepted": [],
+          "note": "1 pkt za jeden argument.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "test",
+      "kind": "choice",
+      "label": "Zadanie zamknięte",
+      "hint": "Wybierz jedną odpowiedź spośród podanych w arkuszu.",
+      "page": 14,
+      "options": "ABCD",
+      "items": {
+        "10.1": "A"
+      }
+    },
+    {
+      "no": 10,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 14,
+      "items": {
+        "10.2": {
+          "answer": "Wyjaśnij, czego symbolem jest Rycerz w „Weselu” (np. mocy, siły, męstwa, wiary w zwycięstwo).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 11,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 15,
+      "items": {
+        "11": {
+          "answer": "Wyjaśnij sens sformułowania „przejdziem w mit”: osoba mówiąca wie, że uczestniczy w ważnych, historycznych wydarzeniach, które zostaną zapamiętane.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 16,
+      "items": {
+        "12": {
+          "answer": "Wyjaśnij sens dwóch elementów graficznych w kontekście „Roku 1984” (np. oko – Wielki Brat i nieustanna inwigilacja).",
+          "accepted": [],
+          "note": "1 pkt za jeden element.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 13,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Odpowiedz pełnym zdaniem i odwołaj się do tekstu, którego dotyczy zadanie.",
+      "page": 17,
+      "items": {
+        "13": {
+          "answer": "Wyjaśnij, na czym polega groteska (np. zachowanie postaci nieadekwatne do sytuacji) i podaj trafny przykład z fragmentu „Tanga”.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "test",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "hint": "Za pełną odpowiedź są 2 pkt. Zwykle trzeba się rozstrzygnąć i uzasadnić, odwołując się do obu tekstów.",
+      "page": 19,
+      "items": {
+        "14": {
+          "answer": "Rozstrzygnij i uzasadnij, odnosząc się do „Starego Prometeusza” i do mitu o Prometeuszu.",
+          "accepted": [],
+          "note": "1 pkt za samo trafne określenie postawy starego Prometeusza.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "writing",
+      "kind": "writing",
+      "label": "Wypracowanie (Arkusz 2, min. 300 wyrazów)",
+      "hint": "Wybierz jeden temat z Arkusza 2 i napisz wypracowanie (min. 300 wyrazów), odwołując się do lektury obowiązkowej.",
+      "page": 5,
+      "sheet": 2,
+      "points": 35,
+      "meta": {
+        "words": [
+          300,
+          0
+        ],
+        "criteria": [
+          {
+            "name": "Spełnienie formalnych warunków polecenia",
+            "points": 1
+          },
+          {
+            "name": "Kompetencje literackie i kulturowe",
+            "points": 16
+          },
+          {
+            "name": "Kompozycja wypowiedzi",
+            "points": 7
+          },
+          {
+            "name": "Język wypowiedzi",
+            "points": 11
+          }
+        ]
+      }
+    }
+  ]
+}
