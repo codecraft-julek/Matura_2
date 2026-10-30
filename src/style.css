@@ -315,6 +315,15 @@ mark { color: inherit; background: #e7f3d2; padding: 2px 1px; box-decoration-bre
 .footer-top nav a:hover { color: var(--green); }
 .footer-bottom { border-top: 1px solid #e2e7da; padding-top: 22px; display: flex; justify-content: space-between; gap: 20px; color: #8f9986; font-size: 8px; }
 .footer-bottom span:last-child { display: flex; align-items: center; gap: 5px; }
+.footer-credit { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 16px; margin-top: 28px; color: var(--text-soft); font-size: 11px; }
+.footer-credit-link { display: inline-flex; align-items: center; gap: 11px; padding: 8px 12px 8px 8px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--green); transition: background .18s, border-color .18s; }
+.footer-credit-link:hover { background: var(--surface-2); border-color: var(--line-strong); }
+.footer-credit-link:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+.footer-credit-monogram { display: grid; place-items: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 11px; background: var(--green); color: var(--lime); font-family: var(--heading); font-size: 12px; font-weight: 750; letter-spacing: -.5px; }
+.footer-credit-person { display: grid; gap: 2px; text-align: left; line-height: 1.4; }
+.footer-credit-person strong { font-family: var(--heading); font-size: 12px; font-weight: 750; }
+.footer-credit-person > span { color: var(--text-soft); font-size: 11px; }
+.footer-credit-arrow { margin-left: 4px; font-size: 18px; }
 
 /* Frontend-only interactive demo */
 .modal-open { overflow: hidden; }

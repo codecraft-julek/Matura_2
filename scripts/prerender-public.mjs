@@ -17,7 +17,7 @@ import { examJsonLd, examListJsonLd, examSeo } from '../src/pages/public/seo-exa
 import { faqs } from '../src/data.js'
 import { PLAN_DETAILS } from '../src/components/premium/planDetails.js'
 import { PLANS } from '../src/config/plans.ts'
-import { PRODUCT_NAME, SITE } from '../src/config/site.ts'
+import { AUTHOR, PRODUCT_NAME, SITE } from '../src/config/site.ts'
 import { markSvg } from '../src/brand/identity.js'
 import { legalDocuments } from '../src/content/legal/documents.js'
 import { renderLegalArticle } from '../src/content/legal/render.js'
@@ -49,7 +49,7 @@ function publicShell(main) {
   return `<div class="public-shell">
 <header class="site-header"><div class="container header-inner">${brand}<nav class="desktop-navigation" aria-label="Menu główne">${nav.map(([h, t]) => a(h, t)).join('')}</nav><div class="header-actions">${a(ROUTES.login, 'Zaloguj się', 'text-button desktop-demo')}${a(ROUTES.signup, 'Załóż konto', 'button button-dark header-cta')}</div></div></header>
 <main id="main" style="flex:1">${main}</main>
-<footer class="site-footer container"><div class="footer-top">${brand}<p>Mniej stresu. Więcej przyszłości.</p><nav aria-label="Menu w stopce">${a(ROUTES.publicExams, 'Arkusze maturalne')}${a(ROUTES.contact, 'Kontakt')}${a(ROUTES.terms, 'Regulamin')}${a(ROUTES.privacy, 'Polityka prywatności')}</nav></div><div class="footer-bottom"><span>© ${new Date().getFullYear()} ${esc(PRODUCT_NAME)}</span><span>Nie jesteśmy powiązani z CKE.</span></div></footer>
+<footer class="site-footer container"><div class="footer-top">${brand}<p>Mniej stresu. Więcej przyszłości.</p><nav aria-label="Menu w stopce">${a(ROUTES.publicExams, 'Arkusze maturalne')}${a(ROUTES.contact, 'Kontakt')}${a(ROUTES.terms, 'Regulamin')}${a(ROUTES.privacy, 'Polityka prywatności')}</nav></div><div class="footer-bottom"><span>© ${new Date().getFullYear()} ${esc(PRODUCT_NAME)}</span><span>Nie jesteśmy powiązani z CKE.</span></div><div class="footer-credit"><span>Projekt i wykonanie</span><a class="footer-credit-link" href="mailto:${esc(AUTHOR.email)}"><span class="footer-credit-monogram" aria-hidden="true">JM</span><span class="footer-credit-person"><strong>${esc(AUTHOR.name)}</strong><span>${esc(AUTHOR.email)}</span></span><span class="footer-credit-arrow" aria-hidden="true">↗</span></a></div></footer>
 </div>`
 }
 

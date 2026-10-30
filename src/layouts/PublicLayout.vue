@@ -59,7 +59,15 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
           <RouterLink :to="ROUTES.privacy">Polityka prywatności</RouterLink>
         </nav>
       </div>
-      <div class="footer-bottom"><span>© {{ new Date().getFullYear() }} Ogarnij Maturę · {{ AUTHOR.name }}</span><span>Nie jesteśmy powiązani z CKE.</span></div>
+      <div class="footer-bottom"><span>© {{ new Date().getFullYear() }} Ogarnij Maturę</span><span>Nie jesteśmy powiązani z CKE.</span></div>
+      <div class="footer-credit">
+        <span>Projekt i wykonanie</span>
+        <a class="footer-credit-link" :href="`mailto:${AUTHOR.email}`">
+          <span class="footer-credit-monogram" aria-hidden="true">JM</span>
+          <span class="footer-credit-person"><strong>{{ AUTHOR.name }}</strong><span>{{ AUTHOR.email }}</span></span>
+          <span class="footer-credit-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
     </footer>
   </div>
 </template>
