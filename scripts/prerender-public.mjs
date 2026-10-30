@@ -19,6 +19,8 @@ import { PLAN_DETAILS } from '../src/components/premium/planDetails.js'
 import { PLANS } from '../src/config/plans.ts'
 import { PRODUCT_NAME, SITE } from '../src/config/site.ts'
 import { markSvg } from '../src/brand/identity.js'
+import { legalDocuments } from '../src/content/legal/documents.js'
+import { renderLegalArticle } from '../src/content/legal/render.js'
 import { ROUTES, checkoutRoute, examRoutes, publicExamRoute } from '../src/config/routes.ts'
 import { SECTION_LABEL, SESSION_LABEL, SUBJECT_LABEL } from '../src/lib/exams/labels.ts'
 import { LEVEL_SHORT, SUBJECT_FROM, examHeadline, tasksLabel } from '../src/lib/exams/public.ts'
@@ -138,7 +140,7 @@ function contactBody() {
 <h1>Kontakt</h1>
 <p>Pytanie, coś nie działa albo masz pomysł, co dodać? Napisz, czytamy każdą wiadomość. Odpowiadamy zwykle w ciągu 1–2 dni.</p>
 <p>Formularz kontaktowy działa po włączeniu JavaScriptu. Możesz też napisać na <a href="mailto:${esc(SITE.contactEmail)}">${esc(SITE.contactEmail)}</a>.</p>
-<p>Twoje dane wykorzystamy tylko do odpowiedzi. Więcej w ${a(ROUTES.privacy, 'polityce prywatności')}.</p>
+<p>Dane wykorzystamy do obsługi zgłoszenia, ochrony przed nadużyciami i realizacji właściwych obowiązków prawnych. Więcej w ${a(ROUTES.privacy, 'polityce prywatności')}.</p>
 </div>`
 }
 
@@ -201,6 +203,9 @@ write(ROUTES.publicExams, render({ ...PAGE_SEO.publicExams, jsonLd: examListJson
 for (const exam of exams) write(publicExamRoute(exam.id), render({ ...examSeo(exam), jsonLd: examJsonLd(exam, SITE_URL) }, publicShell(examBody(exam, exams))))
 write(ROUTES.contact, render(PAGE_SEO.contact, publicShell(contactBody())))
 write(ROUTES.signup, render(PAGE_SEO.signup, signupPage()))
+for (const doc of legalDocuments) {
+  write(doc.path, render(doc.id === 'regulamin' ? PAGE_SEO.terms : PAGE_SEO.privacy, publicShell(renderLegalArticle(doc))))
+}
 
 // External Stripe returns are full document loads, not client-side navigation. Give these
 // entry points their own shell as well as the Vercel fallback; never prerender paid access.

@@ -20,7 +20,7 @@ export const passwordSchema = z
 export const signupSchema = z.object({
   email,
   password: passwordSchema,
-  acceptTerms: z.literal(true, { error: "Musisz zaakceptować regulamin i politykę prywatności." }),
+  acceptTerms: z.literal(true, { error: "Zaakceptuj regulamin. Polityka prywatności opisuje przetwarzanie danych i nie jest ogólną zgodą." }),
   ageConfirmed: z.literal(true, { error: "Potwierdź, proszę, swój wiek." }),
 });
 

@@ -8,6 +8,7 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import CheckoutLayout from '@/layouts/CheckoutLayout.vue'
 import ToastHost from '@/ui/ToastHost.vue'
 import ConfirmHost from '@/ui/ConfirmHost.vue'
+import PrivacyBanner from '@/components/privacy/PrivacyBanner.vue'
 
 const route = useRoute()
 const layouts = { public: PublicLayout, auth: AuthLayout, app: AppLayout, checkout: CheckoutLayout }
@@ -19,4 +20,5 @@ const layout = computed(() => layouts[route.meta.layout] ?? null)
   <RouterView v-else />
   <ToastHost />
   <ConfirmHost />
+  <PrivacyBanner />
 </template>

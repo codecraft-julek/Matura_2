@@ -2,7 +2,7 @@
 // /konto: plan and payments, profile, password, data export (GDPR access), account deletion
 // (GDPR erasure) and signing out.
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { Download, KeyRound, LoaderCircle, LogOut, Trash2, UserRound, Zap, FileJson } from '@lucide/vue'
 import ErrorState from '@/ui/ErrorState.vue'
 import BillingStatus from '@/components/premium/BillingStatus.vue'
@@ -90,7 +90,8 @@ async function signOut() {
       <section aria-labelledby="account-data">
         <h2 id="account-data" class="section-title"><FileJson :size="18" aria-hidden="true" />Twoje dane</h2>
         <div class="card">
-          <p class="muted">Możesz pobrać wszystko, co o Tobie przechowujemy, w jednym pliku (format JSON): profil, podejścia do arkuszy, wypracowania, rozmowy z tutorem, notatki, fiszki i oceny odpowiedzi AI.</p>
+          <p class="muted">Pobierz dane konta i nauki w formacie JSON: profil, podejścia do arkuszy, wypracowania, rozmowy z tutorem, notatki, fiszki i oceny odpowiedzi AI. Eksport nie obejmuje całej korespondencji, dokumentów płatności ani logów infrastruktury.</p>
+          <p class="muted" style="margin-top: 12px">Pełną kopię danych możesz uzyskać przez <RouterLink :to="`${ROUTES.contact}?sprawa=dane`" class="link">kontakt</RouterLink>. <RouterLink :to="`${ROUTES.privacy}#pamiec`" class="link">Ustawienia prywatności i lokalnych szkiców</RouterLink>.</p>
           <div class="form-actions" style="margin-top: 18px">
             <button type="button" class="button button-outline button-sm" :disabled="exporting" :aria-busy="exporting ? 'true' : undefined" @click="exportData">
               <LoaderCircle v-if="exporting" class="spin" :size="16" aria-hidden="true" /><Download v-else :size="16" aria-hidden="true" />{{ exporting ? 'Przygotowuję plik…' : 'Pobierz moje dane' }}

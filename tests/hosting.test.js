@@ -21,7 +21,7 @@ describe('external payment returns on Vercel', () => {
     expect(matcher.test(new URL(path, 'https://matura-2.vercel.app').pathname)).toBe(true)
   })
 
-  it.each(['/assets/Checkout.js', '/assets/checkout.css', '/favicon.svg', '/robots.txt'])('leaves real assets alone: %s', path => {
+  it.each(['/assets/Checkout.js', '/assets/checkout.css', '/favicon.svg', '/robots.txt', '/dokumenty/regulamin-2026-10-30.html', '/dokumenty/regulamin-2026-10-30', '/dokumenty/formularz-odstapienia.txt'])('leaves real assets alone: %s', path => {
     expect(matcher.test(path)).toBe(false)
   })
 })

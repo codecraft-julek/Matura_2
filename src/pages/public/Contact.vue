@@ -3,7 +3,7 @@
 // limit and CAPTCHA are checked there too). When logged in, the request carries the student's token,
 // so the message is linked to the account and we can help faster.
 import { nextTick, reactive, ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { CircleAlert, LoaderCircle, MailCheck, Send } from '@lucide/vue'
 import { CONTACT_TOPICS, contactSchema } from '@shared/contact'
 import { ROUTES } from '@/config/routes'
@@ -19,7 +19,16 @@ useSeo(() => PAGE_SEO.contact)
 
 const MAX = 4000
 const auth = useAuthStore()
-const form = reactive({ name: '', email: auth.email || '', topic: CONTACT_TOPICS[0].value, message: '', website: '' })
+const route = useRoute()
+// These templates use existing server-validated topics, so no backend deployment is needed.
+const requests = {
+  odstapienie: { topic: 'other', message: 'Oświadczam, że odstępuję od umowy o Premium / Pakiet do matury.\nData zakupu: \nE-mail powiązany z zakupem: \nImię i nazwisko: ' },
+  reklamacja: { topic: 'bug', message: 'Składam reklamację usługi.\nOpis problemu: \nData wystąpienia: \nOczekiwane rozwiązanie: ' },
+  dane: { topic: 'other', message: 'Zgłoszenie dotyczące moich danych osobowych.\nZakres żądania: ' },
+}
+const requestKind = String(route.query.sprawa ?? '')
+const initial = Object.hasOwn(requests, requestKind) ? requests[requestKind] : { topic: CONTACT_TOPICS[0].value, message: '' }
+const form = reactive({ name: '', email: auth.email || '', ...initial, website: '' })
 const errors = ref({})
 const message = ref('')
 const pending = ref(false)
@@ -123,7 +132,7 @@ async function submit() {
 
     <div class="contact-notes">
       <p>Wolisz zwykły e-mail? Pisz na <a :href="`mailto:${SITE.contactEmail}`" class="link">{{ SITE.contactEmail }}</a>.</p>
-      <p>Twoje dane wykorzystamy tylko do odpowiedzi. Więcej w <RouterLink :to="ROUTES.privacy" class="link">polityce prywatności</RouterLink>.</p>
+      <p>Dane wykorzystamy do obsługi zgłoszenia, ochrony przed nadużyciami i realizacji właściwych obowiązków prawnych. Więcej w <RouterLink :to="ROUTES.privacy" class="link">polityce prywatności</RouterLink>.</p>
     </div>
   </div>
 </template>

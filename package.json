@@ -4,9 +4,12 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
+    "legal:build": "node scripts/build-legal-documents.mjs",
+    "predev": "npm run legal:build",
+    "prebuild": "npm run legal:build",
     "brand:build": "node scripts/build-brand-assets.mjs && node scripts/render-brand-previews.mjs && node scripts/make-og-image.mjs",
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build && node scripts/prerender-public.mjs && node scripts/check-checkout-build.mjs",
+    "build": "vite build && node scripts/prerender-public.mjs && node scripts/check-checkout-build.mjs && node scripts/check-legal-build.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.js",

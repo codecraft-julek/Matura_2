@@ -28,7 +28,7 @@ export const LAUNCHED = true;
 
 // Bump when the terms or privacy policy change in a way users must accept again.
 // Saved on every profile at signup.
-export const TERMS_VERSION = "2026-10-17";
+export { LEGAL_VERSION as TERMS_VERSION } from './legal.js';
 
 // Supabase project "Matura". These values are PUBLIC by design (anyone can see them in the browser),
 // so they can live in the code. All SECRETS live in Supabase (Edge Function secrets), never here.

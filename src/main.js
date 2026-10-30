@@ -1,11 +1,12 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { inject } from '@vercel/analytics'
 import '@fontsource-variable/manrope'
 import '@fontsource-variable/dm-sans'
 import './style.css'
 import './theme.css'
 import './styles/app.css'
+import './styles/legal.css'
+import { initPrivacyAnalytics } from './lib/privacy/analytics'
 import Root from './Root.vue'
 import { router } from './router'
 
@@ -18,5 +19,4 @@ app.use(createPinia())
 app.use(router)
 app.mount('#app')
 
-// Cookieless analytics: no cookie banner needed. Only reports when deployed on Vercel.
-inject({ mode: import.meta.env.PROD ? 'production' : 'development' })
+initPrivacyAnalytics()

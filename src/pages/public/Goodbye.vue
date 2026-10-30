@@ -14,7 +14,8 @@ useSeo(() => PAGE_SEO.goodbye)
     <span class="gb-icon"><Heart :size="28" /></span>
     <span class="page-kicker">Do zobaczenia!</span>
     <h1>Twoje konto zostało usunięte<span class="accent-dot">.</span></h1>
-    <p>Usunęliśmy Twoje konto i wszystkie powiązane dane. Trzymamy kciuki za maturę!</p>
+    <p>Konto, prace i postępy usunęliśmy z aktywnej bazy. Zasady przechowywania pozostałej korespondencji, dokumentów rozliczeniowych i kopii zapasowych opisuje <RouterLink :to="`${ROUTES.privacy}#retencja`" class="link">polityka prywatności</RouterLink>.</p>
+    <p>Lokalne szkice mogą pozostać na urządzeniu. Możesz je usunąć w <RouterLink :to="`${ROUTES.privacy}#pamiec`" class="link">ustawieniach prywatności</RouterLink>. Trzymamy kciuki za maturę!</p>
     <div class="row gb-actions">
       <RouterLink class="button button-dark" :to="ROUTES.home"><ArrowLeft :size="17" /> Strona główna</RouterLink>
       <RouterLink class="button button-outline" :to="ROUTES.publicExams">Arkusze maturalne</RouterLink>

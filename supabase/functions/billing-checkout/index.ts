@@ -12,6 +12,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { BILLING_PLANS, CURRENCY, MATURA_PASS_UNTIL, isBillingPlan, returnOrigin, stripe } from "../_shared/billing.ts";
+import { validPurchaseConsents, purchaseConsentMetadata } from "../_shared/purchase-consents.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -53,16 +54,15 @@ async function handle(request: Request) {
   // 3. Validate: a plan we sell, and all three consents ticked (the website shows them).
   const raw = await request.text();
   if (raw.length > 2_000) return json({ ok: false, error: "Nieprawidłowe dane." }, 413);
-  let body: { plan?: unknown; consents?: { terms?: unknown; age?: unknown; withdrawal?: unknown }; termsVersion?: unknown };
+  let body: { plan?: unknown; consents?: unknown; termsVersion?: unknown };
   try {
     body = JSON.parse(raw || "{}");
   } catch {
     return json({ ok: false, error: "Nieprawidłowe dane." }, 400);
   }
   if (!isBillingPlan(body.plan)) return json({ ok: false, error: "Wybierz plan." }, 400);
-  const c = body.consents ?? {};
-  if (c.terms !== true || c.age !== true || c.withdrawal !== true) {
-    return json({ ok: false, error: "Zaznacz wszystkie zgody, żeby przejść do płatności." }, 400);
+  if (!validPurchaseConsents(body.consents, body.termsVersion)) {
+    return json({ ok: false, error: "Odśwież stronę i potwierdź aktualny regulamin, wiek oraz żądanie rozpoczęcia usługi." }, 400);
   }
   const planId = body.plan;
   const plan = BILLING_PLANS[planId];
@@ -99,9 +99,7 @@ async function handle(request: Request) {
   const metadata = {
     user_id: user.id,
     plan: planId,
-    // Proof of the consents (Polish consumer law: digital content starts right away, so the
-    // 14-day right of withdrawal ends once Premium is switched on).
-    consents: `terms+age+withdrawal@${new Date().toISOString()}`,
+    ...purchaseConsentMetadata(new Date().toISOString()),
     terms_version: typeof body.termsVersion === "string" ? body.termsVersion.slice(0, 20) : "",
   };
   const createSession = (customer: string) => stripe<{ url: string }>(secretKey, "POST", "checkout/sessions", {

@@ -3,7 +3,7 @@
 // otherwise asks for USUŃ in a dialog, calls rpc delete_my_account, clears the session on this
 // device and says goodbye. Port of deleteAccount() from the old src/lib/auth/actions.ts.
 import { computed, ref, useId } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { Trash2, TriangleAlert } from '@lucide/vue'
 import AppDialog from '@/ui/AppDialog.vue'
 import AppField from '@/ui/AppField.vue'
@@ -73,11 +73,12 @@ async function onSubmit() {
 
 <template>
   <div class="card danger-card">
-    <p class="muted">Usuniemy Twoje konto i wszystkie powiązane dane. <strong class="strong">Tego nie da się cofnąć.</strong></p>
+    <p class="muted">Usuniemy konto, zapisane prace i postępy z aktywnej bazy. <strong class="strong">Tego nie da się cofnąć.</strong> Korespondencja, wymagane dokumenty rozliczeniowe i kopie zapasowe podlegają okresom opisanym w <RouterLink :to="`${ROUTES.privacy}#retencja`" class="link">polityce prywatności</RouterLink>.</p>
     <p v-if="renews" class="alert alert-warn" style="margin-top: 14px">
       <TriangleAlert :size="18" aria-hidden="true" />
       <span>{{ RENEWING_SUBSCRIPTION_ERROR }}</span>
     </p>
+    <p v-if="renews" class="small muted" style="margin-top: 12px">Nie możesz skorzystać z panelu płatności? <RouterLink :to="`${ROUTES.contact}?sprawa=dane`" class="link">Zgłoś anulowanie subskrypcji i usunięcie konta przez kontakt</RouterLink>.</p>
     <div class="form-actions" style="margin-top: 18px">
       <button type="button" class="button button-danger button-sm" :disabled="renews" @click="start"><Trash2 :size="16" aria-hidden="true" />Usuń konto…</button>
     </div>

@@ -127,14 +127,14 @@ function startOver() {
         <div>
           <label class="check-row">
             <input v-model="values.acceptTerms" type="checkbox" name="acceptTerms" :aria-invalid="f.errors.acceptTerms ? 'true' : undefined" :aria-describedby="f.errors.acceptTerms ? 'signup-terms-error' : undefined" />
-            <span>Akceptuję <RouterLink :to="ROUTES.terms" target="_blank" rel="noopener" class="link">regulamin</RouterLink> i <RouterLink :to="ROUTES.privacy" target="_blank" rel="noopener" class="link">politykę prywatności</RouterLink>.</span>
+            <span>Akceptuję <RouterLink :to="ROUTES.terms" target="_blank" rel="noopener" class="link">regulamin</RouterLink>. Informacje o moich danych zawiera <RouterLink :to="ROUTES.privacy" target="_blank" rel="noopener" class="link">polityka prywatności</RouterLink>.</span>
           </label>
           <p v-if="f.errors.acceptTerms" id="signup-terms-error" class="field-error consent-error" role="alert">{{ f.errors.acceptTerms }}</p>
         </div>
         <div>
           <label class="check-row">
             <input v-model="values.ageConfirmed" type="checkbox" name="ageConfirmed" :aria-invalid="f.errors.ageConfirmed ? 'true' : undefined" :aria-describedby="f.errors.ageConfirmed ? 'signup-age-error' : undefined" />
-            <span>Mam co najmniej 16 lat albo zgodę rodzica/opiekuna.</span>
+            <span>Mam ukończone 13 lat. Jeśli nie jestem pełnoletni/a, mam zgodę rodzica lub opiekuna prawnego na założenie konta.</span>
           </label>
           <p v-if="f.errors.ageConfirmed" id="signup-age-error" class="field-error consent-error" role="alert">{{ f.errors.ageConfirmed }}</p>
         </div>

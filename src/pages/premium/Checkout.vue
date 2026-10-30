@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Check, ChevronDown, CircleAlert, CreditCard, Loa
 import { PAID_PLANS, planById } from '@/config/plans'
 import { ROUTES } from '@/config/routes'
 import { TERMS_VERSION } from '@/config/site'
+import { EARLY_START_LABEL } from '@shared/purchase-consents'
 import { PLAN_DETAILS } from '@/components/premium/planDetails'
 import { startCheckout } from '@/lib/ai'
 import { useAsync } from '@/composables/useAsync'
@@ -23,13 +24,13 @@ const plan = computed(() => planById(String(route.query.plan ?? '')) ?? PAID_PLA
 const monthly = computed(() => plan.value.id === 'monthly')
 const terms = ref(false)
 const age = ref(false)
-const withdrawal = ref(false)
+const earlyStart = ref(false)
 const submitted = ref(false)
 const paying = ref(false)
 const payError = ref('')
 const form = ref(null)
 const cancelled = computed(() => route.query.anulowano === '1')
-const missingConsent = computed(() => !terms.value || !age.value || !withdrawal.value)
+const missingConsent = computed(() => !terms.value || !age.value || !earlyStart.value)
 
 function selectPlan(id) {
   if (!paying.value && id !== plan.value.id) router.replace({ query: { ...route.query, plan: id, anulowano: undefined } })
@@ -49,7 +50,7 @@ async function pay() {
   }
   paying.value = true
   try {
-    const res = await startCheckout(plan.value.id, TERMS_VERSION)
+    const res = await startCheckout(plan.value.id, TERMS_VERSION, { terms: terms.value, age: age.value, earlyStart: earlyStart.value })
     if (!res.ok) throw new Error(res.error)
     window.location.assign(res.url)
     // Stay busy until navigation, preventing duplicate checkout sessions.
@@ -126,11 +127,12 @@ async function pay() {
             <input v-model="age" name="age" type="checkbox" required :aria-invalid="submitted && !age" :aria-describedby="submitted && !age ? 'consent-error' : undefined" />
             <span>Mam ukończone 18 lat albo zgodę rodzica lub opiekuna na ten zakup.</span>
           </label>
-          <label class="check-row" :class="{ 'has-error': submitted && !withdrawal }">
-            <input v-model="withdrawal" name="withdrawal" type="checkbox" required :aria-invalid="submitted && !withdrawal" :aria-describedby="submitted && !withdrawal ? 'consent-error' : undefined" />
-            <span>Chcę, żeby Premium zaczęło działać od razu po płatności, i przyjmuję do wiadomości, że wtedy tracę prawo do odstąpienia od umowy w ciągu 14 dni.</span>
+          <label class="check-row" :class="{ 'has-error': submitted && !earlyStart }">
+            <input v-model="earlyStart" name="earlyStart" type="checkbox" required :aria-invalid="submitted && !earlyStart" :aria-describedby="submitted && !earlyStart ? 'consent-error' : undefined" />
+            <span>{{ EARLY_START_LABEL }}</span>
           </label>
         </fieldset>
+        <p class="withdrawal-note">Masz 14 dni na odstąpienie. <RouterLink :to="`${ROUTES.terms}#odstapienie`" target="_blank" rel="noopener" class="link">Zasady i formularz</RouterLink>.</p>
         <p v-if="submitted && missingConsent" id="consent-error" class="field-error" role="alert">Zaznacz wymagane zgody. Brakujące pola są oznaczone.</p>
         <p v-if="payError" class="alert alert-error" role="alert"><CircleAlert :size="18" /> {{ payError }}</p>
 
@@ -200,6 +202,7 @@ fieldset { padding: 0; border: 0; margin: 0; min-width: 0; }
 .renewal-note { font-size: 12px; line-height: 1.6; color: var(--text-soft); }
 .consents legend { font-size: 12px; font-weight: 700; margin-bottom: 12px; }
 .consents legend > span { font-weight: 400; color: var(--text-soft); }
+.withdrawal-note { font-size: 12px; line-height: 1.6; margin-top: 12px; color: var(--text-soft); }
 .check-row { font-size: 12px; line-height: 1.6; gap: 10px; padding-block: 7px; cursor: pointer; }
 .check-row input { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; accent-color: var(--green); }
 .check-row.has-error { color: var(--error); }
