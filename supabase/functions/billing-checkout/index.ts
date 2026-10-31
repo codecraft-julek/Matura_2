@@ -1,8 +1,10 @@
-// Supabase Edge Function: POST /functions/v1/billing-checkout   body: { plan, consents }
+// Supabase Edge Function: POST /functions/v1/billing-checkout   body: { plan, consents, termsVersion, ui? }
 //
 // Starts a payment: check login → validate the plan and consents → refuse if the student already
-// has Premium → find or create their Stripe customer → create a Stripe Checkout page → return its
-// URL. The website sends the student there; card/BLIK details are typed on Stripe's page only.
+// has Premium → find or create their Stripe customer → create a Stripe Checkout session.
+//   ui: "embedded" → { clientSecret }: the website shows Stripe's form inside its payment page
+//   otherwise      → { url }: the website sends the student to Stripe's own page
+// Card/BLIK details are typed only into Stripe's form (an iframe from stripe.com in both cases).
 // Premium is switched on later by `billing-webhook`, never here.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
@@ -24,7 +26,7 @@ const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-type Reply = { ok: true; url: string } | { ok: false; error: string };
+type Reply = { ok: true; url: string } | { ok: true; clientSecret: string; sessionId: string } | { ok: false; error: string };
 function json(body: Reply, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
@@ -54,7 +56,7 @@ async function handle(request: Request) {
   // 3. Validate: a plan we sell, and all three consents ticked (the website shows them).
   const raw = await request.text();
   if (raw.length > 2_000) return json({ ok: false, error: "Nieprawidłowe dane." }, 413);
-  let body: { plan?: unknown; consents?: unknown; termsVersion?: unknown };
+  let body: { plan?: unknown; consents?: unknown; termsVersion?: unknown; ui?: unknown };
   try {
     body = JSON.parse(raw || "{}");
   } catch {
@@ -66,6 +68,8 @@ async function handle(request: Request) {
   }
   const planId = body.plan;
   const plan = BILLING_PLANS[planId];
+  // "embedded": Stripe's form inside our payment page (clientSecret); otherwise Stripe's own page (url).
+  const embedded = body.ui === "embedded";
 
   // 4. Already Premium? Don't take money twice.
   const { data: account } = await admin
@@ -102,7 +106,7 @@ async function handle(request: Request) {
     ...purchaseConsentMetadata(new Date().toISOString()),
     terms_version: typeof body.termsVersion === "string" ? body.termsVersion.slice(0, 20) : "",
   };
-  const createSession = (customer: string) => stripe<{ url: string }>(secretKey, "POST", "checkout/sessions", {
+  const createSession = (customer: string) => stripe<{ id: string; url: string | null; client_secret: string | null }>(secretKey, "POST", "checkout/sessions", {
     mode: plan.mode,
     customer,
     client_reference_id: user.id,
@@ -125,11 +129,22 @@ async function handle(request: Request) {
     // Codes only for the one-time Pakiet: a 100% code on the subscription still asks for a card
     // and starts charging from the second month, which testers don't expect.
     allow_promotion_codes: plan.mode === "payment",
-    success_url: `${origin}/premium/gotowe?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/premium/platnosc?plan=${planId}&anulowano=1`,
+    ...(embedded
+      ? {
+        ui_mode: "embedded_page",
+        // Cards finish inside our page; BLIK / Przelewy24 / 3-D Secure come back here from the bank.
+        redirect_on_completion: "if_required",
+        return_url: `${origin}/premium/gotowe?session_id={CHECKOUT_SESSION_ID}`,
+        // Same colours as the site, so the form looks like part of it.
+        branding_settings: { display_name: "Ogarnij Maturę", background_color: "#ffffff", button_color: "#1c3c32", border_style: "rounded" },
+      }
+      : {
+        success_url: `${origin}/premium/gotowe?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/premium/platnosc?plan=${planId}&anulowano=1`,
+      }),
   });
 
-  let session: { url: string };
+  let session: { id: string; url: string | null; client_secret: string | null };
   try {
     session = await createSession(customerId);
   } catch (err) {
@@ -138,5 +153,7 @@ async function handle(request: Request) {
     customerId = await newCustomer();
     session = await createSession(customerId);
   }
-  return json({ ok: true, url: session.url });
+  return embedded
+    ? json({ ok: true, clientSecret: session.client_secret!, sessionId: session.id })
+    : json({ ok: true, url: session.url! });
 }

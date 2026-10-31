@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, ArrowRight, Check, ChevronDown, CircleAlert, CreditCard, LoaderCircle, Lock, Mail, Sparkles } from '@lucide/vue'
 import { PAID_PLANS, planById } from '@/config/plans'
@@ -8,6 +8,7 @@ import { TERMS_VERSION } from '@/config/site'
 import { EARLY_START_LABEL } from '@shared/purchase-consents'
 import { PLAN_DETAILS } from '@/components/premium/planDetails'
 import { startCheckout } from '@/lib/ai'
+import { loadStripe, mountEmbeddedCheckout } from '@/lib/billing/stripe'
 import { useAsync } from '@/composables/useAsync'
 import { useAuthStore } from '@/stores/auth'
 import { useBillingStore } from '@/stores/billing'
@@ -37,7 +38,17 @@ function selectPlan(id) {
 }
 
 // A different billing agreement requires accepting its new terms, including browser navigation.
-watch(() => plan.value.id, () => { terms.value = false; submitted.value = false; payError.value = '' })
+watch(() => plan.value.id, () => {
+  terms.value = false; submitted.value = false; payError.value = ''
+  if (step.value === 'payment') backToDetails() // the open form is for the other plan
+})
+
+// Step 2 ("payment"): Stripe's form inside this page. Without Stripe.js (no key set, script
+// blocked) the student goes to Stripe's own page instead, as before.
+const step = ref('details')
+const paymentEl = ref(null)
+const paymentHeading = ref(null)
+let embedded = null
 
 async function pay() {
   if (paying.value) return
@@ -49,8 +60,11 @@ async function pay() {
     return
   }
   paying.value = true
+  const consents = { terms: terms.value, age: age.value, earlyStart: earlyStart.value }
   try {
-    const res = await startCheckout(plan.value.id, TERMS_VERSION, { terms: terms.value, age: age.value, earlyStart: earlyStart.value })
+    const stripe = await loadStripe()
+    if (stripe && await openEmbedded(stripe, consents)) return
+    const res = await startCheckout(plan.value.id, TERMS_VERSION, consents)
     if (!res.ok) throw new Error(res.error)
     window.location.assign(res.url)
     // Stay busy until navigation, preventing duplicate checkout sessions.
@@ -59,6 +73,41 @@ async function pay() {
     paying.value = false
   }
 }
+
+/** → true when the form is showing; false = use Stripe's own page. Throws server errors (shown). */
+async function openEmbedded(stripe, consents) {
+  const res = await startCheckout(plan.value.id, TERMS_VERSION, consents, { embedded: true })
+  if (!res.ok) throw new Error(res.error)
+  step.value = 'payment'
+  await nextTick()
+  try {
+    // Cards finish here (onComplete); BLIK, Przelewy24 and 3-D Secure come back via the bank.
+    embedded = await mountEmbeddedCheckout(stripe, paymentEl.value, res.clientSecret, () => paid(res.sessionId))
+  } catch (error) {
+    console.error('Embedded checkout failed:', error)
+    step.value = 'details'
+    return false
+  }
+  paying.value = false
+  paymentHeading.value?.focus()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+  return true
+}
+
+function closeEmbedded() {
+  embedded?.destroy()
+  embedded = null
+}
+function backToDetails() {
+  closeEmbedded()
+  step.value = 'details'
+}
+function paid(sessionId) {
+  closeEmbedded()
+  // Access is switched on by the Stripe webhook; this page waits for it.
+  router.push({ path: ROUTES.premiumDone, query: { session_id: sessionId } })
+}
+onBeforeUnmount(closeEmbedded)
 </script>
 
 <template>
@@ -69,10 +118,22 @@ async function pay() {
     <header class="checkout-intro">
       <span class="page-kicker">TWÓJ PLAN NA MATURĘ</span>
       <h1>Włącz Premium<span class="accent-dot">.</span></h1>
-      <p>Wybierz dostęp dla siebie. Płatność potwierdzisz na stronie Stripe.</p>
+      <p>Wybierz dostęp dla siebie. Płatność zatwierdzisz w bezpiecznym formularzu Stripe.</p>
     </header>
 
     <BillingStatus v-if="billing.premium" :billing="billing" />
+    <section v-else-if="step === 'payment'" class="payment-step" aria-labelledby="payment-heading">
+      <div class="payment-head">
+        <button type="button" class="back-button" @click="backToDetails"><ArrowLeft :size="15" /> Zmień plan</button>
+        <div class="payment-title">
+          <h2 id="payment-heading" ref="paymentHeading" tabindex="-1">Płatność</h2>
+          <p>{{ plan.name }} · <strong class="tabular">{{ plan.price }}</strong>{{ monthly ? ' / miesiąc' : ' jednorazowo' }}</p>
+        </div>
+        <p class="secure-note"><Lock :size="14" aria-hidden="true" /> Bezpieczny formularz Stripe</p>
+      </div>
+      <div ref="paymentEl" class="payment-frame card"></div>
+      <p class="handoff-note">Dane karty i BLIK wpisujesz w formularzu Stripe. Nie widzimy ich i nie zapisujemy.</p>
+    </section>
     <form v-else ref="form" class="checkout" novalidate @submit.prevent="pay">
       <div class="order-details">
         <div v-if="cancelled" class="alert alert-warn return-notice" role="status">
@@ -141,7 +202,7 @@ async function pay() {
           <span>{{ paying ? 'Otwieram płatność…' : `Przejdź do płatności · ${plan.price}` }}</span>
           <ArrowRight v-if="!paying" :size="18" />
         </button>
-        <p id="payment-handoff" class="handoff-note">Na stronie Stripe wybierzesz metodę i zatwierdzisz płatność.</p>
+        <p id="payment-handoff" class="handoff-note">W następnym kroku wybierzesz metodę i zatwierdzisz płatność w formularzu Stripe.</p>
         <div class="payment-info">
           <p><CreditCard :size="16" aria-hidden="true" /> {{ monthly ? 'Karta · Apple Pay · Google Pay' : 'BLIK · Karta · Przelewy24' }}</p>
           <span>{{ monthly ? 'Dostępność metod zależy od urządzenia i ustawień operatora.' : 'Dostępne metody i portfele zobaczysz w Stripe.' }}</span>
@@ -213,11 +274,25 @@ fieldset { padding: 0; border: 0; margin: 0; min-width: 0; }
 .payment-info { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 16px; text-align: center; }
 .payment-info p { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 650; }
 .payment-info > span { display: block; margin-top: 6px; font-size: 10px; line-height: 1.6; color: var(--text-soft); }
+.payment-step { max-width: 1040px; margin-inline: auto; }
+.payment-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.back-button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font: 600 13px/1 inherit; cursor: pointer; }
+.back-button:hover { border-color: var(--green); }
+.payment-title { flex: 1; min-width: 0; }
+.payment-title h2 { font: 750 22px/1.3 var(--heading); letter-spacing: -.6px; }
+.payment-title h2:focus { outline: none; }
+.payment-title p { font-size: 13px; color: var(--text-soft); margin-top: 2px; }
+.payment-title strong { color: var(--text); }
+.secure-note { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-soft); }
+/* Stripe draws its own form; the card only frames it and keeps the space while it loads. */
+.payment-frame { min-height: 560px; padding: 8px; overflow: hidden; box-shadow: var(--shadow); }
 @media (max-width: 800px) {
   .checkout { grid-template-columns: 1fr; gap: 26px; max-width: 560px; margin-inline: auto; }
   .checkout-intro, .back-link { max-width: 560px; margin-inline: auto; }
   .benefits { margin-block: 22px; padding-block: 20px; }
   .order-summary { padding: 22px; }
+  .payment-frame { padding: 0; border-radius: var(--radius); }
+  .secure-note { width: 100%; }
   .check-row { font-size: 13px; padding-block: 9px; }
   .payment-info > span, .handoff-note { font-size: 12px; }
 }

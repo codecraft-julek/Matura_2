@@ -44,6 +44,14 @@ export { LEGAL_VERSION as TERMS_VERSION } from './legal.js';
  */
 export const CAPTCHA_SITE_KEY: string | null = "1x00000000000000000000AA";
 
+/**
+ * Stripe publishable key (pk_test_… in the sandbox, pk_live_… for real payments). Public by design,
+ * like the Supabase key: it only lets the browser show Stripe's payment form. Set → the payment
+ * form opens inside our payment page; null → students go to Stripe's own payment page.
+ * It must come from the same Stripe account as STRIPE_SECRET_KEY in Supabase.
+ */
+export const STRIPE_PUBLISHABLE_KEY: string | null = "pk_test_51UUB3rJbUGccn9lDF3iWX4bKbSdXu4y19vLjauyzpcCJPFqXy8Nm27wl7XTDdiRLGUeabDKIrO3geNfu4PD4tjjU00GYoo88Lj";
+
 export const SUPABASE = {
   url: "https://mwtqlqbzsxeakqrjyxwg.supabase.co",
   // The publishable key only allows what our RLS policies allow, so it's safe in the browser.

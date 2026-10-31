@@ -46,9 +46,16 @@ export function streamFlashcards(body, { onProgress } = {}) {
 /** grade-open-answers → { ok: true, graded } */
 export const gradeOpenAnswers = body => callEdge('grade-open-answers', body)
 
-/** billing-checkout / billing-portal → { ok: true, url } (a Stripe page to go to). */
-export const startCheckout = (plan, termsVersion, consents) =>
+/**
+ * billing-checkout → { ok: true, url } (Stripe's own page to go to), or with { embedded: true }
+ * → { ok: true, clientSecret, sessionId } (Stripe's form shown inside our payment page).
+ * billing-portal → { ok: true, url }.
+ */
+export const startCheckout = (plan, termsVersion, consents, { embedded = false } = {}) =>
   // Keep the old wire field during rollout; it now carries the early-start request, not a waiver.
   // Explicit values come from the form, rather than silently manufacturing every consent.
-  callEdge('billing-checkout', { plan, termsVersion, consents: { ...consents, withdrawal: consents?.earlyStart === true } })
+  callEdge('billing-checkout', {
+    plan, termsVersion, consents: { ...consents, withdrawal: consents?.earlyStart === true },
+    ...(embedded ? { ui: 'embedded' } : {}),
+  })
 export const openBillingPortal = () => callEdge('billing-portal')
