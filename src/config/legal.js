@@ -1,21 +1,21 @@
-// The owner hasn't published these yet, so the documents leave them out for the testing period.
+// Placeholders in [brackets] and the empty address are the owner's choice for the testing period.
 // Do not substitute the brand or author for the natural person legally providing the service.
 // Selling for real needs all three: the build fails with a pk_live_ key while any is missing.
 export const LEGAL_OPERATOR = Object.freeze({
   brand: 'Ogarnij Maturę',
   status: 'działalność nierejestrowana',
-  fullName: null,
+  fullName: '[IMIĘ I NAZWISKO]',
   address: null,
   email: 'ogarnijmature@o2.pl',
-  phone: null,
+  phone: '[NUMER TELEFONU]',
 })
 
 /** What the law requires before selling to consumers and the documents don't state yet. */
-export const missingOperatorDetails = (op = LEGAL_OPERATOR) => ['fullName', 'address', 'phone'].filter(field => !op[field])
+export const missingOperatorDetails = (op = LEGAL_OPERATOR) => ['fullName', 'address', 'phone'].filter(field => !op[field] || op[field].startsWith('['))
 
 export const LEGAL_VERSION = '2026-11-02'
 export const LEGAL_UPDATED = '2 listopada 2026'
-export const LEGAL_DRAFT_NOTICE = 'Wersja na okres testów. Serwis nie przyjmuje jeszcze prawdziwych płatności. Pełne dane usługodawcy (imię i nazwisko, adres, telefon) podamy przed rozpoczęciem sprzedaży.'
+export const LEGAL_DRAFT_NOTICE = 'Wersja na okres testów. Serwis nie przyjmuje jeszcze prawdziwych płatności. Dane usługodawcy oznaczone nawiasami oraz adres podamy przed rozpoczęciem sprzedaży.'
 
 // Confirmed by the owner; no claim about EU-only processing by every subprocessor.
 export const DATABASE_LOCATION = 'Frankfurt nad Menem, Niemcy (UE)'

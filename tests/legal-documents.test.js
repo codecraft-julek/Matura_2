@@ -56,15 +56,17 @@ describe('accessible and downloadable legal documents', () => {
     expect(renderLegalArticle(privacyDocument)).toContain('/kontakt?sprawa=dane')
     expect(withdrawalForm).toContain('nie jest obowiązkowy')
   })
-  it('publishes no unfinished [BRACKET] placeholders or empty operator fields', () => {
+  it('publishes only the two agreed placeholders and no empty operator fields', () => {
     const texts = [withdrawalForm, ...legalDocuments.map(renderLegalArticle)]
     for (const text of texts) {
-      expect(text).not.toMatch(/\[[A-ZĄĆĘŁŃÓŚŹŻ][A-ZĄĆĘŁŃÓŚŹŻ ]{3,}/)
+      const others = text.replaceAll('[IMIĘ I NAZWISKO]', '').replaceAll('[NUMER TELEFONU]', '')
+      expect(others).not.toMatch(/\[[A-ZĄĆĘŁŃÓŚŹŻ][A-ZĄĆĘŁŃÓŚŹŻ ]{3,}/)
       expect(text).not.toMatch(/\bnull\b|\bundefined\b/)
     }
   })
   it('knows which seller details are still needed before real sales', () => {
     expect(missingOperatorDetails({ fullName: null, address: '', phone: '500' })).toEqual(['fullName', 'address'])
     expect(missingOperatorDetails({ fullName: 'A', address: 'B', phone: 'C' })).toEqual([])
+    expect(missingOperatorDetails({ fullName: '[IMIĘ I NAZWISKO]', address: 'B', phone: '[NUMER TELEFONU]' })).toEqual(['fullName', 'phone'])
   })
 })
