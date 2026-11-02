@@ -2,9 +2,9 @@
 // Contact form. Talks straight to the Edge Function `contact-submit` (validation, honeypot, rate
 // limit and CAPTCHA are checked there too). When logged in, the request carries the student's token,
 // so the message is linked to the account and we can help faster.
-import { nextTick, reactive, ref } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
-import { CircleAlert, LoaderCircle, MailCheck, Send } from '@lucide/vue'
+import { reactive, ref } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { CircleAlert, LoaderCircle, Send } from '@lucide/vue'
 import { CONTACT_TOPICS, contactSchema } from '@shared/contact'
 import { ROUTES } from '@/config/routes'
 import { SITE } from '@/config/site'
@@ -20,6 +20,7 @@ useSeo(() => PAGE_SEO.contact)
 const MAX = 4000
 const auth = useAuthStore()
 const route = useRoute()
+const router = useRouter()
 // These templates use existing server-validated topics, so no backend deployment is needed.
 const requests = {
   odstapienie: { topic: 'other', message: 'Oświadczam, że odstępuję od umowy o Premium / Pakiet do matury.\nData zakupu: \nE-mail powiązany z zakupem: \nImię i nazwisko: ' },
@@ -32,10 +33,8 @@ const form = reactive({ name: '', email: auth.email || '', ...initial, website: 
 const errors = ref({})
 const message = ref('')
 const pending = ref(false)
-const sent = ref(false)
 const captchaToken = ref(null)
 const captchaReset = ref(0)
-const sentHeading = ref(null)
 
 function validateField(field) {
   const parsed = contactSchema.safeParse(form)
@@ -65,9 +64,7 @@ async function submit() {
   pending.value = false
   captchaReset.value++ // a token works once
   if (res.ok) {
-    sent.value = true
-    await nextTick()
-    sentHeading.value?.focus()
+    router.push(ROUTES.contactThanks)
     return
   }
   errors.value = res.fieldErrors ?? {}
@@ -85,13 +82,7 @@ async function submit() {
       </div>
     </header>
 
-    <div v-if="sent" class="card card-tinted sent" role="status">
-      <span class="sent-icon"><MailCheck :size="24" /></span>
-      <h2 ref="sentHeading" tabindex="-1">Dzięki, dostaliśmy!</h2>
-      <p>Odpiszemy na podany adres e-mail, zwykle w ciągu 1–2 dni. Jeśli nie widzisz odpowiedzi, zajrzyj do spamu.</p>
-    </div>
-
-    <form v-else class="card form" novalidate @submit.prevent="submit">
+    <form class="card form" novalidate @submit.prevent="submit">
       <div class="grid-2">
         <AppField v-slot="f" label="Imię" optional :error="errors.name">
           <input :id="f.id" v-model="form.name" name="name" class="input" autocomplete="given-name" maxlength="80" :aria-invalid="f.invalid" :aria-describedby="f.describedby" />
@@ -143,10 +134,6 @@ async function submit() {
 .topic-field legend { padding: 0; margin-bottom: 10px; }
 .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .form { position: relative; }
-.sent { text-align: center; padding: 36px 24px; }
-.sent-icon { display: inline-grid; place-items: center; width: 54px; height: 54px; border-radius: 15px; background: var(--lime); color: var(--green); margin-bottom: 14px; }
-.sent h2 { font-size: 24px; letter-spacing: -.6px; outline: none; }
-.sent p { margin: 10px auto 0; max-width: 46ch; color: var(--text-soft); line-height: 1.6; }
 .contact-notes { margin-top: 24px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--text-soft); line-height: 1.6; }
 @media (max-width: 680px) { .contact-page { width: calc(100% - 32px); } }
 </style>

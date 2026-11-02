@@ -19,6 +19,7 @@ const routes = [
   { path: '/arkusze-maturalne', component: page(() => import('@/pages/public/PublicExams.vue')), meta: { layout: 'public', title: 'Arkusze maturalne CKE z odpowiedziami' } },
   { path: '/arkusze-maturalne/:examId', component: page(() => import('@/pages/public/PublicExam.vue')), meta: { layout: 'public', title: 'Arkusz maturalny' } },
   { path: '/kontakt', component: page(() => import('@/pages/public/Contact.vue')), meta: { layout: 'public', title: 'Kontakt' } },
+  { path: '/kontakt/dziekujemy', component: page(() => import('@/pages/public/ContactThanks.vue')), meta: { layout: 'public', title: 'Dziękujemy' } },
   { path: '/regulamin', component: page(() => import('@/pages/public/Terms.vue')), meta: { layout: 'public', title: 'Regulamin' } },
   { path: '/polityka-prywatnosci', component: page(() => import('@/pages/public/Privacy.vue')), meta: { layout: 'public', title: 'Polityka prywatności' } },
   { path: '/do-zobaczenia', component: page(() => import('@/pages/public/Goodbye.vue')), meta: { layout: 'public', title: 'Do zobaczenia' } },

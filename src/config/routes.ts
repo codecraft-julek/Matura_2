@@ -26,6 +26,7 @@ export const ROUTES = {
   publicExams: "/arkusze-maturalne",
   privacy: "/polityka-prywatnosci",
   contact: "/kontakt",
+  contactThanks: "/kontakt/dziekujemy",
   terms: "/regulamin",
   goodbye: "/do-zobaczenia",
   dataExport: "/konto/eksport",

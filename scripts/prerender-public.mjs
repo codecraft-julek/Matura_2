@@ -233,7 +233,7 @@ ${sitemapEntries.map(([path, priority, freq]) => `  <url><loc>${esc(`${SITE_URL}
 const privatePages = [
   ROUTES.dashboard, ROUTES.onboarding, ROUTES.account,
   `${ROUTES.exams}/`, // the app's exams; the public /arkusze-maturalne pages stay indexable
-  ROUTES.essays, ROUTES.tutor, ROUTES.notes, ROUTES.flashcards, ROUTES.premium, ROUTES.newPassword, ROUTES.goodbye,
+  ROUTES.essays, ROUTES.tutor, ROUTES.notes, ROUTES.flashcards, ROUTES.premium, ROUTES.newPassword, ROUTES.goodbye, ROUTES.contactThanks,
   '/auth/',
 ]
 writeFileSync(join(DIST, 'robots.txt'), `User-Agent: *

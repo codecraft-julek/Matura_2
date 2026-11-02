@@ -1,14 +1,11 @@
 // Supabase Edge Function: POST /functions/v1/contact-submit   body: { name?, email, topic, message, captchaToken?, website? }
 //
 // Contact form (/kontakt). Order: cheap checks first (size, honeypot, validation), then the CAPTCHA
-// and rate limit, then the database. Optionally e-mails you each message via Resend.
+// and rate limit, then the database. Then e-mails you each message via FormSubmit, in the background.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
 //   RATE_LIMIT_SALT        already set (shared with the waitlist): IPs are stored only as salted hashes
 //   TURNSTILE_SECRET_KEY   optional: when set, the CAPTCHA token is verified with Cloudflare
-//   RESEND_API_KEY         optional: when set together with CONTACT_NOTIFY_EMAIL, you get each message by e-mail
-//   CONTACT_NOTIFY_EMAIL   optional: where those e-mails go (e.g. your own address)
-//   CONTACT_FROM_EMAIL     optional: sender, e.g. "Ogarnij Maturę <kontakt@twojadomena.pl>" (a verified Resend domain)
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
@@ -16,6 +13,11 @@ import { contactSchema, topicLabel, type ContactResponse } from "../_shared/cont
 
 const MAX_BODY_BYTES = 12_000;
 const RATE_LIMIT = { limit: 3, windowSeconds: 3600 }; // 3 messages per hour per IP
+const SITE_URL = "https://www.ogarnijmature.com";
+const NOTIFY_EMAIL = "ogarnijmature@o2.pl"; // the public contact address (SITE.contactEmail); FormSubmit activates it once by e-mail
+const NOTIFY_TIMEOUT_MS = 120_000; // FormSubmit can take over a minute to answer
+
+declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -89,7 +91,8 @@ async function handle(request: Request) {
     return json({ ok: false, error: GENERIC_ERROR }, 500);
   }
 
-  await notify(d).catch((err) => console.error("contact notify failed:", err)); // the message is saved either way
+  // In the background, so a slow FormSubmit never holds up the student. The message is saved either way.
+  EdgeRuntime.waitUntil(notify(d).catch((err) => console.error("contact notify failed:", err)));
   return json({ ok: true });
 }
 
@@ -134,24 +137,23 @@ async function isUnderRateLimit(ip: string): Promise<boolean> {
   return data === true;
 }
 
-/** E-mail to you via Resend, when it's set up. Reply goes straight to the student. */
-async function notify(d: { name: string; email: string; topic: string; message: string }) {
-  const key = Deno.env.get("RESEND_API_KEY");
-  const to = Deno.env.get("CONTACT_NOTIFY_EMAIL");
-  if (!key || !to) return;
-  const from = Deno.env.get("CONTACT_FROM_EMAIL") ?? "Ogarnij Maturę <onboarding@resend.dev>";
-  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
-  const res = await fetch("https://api.resend.com/emails", {
+/** E-mail to you via FormSubmit. Reply goes straight to the student. It refuses requests with no site address. */
+async function notify(d: { name?: string; email: string; topic: string; message: string }) {
+  const res = await fetch(`https://formsubmit.co/ajax/${NOTIFY_EMAIL}`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    signal: AbortSignal.timeout(10000),
+    headers: { "Content-Type": "application/json", Accept: "application/json", Origin: SITE_URL, Referer: `${SITE_URL}/kontakt` },
+    signal: AbortSignal.timeout(NOTIFY_TIMEOUT_MS),
     body: JSON.stringify({
-      from,
-      to,
-      reply_to: d.email,
-      subject: `[Kontakt] ${topicLabel(d.topic)}${d.name ? ` od ${d.name}` : ""}`,
-      html: `<p><strong>${esc(d.name || "(bez imienia)")}</strong> &lt;${esc(d.email)}&gt; · ${esc(topicLabel(d.topic))}</p><p style="white-space:pre-wrap">${esc(d.message)}</p>`,
+      _subject: `[Kontakt] ${topicLabel(d.topic)}`,
+      _template: "box",
+      _captcha: "false", // the form has its own honeypot and rate limit
+      _replyto: d.email,
+      "Imię": d.name || "(bez imienia)",
+      email: d.email,
+      Temat: topicLabel(d.topic),
+      "Wiadomość": d.message,
     }),
   });
-  if (!res.ok) throw new Error(`Resend ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const answer = await res.json().catch(() => null); // refusals also come back as HTTP 200
+  if (String(answer?.success) !== "true") throw new Error(`FormSubmit ${res.status}: ${String(answer?.message).slice(0, 200)}`);
 }

@@ -37,6 +37,7 @@ export const PAGE_SEO = {
   },
   terms: { path: ROUTES.terms, title: 'Regulamin', description: `Regulamin serwisu ${PRODUCT_NAME}.`, noindex: true },
   privacy: { path: ROUTES.privacy, title: 'Polityka prywatności', description: `Jak ${PRODUCT_NAME} przetwarza Twoje dane.`, noindex: true },
+  contactThanks: { path: ROUTES.contactThanks, title: 'Dziękujemy', description: 'Twoja wiadomość do nas dotarła.', noindex: true },
   goodbye: { path: ROUTES.goodbye, title: 'Konto usunięte', description: 'Twoje konto zostało usunięte.', noindex: true },
 }
 
