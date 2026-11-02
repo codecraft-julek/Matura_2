@@ -10,7 +10,7 @@
 //   checkout.session.async_payment_succeeded a delayed payment (e.g. bank transfer) went through
 //   customer.subscription.created|updated|deleted   renewals, cancellations, failed payments
 //   invoice.paid                             a monthly renewal was paid
-//   charge.refunded                          Pakiet refunded in full → Premium off
+//   charge.refunded                          any Pakiet refund → Premium off; marks a withdrawal as refunded
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
 //   STRIPE_SECRET_KEY      sk_test_… / sk_live_…
@@ -78,9 +78,11 @@ async function handle(event: StripeEvent, secretKey: string) {
     case "checkout.session.async_payment_succeeded": {
       if (o.mode === "subscription" && o.subscription) {
         await syncSubscription(secretKey, String(o.subscription), o.metadata?.user_id);
+        await noteCheckout(o);
       } else if (o.mode === "payment" && ["paid", "no_payment_required"].includes(o.payment_status) && o.metadata?.plan === "matura") {
         // no_payment_required: a 100% promotion code (e.g. for testers), nothing was charged.
         await grantPass(await userIdFor(o.metadata?.user_id, o.customer), String(o.customer));
+        await noteCheckout(o);
       }
       return;
     }
@@ -94,7 +96,14 @@ async function handle(event: StripeEvent, secretKey: string) {
       return;
     }
     case "charge.refunded": {
-      if (!o.refunded || !o.payment_intent) return; // partial refund: Premium stays
+      if (!o.payment_intent) return;
+      const { error } = await admin
+        .from("withdrawals")
+        .update({ refunded_at: new Date().toISOString() })
+        .eq("stripe_customer_id", String(o.customer))
+        .is("refunded_at", null);
+      if (error) throw error;
+      // Partial refunds count too: after withdrawing, the student gets back all but the used part.
       const pi = await stripe<{ metadata?: Record<string, string> }>(secretKey, "GET", `payment_intents/${o.payment_intent}`);
       if (pi.metadata?.plan !== "matura") return; // subscription refunds: cancel the subscription in Stripe
       const userId = await userIdFor(pi.metadata?.user_id, o.customer);
@@ -136,6 +145,12 @@ async function syncSubscription(secretKey: string, subscriptionId: string, hintU
 async function grantPass(userId: string, customerId: string) {
   await upsert(userId, { stripe_customer_id: customerId, pass_until: MATURA_PASS_UNTIL });
   console.log(`Pakiet do matury on for ${userId}`);
+}
+
+/** Remembers when the student bought something, so the website can show the withdrawal link. */
+async function noteCheckout(session: Record<string, any>) {
+  const userId = await userIdFor(session.metadata?.user_id, session.customer);
+  await upsert(userId, { last_checkout_at: new Date(session.created * 1000).toISOString() });
 }
 
 /** The student behind a Stripe event no longer exists (account deleted). */

@@ -467,3 +467,7 @@ verify_jwt = false
 
 [functions.billing-webhook]
 verify_jwt = false
+
+# "Odstąp od umowy tutaj". Verifies the student's login itself, like billing-portal.
+[functions.billing-withdrawal]
+verify_jwt = false

@@ -71,6 +71,7 @@ export type Database = {
       billing_accounts: {
         Row: {
           cancel_at_period_end: boolean
+          last_checkout_at: string | null
           pass_until: string | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -81,6 +82,7 @@ export type Database = {
         }
         Insert: {
           cancel_at_period_end?: boolean
+          last_checkout_at?: string | null
           pass_until?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -91,6 +93,7 @@ export type Database = {
         }
         Update: {
           cancel_at_period_end?: boolean
+          last_checkout_at?: string | null
           pass_until?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -751,12 +754,88 @@ export type Database = {
         }
         Relationships: []
       }
+      withdrawals: {
+        Row: {
+          access_ended_at: string | null
+          ack_sent_at: string | null
+          amount_paid: number
+          email: string
+          id: string
+          name: string
+          notified_at: string | null
+          period_end: string
+          plan: string
+          purchased_at: string
+          received_at: string
+          refunded_at: string | null
+          stripe_customer_id: string
+          stripe_session_id: string
+          stripe_subscription_id: string | null
+          suggested_refund: number
+          user_id: string | null
+        }
+        Insert: {
+          access_ended_at?: string | null
+          ack_sent_at?: string | null
+          amount_paid: number
+          email: string
+          id?: string
+          name: string
+          notified_at?: string | null
+          period_end: string
+          plan: string
+          purchased_at: string
+          received_at?: string
+          refunded_at?: string | null
+          stripe_customer_id: string
+          stripe_session_id: string
+          stripe_subscription_id?: string | null
+          suggested_refund: number
+          user_id?: string | null
+        }
+        Update: {
+          access_ended_at?: string | null
+          ack_sent_at?: string | null
+          amount_paid?: number
+          email?: string
+          id?: string
+          name?: string
+          notified_at?: string | null
+          period_end?: string
+          plan?: string
+          purchased_at?: string
+          received_at?: string
+          refunded_at?: string | null
+          stripe_customer_id?: string
+          stripe_session_id?: string
+          stripe_subscription_id?: string | null
+          suggested_refund?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      claim_open_grading: {
+        Args: { p_attempt_id: string; p_user: string; p_token: string }
+        Returns: string
+      }
+      finish_open_grading: {
+        Args: { p_attempt_id: string; p_user: string; p_token: string; p_grades: Json }
+        Returns: number
+      }
+      release_open_grading: {
+        Args: { p_attempt_id: string; p_user: string; p_token: string }
+        Returns: undefined
+      }
       can_rate_ai: { Args: { p_id: string; p_kind: string }; Returns: boolean }
+      claim_open_grading: {
+        Args: { p_attempt_id: string; p_token: string; p_user: string }
+        Returns: string
+      }
       consume_ai_quota: {
         Args: {
           p_feature: string
@@ -772,6 +851,15 @@ export type Database = {
       }
       delete_my_account: { Args: never; Returns: undefined }
       fail_stuck_ai_jobs: { Args: { p_older_than?: string }; Returns: number }
+      finish_open_grading: {
+        Args: {
+          p_attempt_id: string
+          p_grades: Json
+          p_token: string
+          p_user: string
+        }
+        Returns: number
+      }
       grade_exam_answers: {
         Args: { p_answers: Json; p_exam_id: string; p_group?: number }
         Returns: Json
@@ -796,21 +884,13 @@ export type Database = {
         Args: { p_feature: string; p_user: string }
         Returns: undefined
       }
+      release_open_grading: {
+        Args: { p_attempt_id: string; p_token: string; p_user: string }
+        Returns: undefined
+      }
       save_ai_grades: {
         Args: { p_attempt_id: string; p_grades: Json; p_user: string }
         Returns: number
-      }
-      claim_open_grading: {
-        Args: { p_attempt_id: string; p_user: string; p_token: string }
-        Returns: string
-      }
-      finish_open_grading: {
-        Args: { p_attempt_id: string; p_user: string; p_token: string; p_grades: Json }
-        Returns: number
-      }
-      release_open_grading: {
-        Args: { p_attempt_id: string; p_user: string; p_token: string }
-        Returns: undefined
       }
       self_check_answer: {
         Args: { p_accept: boolean; p_attempt_id: string; p_number: string }

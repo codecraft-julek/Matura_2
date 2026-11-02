@@ -37,6 +37,7 @@ const monthlyPrice = planById('monthly')?.price
     <div v-if="!billing.premium || billing.hasCustomer" class="row bs-actions">
       <RouterLink v-if="!billing.premium" :to="ROUTES.premium" class="button button-dark button-sm">Zobacz Premium</RouterLink>
       <PortalButton v-if="billing.hasCustomer" :label="billing.kind === 'subscription' && !billing.cancelAtPeriodEnd ? 'Zarządzaj subskrypcją' : 'Płatności i paragony'" />
+      <RouterLink v-if="billing.canWithdraw" :to="ROUTES.withdrawal" class="button button-outline button-sm">Odstąp od umowy tutaj</RouterLink>
     </div>
   </section>
 </template>

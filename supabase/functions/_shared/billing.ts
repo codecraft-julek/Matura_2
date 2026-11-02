@@ -122,7 +122,7 @@ export function quotaMessage(feature: string, q: QuotaResult): string {
 /** Calls Stripe's REST API with the secret key. Throws with Stripe's message on errors. */
 export async function stripe<T = Record<string, unknown>>(
   secretKey: string,
-  method: "GET" | "POST",
+  method: "GET" | "POST" | "DELETE",
   path: string,
   params: Record<string, unknown> = {},
 ): Promise<T> {

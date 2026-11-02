@@ -59,3 +59,7 @@ export const startCheckout = (plan, termsVersion, consents, { embedded = false }
     ...(embedded ? { ui: 'embedded' } : {}),
   })
 export const openBillingPortal = () => callEdge('billing-portal')
+
+/** billing-withdrawal → { ok: true, contract, done } / { ok: true, withdrawal } */
+export const loadWithdrawalStatus = () => callEdge('billing-withdrawal', { action: 'status' })
+export const confirmWithdrawal = values => callEdge('billing-withdrawal', { action: 'confirm', ...values })

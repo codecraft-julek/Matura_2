@@ -57,6 +57,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
           <RouterLink :to="ROUTES.contact">Kontakt</RouterLink>
           <RouterLink :to="ROUTES.terms">Regulamin</RouterLink>
           <RouterLink :to="ROUTES.privacy">Polityka prywatności</RouterLink>
+          <RouterLink :to="ROUTES.withdrawal">Odstąp od umowy tutaj</RouterLink>
         </nav>
       </div>
       <div class="footer-bottom"><span>© {{ new Date().getFullYear() }} Ogarnij Maturę</span><span>Nie jesteśmy powiązani z CKE.</span></div>

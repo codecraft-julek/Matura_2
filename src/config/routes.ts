@@ -27,6 +27,7 @@ export const ROUTES = {
   privacy: "/polityka-prywatnosci",
   contact: "/kontakt",
   contactThanks: "/kontakt/dziekujemy",
+  withdrawal: "/odstapienie",
   terms: "/regulamin",
   goodbye: "/do-zobaczenia",
   dataExport: "/konto/eksport",

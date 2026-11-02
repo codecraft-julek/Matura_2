@@ -49,7 +49,7 @@ function publicShell(main) {
   return `<div class="public-shell">
 <header class="site-header"><div class="container header-inner">${brand}<nav class="desktop-navigation" aria-label="Menu główne">${nav.map(([h, t]) => a(h, t)).join('')}</nav><div class="header-actions">${a(ROUTES.login, 'Zaloguj się', 'text-button desktop-demo')}${a(ROUTES.signup, 'Załóż konto', 'button button-dark header-cta')}</div></div></header>
 <main id="main" style="flex:1">${main}</main>
-<footer class="site-footer container"><div class="footer-top">${brand}<p>Mniej stresu. Więcej przyszłości.</p><nav aria-label="Menu w stopce">${a(ROUTES.publicExams, 'Arkusze maturalne')}${a(ROUTES.contact, 'Kontakt')}${a(ROUTES.terms, 'Regulamin')}${a(ROUTES.privacy, 'Polityka prywatności')}</nav></div><div class="footer-bottom"><span>© ${new Date().getFullYear()} ${esc(PRODUCT_NAME)}</span><span>Nie jesteśmy powiązani z CKE.</span></div><div class="footer-credit"><span>Projekt i wykonanie</span><a class="footer-credit-link" href="mailto:${esc(AUTHOR.email)}"><span class="footer-credit-monogram" aria-hidden="true">JM</span><span class="footer-credit-person"><strong>${esc(AUTHOR.name)}</strong><span>${esc(AUTHOR.email)}</span></span><span class="footer-credit-arrow" aria-hidden="true">↗</span></a></div></footer>
+<footer class="site-footer container"><div class="footer-top">${brand}<p>Mniej stresu. Więcej przyszłości.</p><nav aria-label="Menu w stopce">${a(ROUTES.publicExams, 'Arkusze maturalne')}${a(ROUTES.contact, 'Kontakt')}${a(ROUTES.terms, 'Regulamin')}${a(ROUTES.privacy, 'Polityka prywatności')}${a(ROUTES.withdrawal, 'Odstąp od umowy tutaj')}</nav></div><div class="footer-bottom"><span>© ${new Date().getFullYear()} ${esc(PRODUCT_NAME)}</span><span>Nie jesteśmy powiązani z CKE.</span></div><div class="footer-credit"><span>Projekt i wykonanie</span><a class="footer-credit-link" href="mailto:${esc(AUTHOR.email)}"><span class="footer-credit-monogram" aria-hidden="true">JM</span><span class="footer-credit-person"><strong>${esc(AUTHOR.name)}</strong><span>${esc(AUTHOR.email)}</span></span><span class="footer-credit-arrow" aria-hidden="true">↗</span></a></div></footer>
 </div>`
 }
 
@@ -233,7 +233,7 @@ ${sitemapEntries.map(([path, priority, freq]) => `  <url><loc>${esc(`${SITE_URL}
 const privatePages = [
   ROUTES.dashboard, ROUTES.onboarding, ROUTES.account,
   `${ROUTES.exams}/`, // the app's exams; the public /arkusze-maturalne pages stay indexable
-  ROUTES.essays, ROUTES.tutor, ROUTES.notes, ROUTES.flashcards, ROUTES.premium, ROUTES.newPassword, ROUTES.goodbye, ROUTES.contactThanks,
+  ROUTES.essays, ROUTES.tutor, ROUTES.notes, ROUTES.flashcards, ROUTES.premium, ROUTES.newPassword, ROUTES.goodbye, ROUTES.contactThanks, ROUTES.withdrawal,
   '/auth/',
 ]
 writeFileSync(join(DIST, 'robots.txt'), `User-Agent: *
