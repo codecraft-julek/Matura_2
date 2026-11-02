@@ -676,6 +676,9 @@ export type Database = {
           chat_id: string
           content: string
           created_at: string
+          deck_claimed_at: string | null
+          deck_id: string | null
+          deck_proposal: Json | null
           id: number
           role: string
           usage: Json | null
@@ -685,6 +688,9 @@ export type Database = {
           chat_id: string
           content: string
           created_at?: string
+          deck_claimed_at?: string | null
+          deck_id?: string | null
+          deck_proposal?: Json | null
           id?: never
           role: string
           usage?: Json | null
@@ -694,6 +700,9 @@ export type Database = {
           chat_id?: string
           content?: string
           created_at?: string
+          deck_claimed_at?: string | null
+          deck_id?: string | null
+          deck_proposal?: Json | null
           id?: never
           role?: string
           usage?: Json | null

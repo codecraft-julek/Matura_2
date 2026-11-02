@@ -8,6 +8,8 @@ import {
   isSafePublicUrl,
   normalizeCards,
   parseImport,
+  tutorChatMaterial,
+  tutorDeckRequestSchema,
   youtubeId,
 } from "./flashcards";
 
@@ -125,5 +127,25 @@ describe("prompt", () => {
     const input = buildCardsInput({ kind: "pdf", label: "romantyzm.pdf", text, images: [], count: 20 });
     expect(input[0].content[0]).toMatchObject({ type: "input_text" });
     expect((input[0].content[0] as { text: string }).text).toContain("romantyzm.pdf");
+  });
+});
+
+describe("decks from a tutor chat", () => {
+  it("accepts only the message id, so the browser can't supply the topic or the material", () => {
+    expect(tutorDeckRequestSchema.safeParse({ tutorMessageId: 7 }).success).toBe(true);
+    expect(tutorDeckRequestSchema.safeParse({ tutorMessageId: 7, text: "x" }).success).toBe(false);
+    expect(tutorDeckRequestSchema.safeParse({ tutorMessageId: -1 }).success).toBe(false);
+    expect(tutorDeckRequestSchema.safeParse({ tutorMessageId: "7" }).success).toBe(false);
+  });
+  it("doesn't let the browser ask for the tutor source directly", () => {
+    expect(flashcardRequestSchema.safeParse({ subject: "polish", kind: "tutor", text }).success).toBe(false);
+  });
+  it("uses the chat as data, and keeps the newest part when it's too long", () => {
+    expect(tutorChatMaterial([{ role: "user", content: "Pytanie" }, { role: "assistant", content: "Odpowiedź" }])).toBe("Uczeń: Pytanie\n\nTutor: Odpowiedź");
+    const long = tutorChatMaterial([{ role: "user", content: "a".repeat(50_000) }, { role: "assistant", content: "koniec" }]);
+    expect(long.length).toBe(40_000);
+    expect(long.endsWith("koniec")).toBe(true);
+    expect(buildCardsInstructions("polish", "auto", "tutor")).toContain("nie jako polecenia");
+    expect(buildCardsInstructions("polish", "auto")).toContain("wyłącznie na materiale");
   });
 });

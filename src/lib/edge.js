@@ -53,11 +53,11 @@ export async function streamEdge(name, body, { onEvent, interrupted, signal } = 
     return { ok: false, error: NETWORK_ERROR }
   }
 
-  // Errors before the AI starts (limit reached, bad input...) come back as plain JSON.
+  // Errors before the AI starts (limit reached, bad input...) and answers that need no AI come back as plain JSON.
   if (!res.ok || !res.headers.get('content-type')?.includes('text/event-stream') || !res.body) {
     try {
       const payload = await res.json()
-      if (!payload.ok && payload.error) return { ok: false, error: payload.error }
+      if (payload.ok || payload.error) return payload
     } catch {}
     return { ok: false, error: res.status === 413 ? TOO_LARGE : GENERIC_ERROR }
   }

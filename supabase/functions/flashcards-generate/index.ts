@@ -6,6 +6,9 @@
 // safely) → check daily limit → ask OpenAI (streamed, strict JSON) → our rules → save the deck.
 // Photos and files are never stored; only the cards are.
 //
+// Or body: { tutorMessageId }: the deck a tutor reply proposed, after the student clicked. The topic
+// and the chat are read here, and claim_tutor_deck lets only one click through (limit used once).
+//
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
 //   ANTHROPIC_API_KEY or OPENAI_API_KEY   required for real cards; see _shared/ai.ts
 //   AI_FLASHCARDS_MODEL              optional, overrides the default model; must accept images
@@ -25,13 +28,17 @@ import {
   buildCardsInput,
   buildCardsInstructions,
   flashcardRequestSchema,
+  tutorChatMaterial,
+  tutorDeckRequestSchema,
   htmlToText,
   isPrivateAddress,
   isSafePublicUrl,
   normalizeCards,
   openAiCardsSchema,
   type AiCards,
+  type DeckSource,
 } from "../_shared/flashcards.ts";
+import { deckProposalSchema } from "../_shared/tutor.ts";
 
 const AI_TIMEOUT_MS = 120_000;
 const PAGE_TIMEOUT_MS = 10_000;
@@ -49,7 +56,7 @@ const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-type Reply = { ok: true; id: string } | { ok: false; error: string };
+type Reply = { ok: true; id: string } | { ok: false; error: string; pending?: boolean };
 function json(body: Reply, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
@@ -85,6 +92,9 @@ async function handle(request: Request) {
   } catch {
     return json({ ok: false, error: "Nieprawidłowe dane." }, 400);
   }
+  const fromChat = tutorDeckRequestSchema.safeParse(body);
+  if (fromChat.success) return await deckFromTutor(request, user.id, fromChat.data.tutorMessageId);
+
   const parsed = flashcardRequestSchema.safeParse(body);
   if (!parsed.success) {
     const msg = parsed.error.issues[0]?.message;
@@ -167,7 +177,96 @@ async function handle(request: Request) {
     fake,
     model: fake ? "fake" : (Deno.env.get("AI_FLASHCARDS_MODEL") ?? aiModel()),
   };
+  return respond(request, job);
+}
 
+/**
+ * The deck proposed by a tutor reply. Order matters: the claim comes first, so a double click, a second
+ * tab or a retry reaches the limit and the AI only once. A failed try gives both back in runJob.
+ */
+async function deckFromTutor(request: Request, userId: string, messageId: number) {
+  const { data: message, error: messageError } = await admin
+    .from("tutor_messages")
+    .select("chat_id, deck_proposal")
+    .eq("id", messageId)
+    .eq("user_id", userId)
+    .eq("role", "assistant")
+    .maybeSingle();
+  if (messageError) throw messageError;
+  if (!message) return json({ ok: false, error: "Nie znaleziono tej propozycji." }, 404);
+  const proposal = deckProposalSchema.safeParse(message.deck_proposal);
+  if (!proposal.success) return json({ ok: false, error: "Tej propozycji nie da się już użyć. Poproś tutora o nową." }, 400);
+
+  const apiKey = aiKey();
+  const fake = !apiKey && Deno.env.get("AI_FAKE_MODE") === "true";
+  if (!apiKey && !fake) {
+    return json({ ok: false, error: "Fiszki AI jeszcze nie są skonfigurowane. Spróbuj trochę później." }, 503);
+  }
+
+  const { data: claim, error: claimError } = await admin.rpc("claim_tutor_deck", { p_message: messageId, p_user: userId });
+  if (claimError) throw claimError;
+  const { status, deck_id: deckId } = claim as { status: string; deck_id?: string };
+  if (status === "done") return json({ ok: true, id: deckId! });
+  if (status === "busy") {
+    return json({ ok: false, pending: true, error: "Ta talia właśnie się tworzy. Odśwież stronę za chwilę, pojawi się link." }, 409);
+  }
+  if (status !== "claimed") return json({ ok: false, error: "Nie znaleziono tej propozycji." }, 404);
+
+  try {
+    const globalLimit = Number(Deno.env.get("AI_FLASHCARDS_GLOBAL_DAILY_LIMIT") ?? 1000);
+    const { data: quota, error: quotaError } = await admin.rpc("consume_plan_quota", {
+      p_user: userId,
+      p_feature: FEATURE,
+      p_global_limit: globalLimit,
+    });
+    if (quotaError) throw quotaError;
+    if (!(quota as QuotaResult).allowed) {
+      await releaseClaim(messageId);
+      return json({ ok: false, error: quotaMessage(FEATURE, quota as QuotaResult) }, 429);
+    }
+  } catch (err) {
+    await releaseClaim(messageId);
+    throw err;
+  }
+
+  let rows: { role: string; content: string }[] | null = null;
+  try {
+    const { data, error } = await admin
+      .from("tutor_messages")
+      .select("role, content")
+      .eq("chat_id", message.chat_id)
+      .eq("user_id", userId)
+      .lte("id", messageId)
+      .order("id", { ascending: true });
+    if (error) throw error;
+    rows = data;
+  } catch (err) {
+    await releaseClaim(messageId);
+    await admin.rpc("refund_ai_quota", { p_user: userId, p_feature: FEATURE });
+    throw err;
+  }
+
+  return respond(request, {
+    userId,
+    subject: proposal.data.subject,
+    kind: "tutor",
+    label: proposal.data.topic,
+    text: tutorChatMaterial(rows ?? []),
+    images: [],
+    count: proposal.data.count,
+    style: "auto",
+    fake,
+    model: fake ? "fake" : (Deno.env.get("AI_FLASHCARDS_MODEL") ?? aiModel()),
+    tutorMessageId: messageId,
+  });
+}
+
+async function releaseClaim(messageId: number) {
+  const { error } = await admin.from("tutor_messages").update({ deck_claimed_at: null }).eq("id", messageId);
+  if (error) console.error("Could not release the deck claim:", error.message);
+}
+
+async function respond(request: Request, job: Job) {
   // 6a. Streaming (what the website uses): progress as Server-Sent Events.
   if (request.headers.get("accept")?.includes("text/event-stream")) {
     const encoder = new TextEncoder();
@@ -217,7 +316,7 @@ type StreamEvent =
 type Job = {
   userId: string;
   subject: "polish" | "english" | "other";
-  kind: (typeof import("../_shared/flashcards.ts").AI_SOURCES)[number];
+  kind: DeckSource;
   label: string;
   text: string;
   images: string[];
@@ -225,6 +324,8 @@ type Job = {
   style: "auto" | "qa" | "vocab";
   fake: boolean;
   model: string;
+  /** Set for a deck from a tutor proposal: the saved reply it belongs to. */
+  tutorMessageId?: number;
 };
 
 /** Asks the AI, applies our rules and saves the deck. Never throws. */
@@ -246,10 +347,21 @@ async function runJob(job: Job, onProgress: (chars: number) => void): Promise<{ 
       await admin.from("flashcard_decks").delete().eq("id", deck.id);
       throw cardsError;
     }
+    if (job.tutorMessageId) {
+      const { error: linkError } = await admin
+        .from("tutor_messages")
+        .update({ deck_id: deck.id, deck_claimed_at: null })
+        .eq("id", job.tutorMessageId);
+      if (linkError) {
+        await admin.from("flashcard_decks").delete().eq("id", deck.id); // an unlinked deck could be made twice
+        throw linkError;
+      }
+    }
     return { ok: true, id: deck.id as string };
   } catch (err) {
     console.error("AI flashcards failed:", err);
     await admin.rpc("refund_ai_quota", { p_user: job.userId, p_feature: FEATURE }); // the try doesn't count
+    if (job.tutorMessageId) await releaseClaim(job.tutorMessageId);
     return {
       ok: false,
       error:
@@ -391,11 +503,11 @@ async function askModel(job: Job, onProgress: (chars: number) => void): Promise<
   let chars = 0;
   const { text } = await askAi({
     model: job.model,
-    instructions: buildCardsInstructions(job.subject, job.style),
+    instructions: buildCardsInstructions(job.subject, job.style, job.kind),
     input: buildCardsInput(job),
     schema: { name: "flashcards", schema: openAiCardsSchema(job.count) },
     maxTokens: 12000,
-    cacheKey: `flashcards-${job.subject}-${job.style}`,
+    cacheKey: `flashcards-${job.subject}-${job.style}${job.kind === "tutor" ? "-tutor" : ""}`,
     timeoutMs: AI_TIMEOUT_MS,
     onDelta: (delta) => onProgress((chars += delta.length)),
   });

@@ -17,7 +17,7 @@ export async function listMyChats() {
 
 /** Messages of one chat, oldest first, each assistant reply with the student's 👍/👎 (or null). */
 async function messagesWithRatings(chatId) {
-  const { data, error } = await supabase.from('tutor_messages').select('id, role, content').eq('chat_id', chatId).order('id')
+  const { data, error } = await supabase.from('tutor_messages').select('id, role, content, deck_proposal, deck_id').eq('chat_id', chatId).order('id')
   if (error) throw error
   const rows = data ?? []
   const replyIds = rows.filter(m => m.role === 'assistant').map(m => m.id)

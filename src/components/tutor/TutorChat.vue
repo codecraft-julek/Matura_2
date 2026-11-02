@@ -11,6 +11,7 @@ import AiRating from '@/ui/AiRating.vue'
 import { ROUTES } from '@/config/routes'
 import { streamTutorReply } from '@/lib/ai'
 import { useBillingStore } from '@/stores/billing'
+import TutorDeckOffer from './TutorDeckOffer.vue'
 import TutorText from './TutorText.vue'
 
 const props = defineProps({
@@ -103,9 +104,11 @@ async function send(text) {
   billing.refreshAllowances()
 
   if (res.ok) {
-    messages.value.push({ role: 'assistant', content: reply, id: res.messageId, rating: null })
+    // res.reply is the saved text: the same as what streamed in, without the deck proposal line.
+    const content = res.reply ?? reply
+    messages.value.push({ role: 'assistant', content, id: res.messageId, rating: null, deck_proposal: res.deckProposal ?? null, deck_id: null })
     streaming.value = null
-    announce.value = `Tutor: ${reply}`
+    announce.value = `Tutor: ${content}`
     if (created) {
       chatId.value = created
       emit('chat-created', created, messages.value)
@@ -158,6 +161,7 @@ defineExpose({ focus: () => inputRef.value?.focus({ preventScroll: true }) })
           <template v-else>
             <span class="sr-only">Tutor:</span>
             <div class="bubble bubble-ai"><TutorText :text="m.content" /></div>
+            <TutorDeckOffer v-if="m.deck_proposal && m.id" :message-id="m.id" :proposal="m.deck_proposal" :deck-id="m.deck_id" />
             <AiRating v-if="m.id !== undefined && m.id !== null" class="msg-rating" kind="tutor_message" :target-id="m.id" :initial="m.rating" variant="compact" />
           </template>
         </li>

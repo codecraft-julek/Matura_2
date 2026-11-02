@@ -27,6 +27,7 @@ export const DECK_SOURCE = {
   manual: 'ręcznie',
   import: 'import',
   note: 'z notatki',
+  tutor: 'z rozmowy z tutorem',
   text: 'z tekstu',
   photo: 'ze zdjęć',
   pdf: 'z PDF',

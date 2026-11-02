@@ -5,7 +5,10 @@ import {
   buildTutorInput,
   buildTutorInstructions,
   chatTitle,
+  deckMarkerFilter,
+  splitDeckProposal,
   tutorRequestSchema,
+  wantsFlashcards,
   type TutorTaskContext,
 } from "./tutor";
 
@@ -62,5 +65,60 @@ describe("prompt building", () => {
     expect(chatTitle("cokolwiek", ctx)).toBe("Zadanie 1 · Język polski, poziom podstawowy, maj 2026");
     expect(chatTitle("Jak  napisać\ntezę?", null)).toBe("Jak napisać tezę?");
     expect(chatTitle("a".repeat(100), null)).toHaveLength(58);
+  });
+});
+
+describe("deck proposals", () => {
+  const ok = '[[FISZKI]]{"topic":"Romantyzm","count":20,"subject":"polish"}';
+  it("takes a valid proposal off the end of the reply", () => {
+    expect(splitDeckProposal(`Jasne, zrób talię przyciskiem.\n${ok}`)).toEqual({
+      text: "Jasne, zrób talię przyciskiem.",
+      proposal: { topic: "Romantyzm", count: 20, subject: "polish" },
+    });
+  });
+  it("leaves a normal reply alone", () => {
+    expect(splitDeckProposal("Zwykła odpowiedź.")).toEqual({ text: "Zwykła odpowiedź.", proposal: null });
+  });
+  it.each([
+    ["not JSON", "[[FISZKI]]zrób 1000 fiszek"],
+    ["a count we don't offer", '[[FISZKI]]{"topic":"Romantyzm","count":500,"subject":"polish"}'],
+    ["a wrong subject", '[[FISZKI]]{"topic":"Romantyzm","count":20,"subject":"math"}'],
+    ["a topic too short", '[[FISZKI]]{"topic":"x","count":20,"subject":"polish"}'],
+    ["a topic too long", `[[FISZKI]]{"topic":"${"a".repeat(121)}","count":20,"subject":"polish"}`],
+    ["markup in the topic", '[[FISZKI]]{"topic":"<img src=x onerror=alert(1)>","count":20,"subject":"polish"}'],
+    ["a marker in the topic", '[[FISZKI]]{"topic":"[[FISZKI]] x","count":20,"subject":"polish"}'],
+    ["extra fields", '[[FISZKI]]{"topic":"Romantyzm","count":20,"subject":"polish","deckId":"1","userId":"2"}'],
+    ["a missing field", '[[FISZKI]]{"topic":"Romantyzm"}'],
+  ])("rejects %s but still hides the line", (_name, line) => {
+    expect(splitDeckProposal(`Tekst.\n${line}`)).toEqual({ text: "Tekst.", proposal: null });
+  });
+  it("hides a marker cut off at the token limit", () => {
+    expect(splitDeckProposal("Tekst.\n[[FISZ").text).toBe("Tekst.");
+  });
+  it("keeps text that only looks like the start of the marker", () => {
+    expect(splitDeckProposal("Lista [a]").text).toBe("Lista [a]");
+  });
+  it("never saves an empty reply", () => {
+    expect(splitDeckProposal(ok).text.length).toBeGreaterThan(0);
+  });
+  it.each(["Zrób mi fiszki z romantyzmu", "fiszek poproszę", "Utwórz talię z tego", "flashcards please", "Zrób TALIĘ"])("sees a request in: %s", (m) => {
+    expect(wantsFlashcards(m)).toBe(true);
+  });
+  it.each(["Wyjaśnij romantyzm", "Co to jest Italia?", "Jaka jest kapitalizacja?"])("sees no request in: %s", (m) => {
+    expect(wantsFlashcards(m)).toBe(false);
+  });
+  it("never streams the marker, however the text is split", () => {
+    const reply = `Jasne, gotowe [uwaga].\n${ok}`;
+    for (const size of [1, 2, 3, 7, 1000]) {
+      let shown = "";
+      const filter = deckMarkerFilter((t) => { shown += t; });
+      for (let i = 0; i < reply.length; i += size) filter(reply.slice(i, i + size));
+      expect(shown).toBe("Jasne, gotowe [uwaga].\n");
+    }
+  });
+  it("tells the tutor to propose only on request, and not to create anything", () => {
+    const prompt = buildTutorInstructions();
+    expect(prompt).toContain("Sam nie tworzysz fiszek");
+    expect(prompt).toContain("[[FISZKI]]");
   });
 });

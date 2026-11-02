@@ -5,6 +5,8 @@
 // check daily limit → save the student's message → ask OpenAI (streamed as Server-Sent Events) →
 // save the reply. If the AI fails, the student's message is removed and the try doesn't count.
 // The answer key is read here (service role), never sent by the browser.
+// When the student asks for flashcards, the reply can carry a validated deck proposal. This function
+// never creates a deck: that happens in flashcards-generate, after the student clicks.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
 //   ANTHROPIC_API_KEY or OPENAI_API_KEY   required for real answers; see _shared/ai.ts
@@ -23,7 +25,11 @@ import {
   buildTutorInput,
   buildTutorInstructions,
   chatTitle,
+  deckMarkerFilter,
+  splitDeckProposal,
   tutorRequestSchema,
+  wantsFlashcards,
+  type DeckProposal,
   type ChatMessage,
   type TutorTaskContext,
 } from "../_shared/tutor.ts";
@@ -41,7 +47,7 @@ const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-type Reply = { ok: true; chatId: string; messageId: number; reply: string } | { ok: false; error: string };
+type Reply = { ok: true; chatId: string; messageId: number; reply: string; deckProposal: DeckProposal | null } | { ok: false; error: string };
 function json(body: Reply, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
@@ -154,6 +160,7 @@ async function handle(request: Request) {
     userId: user.id,
     userMessageId: userMsg.id as number,
     isNewChat,
+    wantsDeck: wantsFlashcards(req.message),
     fake,
     model: Deno.env.get("AI_TUTOR_MODEL") ?? aiModel(),
     input: buildTutorInput(history, ctx ? buildTaskContext(ctx, req.answers) : null),
@@ -180,7 +187,9 @@ async function handle(request: Request) {
         send({ type: "start", chatId: job.chatId });
         const result = await runJob(job, (text) => send({ type: "delta", text }));
         clearInterval(ping);
-        send(result.ok ? { type: "done", chatId: job.chatId, messageId: result.messageId } : { type: "error", error: result.error });
+        send(result.ok
+          ? { type: "done", chatId: job.chatId, messageId: result.messageId, reply: result.reply, deckProposal: result.deckProposal }
+          : { type: "error", error: result.error });
         if (open) controller.close();
       },
     });
@@ -191,13 +200,16 @@ async function handle(request: Request) {
 
   // 7b. Plain JSON (tests and simple clients)
   const result = await runJob(job, () => {});
-  return result.ok ? json({ ok: true, chatId: job.chatId, messageId: result.messageId, reply: result.reply }) : json({ ok: false, error: result.error }, 502);
+  return result.ok
+    ? json({ ok: true, chatId: job.chatId, messageId: result.messageId, reply: result.reply, deckProposal: result.deckProposal })
+    : json({ ok: false, error: result.error }, 502);
 }
 
 type StreamEvent =
   | { type: "start"; chatId: string }
   | { type: "delta"; text: string }
-  | { type: "done"; chatId: string; messageId: number } // messageId: the saved reply (for 👍/👎)
+  // messageId: the saved reply (for 👍/👎 and the deck button). reply: its final text, without the marker.
+  | { type: "done"; chatId: string; messageId: number; reply: string; deckProposal: DeckProposal | null }
   | { type: "error"; error: string };
 
 type Job = {
@@ -205,6 +217,7 @@ type Job = {
   userId: string;
   userMessageId: number;
   isNewChat: boolean;
+  wantsDeck: boolean;
   fake: boolean;
   model: string;
   input: ReturnType<typeof buildTutorInput>;
@@ -213,17 +226,23 @@ type Job = {
 type Usage = { model: string; input_tokens: number; cached_tokens: number; output_tokens: number } | null;
 
 /** Asks the AI and saves the reply. On failure undoes the student's message. Never throws. */
-async function runJob(job: Job, onDelta: (text: string) => void): Promise<{ ok: true; reply: string; messageId: number } | { ok: false; error: string }> {
+async function runJob(
+  job: Job,
+  onDelta: (text: string) => void,
+): Promise<{ ok: true; reply: string; messageId: number; deckProposal: DeckProposal | null } | { ok: false; error: string }> {
   try {
-    const { reply, usage } = job.fake ? await fakeStream(onDelta) : await askModel(job, onDelta);
+    const { reply: raw, usage } = job.fake ? await fakeStream(onDelta) : await askModel(job, deckMarkerFilter(onDelta));
+    const { text, proposal } = splitDeckProposal(raw);
+    const reply = text.slice(0, 12000);
+    const deckProposal = job.wantsDeck ? proposal : null;
     const { data: saved, error } = await admin
       .from("tutor_messages")
-      .insert({ chat_id: job.chatId, user_id: job.userId, role: "assistant", content: reply.slice(0, 12000), usage })
+      .insert({ chat_id: job.chatId, user_id: job.userId, role: "assistant", content: reply, usage, deck_proposal: deckProposal })
       .select("id")
       .single();
     if (error) throw error;
     await admin.from("tutor_chats").update({ updated_at: new Date().toISOString() }).eq("id", job.chatId);
-    return { ok: true, reply, messageId: saved.id as number };
+    return { ok: true, reply, messageId: saved.id as number, deckProposal };
   } catch (err) {
     console.error("Tutor reply failed:", err);
     // Undo, so a retry starts clean: the message (and an empty new chat) go away, the try doesn't count.
