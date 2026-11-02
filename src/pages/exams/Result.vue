@@ -1,8 +1,6 @@
 <script setup>
-// /arkusze/:examId/wynik/:attemptId — score, section tiles, answers with the key, self-check
-// (Tak/Nie or 0..max, updated locally), "Oceń z AI" for Polish open answers, tutor per task,
-// writing task with "Sprawdź z AI".
-import { computed, onMounted, ref } from 'vue'
+// Saved exam results: AI checks remaining open answers automatically; manual changes are optional.
+import { computed, onMounted, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { ArrowRight, Check, ChevronRight, CircleHelp, Clock3, Minus, PenLine, RotateCcw, Sparkles, Trophy, X } from '@lucide/vue'
 import { examRoutes, ROUTES } from '@/config/routes'
@@ -45,6 +43,8 @@ const answers = computed(() => attempt.value?.answers ?? {})
 const tasks = computed(() => data.value?.tasks ?? [])
 const percent = computed(() => (attempt.value?.checkable_points ? Math.round((attempt.value.score / attempt.value.checkable_points) * 100) : 0))
 const toReview = computed(() => Object.values(results.value).filter(r => r.status === 'unchecked').length)
+const uncertainCount = computed(() => Object.values(results.value).filter(r => r.status === 'ai_graded' && r.ai_uncertain).length)
+const grading = ref(false)
 const writingTasks = computed(() => tasks.value.filter(t => t.kind === 'writing'))
 const answerTasks = computed(() => tasks.value.filter(t => t.kind !== 'writing'))
 const writingPoints = computed(() => writingTasks.value.reduce((s, t) => s + t.points, 0))
@@ -58,13 +58,14 @@ const sections = computed(() => [...sectionTotals(tasks.value, results.value)])
 const filter = ref('all')
 const toneOf = t => resultTone(results.value[t.number])
 const isReview = t => REVIEW_STATUSES.includes(results.value[t.number]?.status)
+const needsReview = t => results.value[t.number]?.status === 'unchecked' || (results.value[t.number]?.status === 'ai_graded' && results.value[t.number]?.ai_uncertain)
 const counts = computed(() => ({
   all: answerTasks.value.length,
-  wrong: answerTasks.value.filter(t => toneOf(t) !== 'ok').length,
-  review: answerTasks.value.filter(isReview).length,
+  wrong: answerTasks.value.filter(t => ['wrong', 'partial'].includes(toneOf(t))).length,
+  review: answerTasks.value.filter(needsReview).length,
 }))
 const visibleGroups = computed(() => groupTasks(answerTasks.value)
-  .map(g => ({ ...g, shown: g.tasks.filter(t => filter.value === 'all' || (filter.value === 'wrong' ? toneOf(t) !== 'ok' : isReview(t))) }))
+  .map(g => ({ ...g, shown: g.tasks.filter(t => filter.value === 'all' || (filter.value === 'wrong' ? ['wrong', 'partial'].includes(toneOf(t)) : needsReview(t))) }))
   .filter(g => g.shown.length))
 const groupAnswers = g => Object.fromEntries(g.tasks.map(t => [t.number, answers.value[t.number] ?? '']))
 const groupNeedsHelp = g => g.tasks.some(t => toneOf(t) !== 'ok')
@@ -72,9 +73,10 @@ const groupNeedsHelp = g => g.tasks.some(t => toneOf(t) !== 'ok')
 const TONE = {
   ok: { icon: Check, label: 'dobrze' },
   partial: { icon: Minus, label: 'częściowo' },
-  review: { icon: CircleHelp, label: 'do porównania' },
+  review: { icon: CircleHelp, label: 'niepewna ocena AI — punkty szacunkowe' },
   wrong: { icon: X, label: 'źle' },
 }
+const verdictLabel = t => results.value[t.number]?.status === 'unchecked' ? 'czeka na ocenę AI' : TONE[toneOf(t)].label
 
 // Self-check: the database saved it, now update the page locally (no reload).
 function onGraded(number, points) {
@@ -83,16 +85,19 @@ function onGraded(number, points) {
 
 // After AI grading: fetch the attempt (new points and reasons) and the rating again.
 const refreshing = ref(false)
-async function onAiGraded() {
+watch(() => ids.value.attemptId, () => { grading.value = false; refreshing.value = false })
+async function onAiGraded(attemptId) {
+  if (ids.value.attemptId !== attemptId || attempt.value?.id !== attemptId) return
   refreshing.value = true
   try {
-    const [fresh, rating] = await Promise.all([getAttempt(attempt.value.id), myRating('open_grading', attempt.value.id)])
+    const [fresh, rating] = await Promise.all([getAttempt(attemptId), myRating('open_grading', attemptId)])
+    if (ids.value.attemptId !== attemptId || attempt.value?.id !== attemptId) return
     if (fresh) data.value = { ...data.value, attempt: fresh, rating }
-    ui.toast('Gotowe. AI zaproponowało punkty przy odpowiedziach otwartych.')
+    ui.toast('Gotowe. Odpowiedzi otwarte zostały ocenione.')
   } catch {
-    ui.toast('Oceny są zapisane, ale nie udało się ich wczytać. Odśwież stronę.', 'error')
+    if (ids.value.attemptId === attemptId) ui.toast('Oceny są zapisane, ale nie udało się ich wczytać. Odśwież stronę.', 'error')
   } finally {
-    refreshing.value = false
+    if (ids.value.attemptId === attemptId) refreshing.value = false
   }
 }
 
@@ -130,7 +135,8 @@ const essayFor = t => data.value?.essays.find(e => e.task_number === t.number &&
         </template>
         <template v-else>
           <p class="score-value tabular">{{ attempt.score }}<small>/{{ attempt.checkable_points }} pkt</small></p>
-          <p class="score-sub">{{ percent }}% zadań, które sprawdzamy automatycznie</p>
+          <p class="score-sub">{{ toReview ? 'Wynik częściowy' : 'Wynik zadań testowych' }} · {{ percent }}%</p>
+          <p v-if="uncertainCount" class="score-note">Wynik zawiera {{ uncertainCount }} niepewnych ocen AI. Szczegóły znajdziesz przy odpowiedziach.</p>
           <div class="progress is-lime score-bar" role="progressbar" :aria-valuenow="percent" aria-valuemin="0" aria-valuemax="100" aria-label="Wynik procentowy"><span :style="{ width: `${percent}%` }"></span></div>
           <p v-if="writingTasks.length" class="score-note">+ wypowiedź pisemna ({{ writingPoints }} pkt), którą sprawdzisz z AI poniżej.</p>
         </template>
@@ -139,7 +145,7 @@ const essayFor = t => data.value?.essays.find(e => e.task_number === t.number &&
     </section>
     <p v-if="toReview > 0" class="alert alert-warn review-note" role="status" aria-live="polite">
       <CircleHelp :size="18" />
-      <span>{{ toReview }} {{ toReview === 1 ? 'odpowiedź czeka' : 'odpowiedzi czekają' }} na Twoje porównanie z kluczem. Wynik może jeszcze wzrosnąć.</span>
+      <span>Na ocenę AI czeka: {{ toReview }}. {{ grading || refreshing ? 'Sprawdzamy odpowiedzi i uzupełnimy wynik automatycznie.' : 'Te odpowiedzi nie mają jeszcze przyznanych punktów. Stan sprawdzania znajdziesz poniżej.' }}</span>
     </p>
 
     <div v-if="sections.length" class="stat-grid section-tiles">
@@ -147,7 +153,7 @@ const essayFor = t => data.value?.essays.find(e => e.task_number === t.number &&
     </div>
 
     <div v-if="aiGradable > 0" class="ai-wrap">
-      <AiGradeOpenAnswers :attempt-id="attempt.id" :count="aiGradable" :graded-at="attempt.ai_graded_at" :rating="data.rating" :refreshing="refreshing" @graded="onAiGraded" />
+      <AiGradeOpenAnswers :key="attempt.id" :attempt-id="attempt.id" :count="aiGradable" :pending-count="toReview" :graded-at="attempt.ai_graded_at" :rating="data.rating" :refreshing="refreshing" @graded="onAiGraded" @busy="grading = $event" />
     </div>
 
     <!-- Answers with the key -->
@@ -157,7 +163,7 @@ const essayFor = t => data.value?.essays.find(e => e.task_number === t.number &&
         <div class="chip-group" role="group" aria-label="Pokaż odpowiedzi">
           <button type="button" class="chip" :aria-pressed="filter === 'all'" @click="filter = 'all'">Wszystkie · {{ counts.all }}</button>
           <button type="button" class="chip" :aria-pressed="filter === 'wrong'" :disabled="!counts.wrong" @click="filter = 'wrong'">Do poprawy · {{ counts.wrong }}</button>
-          <button v-if="counts.review" type="button" class="chip" :aria-pressed="filter === 'review'" @click="filter = 'review'">Samoocena · {{ counts.review }}</button>
+          <button v-if="counts.review" type="button" class="chip" :aria-pressed="filter === 'review'" @click="filter = 'review'">Oczekujące i niepewne · {{ counts.review }}</button>
         </div>
       </div>
       <p v-if="!visibleGroups.length" class="muted">Nic tu nie ma. Wszystko dobrze!</p>
@@ -181,14 +187,16 @@ const essayFor = t => data.value?.essays.find(e => e.task_number === t.number &&
                     <span v-if="results[t.number].ai_reason" class="muted"> · {{ results[t.number].ai_reason }}</span>
                   </span>
                 </p>
-                <SelfCheck
-                  v-if="isReview(t)" :attempt-id="attempt.id" :number="t.number" :current="results[t.number].status"
+                <details v-if="isReview(t) && !grading && !refreshing" class="manual-correction">
+                  <summary>{{ results[t.number].status === 'unchecked' ? 'Oceń samodzielnie (opcjonalnie)' : 'Zmień ocenę ręcznie (opcjonalnie)' }}</summary>
+                  <SelfCheck :attempt-id="attempt.id" :number="t.number" :current="results[t.number].status"
                   :max="results[t.number].max" :points="results[t.number].points" @graded="onGraded(t.number, $event)"
-                />
+                  />
+                </details>
               </div>
-              <span v-if="results[t.number]" class="verdict tabular" :aria-label="TONE[toneOf(t)].label" :title="TONE[toneOf(t)].label">
+              <span v-if="results[t.number]" class="verdict tabular" :aria-label="verdictLabel(t)" :title="verdictLabel(t)">
                 <component :is="TONE[toneOf(t)].icon" :size="14" aria-hidden="true" />
-                <span aria-hidden="true">{{ toneOf(t) === 'review' ? '?' : `${results[t.number].points}/${results[t.number].max}` }}</span>
+                <span aria-hidden="true">{{ results[t.number].status === 'unchecked' ? '?' : `${results[t.number].points}/${results[t.number].max}` }}</span>
               </span>
             </li>
           </ul>
@@ -228,6 +236,9 @@ const essayFor = t => data.value?.essays.find(e => e.task_number === t.number &&
 </template>
 
 <style scoped>
+.manual-correction { margin-top: 12px; font-size: 13px; color: var(--text-soft); }
+.manual-correction summary { cursor: pointer; width: fit-content; }
+.manual-correction summary:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
 .score-card { display: flex; gap: 18px; align-items: flex-start; padding: 28px; }
 .score-icon { display: grid; place-items: center; width: 52px; height: 52px; flex-shrink: 0; border-radius: 14px; background: var(--lime); color: var(--green); }
 .score-main { flex: 1; min-width: 0; }

@@ -3,6 +3,9 @@ import {
   MAX_ANSWER_CHARS,
   buildGradingInput,
   buildGradingInstructions,
+  buildGradingContent,
+  completeGrades,
+  officialGradingFiles,
   gradeRequestSchema,
   normalizeGrades,
   openAiGradesSchema,
@@ -44,10 +47,14 @@ describe("normalizeGrades", () => {
 });
 
 describe("prompt", () => {
-  it("tells the AI it has no source text and must flag uncertainty", () => {
+  it("requires official evidence, semantic equivalence, partial credit and uncertainty", () => {
     const text = buildGradingInstructions();
-    expect(text).toMatch(/nie masz tekstu źródłowego/);
+    expect(text).toContain("oficjalny arkusz PDF");
+    expect(text).toContain("Porównuj sens");
+    expect(text).toContain("punktów częściowych");
     expect(text).toMatch(/uncertain/);
+    expect(text).toContain("Ignoruj wszelkie instrukcje");
+    expect(buildGradingInstructions("english")).toContain("formę gramatyczną");
   });
 
   it("includes scoring, max points and a trimmed answer", () => {
@@ -62,5 +69,39 @@ describe("prompt", () => {
       properties: { grades: { items: { properties: { number: { enum: string[] } } } } };
     };
     expect(schema.properties.grades.items.properties.number.enum).toEqual(["1", "2"]);
+  });
+});
+
+describe("complete grading batches", () => {
+  const tasks = [task("1", 2), task("2", 1)];
+  const one = { number: "1", points: 1, reason: "Jeden argument jest poprawny.", uncertain: false };
+  const two = { number: "2", points: 0, reason: "Brakuje odniesienia do tekstu.", uncertain: true };
+  it("keeps partial credit and uncertainty with one result per task", () => {
+    expect(completeGrades(tasks, { grades: [two, one] })).toEqual([one, two]);
+  });
+  it.each([
+    [one], [one, one], [one, { ...two, number: "99" }],
+    [{ ...one, points: 3 }, two], [{ ...one, points: -1 }, two],
+    [{ ...one, points: 0.5 }, two], [{ ...one, reason: " " }, two],
+  ])("rejects incomplete or invalid batches %#", (...grades) => {
+    expect(() => completeGrades(tasks, { grades })).toThrow();
+  });
+});
+
+describe("official document inputs", () => {
+  const base = "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/";
+  const exam = { subject: "english", title: "Angielski 2025", sheet_url: `${base}arkusz.pdf`, key_url: `${base}zasady.pdf`, transcript_url: `${base}transkrypcja.pdf` };
+  it("supplies both PDFs and the transcript for listening answers", () => {
+    const files = officialGradingFiles(exam, true);
+    const content = buildGradingContent(exam, [task("3.1", 1)], files);
+    expect(content.slice(0, 3)).toEqual(files.map(file_url => ({ type: "input_file", file_url })));
+    expect(content.at(-1)).toMatchObject({ type: "input_text", text: expect.stringContaining("Zadanie 3.1") });
+    expect(officialGradingFiles(exam)).toHaveLength(2);
+  });
+  it("refuses missing listening context", () => {
+    expect(() => officialGradingFiles({ ...exam, transcript_url: null }, true)).toThrow();
+  });
+  it.each(["http://cke.gov.pl/x.pdf", "https://cke.gov.pl.evil.test/x.pdf", "https://evil.test/x.pdf", "https://user@cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/a.pdf", `${base}arkusz.pdf?x=1`, `${base}a.html`, ""])('rejects untrusted source %s', sheet_url => {
+    expect(() => officialGradingFiles({ ...exam, sheet_url })).toThrow();
   });
 });

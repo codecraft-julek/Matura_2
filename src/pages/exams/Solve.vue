@@ -216,9 +216,9 @@ async function checkCurrent() {
   // Only keep results for this block (a group number can span two blocks).
   checked.value = { ...checked.value, ...Object.fromEntries(g.tasks.map(t => [t.number, res.results[t.number]]).filter(([, r]) => r)) }
   const summary = groupCheck(g, checked.value)
-  liveMessage.value = summary ? `Zadanie ${g.no} sprawdzone: ${summary.got} z ${summary.max} pkt${summary.review ? ', część odpowiedzi do porównania z kluczem' : ''}.` : ''
+  liveMessage.value = summary ? `Zadanie ${g.no} sprawdzone: ${summary.got} z ${summary.max} pkt${summary.review ? ', odpowiedzi otwarte oceni AI po zakończeniu arkusza' : ''}.` : ''
 }
-const checkTitle = c => (c.tone === 'ok' ? 'Wszystko dobrze. Ogarniasz to!' : c.review ? 'Porównaj z kluczem' : c.tone === 'warn' ? 'Prawie. Zobacz, co poprawić.' : 'To dobry moment na małą powtórkę.')
+const checkTitle = c => (c.tone === 'ok' ? 'Wszystko dobrze. Ogarniasz to!' : c.review ? 'Odpowiedź otwartą oceni AI po zakończeniu arkusza' : c.tone === 'warn' ? 'Prawie. Zobacz, co poprawić.' : 'To dobry moment na małą powtórkę.')
 
 // ---------- Timed: countdown ----------
 const now = ref(Date.now())
@@ -446,7 +446,7 @@ async function resetPractice() {
             <template v-if="!timed">
               <div v-if="currentCheck" class="check-summary" :class="`is-${currentCheck.tone}`">
                 <strong>{{ checkTitle(currentCheck) }}</strong>
-                <span class="tabular">{{ currentCheck.got }} / {{ currentCheck.max }} pkt w tym zadaniu</span>
+                <span class="tabular">{{ currentCheck.got }} / {{ currentCheck.max }} pkt{{ currentCheck.review ? ' · wynik częściowy' : ' w tym zadaniu' }}</span>
               </div>
               <p v-if="checkError" class="field-error" role="alert">{{ checkError }}</p>
               <div class="task-actions">

@@ -72,7 +72,7 @@ const materials = computed(() => {
       <RouterLink :to="examRoutes.practice(exam.id)" class="card card-tinted card-link mode">
         <span class="mode-icon" aria-hidden="true"><ListChecks :size="22" /></span>
         <p class="mode-title">Tryb ćwiczeń</p>
-        <p class="mode-text">Bez limitu czasu. Każde zadanie możesz sprawdzić od razu i zapytać tutora.</p>
+        <p class="mode-text">Bez limitu czasu. Zadania zamknięte sprawdzisz od razu. Otwarte oceni AI po zakończeniu arkusza.</p>
         <p v-if="saved.practice" class="mode-saved">Masz zapisane odpowiedzi: {{ saved.practice }}</p>
         <span class="mode-go">{{ saved.practice ? 'Kontynuuj' : 'Zacznij ćwiczyć' }} <ArrowRight :size="16" /></span>
       </RouterLink>
@@ -85,6 +85,8 @@ const materials = computed(() => {
         <span class="mode-go">{{ saved.timedLeft ? 'Wróć do egzaminu' : 'Zacznij egzamin' }} <ArrowRight :size="16" /></span>
       </RouterLink>
     </div>
+
+    <p v-if="data.tasks.some(t => t.kind === 'open')" class="muted small">Po oddaniu arkusza AI automatycznie oceni odpowiedzi otwarte, których nie rozpoznał klucz. Jedno sprawdzenie arkusza zużywa jedną ocenę AI z limitu Twojego planu.</p>
 
     <div class="overview-grid section-gap">
       <section aria-labelledby="sec-structure">

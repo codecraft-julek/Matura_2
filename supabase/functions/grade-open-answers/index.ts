@@ -1,35 +1,37 @@
 // Supabase Edge Function: POST /functions/v1/grade-open-answers   body: { attemptId }
 //
-// AI grading of open answers in a Polish exam attempt (Arkusz 1). Flow: check login → validate →
-// load the student's own attempt and our scoring descriptions (exam_task_keys, server-side only) →
-// check daily limit → ask OpenAI for 0…max points + one-sentence reason per task → save with
-// save_ai_grades. The student can still change every grade on the results page.
-// Exam texts are never sent (we don't store them); the prompt tells the AI it doesn't have them.
+// Automatic grading of unanswered-by-key open tasks in a saved Polish/English exam attempt.
+// Official CKE sheet, marking guide and (when needed) transcript are supplied as PDF inputs.
+// An attempt lease prevents duplicate quota use; saved and manually corrected grades are reused.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
 //   OPENAI_API_KEY              required for real grading
-//   OPENAI_MODEL                optional, default below
+//   AI_GRADING_MODEL            optional, default below
 //   AI_GLOBAL_DAILY_LIMIT       optional, gradings for ALL students per day (default 300) → caps your bill
 //   AI_REASONING_EFFORT         optional, "low" (default), "medium" or "high"
 //   AI_FAKE_MODE                "true" = example grades without OpenAI (only for testing, never in production)
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
+import { askAi } from "../_shared/ai.ts";
 import { quotaMessage, type QuotaResult } from "../_shared/billing.ts";
 import {
-  GRADABLE_STATUSES,
   aiGradesSchema,
-  buildGradingInput,
+  buildGradingContent,
   buildGradingInstructions,
+  completeGrades,
   gradeRequestSchema,
-  normalizeGrades,
+  officialGradingFiles,
   openAiGradesSchema,
   type AiGrades,
   type GradableTask,
+  type GradingExam,
 } from "../_shared/open-grading.ts";
 
-const DEFAULT_MODEL = "gpt-6.1-sol";
-const OPENAI_TIMEOUT_MS = 110_000; // Supabase stops functions at 150 s
+// Reads whole PDFs, so the input is large (about 110-150k tokens): the cheap model is what makes
+// automatic grading affordable. In our test it matched CKE's rules in 90 of 91 answers.
+const GRADING_MODEL = "gpt-6-luna";
+const AI_TIMEOUT_MS = 110_000; // Supabase stops functions at 150 s
 const FEATURE = "open_grading";
 
 const corsHeaders = {
@@ -42,7 +44,7 @@ const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-type Reply = { ok: true; graded: number } | { ok: false; error: string };
+type Reply = { ok: true; graded: number; pending?: boolean } | { ok: false; error: string };
 function json(body: Reply, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
@@ -77,39 +79,41 @@ async function handle(request: Request) {
   const parsed = gradeRequestSchema.safeParse(body);
   if (!parsed.success) return json({ ok: false, error: "Nieprawidłowe dane." }, 400);
 
-  // 3. The student's own attempt, a Polish exam
+  // 3. The student's own attempt and trusted document URLs
   const { data: attempt } = await admin
     .from("exam_attempts")
-    .select("id, exam_id, answers, results, exams(subject)")
+    .select("id, exam_id, answers, results, exams(subject, title, sheet_url, key_url, transcript_url)")
     .eq("id", parsed.data.attemptId)
     .eq("user_id", user.id) // only your own attempt
     .maybeSingle();
   if (!attempt) return json({ ok: false, error: "Nie znaleziono tego podejścia." }, 404);
-  const exam = attempt.exams as unknown as { subject: string };
-  if (exam.subject !== "polish") {
-    return json({ ok: false, error: "Ocena AI działa na razie tylko dla arkuszy z polskiego." }, 400);
+  const exam = attempt.exams as unknown as GradingExam;
+  if (!["polish", "english"].includes(exam.subject)) {
+    return json({ ok: false, error: "Ocena AI nie obsługuje jeszcze tego przedmiotu." }, 400);
   }
 
   // 4. Open answers to grade + our scoring descriptions (read here, never taken from the request)
   const { data: rows, error: rowsError } = await admin
     .from("exam_tasks")
-    .select("id, number, points, group_label, meta, exam_task_keys(display, note)")
+    .select("id, number, points, section, group_label, meta, exam_task_keys(display, note)")
     .eq("exam_id", attempt.exam_id)
     .eq("kind", "open")
-    .eq("section", "test")
     .order("sort");
   if (rowsError) throw rowsError;
 
   const answers = attempt.answers as Record<string, string>;
   const results = attempt.results as Record<string, { status: string }>;
   const tasks: GradableTask[] = [];
+  let needsTranscript = false;
   for (const r of rows ?? []) {
     const answer = answers[r.number]?.trim() ?? "";
     const status = results[r.number]?.status;
     const key = (Array.isArray(r.exam_task_keys) ? r.exam_task_keys[0] : r.exam_task_keys) as
       | { display: string; note: string | null }
       | null;
-    if (!answer || !key || !(GRADABLE_STATUSES as readonly string[]).includes(status)) continue;
+    if (!answer || status !== "unchecked") continue;
+    if (!key) return json({ ok: false, error: "Brakuje zasad oceniania jednego z zadań. Twoje odpowiedzi są zapisane; spróbuj później." }, 503);
+    if (r.section === "listening") needsTranscript = true;
     tasks.push({
       number: r.number,
       max: r.points,
@@ -120,7 +124,14 @@ async function handle(request: Request) {
     });
   }
   if (tasks.length === 0) {
-    return json({ ok: false, error: "W tym podejściu nie ma odpowiedzi otwartych do oceny." }, 400);
+    return json({ ok: true, graded: 0 });
+  }
+
+  let files: string[];
+  try {
+    files = officialGradingFiles(exam, needsTranscript);
+  } catch {
+    return json({ ok: false, error: "Brakuje oficjalnych materiałów CKE do tego arkusza. Odpowiedzi są zapisane; ocena AI jest chwilowo niedostępna." }, 503);
   }
 
   // 5. Is AI available?
@@ -130,79 +141,60 @@ async function handle(request: Request) {
     return json({ ok: false, error: "Ocena AI jeszcze nie jest skonfigurowana. Spróbuj trochę później." }, 503);
   }
 
-  // 6. Daily limits
-  const globalLimit = Number(Deno.env.get("AI_GLOBAL_DAILY_LIMIT") ?? 300);
-  // The student's limit depends on their plan (table plan_limits); the global cap protects the bill.
-  const { data: quota, error: quotaError } = await admin.rpc("consume_plan_quota", {
-    p_user: user.id,
-    p_feature: FEATURE,
-    p_global_limit: globalLimit,
-  });
-  if (quotaError) throw quotaError;
-  if (!(quota as QuotaResult).allowed) {
-    return json({ ok: false, error: quotaMessage(FEATURE, quota as QuotaResult) }, 429);
-  }
-
-  // 7. Ask the AI and save
+  // 6. Claim before consuming quota: another tab may already be grading or have finished.
+  const leaseToken = crypto.randomUUID();
+  const leaseArgs = { p_attempt_id: attempt.id, p_user: user.id, p_token: leaseToken };
+  const { data: claim, error: claimError } = await admin.rpc("claim_open_grading", leaseArgs);
+  if (claimError) throw claimError;
+  if (claim === "done") return json({ ok: true, graded: 0 });
+  if (claim === "busy") return json({ ok: true, graded: 0, pending: true }, 202);
+  if (claim !== "claimed") throw new Error("Unexpected grading lease response");
+  let consumed = false;
   try {
-    const ai = fake ? fakeGrades(tasks) : await askOpenAI({ apiKey: apiKey!, model: Deno.env.get("OPENAI_MODEL") ?? DEFAULT_MODEL, tasks });
-    const grades = normalizeGrades(tasks, ai);
-    if (grades.length === 0) throw new Error("AI returned no usable grades");
-    const { data: saved, error: saveError } = await admin.rpc("save_ai_grades", {
-      p_attempt_id: attempt.id,
+    const globalLimit = Number(Deno.env.get("AI_GLOBAL_DAILY_LIMIT") ?? 300);
+    const { data: quota, error: quotaError } = await admin.rpc("consume_plan_quota", {
       p_user: user.id,
+      p_feature: FEATURE,
+      p_global_limit: globalLimit,
+    });
+    if (quotaError) throw quotaError;
+    if (!(quota as QuotaResult).allowed) {
+      return json({ ok: false, error: quotaMessage(FEATURE, quota as QuotaResult) }, 429);
+    }
+    consumed = true;
+
+    // 7. Ask the AI and save
+    const ai = fake ? fakeGrades(tasks) : await askModel({ tasks, exam, files });
+    const grades = completeGrades(tasks, ai);
+    const { data: saved, error: saveError } = await admin.rpc("finish_open_grading", {
+      ...leaseArgs,
       p_grades: grades,
     });
     if (saveError) throw saveError;
     return json({ ok: true, graded: saved as number });
   } catch (err) {
     console.error("AI grading failed:", err);
-    await admin.rpc("refund_ai_quota", { p_user: user.id, p_feature: FEATURE }); // the try doesn't count
+    if (consumed) await admin.rpc("refund_ai_quota", { p_user: user.id, p_feature: FEATURE });
     return json({ ok: false, error: "AI nie dało rady tym razem. Spróbuj ponownie za chwilę." }, 502);
+  } finally {
+    await admin.rpc("release_open_grading", leaseArgs);
   }
 }
 
 // OpenAI Responses API with Structured Outputs (the answer must match our JSON schema).
-// Not streamed: the answer is short, and the website shows a loader meanwhile.
-async function askOpenAI(o: { apiKey: string; model: string; tasks: GradableTask[] }): Promise<AiGrades> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
-  try {
-    const res = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      signal: controller.signal,
-      headers: { Authorization: `Bearer ${o.apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: o.model,
-        instructions: buildGradingInstructions(),
-        input: buildGradingInput(o.tasks),
-        text: {
-          format: { type: "json_schema", name: "open_grades", schema: openAiGradesSchema(o.tasks.map((t) => t.number)), strict: true },
-        },
-        reasoning: { effort: Deno.env.get("AI_REASONING_EFFORT") ?? "low" },
-        max_output_tokens: 8000, // safety cap (includes reasoning tokens)
-        prompt_cache_key: "open-grading", // same instructions for everyone → cached, cheaper and faster
-        store: false, // don't keep the student's answers on OpenAI's side
-      }),
-    });
-    if (!res.ok) throw new Error(`OpenAI ${res.status}: ${(await res.text()).slice(0, 300)}`);
-    const data = await res.json();
-    if (data.status !== "completed") throw new Error(`OpenAI status ${data.status}: ${JSON.stringify(data.incomplete_details)}`);
-    // deno-lint-ignore no-explicit-any
-    const content = (data.output ?? []).flatMap((item: any) => (item.type === "message" ? item.content : []));
-    // deno-lint-ignore no-explicit-any
-    if (content.some((c: any) => c.type === "refusal")) throw new Error("OpenAI refused");
-    // deno-lint-ignore no-explicit-any
-    const text = content.find((c: any) => c.type === "output_text")?.text;
-    if (!text) throw new Error("OpenAI returned no text");
-    const u = data.usage;
-    console.log(
-      `open grading: ${o.tasks.length} tasks, model ${o.model}, in ${u?.input_tokens} (cached ${u?.input_tokens_details?.cached_tokens}), out ${u?.output_tokens}`,
-    );
-    return aiGradesSchema.parse(JSON.parse(text));
-  } finally {
-    clearTimeout(timer);
-  }
+async function askModel(o: { tasks: GradableTask[]; exam: GradingExam; files: string[] }): Promise<AiGrades> {
+  const { text } = await askAi({
+    // OpenAI even when another provider is the default: Claude refuses these PDFs (cke.gov.pl's robots.txt).
+    provider: "openai",
+    model: Deno.env.get("AI_GRADING_MODEL") ?? GRADING_MODEL,
+    instructions: buildGradingInstructions(o.exam.subject),
+    input: [{ role: "user", content: buildGradingContent(o.exam, o.tasks, o.files) }],
+    schema: { name: "open_grades", schema: openAiGradesSchema(o.tasks.map((t) => t.number)) },
+    maxTokens: 8000,
+    cacheKey: `open-grading-cke-${o.exam.subject}`,
+    timeoutMs: AI_TIMEOUT_MS,
+  });
+  return aiGradesSchema.parse(JSON.parse(text));
 }
 
 // Example grades for testing the whole flow without an OpenAI key (AI_FAKE_MODE=true).

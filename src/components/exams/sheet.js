@@ -57,9 +57,9 @@ export function resultTone(r) {
   if (!r) return 'wrong'
   const s = r.status
   const ai = s === 'ai_graded'
+  if (s === 'unchecked' || (ai && r.ai_uncertain)) return 'review'
   if (s === 'correct' || s === 'self_correct' || (ai && r.points === r.max)) return 'ok'
   if (s === 'self_partial' || s === 'partial' || (ai && r.points > 0 && r.points < r.max)) return 'partial'
-  if (s === 'unchecked') return 'review'
   return 'wrong'
 }
 
@@ -69,7 +69,7 @@ export function groupCheck(group, checked) {
   if (results.some(r => !r)) return null
   const got = results.reduce((s, r) => s + (r.points ?? 0), 0)
   const max = results.reduce((s, r) => s + (r.max ?? 0), 0)
-  const review = results.some(r => r.status === 'unchecked')
+  const review = results.some(r => resultTone(r) === 'review')
   const tone = !review && got === max ? 'ok' : got > 0 || review ? 'warn' : 'error'
   return { got, max, tone, review }
 }
@@ -99,10 +99,10 @@ export function sectionPoints(tasks) {
   return [...sections].map(([section, s]) => ({ section, points: s.points, groups: s.groups.size }))
 }
 
-/** Polish open answers (Arkusz 1) that AI can grade against our scoring descriptions. */
+/** Saved open answers eligible for AI grading or showing an existing AI/manual grade. */
 export function aiGradableCount(exam, tasks, answers, results) {
-  if (exam.subject !== 'polish') return 0
-  return tasks.filter(t => t.kind === 'open' && t.section === 'test' && answers[t.number]?.trim() && REVIEW_STATUSES.includes(results[t.number]?.status)).length
+  if (!['polish', 'english'].includes(exam.subject)) return 0
+  return tasks.filter(t => t.kind === 'open' && answers[t.number]?.trim() && REVIEW_STATUSES.includes(results[t.number]?.status)).length
 }
 
 /** Same as the database after self_check_answer / self_grade_answer: new status + points, score = sum. */

@@ -17,11 +17,11 @@ export default defineConfig({
       { extends: true, test: {
         name: 'unit',
         include: ['src/**/*.test.{ts,js}', 'tests/*.test.{ts,js}', 'supabase/functions/_shared/**/*.test.ts'],
-        exclude: ['src/components/exams/ExamPdfViewer.test.js'],
+        exclude: ['src/components/exams/ExamPdfViewer.test.js', 'src/components/exams/AiGradeOpenAnswers.test.js', 'src/pages/exams/Result.test.js'],
       } },
       { extends: true, test: {
-        name: 'pdf-viewers',
-        include: ['src/components/exams/ExamPdfViewer.test.js'],
+        name: 'vue-components',
+        include: ['src/components/exams/ExamPdfViewer.test.js', 'src/components/exams/AiGradeOpenAnswers.test.js', 'src/pages/exams/Result.test.js'],
         environment: './tests/vue-host-environment.js',
       } },
     ],

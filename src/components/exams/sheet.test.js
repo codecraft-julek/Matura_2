@@ -41,6 +41,8 @@ describe('results', () => {
     expect(resultTone({ status: 'ai_graded', points: 1, max: 2 })).toBe('partial')
     expect(resultTone({ status: 'self_partial', points: 1, max: 2 })).toBe('partial')
     expect(resultTone({ status: 'unchecked', points: 0, max: 1 })).toBe('review')
+    expect(resultTone({ status: 'ai_graded', points: 0, max: 2, ai_uncertain: true })).toBe('review')
+    expect(resultTone({ status: 'ai_graded', points: 2, max: 2, ai_uncertain: true })).toBe('review')
     expect(resultTone({ status: 'self_incorrect', points: 0, max: 1 })).toBe('wrong')
     expect(resultTone({ status: 'empty', points: 0, max: 1 })).toBe('wrong')
   })
@@ -63,7 +65,7 @@ describe('results', () => {
     expect([...sectionTotals(tasks, results)]).toEqual([['test', { got: 1, max: 3 }]])
     expect(sectionPoints(tasks)).toEqual([{ section: 'test', points: 3, groups: 2 }, { section: 'writing', points: 35, groups: 1 }])
     expect(aiGradableCount({ subject: 'polish' }, tasks, { 1: 'Odpowiedź' }, results)).toBe(1)
-    expect(aiGradableCount({ subject: 'english' }, tasks, { 1: 'x' }, results)).toBe(0)
+    expect(aiGradableCount({ subject: 'english' }, tasks, { 1: 'x' }, results)).toBe(1)
   })
   it('word ranges', () => {
     expect(wordsRule([300, 0]).label).toBe('min. 300')

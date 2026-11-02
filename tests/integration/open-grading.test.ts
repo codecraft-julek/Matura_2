@@ -98,17 +98,26 @@ describe("grade-open-answers function", () => {
     expect(res.status).toBe(404);
   });
 
-  it("only grades Polish exams", async () => {
-    const english = await submit(a.client, ENGLISH, { "3.1": "something" });
+  it("accepts English attempts with no pending answers without calling AI", async () => {
+    const english = await submit(a.client, ENGLISH, {});
     const res = await call(a.token, { attemptId: english });
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, graded: 0 });
   });
 
-  it("refuses an attempt with no open answers, without using the daily limit", async () => {
+  it("reuses an attempt with no pending open answers, without using the daily limit", async () => {
     const empty = await submit(b.client, POLISH, {});
     const res = await call(b.token, { attemptId: empty });
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, graded: 0 });
     const { data: usage } = await b.client.from("ai_usage").select("count");
     expect(usage).toEqual([]);
+  });
+
+  it("students cannot claim or release grading leases", async () => {
+    for (const name of ["claim_open_grading", "release_open_grading"] as const) {
+      const { error } = await a.client.rpc(name, { p_attempt_id: polishAttempt, p_user: a.id, p_token: crypto.randomUUID() });
+      expect(error).not.toBeNull();
+    }
   });
 });

@@ -15,7 +15,7 @@ const s = computed(() => props.result.status)
   <span v-else-if="s === 'correct' || s === 'self_correct'" class="result-badge is-ok"><Check :size="14" aria-hidden="true" /> dobrze</span>
   <span v-else-if="s === 'unchecked'" class="result-block is-warn">
     <CircleHelp :size="16" aria-hidden="true" />
-    <span><strong>Do porównania.</strong> Klucz: <em>{{ result.answer }}</em><template v-if="result.note"> ({{ result.note }})</template></span>
+    <span><strong>Do oceny AI po zakończeniu arkusza.</strong> Klucz: <em>{{ result.answer }}</em><template v-if="result.note"> ({{ result.note }})</template></span>
   </span>
   <span v-else class="result-badge is-error">
     <X :size="14" aria-hidden="true" /> {{ s === 'empty' ? 'brak' : 'źle' }} <span class="result-key">· poprawnie: {{ result.answer }}</span>

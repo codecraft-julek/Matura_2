@@ -205,6 +205,8 @@ export type Database = {
       exam_attempts: {
         Row: {
           ai_graded_at: string | null
+          ai_grading_started_at: string | null
+          ai_grading_token: string | null
           answers: Json
           checkable_points: number
           exam_id: string
@@ -218,6 +220,8 @@ export type Database = {
         }
         Insert: {
           ai_graded_at?: string | null
+          ai_grading_started_at?: string | null
+          ai_grading_token?: string | null
           answers: Json
           checkable_points: number
           exam_id: string
@@ -231,6 +235,8 @@ export type Database = {
         }
         Update: {
           ai_graded_at?: string | null
+          ai_grading_started_at?: string | null
+          ai_grading_token?: string | null
           answers?: Json
           checkable_points?: number
           exam_id?: string
@@ -793,6 +799,18 @@ export type Database = {
       save_ai_grades: {
         Args: { p_attempt_id: string; p_grades: Json; p_user: string }
         Returns: number
+      }
+      claim_open_grading: {
+        Args: { p_attempt_id: string; p_user: string; p_token: string }
+        Returns: string
+      }
+      finish_open_grading: {
+        Args: { p_attempt_id: string; p_user: string; p_token: string; p_grades: Json }
+        Returns: number
+      }
+      release_open_grading: {
+        Args: { p_attempt_id: string; p_user: string; p_token: string }
+        Returns: undefined
       }
       self_check_answer: {
         Args: { p_accept: boolean; p_attempt_id: string; p_number: string }
