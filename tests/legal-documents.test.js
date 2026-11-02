@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { LEGAL_VERSION, missingOperatorDetails } from '../src/config/legal'
+import { LEGAL_OPERATOR, LEGAL_VERSION, missingOperatorDetails } from '../src/config/legal'
 import { TERMS_VERSION } from '../src/config/site'
 import { legalDocuments, termsDocument, privacyDocument, withdrawalForm } from '../src/content/legal/documents'
 import { documentDownloadPath, escapeHtml, renderLegalArticle, renderLegalBlocks, standaloneLegalDocument } from '../src/content/legal/render'
@@ -56,13 +56,22 @@ describe('accessible and downloadable legal documents', () => {
     expect(renderLegalArticle(privacyDocument)).toContain('/kontakt?sprawa=dane')
     expect(withdrawalForm).toContain('nie jest obowiązkowy')
   })
-  it('publishes only the two agreed placeholders and no empty operator fields', () => {
+  it('publishes no placeholders and no empty operator fields', () => {
     const texts = [withdrawalForm, ...legalDocuments.map(renderLegalArticle)]
     for (const text of texts) {
-      const others = text.replaceAll('[IMIĘ I NAZWISKO]', '').replaceAll('[NUMER TELEFONU]', '')
-      expect(others).not.toMatch(/\[[A-ZĄĆĘŁŃÓŚŹŻ][A-ZĄĆĘŁŃÓŚŹŻ ]{3,}/)
+      expect(text).not.toMatch(/\[[A-ZĄĆĘŁŃÓŚŹŻ][A-ZĄĆĘŁŃÓŚŹŻ ]{3,}/)
       expect(text).not.toMatch(/\bnull\b|\bundefined\b/)
     }
+  })
+  it('names the seller and the phone in the terms and the privacy policy, and the seller on the withdrawal form', () => {
+    for (const doc of [termsDocument, privacyDocument]) {
+      expect(renderLegalArticle(doc)).toContain(LEGAL_OPERATOR.fullName)
+      expect(renderLegalArticle(doc)).toContain(LEGAL_OPERATOR.phone)
+    }
+    expect(withdrawalForm).toContain(LEGAL_OPERATOR.fullName)
+  })
+  it('still needs the address before real sales', () => {
+    expect(missingOperatorDetails()).toEqual(['address'])
   })
   it('knows which seller details are still needed before real sales', () => {
     expect(missingOperatorDetails({ fullName: null, address: '', phone: '500' })).toEqual(['fullName', 'address'])
