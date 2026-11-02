@@ -2,6 +2,8 @@
 // Picks the layout from route.meta.layout and mounts the app-wide toasts and confirm dialog.
 import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
+import { Analytics } from '@vercel/analytics/vue'
+import { showAnalytics, getBeforeSendFilter } from '@/lib/privacy/analytics'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
@@ -18,6 +20,7 @@ const layout = computed(() => layouts[route.meta.layout] ?? null)
 <template>
   <component :is="layout" v-if="layout"><RouterView /></component>
   <RouterView v-else />
+  <Analytics v-if="showAnalytics" mode="production" :beforeSend="getBeforeSendFilter()" />
   <ToastHost />
   <ConfirmHost />
   <PrivacyBanner />
