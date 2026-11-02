@@ -37,8 +37,8 @@ const monthlyPrice = planById('monthly')?.price
     <div v-if="!billing.premium || billing.hasCustomer" class="row bs-actions">
       <RouterLink v-if="!billing.premium" :to="ROUTES.premium" class="button button-dark button-sm">Zobacz Premium</RouterLink>
       <PortalButton v-if="billing.hasCustomer" :label="billing.kind === 'subscription' && !billing.cancelAtPeriodEnd ? 'Zarządzaj subskrypcją' : 'Płatności i paragony'" />
-      <RouterLink v-if="billing.canWithdraw" :to="ROUTES.withdrawal" class="button button-outline button-sm">Odstąp od umowy tutaj</RouterLink>
     </div>
+    <RouterLink v-if="billing.canWithdraw" :to="ROUTES.withdrawal" class="bs-withdraw">Odstąp od umowy tutaj</RouterLink>
   </section>
 </template>
 
@@ -52,4 +52,5 @@ const monthlyPrice = planById('monthly')?.price
 .bs-text { font-size: 15px; line-height: 1.6; color: var(--text-soft); }
 .bs-text strong { color: var(--text); }
 .bs-actions { align-items: flex-start; }
+.bs-withdraw { align-self: flex-start; font-size: 13px; color: var(--text-soft); text-decoration: underline; text-underline-offset: 2px; }
 </style>
