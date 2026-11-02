@@ -1,11 +1,12 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { BYPASS_PATH, config, handle } from '../middleware.js'
+import { ENTRY_PATH, config, handle } from '../middleware.js'
 import { MAINTENANCE_SCRIPT, MAINTENANCE_SCRIPT_HASH, describeUntil, renderMaintenancePage, retryAfterSeconds } from '../maintenance/page.js'
 
 const now = new Date('2026-11-07T20:00:00+01:00')
 const until = '2026-11-08T09:00:00+01:00'
-const on = { MAINTENANCE_MODE: 'on', MAINTENANCE_UNTIL: until, MAINTENANCE_BYPASS_TOKEN: 'tajny-klucz-123' }
+const on = { on: true, until, now }
+const off = { on: false, until, now }
 const req = (path, init) => new Request(`https://www.ogarnijmature.com${path}`, init)
 const matcher = new RegExp(`^${config.matcher[0].replace(/^\//, '/')}$`)
 
@@ -53,47 +54,42 @@ describe('Retry-After', () => {
 
 describe('the middleware', () => {
   it('runs for pages but not for files, fonts, documents, robots or the sitemap', () => {
-    for (const p of ['/', '/tutor', '/arkusze-maturalne/2025-maj-polski-pp', '/auth/potwierdz', '/regulamin']) expect(matcher.test(p)).toBe(true)
+    for (const p of ['/', '/tutor', '/arkusze-maturalne/2025-maj-polski-pp', '/auth/potwierdz', '/regulamin', ENTRY_PATH]) expect(matcher.test(p)).toBe(true)
     for (const p of ['/assets/index-abc.js', '/fonts/manrope-latin.woff2', '/dokumenty/regulamin-2026-11-02.html', '/cke-arkusze/x.pdf', '/robots.txt', '/sitemap.xml', '/favicon.svg', '/og.png']) expect(matcher.test(p)).toBe(false)
   })
   it('lets everything through when the break is off', () => {
-    const res = handle(req('/tutor'), {}, now)
-    expect(res.headers.get('x-middleware-next')).toBe('1')
-    expect(handle(req('/'), { MAINTENANCE_MODE: 'off' }, now).headers.get('x-middleware-next')).toBe('1')
+    expect(handle(req('/tutor'), off).headers.get('x-middleware-next')).toBe('1')
+    expect(handle(req('/'), off).headers.get('x-middleware-next')).toBe('1')
   })
   it('answers 503 with Retry-After, no caching and the page while the break is on', async () => {
-    const res = handle(req('/tutor'), on, now)
+    const res = handle(req('/tutor'), on)
     expect(res.status).toBe(503)
     expect(res.headers.get('retry-after')).toBe(String(13 * 3600))
     expect(res.headers.get('cache-control')).toBe('no-store')
     expect(res.headers.get('content-type')).toContain('text/html')
     expect(res.headers.get('content-security-policy')).toContain(MAINTENANCE_SCRIPT_HASH)
     expect(await res.text()).toContain('Planowana przerwa techniczna')
-    const head = handle(req('/', { method: 'HEAD' }), on, now)
+    const head = handle(req('/', { method: 'HEAD' }), on)
     expect(head.status).toBe(503)
     expect(head.body).toBeNull()
   })
-  it('lets the owner in with the key, keeps everyone else out', async () => {
-    const door = handle(req(`${BYPASS_PATH}?klucz=tajny-klucz-123`), on, now)
+  it('lets a browser in after it opens the entry address, keeps everyone else out', () => {
+    const door = handle(req(ENTRY_PATH), on)
     expect(door.status).toBe(303)
-    expect(door.headers.get('set-cookie')).toMatch(/^om_przerwa=tajny-klucz-123; Path=\/; HttpOnly; Secure; SameSite=Lax; Max-Age=14400$/)
-    expect(handle(req(`${BYPASS_PATH}?klucz=zly`), on, now).status).toBe(404)
-    expect(handle(req(`${BYPASS_PATH}?klucz=`), on, now).status).toBe(404)
-    expect(handle(req(`${BYPASS_PATH}?klucz=tajny-klucz-123`), { ...on, MAINTENANCE_BYPASS_TOKEN: '' }, now).status).toBe(404)
+    expect(door.headers.get('location')).toBe('/')
+    expect(door.headers.get('set-cookie')).toBe('om_przerwa=1; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000')
 
-    const inside = handle(req('/tutor', { headers: { cookie: 'a=b; om_przerwa=tajny-klucz-123' } }), on, now)
-    expect(inside.headers.get('x-middleware-next')).toBe('1')
-    expect(handle(req('/tutor', { headers: { cookie: 'om_przerwa=inny' } }), on, now).status).toBe(503)
-    expect(handle(req('/tutor', { headers: { cookie: 'om_przerwa=' } }), { ...on, MAINTENANCE_BYPASS_TOKEN: '' }, now).status).toBe(503)
-
-    const out = handle(req(BYPASS_PATH), on, now)
-    expect(out.status).toBe(303)
-    expect(out.headers.get('set-cookie')).toContain('Max-Age=0')
+    expect(handle(req('/tutor', { headers: { cookie: 'a=b; om_przerwa=1' } }), on).headers.get('x-middleware-next')).toBe('1')
+    expect(handle(req('/tutor', { headers: { cookie: 'om_przerwa=inny' } }), on).status).toBe(503)
+    expect(handle(req('/tutor'), on).status).toBe(503)
   })
-  it('shows a preview of the page with 200 and noindex while the site is up', async () => {
-    const res = handle(req('/?podglad=przerwa'), { MAINTENANCE_UNTIL: until }, now)
-    expect(res.status).toBe(200)
-    expect(res.headers.get('x-robots-tag')).toBe('noindex')
-    expect(await res.text()).toContain('w niedzielę o 9:00')
+  it('shows the page with 200 and noindex at the preview address, also after getting in', async () => {
+    for (const init of [undefined, { headers: { cookie: 'om_przerwa=1' } }]) {
+      const res = handle(req('/?podglad=przerwa', init), on)
+      expect(res.status).toBe(200)
+      expect(res.headers.get('x-robots-tag')).toBe('noindex')
+      expect(await res.text()).toContain('w niedzielę o 9:00')
+    }
+    expect(handle(req('/?podglad=przerwa'), off).status).toBe(200)
   })
 })
