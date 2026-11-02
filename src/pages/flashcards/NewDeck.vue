@@ -11,6 +11,7 @@ import AiProgress from '@/components/notes/AiProgress.vue'
 import PhotoTiles from '@/components/notes/PhotoTiles.vue'
 import { useDraft } from '@/composables/useDraft'
 import { ROUTES, deckRoute } from '@/config/routes'
+import { cardsDoneText, deckProgress } from '@/components/flashcards/deckProgress'
 import { streamFlashcards } from '@/lib/ai'
 import { createDeck } from '@/lib/api/flashcards'
 import { extractFile } from '@/lib/flashcards/extract'
@@ -187,10 +188,9 @@ async function saveWithoutAi() {
 }
 const submit = () => (isAi.value ? generate() : saveWithoutAi())
 
-const expected = computed(() => draft.value.count * 120)
-const progress = computed(() => (chars.value ? 0.15 + 0.83 * Math.min(chars.value / expected.value, 1) : Math.min(seconds.value / 40, 0.15)))
+const progress = computed(() => deckProgress({ chars: chars.value, seconds: seconds.value, count: draft.value.count }))
 const stage = computed(() => {
-  if (chars.value) return `Gotowe mniej więcej ${Math.min(draft.value.count, Math.round(chars.value / 120))} z ${draft.value.count} fiszek…`
+  if (chars.value) return cardsDoneText(chars.value, draft.value.count)
   if (tab.value === 'url') return 'Czytam stronę…'
   if (tab.value === 'youtube' && draft.value.text.trim().length < FLASHCARD_LIMITS.minTextChars) return 'Pobieram napisy filmu…'
   return 'Czytam materiał…'
