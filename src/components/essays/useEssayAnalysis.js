@@ -16,8 +16,11 @@ export function useEssayAnalysis() {
   let alive = true // the student left the page mid-analysis: don't pull them back to the result
   onBeforeUnmount(() => { alive = false })
 
-  /** body = an essayRequestSchema request ({ mode: 'polish', … } or { mode: 'exam', … }). */
-  async function run(body, onSuccess) {
+  /**
+   * body = an essayRequestSchema request ({ mode: 'polish', … } or { mode: 'exam', … }).
+   * onSuccess gets the essay id; `stay` keeps the student on the page instead of opening the feedback.
+   */
+  async function run(body, onSuccess, { stay = false } = {}) {
     Object.assign(state, { phase: 'sending', text: '', words: 0, startedAt: Date.now(), error: '' })
     let essayId = null
     const res = await streamEssayFeedback(body, {
@@ -37,8 +40,8 @@ export function useEssayAnalysis() {
       return false
     }
     state.phase = 'done'
-    onSuccess?.()
-    if (alive) router.push(essayRoute(res.id))
+    onSuccess?.(res.id)
+    if (alive && !stay) router.push(essayRoute(res.id))
     return true
   }
 

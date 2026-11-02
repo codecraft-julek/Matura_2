@@ -6,7 +6,9 @@ import { ArrowRight, Check, ChevronRight, CircleHelp, Clock3, Minus, PenLine, Ro
 import { examRoutes, ROUTES } from '@/config/routes'
 import { useAsync } from '@/composables/useAsync'
 import { usePageTitle } from '@/composables/usePageTitle'
+import { MIN_WORDS_FOR_FEEDBACK } from '@shared/essay'
 import { essaysForAttempt, getAttempt, getExam } from '@/lib/api/exams'
+import { takeEssayCheck } from '@/lib/exams/autoEssay'
 import { myRating } from '@/lib/api/ratings'
 import { REVIEW_STATUSES, SECTION_LABEL, countWords } from '@/lib/exams/labels'
 import { formatDateTime } from '@/lib/format'
@@ -102,6 +104,20 @@ async function onAiGraded(attemptId) {
 }
 
 const essayFor = t => data.value?.essays.find(e => e.task_number === t.number && e.status === 'done')?.id
+
+// Just handed in: the essay is checked without asking. A reopened result shows the button instead.
+const autoEssay = takeEssayCheck(ids.value.attemptId)
+const autoStartEssay = t => Boolean(autoEssay) && countWords(answers.value[t.number] ?? '') >= MIN_WORDS_FOR_FEEDBACK
+async function onEssayChecked() {
+  const attemptId = ids.value.attemptId
+  try {
+    const essays = await essaysForAttempt(attemptId)
+    if (ids.value.attemptId === attemptId) data.value = { ...data.value, essays }
+    ui.toast('Gotowe. Wypowiedź pisemna została oceniona.')
+  } catch {
+    ui.toast('Ocena jest zapisana, ale nie udało się jej wczytać. Odśwież stronę.', 'error')
+  }
+}
 </script>
 
 <template>
@@ -223,7 +239,7 @@ const essayFor = t => data.value?.essays.find(e => e.task_number === t.number &&
         <li v-for="c in t.meta.criteria" :key="c.name"><span>{{ c.name }}</span><span class="badge tabular">{{ c.points }} pkt</span></li>
       </ul>
       <div v-if="answers[t.number]?.trim()" class="writing-feedback">
-        <ExamWritingFeedback :attempt-id="attempt.id" :task-number="t.number" :level="exam.level" :subject="exam.subject" :existing-essay-id="essayFor(t)" />
+        <ExamWritingFeedback :attempt-id="attempt.id" :task-number="t.number" :level="exam.level" :subject="exam.subject" :existing-essay-id="essayFor(t)" :auto-start="autoStartEssay(t)" :initial-prompt="autoEssay?.prompt ?? ''" @checked="onEssayChecked" />
       </div>
     </section>
 

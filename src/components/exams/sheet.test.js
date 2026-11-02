@@ -82,7 +82,7 @@ describe('saved progress', () => {
     expect(attemptMode('timed')).toBe('exam')
   })
   it('reads old and new saved formats, drops junk', () => {
-    expect(parseSaved('{"answers":{"1.1":"A","x":5},"startedAt":"2026-05-04T09:00:00.000Z"}')).toEqual({ answers: { '1.1': 'A' }, startedAt: '2026-05-04T09:00:00.000Z', flags: [], checked: {}, active: null })
+    expect(parseSaved('{"answers":{"1.1":"A","x":5},"startedAt":"2026-05-04T09:00:00.000Z"}')).toEqual({ answers: { '1.1': 'A' }, startedAt: '2026-05-04T09:00:00.000Z', flags: [], checked: {}, active: null, prompt: '' })
     expect(parseSaved('nope')).toBeNull()
     expect(parseSaved(null)).toBeNull()
     expect(parseSaved('{"answers":{},"startedAt":"bad"}').startedAt).toBeNull()

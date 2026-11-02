@@ -142,7 +142,8 @@ export function parseSaved(raw) {
     const flags = Array.isArray(saved.flags) ? saved.flags.filter(f => typeof f === 'string') : []
     const checked = saved.checked && typeof saved.checked === 'object' ? saved.checked : {}
     const active = typeof saved.active === 'string' ? saved.active : null
-    return { answers, startedAt, flags, checked, active }
+    const prompt = typeof saved.prompt === 'string' ? saved.prompt.slice(0, 3000) : ''
+    return { answers, startedAt, flags, checked, active, prompt }
   } catch {
     return null
   }

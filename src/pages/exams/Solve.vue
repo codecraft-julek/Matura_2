@@ -13,6 +13,7 @@ import { examRoutes, ROUTES } from '@/config/routes'
 import { useAsync } from '@/composables/useAsync'
 import { usePageTitle } from '@/composables/usePageTitle'
 import { checkTaskGroup, getExam, submitAttempt } from '@/lib/api/exams'
+import { requestEssayCheck } from '@/lib/exams/autoEssay'
 import { SECTION_LABEL, pts } from '@/lib/exams/labels'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
@@ -49,6 +50,7 @@ usePageTitle(() => exam.value && `${modeLabel.value} · ${exam.value.title}`)
 const studentId = auth.user?.id
 const key = computed(() => storageKey(studentId, examId.value, props.mode))
 const answers = ref({})
+const writingPrompt = ref('') // the chosen topic, for the AI check after handing in
 const startedAt = ref(null)
 const flags = ref([])
 const checked = ref({}) // practice: number → TaskResult from grade_exam_answers
@@ -67,6 +69,7 @@ watch(data, () => {
   if (!exam.value) return
   const saved = loadSaved(key.value)
   answers.value = saved?.answers ?? {}
+  writingPrompt.value = saved?.prompt ?? ''
   flags.value = saved?.flags ?? []
   checked.value = timed.value ? {} : (saved?.checked ?? {})
   activeKey.value = groups.value.some(g => g.key === saved?.active) ? saved.active : (groups.value[0]?.key ?? null)
@@ -83,9 +86,9 @@ watch(data, () => {
 let adopting = false // taking over another tab's sheet: don't write it straight back
 function persist() {
   if (!ready.value || submitted || !startedAt.value || adopting) return
-  storageOk.value = storeSaved(key.value, { answers: answers.value, startedAt: startedAt.value, flags: flags.value, checked: checked.value, active: activeKey.value })
+  storageOk.value = storeSaved(key.value, { answers: answers.value, startedAt: startedAt.value, flags: flags.value, checked: checked.value, active: activeKey.value, prompt: writingPrompt.value })
 }
-watch([answers, flags, checked, activeKey, startedAt], persist, { deep: true })
+watch([answers, flags, checked, activeKey, startedAt, writingPrompt], persist, { deep: true })
 
 // The same sheet open in another tab: every tab saves the whole sheet, so without this the tab
 // that saves last would wipe what was typed in the other one. Take over its answers instead
@@ -104,6 +107,7 @@ function onStorage(e) {
   if (!saved) return
   adopting = true
   answers.value = saved.answers
+  writingPrompt.value = saved.prompt
   flags.value = saved.flags
   if (!timed.value) checked.value = saved.checked
   if (saved.startedAt) startedAt.value = saved.startedAt
@@ -293,6 +297,7 @@ async function submit(force = false) {
   submitted = true
   clearInterval(ticker)
   storeSaved(key.value, null)
+  if (tasks.value.some(t => t.kind === 'writing')) requestEssayCheck(res.attemptId, writingPrompt.value.trim())
   router.replace(examRoutes.result(examId.value, res.attemptId))
 }
 
@@ -301,6 +306,7 @@ async function resetPractice() {
   const ok = await ui.confirm({ title: 'Zaczynamy od nowa?', body: 'Usuniesz odpowiedzi i sprawdzenia z tego arkusza, tylko na tym urządzeniu.', confirmLabel: 'Tak, od nowa', danger: true })
   if (!ok) return
   answers.value = {}
+  writingPrompt.value = ''
   checked.value = {}
   flags.value = []
   startedAt.value = new Date().toISOString()
@@ -435,6 +441,10 @@ async function resetPractice() {
 
             <fieldset class="task-inputs" :disabled="timeUp || submitting">
               <legend class="sr-only">Odpowiedzi do zadania {{ current.no }}</legend>
+              <div v-if="isWriting" class="field writing-topic">
+                <label for="writing-topic" class="field-label">{{ exam.subject === 'polish' ? 'Wybrany temat' : 'Polecenie z arkusza' }} <span class="optional">(opcjonalnie, ale bardzo pomaga)</span></label>
+                <textarea id="writing-topic" v-model="writingPrompt" class="textarea" rows="2" maxlength="3000" :placeholder="exam.subject === 'polish' ? 'Przepisz temat, a AI sprawdzi po oddaniu arkusza, czy wypracowanie go realizuje.' : 'Przepisz polecenie, a AI sprawdzi po oddaniu arkusza także treść.'"></textarea>
+              </div>
               <TaskInput
                 v-for="t in current.tasks" :key="t.number" :task="t" :subject="exam.subject"
                 :model-value="answers[t.number] ?? ''" :result="timed ? null : checked[t.number]"
@@ -570,4 +580,6 @@ async function resetPractice() {
   .strip-row { margin-bottom: 5px; }
   .pager .button { padding-inline: 11px; }
 }
+.writing-topic { margin-bottom: 14px; }
+.writing-topic .textarea { min-height: 72px; }
 </style>

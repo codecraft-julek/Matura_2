@@ -1,6 +1,7 @@
 import { createRenderer, defineComponent, h, nextTick } from 'vue'
 
-const node = (type, text = '') => ({ type, text, props: {}, children: [], parent: null })
+// addEventListener: v-model attaches its listeners directly to the element.
+const node = (type, text = '') => ({ type, text, props: {}, children: [], parent: null, addEventListener() {} })
 const renderer = createRenderer({
   createElement: tag => node(tag), createText: text => node('text', text), createComment: text => node('comment', text),
   setText: (el, text) => { el.text = text },

@@ -2,6 +2,7 @@
 // On an exam results page: AI feedback for the English writing task or the Polish essay.
 // We don't store exam texts (copyright), so the student can paste the task instructions;
 // without them the AI can't check "Treść" against the bullet points.
+// autoStart: the sheet was just handed in, so check right away and stay on the results page.
 import { computed, onMounted, ref, useId } from 'vue'
 import { RouterLink } from 'vue-router'
 import { ArrowRight, Sparkles } from '@lucide/vue'
@@ -18,11 +19,16 @@ const props = defineProps({
   existingEssayId: { type: String, default: undefined },
   level: { type: String, required: true }, // 'basic' | 'extended'
   subject: { type: String, required: true }, // 'polish' | 'english'
+  autoStart: { type: Boolean, default: false },
+  initialPrompt: { type: String, default: '' },
 })
+const emit = defineEmits(['checked'])
 
 const id = useId()
 const billing = useBillingStore()
-const prompt = ref('')
+const prompt = ref(props.initialPrompt)
+const checkedEssayId = ref(null)
+const essayId = computed(() => props.existingEssayId ?? checkedEssayId.value)
 const { state, run, busy } = useEssayAnalysis()
 
 const polish = computed(() => props.subject === 'polish')
@@ -31,16 +37,23 @@ const allowance = computed(() => billing.allowanceFor('essay_feedback'))
 const noChecksLeft = computed(() => allowance.value?.left === 0)
 const promptLabel = computed(() => (polish.value ? (props.level === 'extended' ? 'Wybrany temat z arkusza' : 'Wybrany temat z Arkusza 2') : 'Polecenie z arkusza'))
 
-onMounted(() => { if (!props.existingEssayId) billing.loadAllowances().catch(() => {}) })
+const body = () => ({ mode: 'exam', attemptId: props.attemptId, taskNumber: props.taskNumber, prompt: prompt.value })
+
+onMounted(async () => {
+  if (props.existingEssayId) return
+  await billing.loadAllowances().catch(() => {})
+  if (!props.autoStart || noChecksLeft.value || busy.value) return
+  run(body(), newId => { checkedEssayId.value = newId; emit('checked', newId) }, { stay: true })
+})
 
 function onSubmit() {
   if (busy.value) return
-  run({ mode: 'exam', attemptId: props.attemptId, taskNumber: props.taskNumber, prompt: prompt.value })
+  run(body())
 }
 </script>
 
 <template>
-  <RouterLink v-if="existingEssayId" :to="essayRoute(existingEssayId)" class="button button-dark">
+  <RouterLink v-if="essayId" :to="essayRoute(essayId)" class="button button-dark">
     <Sparkles :size="16" /> Zobacz feedback AI <ArrowRight :size="16" />
   </RouterLink>
 
