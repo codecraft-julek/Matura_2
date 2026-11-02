@@ -20,6 +20,7 @@ import {
   acknowledgementEmail,
   eligibleContract,
   operatorEmail,
+  stripeCustomerUrl,
   suggestedRefund,
   withdrawalSchema,
 } from "../_shared/withdrawal.ts";
@@ -149,8 +150,13 @@ async function finish(start: Row, userId: string, secretKey: string): Promise<Ro
     await save({ ack_sent_at: new Date().toISOString() });
   }
   const notifyTo = Deno.env.get("CONTACT_NOTIFY_EMAIL");
-  if (!row.notified_at && notifyTo && (await sendEmail(notifyTo, operatorEmail(row), row.email))) {
-    await save({ notified_at: new Date().toISOString() });
+  if (!row.notified_at && notifyTo) {
+    // A failed lookup only shortens the link: the e-mail matters more than the link in it.
+    const account = await stripe<{ id: string }>(secretKey, "GET", "account").catch(() => null);
+    const customerUrl = stripeCustomerUrl(row.stripe_customer_id, account?.id ?? null, secretKey);
+    if (await sendEmail(notifyTo, operatorEmail(row, customerUrl), row.email)) {
+      await save({ notified_at: new Date().toISOString() });
+    }
   }
   return row;
 }

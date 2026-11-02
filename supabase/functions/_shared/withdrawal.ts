@@ -174,8 +174,15 @@ export function acknowledgementEmail(w: WithdrawalRecord) {
   };
 }
 
+/** The customer's page in the Stripe dashboard, in the sandbox or live, whichever the key belongs to. */
+export function stripeCustomerUrl(customerId: string, accountId: string | null, secretKey: string): string {
+  const account = accountId ? `/${accountId}` : "";
+  const mode = secretKey.startsWith("sk_test_") ? "/test" : "";
+  return `https://dashboard.stripe.com${account}${mode}/customers/${customerId}`;
+}
+
 /** The e-mail to you: everything needed to make the refund in Stripe. */
-export function operatorEmail(w: WithdrawalRecord) {
+export function operatorEmail(w: WithdrawalRecord, customerUrl?: string) {
   return {
     subject: `[Odstąpienie] ${planName(w.plan)}, ${w.amount_paid > 0 ? `zwrot do ${formatDay(refundDueBy(w.received_at))}` : "bez zwrotu"}`,
     text: [
@@ -194,6 +201,7 @@ export function operatorEmail(w: WithdrawalRecord) {
       w.amount_paid > 0
         ? `Zrób zwrot w Stripe: Payments → płatność → Refund → kwota. Termin: ${formatDay(refundDueBy(w.received_at))}.`
         : "Nic nie zapłacono, zwrot nie jest potrzebny.",
+      ...(customerUrl ? [`Klient w Stripe: ${customerUrl}`] : []),
     ].join("\n"),
   };
 }

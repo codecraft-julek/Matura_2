@@ -5,6 +5,7 @@ import {
   acknowledgementEmail,
   eligibleContract,
   operatorEmail,
+  stripeCustomerUrl,
   suggestedRefund,
   withdrawalDeadline,
   withdrawalSchema,
@@ -118,6 +119,12 @@ describe("e-mails", () => {
     expect(operatorEmail(record).text).toContain("127,00 zł");
     expect(operatorEmail(record).text).not.toContain("UWAGA");
     expect(operatorEmail({ ...record, access_ended_at: null }).text).toContain("UWAGA");
+  });
+  it("links to the customer in the right Stripe dashboard", () => {
+    expect(stripeCustomerUrl("cus_1", "acct_1", "sk_test_x")).toBe("https://dashboard.stripe.com/acct_1/test/customers/cus_1");
+    expect(stripeCustomerUrl("cus_1", "acct_1", "sk_live_x")).toBe("https://dashboard.stripe.com/acct_1/customers/cus_1");
+    expect(stripeCustomerUrl("cus_1", null, "sk_live_x")).toBe("https://dashboard.stripe.com/customers/cus_1");
+    expect(operatorEmail(record, "https://dashboard.stripe.com/acct_1/customers/cus_1").text).toContain("https://dashboard.stripe.com/acct_1/customers/cus_1");
   });
 });
 
