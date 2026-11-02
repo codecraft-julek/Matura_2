@@ -7,8 +7,8 @@
 // Photos and files are never stored; only the cards are.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
-//   OPENAI_API_KEY                   required for real cards
-//   AI_FLASHCARDS_MODEL              optional, default below (falls back to OPENAI_MODEL); must accept images
+//   ANTHROPIC_API_KEY or OPENAI_API_KEY   required for real cards; see _shared/ai.ts
+//   AI_FLASHCARDS_MODEL              optional, overrides the default model; must accept images
 //   AI_FLASHCARDS_GLOBAL_DAILY_LIMIT optional, decks for ALL students per day (default 1000) → caps your bill
 //   AI_REASONING_EFFORT              optional, "low" (default), "medium" or "high"
 //   SCRAPECREATORS_API_KEY           optional, fetches YouTube transcripts from a link (without it, students paste them)
@@ -16,6 +16,7 @@
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
+import { aiKey, aiModel, askAi } from "../_shared/ai.ts";
 import { quotaMessage, type QuotaResult } from "../_shared/billing.ts";
 import {
   FLASHCARD_LIMITS,
@@ -32,8 +33,7 @@ import {
   type AiCards,
 } from "../_shared/flashcards.ts";
 
-const DEFAULT_MODEL = "gpt-6.1-sol";
-const OPENAI_TIMEOUT_MS = 120_000;
+const AI_TIMEOUT_MS = 120_000;
 const PAGE_TIMEOUT_MS = 10_000;
 const PAGE_MAX_BYTES = 3_000_000;
 const TRANSCRIPT_TIMEOUT_MS = 30_000;
@@ -125,7 +125,7 @@ async function handle(request: Request) {
   }
 
   // 4. Is AI available?
-  const apiKey = Deno.env.get("OPENAI_API_KEY");
+  const apiKey = aiKey();
   const fake = !apiKey && Deno.env.get("AI_FAKE_MODE") === "true";
   if (!apiKey && !fake) {
     return json({ ok: false, error: "Fiszki AI jeszcze nie są skonfigurowane. Spróbuj trochę później." }, 503);
@@ -165,8 +165,7 @@ async function handle(request: Request) {
     count: req.count,
     style: req.style,
     fake,
-    apiKey,
-    model: fake ? "fake" : (Deno.env.get("AI_FLASHCARDS_MODEL") ?? Deno.env.get("OPENAI_MODEL") ?? DEFAULT_MODEL),
+    model: fake ? "fake" : (Deno.env.get("AI_FLASHCARDS_MODEL") ?? aiModel()),
   };
 
   // 6a. Streaming (what the website uses): progress as Server-Sent Events.
@@ -225,14 +224,13 @@ type Job = {
   count: number;
   style: "auto" | "qa" | "vocab";
   fake: boolean;
-  apiKey: string | undefined;
   model: string;
 };
 
 /** Asks the AI, applies our rules and saves the deck. Never throws. */
 async function runJob(job: Job, onProgress: (chars: number) => void): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
   try {
-    const ai = job.fake ? fakeCards(job.count) : await askOpenAI(job, onProgress);
+    const ai = job.fake ? fakeCards(job.count) : await askModel(job, onProgress);
     const { title, cards } = normalizeCards(ai, Math.min(job.count + 5, 40));
 
     const { data: deck, error: deckError } = await admin
@@ -388,73 +386,20 @@ async function youtubeTitle(url: string): Promise<string> {
   }
 }
 
-// OpenAI Responses API, streamed, with Structured Outputs (the answer must match our JSON schema).
-async function askOpenAI(job: Job, onProgress: (chars: number) => void): Promise<AiCards> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
-  try {
-    const res = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      signal: controller.signal,
-      headers: { Authorization: `Bearer ${job.apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: job.model,
-        instructions: buildCardsInstructions(job.subject, job.style),
-        input: buildCardsInput(job),
-        text: { format: { type: "json_schema", name: "flashcards", schema: openAiCardsSchema(job.count), strict: true } },
-        reasoning: { effort: Deno.env.get("AI_REASONING_EFFORT") ?? "low" },
-        max_output_tokens: 12000,
-        prompt_cache_key: `flashcards-${job.subject}-${job.style}`,
-        store: false,
-        stream: true,
-      }),
-    });
-    if (!res.ok || !res.body) throw new Error(`OpenAI ${res.status}: ${(await res.text()).slice(0, 300)}`);
-
-    let text = "";
-    let usage = "";
-    for await (const event of readSse(res.body)) {
-      if (event.type === "response.output_text.delta" && typeof event.delta === "string") {
-        text += event.delta;
-        onProgress(text.length);
-      } else if (event.type === "response.completed") {
-        const u = event.response?.usage;
-        usage = `in ${u?.input_tokens} (cached ${u?.input_tokens_details?.cached_tokens}), out ${u?.output_tokens}`;
-      } else if (event.type === "response.failed" || event.type === "response.incomplete" || event.type === "error") {
-        throw new Error(`OpenAI stream ${event.type}: ${JSON.stringify(event).slice(0, 300)}`);
-      } else if (event.type === "response.refusal.delta") {
-        throw new Error("OpenAI refused");
-      }
-    }
-    if (!text) throw new Error("OpenAI returned no text");
-    console.log(`flashcards: ${job.kind}, ${job.images.length} images, ${job.text.length} chars, model ${job.model}, ${usage}`);
-    return aiCardsSchema.parse(JSON.parse(text));
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-// Minimal Server-Sent Events reader: yields each `data: {...}` JSON payload.
-// deno-lint-ignore no-explicit-any
-async function* readSse(body: ReadableStream<Uint8Array>): AsyncGenerator<any> {
-  const reader = body.pipeThrough(new TextDecoderStream()).getReader();
-  let buffer = "";
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    buffer += value;
-    let idx;
-    while ((idx = buffer.indexOf("\n\n")) !== -1) {
-      const chunk = buffer.slice(0, idx);
-      buffer = buffer.slice(idx + 2);
-      const data = chunk
-        .split("\n")
-        .filter((l) => l.startsWith("data:"))
-        .map((l) => l.slice(5).trimStart())
-        .join("\n");
-      if (data && data !== "[DONE]") yield JSON.parse(data);
-    }
-  }
+// Streamed, and the answer must match our JSON schema.
+async function askModel(job: Job, onProgress: (chars: number) => void): Promise<AiCards> {
+  let chars = 0;
+  const { text } = await askAi({
+    model: job.model,
+    instructions: buildCardsInstructions(job.subject, job.style),
+    input: buildCardsInput(job),
+    schema: { name: "flashcards", schema: openAiCardsSchema(job.count) },
+    maxTokens: 12000,
+    cacheKey: `flashcards-${job.subject}-${job.style}`,
+    timeoutMs: AI_TIMEOUT_MS,
+    onDelta: (delta) => onProgress((chars += delta.length)),
+  });
+  return aiCardsSchema.parse(JSON.parse(text));
 }
 
 function fakeCards(count: number): AiCards {

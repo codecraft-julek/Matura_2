@@ -7,14 +7,15 @@
 // The answer key is read here (service role), never sent by the browser.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
-//   OPENAI_API_KEY             required for real answers
-//   AI_TUTOR_MODEL             optional, default below (falls back to OPENAI_MODEL)
+//   ANTHROPIC_API_KEY or OPENAI_API_KEY   required for real answers; see _shared/ai.ts
+//   AI_TUTOR_MODEL             optional, overrides the default model
 //   AI_TUTOR_GLOBAL_DAILY_LIMIT optional, messages for ALL students per day (default 3000) → caps your bill
 //   AI_REASONING_EFFORT        optional, "low" (default), "medium" or "high"
 //   AI_FAKE_MODE               "true" = example answers without OpenAI (only for testing, never in production)
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
+import { aiKey, aiModel, askAi } from "../_shared/ai.ts";
 import { quotaMessage, type QuotaResult } from "../_shared/billing.ts";
 import {
   TUTOR_LIMITS,
@@ -27,8 +28,7 @@ import {
   type TutorTaskContext,
 } from "../_shared/tutor.ts";
 
-const DEFAULT_MODEL = "gpt-6.1-sol";
-const OPENAI_TIMEOUT_MS = 90_000;
+const AI_TIMEOUT_MS = 90_000;
 const FEATURE = "tutor";
 
 const corsHeaders = {
@@ -111,7 +111,7 @@ async function handle(request: Request) {
   if (!chatId && examId && !ctx) return json({ ok: false, error: "Nie znaleziono tego zadania." }, 404);
 
   // 4. Is AI available?
-  const apiKey = Deno.env.get("OPENAI_API_KEY");
+  const apiKey = aiKey();
   const fake = !apiKey && Deno.env.get("AI_FAKE_MODE") === "true";
   if (!apiKey && !fake) {
     return json({ ok: false, error: "Tutor jeszcze nie jest skonfigurowany. Spróbuj trochę później." }, 503);
@@ -155,8 +155,7 @@ async function handle(request: Request) {
     userMessageId: userMsg.id as number,
     isNewChat,
     fake,
-    apiKey,
-    model: Deno.env.get("AI_TUTOR_MODEL") ?? Deno.env.get("OPENAI_MODEL") ?? DEFAULT_MODEL,
+    model: Deno.env.get("AI_TUTOR_MODEL") ?? aiModel(),
     input: buildTutorInput(history, ctx ? buildTaskContext(ctx, req.answers) : null),
   };
 
@@ -207,7 +206,6 @@ type Job = {
   userMessageId: number;
   isNewChat: boolean;
   fake: boolean;
-  apiKey: string | undefined;
   model: string;
   input: ReturnType<typeof buildTutorInput>;
 };
@@ -217,7 +215,7 @@ type Usage = { model: string; input_tokens: number; cached_tokens: number; outpu
 /** Asks the AI and saves the reply. On failure undoes the student's message. Never throws. */
 async function runJob(job: Job, onDelta: (text: string) => void): Promise<{ ok: true; reply: string; messageId: number } | { ok: false; error: string }> {
   try {
-    const { reply, usage } = job.fake ? await fakeStream(onDelta) : await askOpenAI(job, onDelta);
+    const { reply, usage } = job.fake ? await fakeStream(onDelta) : await askModel(job, onDelta);
     const { data: saved, error } = await admin
       .from("tutor_messages")
       .insert({ chat_id: job.chatId, user_id: job.userId, role: "assistant", content: reply.slice(0, 12000), usage })
@@ -277,80 +275,22 @@ async function loadTaskContext(examId: string, groupNo: number): Promise<TutorTa
   };
 }
 
-// OpenAI Responses API, streamed as plain text (a chat reply, no JSON schema needed).
-async function askOpenAI(job: Job, onDelta: (text: string) => void): Promise<{ reply: string; usage: Usage }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
-  try {
-    const res = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      signal: controller.signal,
-      headers: { Authorization: `Bearer ${job.apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: job.model,
-        instructions: buildTutorInstructions(),
-        input: job.input,
-        reasoning: { effort: Deno.env.get("AI_REASONING_EFFORT") ?? "low" },
-        max_output_tokens: 6000, // safety cap (includes reasoning tokens)
-        prompt_cache_key: "tutor", // same instructions for everyone → cached, cheaper and faster
-        store: false, // don't keep the conversation on OpenAI's side
-        stream: true,
-      }),
-    });
-    if (!res.ok || !res.body) throw new Error(`OpenAI ${res.status}: ${(await res.text()).slice(0, 300)}`);
-
-    let reply = "";
-    let usage: Usage = null;
-    for await (const event of readSse(res.body)) {
-      if (event.type === "response.output_text.delta" && typeof event.delta === "string") {
-        reply += event.delta;
-        onDelta(event.delta);
-      } else if (event.type === "response.completed") {
-        const u = event.response?.usage;
-        if (u) {
-          usage = {
-            model: job.model,
-            input_tokens: u.input_tokens ?? 0,
-            cached_tokens: u.input_tokens_details?.cached_tokens ?? 0,
-            output_tokens: u.output_tokens ?? 0,
-          };
-        }
-      } else if (event.type === "response.failed" || event.type === "error") {
-        throw new Error(`OpenAI stream ${event.type}: ${JSON.stringify(event).slice(0, 300)}`);
-      } else if (event.type === "response.incomplete" && !reply) {
-        throw new Error(`OpenAI incomplete: ${JSON.stringify(event.response?.incomplete_details)}`);
-      } else if (event.type === "response.refusal.delta") {
-        throw new Error("OpenAI refused");
-      }
-    }
-    if (!reply.trim()) throw new Error("OpenAI returned no text");
-    return { reply: reply.trim(), usage };
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-// Minimal Server-Sent Events reader: yields each `data: {...}` JSON payload.
-// deno-lint-ignore no-explicit-any
-async function* readSse(body: ReadableStream<Uint8Array>): AsyncGenerator<any> {
-  const reader = body.pipeThrough(new TextDecoderStream()).getReader();
-  let buffer = "";
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    buffer += value;
-    let idx;
-    while ((idx = buffer.indexOf("\n\n")) !== -1) {
-      const chunk = buffer.slice(0, idx);
-      buffer = buffer.slice(idx + 2);
-      const data = chunk
-        .split("\n")
-        .filter((l) => l.startsWith("data:"))
-        .map((l) => l.slice(5).trimStart())
-        .join("\n");
-      if (data && data !== "[DONE]") yield JSON.parse(data);
-    }
-  }
+// Streamed as plain text (a chat reply, no JSON schema needed).
+async function askModel(job: Job, onDelta: (text: string) => void): Promise<{ reply: string; usage: Usage }> {
+  const { text, usage, model } = await askAi({
+    model: job.model,
+    instructions: buildTutorInstructions(),
+    input: job.input,
+    maxTokens: 6000,
+    cacheKey: "tutor", // same instructions for everyone → cached, cheaper and faster
+    timeoutMs: AI_TIMEOUT_MS,
+    onDelta,
+    allowIncomplete: true, // a reply cut off at the limit is still useful
+  });
+  return {
+    reply: text.trim(),
+    usage: usage && { model, input_tokens: usage.input_tokens, cached_tokens: usage.cached_tokens, output_tokens: usage.output_tokens },
+  };
 }
 
 // Example answer for testing the whole flow without an OpenAI key (AI_FAKE_MODE=true).

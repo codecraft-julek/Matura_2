@@ -6,14 +6,15 @@
 // The website asks for Server-Sent Events, so it can show progress; plain JSON is still supported.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
-//   OPENAI_API_KEY            required for real notes
-//   AI_NOTES_MODEL            optional, default below (falls back to OPENAI_MODEL); must accept images
+//   ANTHROPIC_API_KEY or OPENAI_API_KEY   required for real notes; see _shared/ai.ts
+//   AI_NOTES_MODEL            optional, overrides the default model; must accept images
 //   AI_NOTES_GLOBAL_DAILY_LIMIT optional, notes for ALL students per day (default 500) → caps your bill
 //   AI_REASONING_EFFORT       optional, "low" (default), "medium" or "high"
 //   AI_FAKE_MODE              "true" = an example note without OpenAI (only for testing, never in production)
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
+import { aiKey, aiModel, aiProvider, askAi } from "../_shared/ai.ts";
 import { quotaMessage, type QuotaResult } from "../_shared/billing.ts";
 import {
   NOTE_LIMITS,
@@ -23,13 +24,13 @@ import {
   buildNotesInstructions,
   normalizeNote,
   noteRequestSchema,
+  claudeNoteSchema,
   openAiNoteSchema,
   type AiNote,
   type NoteSubject,
 } from "../_shared/notes.ts";
 
-const DEFAULT_MODEL = "gpt-6.1-sol";
-const OPENAI_TIMEOUT_MS = 130_000; // Supabase stops functions at 150 s
+const AI_TIMEOUT_MS = 130_000; // Supabase stops functions at 150 s
 const FEATURE = "notes";
 
 const corsHeaders = {
@@ -87,7 +88,7 @@ async function handle(request: Request) {
   const { subject, text, images, file } = parsed.data;
 
   // 3. Is AI available?
-  const apiKey = Deno.env.get("OPENAI_API_KEY");
+  const apiKey = aiKey();
   const fake = !apiKey && Deno.env.get("AI_FAKE_MODE") === "true";
   if (!apiKey && !fake) {
     return json({ ok: false, error: "Notatki AI jeszcze nie są skonfigurowane. Spróbuj trochę później." }, 503);
@@ -107,7 +108,7 @@ async function handle(request: Request) {
   }
 
   // 5. Save the note first ("pending"), so the student can see it's being made
-  const model = fake ? "fake" : (Deno.env.get("AI_NOTES_MODEL") ?? Deno.env.get("OPENAI_MODEL") ?? DEFAULT_MODEL);
+  const model = fake ? "fake" : (Deno.env.get("AI_NOTES_MODEL") ?? aiModel());
   const { data: note, error: insertError } = await admin
     .from("notes")
     .insert({
@@ -121,7 +122,7 @@ async function handle(request: Request) {
     .single();
   if (insertError) throw insertError;
 
-  const job: Job = { noteId: note.id as string, userId: user.id, subject, text, images, file, fake, apiKey, model };
+  const job: Job = { noteId: note.id as string, userId: user.id, subject, text, images, file, fake, model };
 
   // 6a. Streaming (what the website uses): progress as Server-Sent Events.
   if (request.headers.get("accept")?.includes("text/event-stream")) {
@@ -178,7 +179,6 @@ type Job = {
   images: string[];
   file?: { kind: "pdf" | "docx" | "pptx"; name: string };
   fake: boolean;
-  apiKey: string | undefined;
   model: string;
 };
 
@@ -188,7 +188,7 @@ type Usage = { input_tokens: number; cached_tokens: number; output_tokens: numbe
 async function runJob(job: Job, onProgress: (chars: number) => void): Promise<{ ok: true } | { ok: false; error: string }> {
   const startedAt = Date.now();
   try {
-    const { ai, usage } = job.fake ? await fakeNote(onProgress) : await askOpenAI(job, onProgress);
+    const { ai, usage } = job.fake ? await fakeNote(onProgress) : await askModel(job, onProgress);
     const note = normalizeNote(ai);
     const sourceText = [job.text, ai.transcript.trim()].filter(Boolean).join("\n\n— odczytane ze zdjęć —\n\n");
     await admin
@@ -219,80 +219,20 @@ async function runJob(job: Job, onProgress: (chars: number) => void): Promise<{ 
   }
 }
 
-// OpenAI Responses API, streamed, with Structured Outputs (the answer must match our JSON schema).
-async function askOpenAI(job: Job, onProgress: (chars: number) => void): Promise<{ ai: AiNote; usage: Usage }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
-  try {
-    const res = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      signal: controller.signal,
-      headers: { Authorization: `Bearer ${job.apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: job.model,
-        instructions: buildNotesInstructions(job.subject),
-        input: buildNotesInput({ text: job.text, images: job.images, file: job.file }),
-        text: { format: { type: "json_schema", name: "study_note", schema: openAiNoteSchema(), strict: true } },
-        reasoning: { effort: Deno.env.get("AI_REASONING_EFFORT") ?? "low" },
-        max_output_tokens: 16000, // safety cap (includes reasoning tokens)
-        prompt_cache_key: `notes-${job.subject}`,
-        store: false, // don't keep the student's notes/photos on OpenAI's side
-        stream: true,
-      }),
-    });
-    if (!res.ok || !res.body) throw new Error(`OpenAI ${res.status}: ${(await res.text()).slice(0, 300)}`);
-
-    let text = "";
-    let usage: Usage = null;
-    for await (const event of readSse(res.body)) {
-      if (event.type === "response.output_text.delta" && typeof event.delta === "string") {
-        text += event.delta;
-        onProgress(text.length);
-      } else if (event.type === "response.completed") {
-        const u = event.response?.usage;
-        if (u) {
-          usage = {
-            input_tokens: u.input_tokens ?? 0,
-            cached_tokens: u.input_tokens_details?.cached_tokens ?? 0,
-            output_tokens: u.output_tokens ?? 0,
-            reasoning_tokens: u.output_tokens_details?.reasoning_tokens ?? 0,
-            images: job.images.length,
-          };
-        }
-      } else if (event.type === "response.failed" || event.type === "response.incomplete" || event.type === "error") {
-        throw new Error(`OpenAI stream ${event.type}: ${JSON.stringify(event).slice(0, 300)}`);
-      } else if (event.type === "response.refusal.delta") {
-        throw new Error("OpenAI refused");
-      }
-    }
-    if (!text) throw new Error("OpenAI returned no text");
-    return { ai: aiNoteSchema.parse(JSON.parse(text)), usage };
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-// Minimal Server-Sent Events reader: yields each `data: {...}` JSON payload.
-// deno-lint-ignore no-explicit-any
-async function* readSse(body: ReadableStream<Uint8Array>): AsyncGenerator<any> {
-  const reader = body.pipeThrough(new TextDecoderStream()).getReader();
-  let buffer = "";
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    buffer += value;
-    let idx;
-    while ((idx = buffer.indexOf("\n\n")) !== -1) {
-      const chunk = buffer.slice(0, idx);
-      buffer = buffer.slice(idx + 2);
-      const data = chunk
-        .split("\n")
-        .filter((l) => l.startsWith("data:"))
-        .map((l) => l.slice(5).trimStart())
-        .join("\n");
-      if (data && data !== "[DONE]") yield JSON.parse(data);
-    }
-  }
+// Streamed, and the answer must match our JSON schema.
+async function askModel(job: Job, onProgress: (chars: number) => void): Promise<{ ai: AiNote; usage: Usage }> {
+  let chars = 0;
+  const { text, usage } = await askAi({
+    model: job.model,
+    instructions: buildNotesInstructions(job.subject),
+    input: buildNotesInput({ text: job.text, images: job.images, file: job.file }),
+    schema: { name: "study_note", schema: aiProvider() === "anthropic" ? claudeNoteSchema() : openAiNoteSchema() },
+    maxTokens: 16000,
+    cacheKey: `notes-${job.subject}`,
+    timeoutMs: AI_TIMEOUT_MS,
+    onDelta: (delta) => onProgress((chars += delta.length)),
+  });
+  return { ai: aiNoteSchema.parse(JSON.parse(text)), usage: usage && { ...usage, images: job.images.length } };
 }
 
 // An example note for testing the whole flow without an OpenAI key (AI_FAKE_MODE=true).

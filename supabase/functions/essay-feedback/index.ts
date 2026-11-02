@@ -6,14 +6,14 @@
 // sees the summary and criteria appear live; plain JSON is still supported.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
-//   OPENAI_API_KEY        required for real feedback (you add it)
-//   OPENAI_MODEL          optional, default below
+//   ANTHROPIC_API_KEY or OPENAI_API_KEY   required for real feedback (you add it); see _shared/ai.ts
 //   AI_GLOBAL_DAILY_LIMIT optional, checks for ALL students per day (default 300) → caps your bill
 //   AI_REASONING_EFFORT   optional, "low" (default, fastest for gpt-6.1-sol), "medium" or "high"
 //   AI_FAKE_MODE          "true" = example feedback without OpenAI (only for testing, never in production)
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
+import { aiKey, aiModel, askAi } from "../_shared/ai.ts";
 import { quotaMessage, type QuotaResult } from "../_shared/billing.ts";
 import {
   MIN_WORDS_FOR_FEEDBACK,
@@ -30,8 +30,7 @@ import {
 } from "../_shared/essay.ts";
 import { finalizeDetectedFeedback, REVISION_INSTRUCTIONS, revisionJsonSchema, revisionSchema, type RevisionRequest } from "../_shared/essay-reconciliation.ts";
 
-const DEFAULT_MODEL = "gpt-6.1-sol";
-const OPENAI_TIMEOUT_MS = 110_000; // Supabase stops functions at 150 s
+const AI_TIMEOUT_MS = 110_000; // Supabase stops functions at 150 s
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -128,7 +127,7 @@ async function handle(request: Request) {
   }
 
   // 4. Is AI available?
-  const apiKey = Deno.env.get("OPENAI_API_KEY");
+  const apiKey = aiKey();
   const fake = !apiKey && Deno.env.get("AI_FAKE_MODE") === "true";
   if (!apiKey && !fake) {
     return json({ ok: false, error: "Feedback AI jeszcze nie jest skonfigurowany. Spróbuj trochę później." }, 503);
@@ -148,7 +147,7 @@ async function handle(request: Request) {
   }
 
   // 6. Save the essay first, so nothing is lost if the AI call fails
-  const model = fake ? "fake" : (Deno.env.get("OPENAI_MODEL") ?? DEFAULT_MODEL);
+  const model = fake ? "fake" : aiModel();
   const { data: essay, error: insertError } = await admin
     .from("essays")
     .insert({ user_id: user.id, kind, level, attempt_id: attemptId, task_number: taskNumber, topic, content, word_count: words, model })
@@ -157,7 +156,7 @@ async function handle(request: Request) {
   if (insertError) throw insertError;
 
   const rubric: RubricId = rubricFor(kind, level);
-  const job = { essayId: essay.id as string, userId: user.id, rubric, fake, apiKey, model, topic, content, words, minWords, rules };
+  const job = { essayId: essay.id as string, userId: user.id, rubric, fake, model, topic, content, words, minWords, rules };
 
   // 7a. Streaming (what the website uses): send progress as Server-Sent Events.
   if (request.headers.get("accept")?.includes("text/event-stream")) {
@@ -206,7 +205,6 @@ type Job = {
   userId: string;
   rubric: RubricId;
   fake: boolean;
-  apiKey: string | undefined;
   model: string;
   topic: string;
   content: string;
@@ -218,11 +216,11 @@ type Job = {
 /** Asks the AI, applies the CKE rules and saves the result. Never throws. */
 async function runJob(job: Job, onDelta: (text: string) => void): Promise<{ ok: true } | { ok: false; error: string }> {
   const startedAt = Date.now();
-  const deadline = startedAt + OPENAI_TIMEOUT_MS;
+  const deadline = startedAt + AI_TIMEOUT_MS;
   try {
     const { ai, usage } = job.fake
       ? await fakeStream(job.rubric, job.content, onDelta)
-      : await askOpenAI({ ...job, apiKey: job.apiKey! }, onDelta, deadline);
+      : await askModel(job, onDelta, deadline);
     let totalUsage = usage;
     const feedback = await finalizeDetectedFeedback(job.rubric, ai, {
       content: job.content,
@@ -230,7 +228,7 @@ async function runJob(job: Job, onDelta: (text: string) => void): Promise<{ ok: 
       hasPrompt: job.topic.trim().length > 0,
       minWords: job.minWords,
     }, async request => {
-      const revised = await reconcileComments(job.apiKey!, job.model, request, deadline);
+      const revised = await reconcileComments(job.model, request, deadline);
       if (revised.usage) totalUsage = {
         input_tokens: (totalUsage?.input_tokens ?? 0) + revised.usage.input_tokens,
         cached_tokens: (totalUsage?.cached_tokens ?? 0) + revised.usage.cached_tokens,
@@ -257,113 +255,37 @@ async function runJob(job: Job, onDelta: (text: string) => void): Promise<{ ok: 
 
 type Usage = { input_tokens: number; cached_tokens: number; output_tokens: number; reasoning_tokens: number } | null;
 
-// OpenAI Responses API, streamed, with Structured Outputs (the answer must match our JSON schema).
-// Speed: reasoning effort "low" by default (gpt-6.1-sol supports low/medium/high; default would be medium),
-// short answers enforced in the prompt. Change with the AI_REASONING_EFFORT secret.
-async function askOpenAI(
-  o: { apiKey: string; model: string; rubric: RubricId; topic: string; content: string; words: number; minWords?: number; rules: string[] },
+// Streamed, and the answer must match our JSON schema. Short answers are enforced in the prompt.
+async function askModel(
+  o: { model: string; rubric: RubricId; topic: string; content: string; words: number; minWords?: number; rules: string[] },
   onDelta: (text: string) => void,
-  deadline = Date.now() + OPENAI_TIMEOUT_MS,
+  deadline = Date.now() + AI_TIMEOUT_MS,
 ): Promise<{ ai: AiFeedback; usage: Usage }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), Math.max(1, deadline - Date.now()));
-  try {
-    const res = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      signal: controller.signal,
-      headers: { Authorization: `Bearer ${o.apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: o.model,
-        instructions: buildInstructions(o.rubric),
-        input: buildInput({ topic: o.topic, content: o.content, words: o.words, rubric: o.rubric, minWords: o.minWords, rules: o.rules }),
-        text: { format: { type: "json_schema", name: "essay_feedback", schema: openAiSchema(o.rubric), strict: true } },
-        reasoning: { effort: Deno.env.get("AI_REASONING_EFFORT") ?? "low" },
-        max_output_tokens: 16000, // safety cap (includes reasoning tokens)
-        prompt_cache_key: `essay-${o.rubric}`, // same instructions for everyone → cached, cheaper and faster
-        store: false, // don't keep the student's text on OpenAI's side for later retrieval
-        stream: true,
-      }),
-    });
-    if (!res.ok || !res.body) throw new Error(`OpenAI ${res.status}: ${(await res.text()).slice(0, 300)}`);
-
-    let text = "";
-    let usage: Usage = null;
-    for await (const event of readSse(res.body)) {
-      if (event.type === "response.output_text.delta" && typeof event.delta === "string") {
-        text += event.delta;
-        onDelta(event.delta);
-      } else if (event.type === "response.completed") {
-        const u = event.response?.usage;
-        if (u) {
-          usage = {
-            input_tokens: u.input_tokens ?? 0,
-            cached_tokens: u.input_tokens_details?.cached_tokens ?? 0,
-            output_tokens: u.output_tokens ?? 0,
-            reasoning_tokens: u.output_tokens_details?.reasoning_tokens ?? 0,
-          };
-        }
-      } else if (event.type === "response.failed" || event.type === "response.incomplete" || event.type === "error") {
-        throw new Error(`OpenAI stream ${event.type}: ${JSON.stringify(event).slice(0, 300)}`);
-      } else if (event.type === "response.refusal.delta") {
-        throw new Error("OpenAI refused");
-      }
-    }
-    if (!text) throw new Error("OpenAI returned no text");
-    return { ai: aiFeedbackSchema.parse(JSON.parse(text)), usage };
-  } finally {
-    clearTimeout(timer);
-  }
+  const { text, usage } = await askAi({
+    model: o.model,
+    instructions: buildInstructions(o.rubric),
+    input: buildInput({ topic: o.topic, content: o.content, words: o.words, rubric: o.rubric, minWords: o.minWords, rules: o.rules }),
+    schema: { name: "essay_feedback", schema: openAiSchema(o.rubric) },
+    maxTokens: 16000,
+    cacheKey: `essay-${o.rubric}`, // same instructions for everyone → cached, cheaper and faster
+    timeoutMs: Math.max(1, deadline - Date.now()),
+    onDelta,
+  });
+  return { ai: aiFeedbackSchema.parse(JSON.parse(text)), usage };
 }
 
 // Only runs when canonical ownership removed a duplicate. Detection is never re-run here.
-async function reconcileComments(apiKey: string, model: string, request: RevisionRequest, deadline: number) {
+async function reconcileComments(model: string, request: RevisionRequest, deadline: number) {
   if (Date.now() >= deadline) throw new Error("Essay reconciliation timed out");
-  const res = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    signal: AbortSignal.timeout(Math.max(1, deadline - Date.now())),
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model,
-      instructions: REVISION_INSTRUCTIONS,
-      input: JSON.stringify(request),
-      text: { format: { type: "json_schema", name: "essay_issue_reconciliation", schema: revisionJsonSchema, strict: true } },
-      reasoning: { effort: Deno.env.get("AI_REASONING_EFFORT") ?? "low" },
-      max_output_tokens: 4000,
-      store: false,
-    }),
+  const { text, usage } = await askAi({
+    model,
+    instructions: REVISION_INSTRUCTIONS,
+    input: JSON.stringify(request),
+    schema: { name: "essay_issue_reconciliation", schema: revisionJsonSchema },
+    maxTokens: 4000,
+    timeoutMs: Math.max(1, deadline - Date.now()),
   });
-  if (!res.ok) throw new Error(`Essay reconciliation: OpenAI ${res.status}`);
-  const data = await res.json();
-  if (data.status !== "completed") throw new Error("Incomplete essay reconciliation");
-  const text = (data.output ?? []).flatMap((item: { content?: { type: string; text?: string }[] }) => item.content ?? [])
-    .filter((item: { type: string }) => item.type === "output_text")
-    .map((item: { text: string }) => item.text).join("");
-  const u = data.usage;
-  const usage: Usage = u ? { input_tokens: u.input_tokens ?? 0, cached_tokens: u.input_tokens_details?.cached_tokens ?? 0, output_tokens: u.output_tokens ?? 0, reasoning_tokens: u.output_tokens_details?.reasoning_tokens ?? 0 } : null;
   return { revision: revisionSchema.parse(JSON.parse(text)), usage };
-}
-
-// Minimal Server-Sent Events reader: yields each `data: {...}` JSON payload.
-// deno-lint-ignore no-explicit-any
-async function* readSse(body: ReadableStream<Uint8Array>): AsyncGenerator<any> {
-  const reader = body.pipeThrough(new TextDecoderStream()).getReader();
-  let buffer = "";
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    buffer += value;
-    let idx;
-    while ((idx = buffer.indexOf("\n\n")) !== -1) {
-      const chunk = buffer.slice(0, idx);
-      buffer = buffer.slice(idx + 2);
-      const data = chunk
-        .split("\n")
-        .filter((l) => l.startsWith("data:"))
-        .map((l) => l.slice(5).trimStart())
-        .join("\n");
-      if (data && data !== "[DONE]") yield JSON.parse(data);
-    }
-  }
 }
 
 // Example feedback for testing the whole flow without an OpenAI key (AI_FAKE_MODE=true).

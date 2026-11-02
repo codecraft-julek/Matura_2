@@ -182,6 +182,42 @@ export function openAiNoteSchema() {
   });
 }
 
+/**
+ * The same note for Claude: its strict JSON mode refuses a list of 8 block shapes as too large, so
+ * one block shape has all the fields. aiNoteSchema then keeps only the fields of each block's type.
+ */
+export function claudeNoteSchema() {
+  const block = obj({
+    type: {
+      type: "string",
+      enum: ["text", "list", "definition", "timeline", "compare", "mindmap", "cause_effect", "remember"],
+      description:
+        "Rodzaj bloku. Wypełnij tylko jego pola, a pozostałe zostaw puste (\"\", [], false). " +
+        "text: heading, body. list: heading, numbered, items. definition: term, meaning, example. timeline: heading, events. " +
+        "compare: heading, columns, rows. mindmap: center, branches. cause_effect: heading, causes, event, effects. remember: items. " +
+        "Pole from_notes wypełnij zawsze.",
+    },
+    heading: str(),
+    body: str("text: 1–3 krótkie zdania"),
+    numbered: { type: "boolean" },
+    items: arr(str(), "remember: 1–6 rzeczy ważnych na maturę"),
+    term: str(),
+    meaning: str(),
+    example: str("może być pusty"),
+    events: arr(obj({ date: str("np. 1830, XIX w., 1918–1939"), label: str() })),
+    columns: arr(str(), "2–4 porównywane rzeczy"),
+    rows: arr(obj({ feature: str("cecha"), values: arr(str(), "po jednej wartości na kolumnę") })),
+    center: str("temat główny"),
+    branches: arr(obj({ label: str(), items: arr(str(), "0–5 krótkich haseł") }), "2–6 gałęzi"),
+    causes: arr(str()),
+    event: str("zjawisko lub wydarzenie w środku"),
+    effects: arr(str()),
+    from_notes: fromNotes,
+  });
+  const note = openAiNoteSchema();
+  return { ...note, properties: { ...note.properties, blocks: arr(block, "4–10 bloków") } };
+}
+
 // ─── Prompt ──────────────────────────────────────────────────────────────────
 const SUBJECT_HINT: Record<NoteSubject, string> = {
   polish: "Przedmiot: język polski (matura). Typowe tematy: epoki, lektury, bohaterowie, motywy, środki stylistyczne.",
