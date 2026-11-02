@@ -14,13 +14,11 @@ export const SITE = {
   description:
     "Rozwiązuj prawdziwe arkusze maturalne CKE w formule 2023 i od razu sprawdzaj odpowiedzi według oficjalnego klucza. Darmowe konto na start.",
   // Public contact address shown in the privacy policy and footer.
-  // TODO: replace with a real inbox you check (e.g. kontakt@twojadomena.pl).
-  // TODO: switch to an address on your own domain (e.g. kontakt@ogarnijmature.pl) once it's set up.
-  contactEmail: "miljulek@gmail.com",
+  contactEmail: "ogarnijmature@o2.pl",
 } as const;
 
 /** Shown in the footer of public pages. */
-export const AUTHOR = { name: "Julian Mil", email: "miljulek@gmail.com" } as const;
+export const AUTHOR = { name: "Julian Mil", email: "ogarnijmature@o2.pl" } as const;
 
 // Feature switch. true = the landing page shows "Załóż konto" / "Zaloguj się" (live app).
 // false = it shows the waitlist form instead (pre-launch mode).

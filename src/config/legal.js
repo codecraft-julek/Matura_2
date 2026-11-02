@@ -5,7 +5,7 @@ export const LEGAL_OPERATOR = Object.freeze({
   status: 'działalność nierejestrowana',
   fullName: '[IMIĘ I NAZWISKO USŁUGODAWCY]',
   address: '[PEŁNY ADRES USŁUGODAWCY I ADRES DO REKLAMACJI]',
-  email: '[ADRES E-MAIL GMAIL DO KONTAKTU]',
+  email: 'ogarnijmature@o2.pl',
   phone: '[NUMER TELEFONU DO KONTAKTU]',
 })
 
