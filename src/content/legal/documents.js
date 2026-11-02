@@ -12,19 +12,18 @@ const monthly = PLANS.find(plan => plan.id === 'monthly').price
 const pass = PLANS.find(plan => plan.id === 'matura').price
 const identity = () => list(
   `Nazwa serwisu: ${operator.brand}.`,
-  `Usługodawca i administrator danych: ${operator.fullName}, osoba fizyczna prowadząca działalność nierejestrowaną.`,
-  `Adres prowadzenia działalności i do korespondencji: ${operator.address}.`,
-  `E-mail: ${operator.email}. Telefon: ${operator.phone}.`,
+  `Usługodawca i administrator danych: ${operator.fullName ? `${operator.fullName}, osoba fizyczna` : 'osoba fizyczna'} prowadząca działalność nierejestrowaną.`,
+  operator.address ? `Adres prowadzenia działalności i do korespondencji: ${operator.address}.` : 'Adres do korespondencji podamy na prośbę wysłaną e-mailem.',
+  `E-mail: ${operator.email}.${operator.phone ? ` Telefon: ${operator.phone}.` : ''}`,
 )
 const base = { version: LEGAL_VERSION, updated: LEGAL_UPDATED, notice: LEGAL_DRAFT_NOTICE }
 
 export const withdrawalForm = `FORMULARZ ODSTĄPIENIA OD UMOWY
 Formularz jest dobrowolny. Wypełnij go i wyślij tylko wtedy, gdy chcesz odstąpić od umowy.
 
-Adresat: ${operator.fullName}, ${operator.brand}
-Adres: ${operator.address}
-E-mail: ${operator.email}
-Do czasu uzupełnienia adresu e-mail możesz użyć formularza /kontakt.
+Adresat: ${operator.fullName ? `${operator.fullName}, ` : ''}${operator.brand}
+${operator.address ? `Adres: ${operator.address}\n` : ''}E-mail: ${operator.email}
+Możesz też użyć formularza /kontakt.
 
 Oświadczam, że odstępuję od umowy o świadczenie usługi Premium / Pakiet do matury w serwisie Ogarnij Maturę.
 Data zawarcia umowy:
@@ -43,7 +42,7 @@ export const termsDocument = {
   summary: 'Zasady korzystania z konta i narzędzi AI, płatności, rezygnacji oraz reklamacji. Uruchomienie Premium nie oznacza automatycznej utraty prawa do odstąpienia.',
   sections: [
     section('uslugodawca', '1. Usługodawca i kontakt', identity(),
-      p('Regulamin określa zasady świadczenia usług drogą elektroniczną w serwisie Ogarnij Maturę. Określenia „my” i „usługodawca” oznaczają osobę wskazaną powyżej. Działalność nierejestrowana nie wyłącza praw konsumenta.'),
+      p('Regulamin określa zasady świadczenia usług drogą elektroniczną w serwisie Ogarnij Maturę. Określenia „my” i „usługodawca” oznaczają osobę prowadzącą serwis, opisaną powyżej. Działalność nierejestrowana nie wyłącza praw konsumenta.'),
       links(['Formularz kontaktowy', ROUTES.contact])),
     section('uslugi', '2. Co oferuje serwis',
       p('Serwis służy do samodzielnej nauki do matury z języka polskiego i angielskiego. Udostępnia informacje o arkuszach CKE, ćwiczenia, zapisywanie odpowiedzi i wyników, ocenę prac przez AI, tutora AI, notatki oraz fiszki. Zakres funkcji i dostępne materiały są opisane przy poszczególnych narzędziach.'),
@@ -84,7 +83,7 @@ export const termsDocument = {
       p('Na żądanie wystawiamy dokument sprzedaży zgodnie z obowiązującymi przepisami. Potwierdzenie operacji Stripe nie zastępuje automatycznie dokumentu podatkowego.'),
       p('Odnawianie wyłączysz w ustawieniach konta przez „Zarządzaj subskrypcją”. Anulowanie przed kolejnym odnowieniem zatrzymuje następne obciążenia, a dostęp trwa do końca opłaconego okresu. W razie problemów z panelem możesz zgłosić rezygnację przez kontakt. Samo anulowanie odnowienia jest czym innym niż odstąpienie w ciągu 14 dni lub reklamacja; nie ogranicza tych praw.')),
     section('odstapienie', '8. Odstąpienie od umowy w ciągu 14 dni',
-      p('Jeżeli jesteś konsumentem, możesz odstąpić od zawartej na odległość umowy o Premium bez podawania przyczyny w ciągu 14 dni od jej zawarcia. Wystarczy wysłać jednoznaczne oświadczenie przed upływem terminu: po zalogowaniu przyciskiem „Odstąp od umowy tutaj”, e-mailem, przez formularz kontaktowy lub pocztą na adres usługodawcy. Po wysłaniu oświadczenia przyciskiem od razu dostaniesz potwierdzenie e-mailem z jego treścią, datą i godziną otrzymania. Skorzystanie z poniższego wzoru nie jest obowiązkowe.'),
+      p('Jeżeli jesteś konsumentem, możesz odstąpić od zawartej na odległość umowy o Premium bez podawania przyczyny w ciągu 14 dni od jej zawarcia. Wystarczy wysłać jednoznaczne oświadczenie przed upływem terminu: po zalogowaniu przyciskiem „Odstąp od umowy tutaj”, e-mailem albo przez formularz kontaktowy. Adres pocztowy podamy na prośbę. Po wysłaniu oświadczenia przyciskiem od razu dostaniesz potwierdzenie e-mailem z jego treścią, datą i godziną otrzymania. Skorzystanie z poniższego wzoru nie jest obowiązkowe.'),
       p('Premium jest dostępem do usługi cyfrowej świadczonej przez czas trwania planu. Żądanie uruchomienia jej od razu nie oznacza, że cała usługa została wykonana ani że automatycznie tracisz prawo do odstąpienia. Nie stosujemy do samego włączenia konta wyjątku dotyczącego jednorazowego dostarczenia treści cyfrowych.'),
       p('Jeżeli wyraźnie zażądasz rozpoczęcia świadczenia przed upływem 14 dni, a potem odstąpisz od umowy, możemy rozliczyć wyłącznie proporcjonalną wartość usługi rzeczywiście wykonanej do chwili odstąpienia, na zasadach art. 35 ustawy o prawach konsumenta. Dla dostępu czasowego punktem wyjścia jest cena planu i część opłaconego okresu, która upłynęła. Nie potrącamy dowolnej opłaty za „aktywację”. Jeżeli nie spełniliśmy ustawowych warunków wcześniejszego świadczenia, nie obciążamy Cię jego kosztem.'),
       p('Zwracamy należną kwotę bez zbędnej zwłoki, najpóźniej w ciągu 14 dni od otrzymania oświadczenia, tą samą metodą płatności, chyba że wyraźnie uzgodnisz inną bez dodatkowych kosztów. Odstąpienie kończy dostęp wynikający z tej umowy, a subskrypcja nie odnawia się. Nie musisz usuwać bezpłatnego konta, aby odstąpić od Premium.'),
@@ -94,7 +93,7 @@ export const termsDocument = {
       list(
         'Jeśli usługa nie została dostarczona, możesz wezwać nas do jej dostarczenia, a w przypadkach przewidzianych prawem odstąpić od umowy.',
         'Jeśli usługa jest niezgodna z umową, możesz żądać doprowadzenia jej do zgodności bez kosztów, w rozsądnym czasie i bez nadmiernych niedogodności. W ustawowych przypadkach możesz żądać obniżenia ceny albo odstąpić od umowy, np. gdy naprawa jest niemożliwa, nieskuteczna albo niezgodność jest istotna.',
-        'Zgłoszenie wyślij przez kontakt, e-mailem albo pocztą. Opisz problem, podaj dane pozwalające znaleźć zakup i sposób kontaktu. Numer zamówienia lub zrzut ekranu mogą pomóc, ale nie uzależniamy reklamacji od konkretnego formularza ani dokumentu, jeśli zakup można ustalić inaczej.',
+        'Zgłoszenie wyślij przez kontakt albo e-mailem. Opisz problem, podaj dane pozwalające znaleźć zakup i sposób kontaktu. Numer zamówienia lub zrzut ekranu mogą pomóc, ale nie uzależniamy reklamacji od konkretnego formularza ani dokumentu, jeśli zakup można ustalić inaczej.',
         'Na reklamację konsumenta odpowiadamy na papierze lub innym trwałym nośniku w ciągu 14 dni od otrzymania. Brak odpowiedzi w ustawowym terminie oznacza uznanie reklamacji, jeżeli przepis szczególny nie stanowi inaczej.',
       ), links(['Zgłoś reklamację', `${ROUTES.contact}?sprawa=reklamacja`])),
     section('pomoc', '10. Pomoc w sporze',
@@ -127,7 +126,7 @@ export const privacyDocument = {
         'Profil: imię lub pseudonim, wybrane przedmioty i rok matury.',
         'Nauka: odpowiedzi, wyniki, czas rozwiązywania i postęp; przesłane wypracowania, uwagi AI, rozmowy z tutorem, notatki, źródłowy tekst, fiszki i historia ich powtórek. Zachowujemy też dane techniczne wykonania zadań AI i liczniki limitów.',
         'Materiały do przetworzenia: tekst, zdjęcia, tekst odczytany z dokumentów, obrazy stron skanów oraz wskazane adresy stron i filmów. Nie musisz przesyłać materiałów, jeśli nie korzystasz z danej funkcji.',
-        'Płatności: identyfikatory klienta i subskrypcji Stripe, wybrany plan, status płatności, daty dostępu oraz potwierdzenia oświadczeń zakupowych. Pełne dane karty i CVC otrzymuje operator płatności, nie nasza baza danych.',
+        'Płatności: identyfikatory klienta i subskrypcji Stripe, wybrany plan, status płatności, daty dostępu oraz potwierdzenia oświadczeń zakupowych. Przy odstąpieniu od umowy także imię i nazwisko, e-mail do potwierdzenia, czas otrzymania oświadczenia i kwoty rozliczenia. Pełne dane karty i CVC otrzymuje operator płatności, nie nasza baza danych.',
         'Kontakt i oceny AI: e-mail, opcjonalne imię, temat i treść wiadomości; przy kontakcie po zalogowaniu także identyfikator konta. Dobrowolne oceny odpowiedzi AI i komentarze służą obsłudze zgłoszeń i analizie jakości.',
         'Bezpieczeństwo: informacje techniczne żądania i logowania, np. IP, czas, przeglądarka, komunikaty błędów oraz token CAPTCHA. W licznikach ochrony formularzy zapisujemy skrót IP. Skrót nie oznacza, że dane automatycznie przestają być danymi osobowymi.',
         'Dawna lista oczekujących, jeżeli się na nią zapisałeś: e-mail, przedmioty, rok matury, zapis zgody oraz parametry źródła wejścia z linku. Nie traktujemy takiego zapisu jako zgody na dowolny marketing.',
@@ -143,7 +142,7 @@ export const privacyDocument = {
       p('E-mail i dane potrzebne do logowania są niezbędne do założenia konta. Bez treści pracy nie wykonamy jej oceny; bez danych wymaganych do płatności nie zrealizujemy zakupu. Pozostałe dane podajesz dobrowolnie. Odmowa opcjonalnych statystyk nie blokuje konta, nauki ani płatności.')),
     section('ai', '4. Co trafia do AI',
       p('Do OpenAI wysyłamy treść potrzebną do wybranej funkcji: pracę, odpowiedź i kontekst zadania, wiadomości i odpowiedni fragment rozmowy, tekst źródłowy albo obrazy. Nie dodajemy do zapytania Twojego e-maila ani nazwy profilu. Jeżeli sam umieścisz dane osobowe w treści lub na zdjęciu, mogą one zostać przesłane razem z materiałem.'),
-      p('W żądaniach API wyłączamy zapisywanie odpowiedzi do późniejszego pobrania. Nie oznacza to zerowej retencji: według dokumentacji OpenAI standardowe logi bezpieczeństwa mogą zawierać treść i być przechowywane do 30 dni, z wyjątkami związanymi z obowiązkami prawnymi lub bezpieczeństwem. Dane API domyślnie nie są używane przez OpenAI do treningu modeli; osobne ustawienia organizacji wymagają weryfikacji.'),
+      p('W żądaniach API wyłączamy zapisywanie odpowiedzi do późniejszego pobrania. Nie oznacza to zerowej retencji: według dokumentacji OpenAI standardowe logi bezpieczeństwa mogą zawierać treść i być przechowywane do 30 dni, z wyjątkami związanymi z obowiązkami prawnymi lub bezpieczeństwem. Dane API domyślnie nie są używane przez OpenAI do treningu modeli.'),
       p('Zdjęcia notatek są zmniejszane i ponownie kodowane w przeglądarce, a potem przekazywane do przetworzenia. Nasza baza zachowuje odczytany tekst i wynik, nie plik zdjęcia. Dokumenty są odczytywane w przeglądarce; do analizy może trafić ich tekst albo obrazy wybranych stron. Ograniczenie zapisu w naszej bazie nie jest gwarancją braku retencji u dostawcy AI.'),
       p('Ocena AI jest pomocą w nauce. Nie podejmujemy na jej podstawie decyzji wywołujących skutki prawne ani podobnie istotnie wpływających na użytkownika w rozumieniu art. 22 RODO. Nie jest to ocena szkolna, wynik egzaminu ani decyzja rekrutacyjna. Wątpliwości możesz zgłosić człowiekowi przez kontakt.'),
       links(['OpenAI — zasady przetwarzania danych API', 'https://developers.openai.com/api/docs/guides/your-data'])),
@@ -164,11 +163,11 @@ export const privacyDocument = {
     section('transfery', '6. Przetwarzanie poza EOG',
       p('Baza danych we Frankfurcie nie oznacza, że cała obsługa przez wszystkich dostawców odbywa się wyłącznie w Europejskim Obszarze Gospodarczym. Dostawcy i ich podwykonawcy mogą przetwarzać dane m.in. w USA, także w ramach wsparcia technicznego.'),
       p('Transfer wymaga podstawy przewidzianej w rozdziale V RODO: np. decyzji stwierdzającej odpowiedni stopień ochrony dla objętego nią odbiorcy albo standardowych klauzul umownych wraz z wymaganą oceną i zabezpieczeniami. Program EU–US Data Privacy Framework ma znaczenie tylko dla odbiorcy z ważnym wpisem i objętego nim zakresu danych. Nie zakładamy, że obejmuje każdą firmę z USA.'),
-      p('Informację o właściwym zabezpieczeniu konkretnego transferu i jego kopię możesz otrzymać od administratora, z ochroną praw innych osób. Przed ostateczną publikacją tej wersji wymagane jest potwierdzenie zawartych umów i mechanizmów transferu dla używanych kont dostawców.')),
+      p('Informację o właściwym zabezpieczeniu konkretnego transferu i jego kopię możesz otrzymać od administratora, z ochroną praw innych osób.')),
     section('retencja', '7. Jak długo przechowujemy dane',
       table(['Dane', 'Okres lub kryterium'], [
-        ['Konto i materiały do nauki', 'Do usunięcia materiału lub konta. Usunięcie konta usuwa powiązane prace i postępy z aktywnej bazy; nie kasuje automatycznie korespondencji, danych rozliczeniowych u operatorów ani kopii zapasowych.'],
-        ['Kontakt, odstąpienia od umowy i reklamacje', 'Do zakończenia sprawy, następnie przez okres niezbędny do udokumentowania jej obsługi lub roszczeń. Docelowy okres zwykłej korespondencji: [OKRES DO USTALENIA W PROCEDURZE RETENCJI]. Sprawy sporne przechowujemy w zakresie opisanym w wierszu dotyczącym roszczeń.'],
+        ['Konto i materiały do nauki', 'Do usunięcia materiału lub konta. Usunięcie konta usuwa powiązane prace i postępy z aktywnej bazy; nie kasuje automatycznie korespondencji, oświadczeń o odstąpieniu, danych rozliczeniowych u operatorów ani kopii zapasowych.'],
+        ['Kontakt, odstąpienia od umowy i reklamacje', 'Do zakończenia sprawy, następnie przez okres niezbędny do udokumentowania jej obsługi lub roszczeń. Zwykłą korespondencję przechowujemy do 2 lat od zakończenia sprawy. Odstąpienia, reklamacje i sprawy sporne przechowujemy w zakresie opisanym w wierszu dotyczącym roszczeń.'],
         ['Dokumentacja podatkowa i sprzedażowa', 'Przez okres wymagany prawem, co do zasady do upływu 5 lat od końca roku, w którym upłynął termin płatności właściwego podatku; przepisy mogą wymagać dłuższego okresu, np. wskutek zawieszenia biegu przedawnienia. Nie dotyczy to automatycznie wszystkich prac ucznia.'],
         ['Dokumenty potrzebne do roszczeń', 'Do upływu właściwego terminu przedawnienia — zasadniczo 3 lata dla roszczeń związanych z działalnością lub świadczeń okresowych, a w pozostałych przypadkach 6 lat, z ustawowymi regułami liczenia i wyjątkami. Jeżeli trwa postępowanie, do jego prawomocnego zakończenia i wykonania.'],
         ['Liczniki ochrony formularzy', 'Starsze niż 24 godziny wpisy skrótów IP są usuwane przy następnym uruchomieniu mechanizmu limitowania. Nie jest to gwarancja automatycznego usunięcia dokładnie po 24 godzinach ani retencja logów hostingu.'],

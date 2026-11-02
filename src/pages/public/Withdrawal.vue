@@ -146,7 +146,7 @@ async function submit() {
       </div>
     </template>
 
-    <p class="small muted legal-note">Szczegóły znajdziesz w <RouterLink :to="`${ROUTES.terms}#odstapienie`" class="link">regulaminie</RouterLink>. Oświadczenie możesz też wysłać e-mailem albo pocztą.</p>
+    <p class="small muted legal-note">Szczegóły znajdziesz w <RouterLink :to="`${ROUTES.terms}#odstapienie`" class="link">regulaminie</RouterLink>. Oświadczenie możesz też wysłać e-mailem albo przez formularz kontaktowy.</p>
   </div>
 </template>
 

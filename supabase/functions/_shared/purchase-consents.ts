@@ -1,5 +1,5 @@
 // Checkout consent is a request to start an ongoing service, never a withdrawal-right waiver.
-export const PURCHASE_CONSENT_VERSION = '2026-10-30';
+export const PURCHASE_CONSENT_VERSION = '2026-11-02';
 export const EARLY_START_LABEL = 'Żądam rozpoczęcia świadczenia Premium od razu, przed upływem 14 dni. Zachowuję prawo do odstąpienia; przy jego wykonaniu usługa już spełniona może być rozliczona proporcjonalnie na zasadach opisanych w regulaminie.';
 
 export function validPurchaseConsents(consents: unknown, termsVersion: unknown): boolean {

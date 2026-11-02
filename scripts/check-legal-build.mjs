@@ -3,8 +3,14 @@
 import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { missingOperatorDetails } from '../src/config/legal.js'
+import { STRIPE_PUBLISHABLE_KEY } from '../src/config/site.ts'
 import { legalDocuments } from '../src/content/legal/documents.js'
 import { documentDownloadPath } from '../src/content/legal/render.js'
+
+// Real payments need the seller's details in the terms: stop a live deploy that lacks them.
+const missing = missingOperatorDetails()
+assert(!STRIPE_PUBLISHABLE_KEY?.startsWith('pk_live_') || missing.length === 0, `Fill in LEGAL_OPERATOR before selling for real, missing: ${missing.join(', ')}`)
 
 const root = join(import.meta.dirname, '..')
 const dist = join(root, 'dist')

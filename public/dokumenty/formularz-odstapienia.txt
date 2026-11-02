@@ -1,10 +1,9 @@
 FORMULARZ ODSTĄPIENIA OD UMOWY
 Formularz jest dobrowolny. Wypełnij go i wyślij tylko wtedy, gdy chcesz odstąpić od umowy.
 
-Adresat: [IMIĘ I NAZWISKO USŁUGODAWCY], Ogarnij Maturę
-Adres: [PEŁNY ADRES USŁUGODAWCY I ADRES DO REKLAMACJI]
+Adresat: Ogarnij Maturę
 E-mail: ogarnijmature@o2.pl
-Do czasu uzupełnienia adresu e-mail możesz użyć formularza /kontakt.
+Możesz też użyć formularza /kontakt.
 
 Oświadczam, że odstępuję od umowy o świadczenie usługi Premium / Pakiet do matury w serwisie Ogarnij Maturę.
 Data zawarcia umowy:

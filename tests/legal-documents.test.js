@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { LEGAL_VERSION } from '../src/config/legal'
+import { LEGAL_VERSION, missingOperatorDetails } from '../src/config/legal'
 import { TERMS_VERSION } from '../src/config/site'
 import { legalDocuments, termsDocument, privacyDocument, withdrawalForm } from '../src/content/legal/documents'
 import { documentDownloadPath, escapeHtml, renderLegalArticle, renderLegalBlocks, standaloneLegalDocument } from '../src/content/legal/render'
@@ -55,5 +55,16 @@ describe('accessible and downloadable legal documents', () => {
     expect(renderLegalArticle(termsDocument)).toContain('/kontakt?sprawa=reklamacja')
     expect(renderLegalArticle(privacyDocument)).toContain('/kontakt?sprawa=dane')
     expect(withdrawalForm).toContain('nie jest obowiązkowy')
+  })
+  it('publishes no unfinished [BRACKET] placeholders or empty operator fields', () => {
+    const texts = [withdrawalForm, ...legalDocuments.map(renderLegalArticle)]
+    for (const text of texts) {
+      expect(text).not.toMatch(/\[[A-ZĄĆĘŁŃÓŚŹŻ][A-ZĄĆĘŁŃÓŚŹŻ ]{3,}/)
+      expect(text).not.toMatch(/\bnull\b|\bundefined\b/)
+    }
+  })
+  it('knows which seller details are still needed before real sales', () => {
+    expect(missingOperatorDetails({ fullName: null, address: '', phone: '500' })).toEqual(['fullName', 'address'])
+    expect(missingOperatorDetails({ fullName: 'A', address: 'B', phone: 'C' })).toEqual([])
   })
 })
