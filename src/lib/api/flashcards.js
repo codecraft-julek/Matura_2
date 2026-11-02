@@ -39,12 +39,6 @@ export const DECK_SOURCE = {
 /** Decks made by AI get the 👍/👎 rating. */
 export const isAiDeck = deck => !['manual', 'import'].includes(deck.source_kind)
 
-/**
- * "Trudna" fiszka: forgotten at least once ("Nie wiem") or marked hard often enough that its ease
- * dropped below the starting 2.5 by more than one "Trudne".
- */
-export const isHardCard = c => c.lapses > 0 || Number(c.ease) < 2.35
-
 async function userId() {
   const { data } = await supabase.auth.getSession()
   return data.session?.user.id ?? null

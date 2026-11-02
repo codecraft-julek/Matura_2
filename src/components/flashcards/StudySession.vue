@@ -1,7 +1,8 @@
 <script setup>
 // One SRS study session (SM-2 light, src/lib/flashcards/srs.ts). Space / Enter flips the card,
-// 1–4 answers. Every answer is saved in the background (a toast tells when that fails), so the next
-// card shows at once. A card answered "Nie wiem" comes back 4 cards later in the same session.
+// 1 or 2 answers. Every answer is saved in the background (a toast tells when that fails), so the next
+// card shows at once. A card answered "Nie umiem" comes back 4 cards later in the same session, so a
+// card can be answered many times: the numbers on screen count cards, not answers.
 // The parent re-creates this component (key) for a new session, e.g. "Powtórz całą talię".
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -9,7 +10,7 @@ import { Keyboard, PartyPopper, RotateCw, Volume2 } from '@lucide/vue'
 import FlipCard from './FlipCard.vue'
 import { deckRoute, studyRoute } from '@/config/routes'
 import { saveReview } from '@/lib/api/flashcards'
-import { formatInterval, nextReview } from '@/lib/flashcards/srs'
+import { nextReview } from '@/lib/flashcards/srs'
 import { count, plural } from '@/lib/format'
 import { useUiStore } from '@/stores/ui'
 
@@ -21,11 +22,9 @@ const props = defineProps({
   all: { type: Boolean, default: false },
 })
 
-const GRADES = [
-  { grade: 0, label: 'Nie wiem', key: '1', tone: 'g-again' },
-  { grade: 1, label: 'Trudne', key: '2', tone: 'g-hard' },
-  { grade: 2, label: 'Dobrze', key: '3', tone: 'g-good' },
-  { grade: 3, label: 'Łatwe', key: '4', tone: 'g-easy' },
+const ANSWERS = [
+  { knew: false, label: 'Nie umiem', key: '1', tone: 'g-again' },
+  { knew: true, label: 'Umiem', key: '2', tone: 'g-good' },
 ]
 const CARDS = ['fiszka', 'fiszki', 'fiszek']
 /** A forgotten card comes back a few cards later in the same session. */
@@ -35,19 +34,22 @@ const ui = useUiStore()
 const queue = ref([...props.cards])
 const index = ref(0)
 const flipped = ref(false)
-const counts = ref([0, 0, 0, 0])
 const failed = ref(false)
 const announce = ref('')
 const flipCard = ref(null)
 // The newest SRS state of every card answered in this session (the database gets the same values).
 const latest = new Map()
+// Per card: the first answer in this session, and the newest one.
+const firstAnswers = ref(new Map())
+const lastAnswers = ref(new Map())
 let lastFailToast = 0
 
 const card = computed(() => queue.value[index.value])
 const finished = computed(() => index.value >= queue.value.length)
-const reviewed = computed(() => new Set(queue.value.slice(0, index.value).map(c => c.id)).size)
+const reviewed = computed(() => firstAnswers.value.size)
+const firstTry = computed(() => [...firstAnswers.value.values()].filter(Boolean).length)
+const knownNow = computed(() => [...lastAnswers.value.values()].filter(Boolean).length)
 const srsState = c => latest.get(c.id) ?? { interval_days: c.interval_days, ease: c.ease, reps: c.reps, lapses: c.lapses }
-const previews = computed(() => (card.value ? GRADES.map(g => formatInterval(nextReview(srsState(card.value), g.grade))) : []))
 // Pronunciation for English cards, where the browser can speak.
 const canSpeak = props.subject === 'english' && typeof window !== 'undefined' && 'speechSynthesis' in window
 
@@ -70,15 +72,16 @@ function showAnswer() {
   nextTick(() => flipCard.value?.focus())
 }
 
-function grade(g) {
+function answer(knew) {
   const c = card.value
   if (!c || !flipped.value) return
-  const next = nextReview(srsState(c), g)
+  const next = nextReview(srsState(c), knew)
   latest.set(c.id, { interval_days: next.interval_days, ease: next.ease, reps: next.reps, lapses: next.lapses })
   // Save in the background so the next card shows at once.
   saveReview(c.id, next).then(r => { if (!r.ok) onFail() }, onFail)
-  counts.value = counts.value.map((n, i) => (i === g ? n + 1 : n))
-  if (g === 0) {
+  if (!firstAnswers.value.has(c.id)) firstAnswers.value = new Map(firstAnswers.value).set(c.id, knew)
+  lastAnswers.value = new Map(lastAnswers.value).set(c.id, knew)
+  if (!knew) {
     const copy = [...queue.value]
     copy.splice(Math.min(index.value + 1 + RELEARN_GAP, copy.length), 0, c)
     queue.value = copy
@@ -86,7 +89,7 @@ function grade(g) {
   flipped.value = false
   index.value += 1
   if (card.value) {
-    announce.value = `Fiszka ${index.value + 1} z ${queue.value.length}. Pytanie: ${card.value.front}`
+    announce.value = `Umiesz ${knownNow.value} z ${props.cards.length}. Pytanie: ${card.value.front}`
     nextTick(() => flipCard.value?.focus())
   } else {
     announce.value = 'Koniec sesji.'
@@ -100,7 +103,7 @@ function speak(text) {
   window.speechSynthesis.speak(u)
 }
 
-// Keyboard: Space / Enter flips, 1–4 answers. Other buttons and links keep their own Enter/Space.
+// Keyboard: Space / Enter flips, 1 or 2 answers. Other buttons and links keep their own Enter/Space.
 function onKey(e) {
   if (finished.value || e.ctrlKey || e.metaKey || e.altKey) return
   const target = e.target instanceof Element ? e.target : null
@@ -111,9 +114,9 @@ function onKey(e) {
     if (onOtherControl) return
     e.preventDefault()
     if (!e.repeat) flip()
-  } else if (flipped.value && ['1', '2', '3', '4'].includes(e.key) && !e.repeat) {
+  } else if (flipped.value && ['1', '2'].includes(e.key) && !e.repeat) {
     e.preventDefault()
-    grade(Number(e.key) - 1)
+    answer(e.key === '2')
   }
 }
 onMounted(() => window.addEventListener('keydown', onKey))
@@ -143,9 +146,10 @@ onBeforeUnmount(() => {
     <h1 class="end-title">Brawo, koniec sesji!</h1>
     <p class="end-count">{{ count(reviewed, CARDS) }} {{ plural(reviewed, ['powtórzona', 'powtórzone', 'powtórzonych']) }}</p>
     <ul class="end-grades">
-      <li v-for="g in GRADES" :key="g.grade" :class="g.tone"><strong class="tabular">{{ counts[g.grade] }}</strong>{{ g.label }}</li>
+      <li class="g-good"><strong class="tabular">{{ firstTry }}</strong>Umiem</li>
+      <li class="g-again"><strong class="tabular">{{ reviewed - firstTry }}</strong>Nie umiem</li>
     </ul>
-    <p v-if="counts[0] > 0" class="muted small">Fiszki z „Nie wiem” wrócą do Ciebie szybciej, aż je zapamiętasz.</p>
+    <p class="muted small">Liczymy pierwszą odpowiedź na każdą fiszkę. <template v-if="reviewed > firstTry">Fiszki z „Nie umiem” wrócą do Ciebie szybciej, aż je zapamiętasz.</template></p>
     <p v-if="failed" class="field-error" role="alert">Części odpowiedzi nie udało się zapisać (internet?).</p>
     <div class="end-actions">
       <RouterLink :to="deckRoute(deckId)" class="button button-dark">Wróć do talii</RouterLink>
@@ -158,9 +162,9 @@ onBeforeUnmount(() => {
     <h1 class="sr-only">Nauka: {{ title }}</h1>
     <div class="session-top">
       <span class="deck-name">{{ title }}</span>
-      <span class="tabular muted">{{ Math.min(index + 1, queue.length) }} / {{ queue.length }}</span>
+      <span class="tabular muted">Umiesz: {{ knownNow }} z {{ cards.length }}</span>
     </div>
-    <div class="progress is-lime" aria-hidden="true"><span :style="{ width: `${(index / queue.length) * 100}%` }"></span></div>
+    <div class="progress is-lime" aria-hidden="true"><span :style="{ width: `${(knownNow / cards.length) * 100}%` }"></span></div>
 
     <!-- key: every card is a new element, so it never "flips back" showing the next answer -->
     <FlipCard
@@ -173,17 +177,17 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="answer">
-      <div v-if="flipped" class="grades" role="group" aria-label="Jak Ci poszło?">
-        <button v-for="(g, i) in GRADES" :key="g.grade" type="button" class="grade" :class="g.tone" @click="grade(g.grade)">
-          <span class="grade-label">{{ g.label }}</span>
-          <span class="grade-sub">{{ previews[i] }}<kbd class="kbd" :aria-label="`skrót: ${g.key}`">{{ g.key }}</kbd></span>
+      <div v-if="flipped" class="grades" role="group" aria-label="Czy umiesz tę fiszkę?">
+        <button v-for="a in ANSWERS" :key="a.key" type="button" class="grade" :class="a.tone" @click="answer(a.knew)">
+          <span class="grade-label">{{ a.label }}</span>
+          <kbd class="kbd" :aria-label="`skrót: ${a.key}`">{{ a.key }}</kbd>
         </button>
       </div>
       <button v-else type="button" class="button button-dark button-large show" @click="showAnswer">
         Pokaż odpowiedź <kbd class="kbd kbd-dark" aria-label="skrót: spacja">Spacja</kbd>
       </button>
     </div>
-    <p class="shortcuts muted"><Keyboard :size="15" aria-hidden="true" /> Skróty: <kbd class="kbd">Spacja</kbd> odwraca fiszkę, <kbd class="kbd">1</kbd>–<kbd class="kbd">4</kbd> to odpowiedzi.</p>
+    <p class="shortcuts muted"><Keyboard :size="15" aria-hidden="true" /> Skróty: <kbd class="kbd">Spacja</kbd> odwraca fiszkę, <kbd class="kbd">1</kbd> nie umiem, <kbd class="kbd">2</kbd> umiem.</p>
   </div>
 </template>
 
@@ -196,36 +200,29 @@ onBeforeUnmount(() => {
 .speak { display: flex; justify-content: center; margin-top: 12px; }
 .answer { margin-top: 20px; }
 .show { width: 100%; gap: 12px; }
-.grades { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.grade { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px; border-radius: var(--radius); border: 1px solid; font-family: var(--heading); transition: transform .15s, background .15s; }
+.grades { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.grade { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 56px; padding: 12px 8px; border-radius: var(--radius); border: 1px solid; font-family: var(--heading); transition: transform .15s, background .15s; }
 .grade:hover { transform: translateY(-2px); }
-.grade-label { font-weight: 800; font-size: 15px; }
-.grade-sub { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans Variable', sans-serif; font-size: 12.5px; opacity: .9; }
+.grade-label { font-weight: 800; font-size: 15px; white-space: nowrap; }
 .g-again { background: var(--error); border-color: var(--error); color: white; }
 .g-again:hover { background: #8c4430; }
-.g-hard { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn); }
-.g-hard:hover { background: #f1e9d6; }
 .g-good { background: var(--ok); border-color: var(--ok); color: white; }
 .g-good:hover { background: #3f672b; }
-.g-easy { background: var(--green); border-color: var(--green); color: white; }
-.g-easy:hover { background: #2c5142; }
 .kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 5px; border: 1px solid currentColor; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 600; line-height: 1; opacity: .8; }
 .kbd-dark { border-color: #ffffff80; color: white; }
 .shortcuts { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 18px; font-size: 13px; }
 .shortcuts .kbd { color: var(--text); }
 /* Touch screens have no keyboard: hide the shortcut hints. */
 @media (hover: none) and (pointer: coarse) { .kbd, .shortcuts { display: none; } }
-@media (max-width: 560px) { .grades { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 .end { text-align: center; padding: 34px 24px; }
 .end-icon { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 16px; background: var(--lime); color: var(--green); margin-bottom: 14px; }
 .end-title { font-size: clamp(26px, 4vw, 32px); letter-spacing: -1px; line-height: 1.2; }
 .end-count { margin-top: 8px; font-family: var(--heading); font-size: 19px; font-weight: 750; }
 .end .muted { margin-top: 8px; line-height: 1.6; }
-.end-grades { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; max-width: 420px; margin: 18px auto 0; padding: 0; list-style: none; }
+.end-grades { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-width: 280px; margin: 18px auto 0; padding: 0; list-style: none; }
 .end-grades li { display: flex; flex-direction: column; gap: 2px; padding: 10px 6px; border-radius: var(--radius); font-size: 13px; border: 1px solid; }
 .end-grades strong { font-family: var(--heading); font-size: 22px; }
 .end .field-error { margin-top: 10px; }
 .end-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; }
-@media (max-width: 420px) { .end-grades { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>

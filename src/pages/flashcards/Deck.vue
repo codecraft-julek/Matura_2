@@ -10,7 +10,8 @@ import CardRow from '@/components/flashcards/CardRow.vue'
 import { useAsync } from '@/composables/useAsync'
 import { usePageTitle } from '@/composables/usePageTitle'
 import { ROUTES, studyRoute } from '@/config/routes'
-import { DECK_SOURCE, cardsToTsv, deleteCard, deleteDeck, getDeck, isAiDeck, isHardCard, renameDeck } from '@/lib/api/flashcards'
+import { DECK_SOURCE, cardsToTsv, deleteCard, deleteDeck, getDeck, isAiDeck, renameDeck } from '@/lib/api/flashcards'
+import { isHardCard, isLearnedCard } from '@/lib/flashcards/srs'
 import { myRating } from '@/lib/api/ratings'
 import { count } from '@/lib/format'
 import NotFound from '@/pages/NotFound.vue'
@@ -42,7 +43,7 @@ usePageTitle(() => deck.value?.title)
 
 const nowIso = ref(new Date().toISOString())
 const due = computed(() => cards.value.filter(c => c.due_at <= nowIso.value).length)
-const learned = computed(() => cards.value.filter(c => c.reps >= 2).length)
+const learned = computed(() => cards.value.filter(isLearnedCard).length)
 const hardCount = computed(() => cards.value.filter(isHardCard).length)
 
 // ─── Filter "tylko trudne" ───
@@ -160,7 +161,7 @@ async function removeDeck() {
           <button type="button" class="button button-ghost button-sm" @click="exportText"><Download :size="16" /> Eksportuj do Quizlet / Anki</button>
         </div>
       </div>
-      <p v-if="onlyHard" class="field-hint" style="margin-bottom: 10px">Trudne to fiszki, przy których było już „Nie wiem” albo kilka razy „Trudne”.</p>
+      <p v-if="onlyHard" class="field-hint" style="margin-bottom: 10px">Trudne to fiszki z „Nie umiem”, dopóki nie odpowiesz na nie „Umiem” dwa razy z rzędu.</p>
 
       <p v-if="!cards.length" class="card card-tinted empty">Ta talia jest pusta. Dodaj pierwszą fiszkę wyżej.</p>
       <ol v-else class="card-list">

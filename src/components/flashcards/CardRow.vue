@@ -4,7 +4,8 @@
 import { nextTick, ref } from 'vue'
 import { Pencil, Trash2 } from '@lucide/vue'
 import { FLASHCARD_LIMITS } from '@shared/flashcards'
-import { isHardCard, updateCard } from '@/lib/api/flashcards'
+import { updateCard } from '@/lib/api/flashcards'
+import { isHardCard } from '@/lib/flashcards/srs'
 
 const props = defineProps({ card: { type: Object, required: true }, index: { type: Number, required: true } })
 const emit = defineEmits(['saved', 'remove'])
