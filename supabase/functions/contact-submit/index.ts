@@ -1,7 +1,8 @@
 // Supabase Edge Function: POST /functions/v1/contact-submit   body: { name?, email, topic, message, captchaToken?, website? }
 //
 // Contact form (/kontakt). Order: cheap checks first (size, honeypot, validation), then the CAPTCHA
-// and rate limit, then the database. Then e-mails you each message via FormSubmit, in the background.
+// and rate limit, then the database. The page e-mails you the message itself after this says OK: Web3Forms
+// only takes requests from browsers on its free plan.
 //
 // Secrets (Supabase Dashboard → Edge Functions → Secrets):
 //   RATE_LIMIT_SALT        already set (shared with the waitlist): IPs are stored only as salted hashes
@@ -9,15 +10,10 @@
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
-import { contactSchema, topicLabel, type ContactResponse } from "../_shared/contact.ts";
+import { contactSchema, type ContactResponse } from "../_shared/contact.ts";
 
 const MAX_BODY_BYTES = 12_000;
 const RATE_LIMIT = { limit: 3, windowSeconds: 3600 }; // 3 messages per hour per IP
-const SITE_URL = "https://www.ogarnijmature.com";
-const NOTIFY_EMAIL = "ogarnijmature@o2.pl"; // the public contact address (SITE.contactEmail); FormSubmit activates it once by e-mail
-const NOTIFY_TIMEOUT_MS = 120_000; // FormSubmit can take over a minute to answer
-
-declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -91,8 +87,6 @@ async function handle(request: Request) {
     return json({ ok: false, error: GENERIC_ERROR }, 500);
   }
 
-  // In the background, so a slow FormSubmit never holds up the student. The message is saved either way.
-  EdgeRuntime.waitUntil(notify(d).catch((err) => console.error("contact notify failed:", err)));
   return json({ ok: true });
 }
 
@@ -135,25 +129,4 @@ async function isUnderRateLimit(ip: string): Promise<boolean> {
     return true; // fail open: better one extra message than blocking a real student
   }
   return data === true;
-}
-
-/** E-mail to you via FormSubmit. Reply goes straight to the student. It refuses requests with no site address. */
-async function notify(d: { name?: string; email: string; topic: string; message: string }) {
-  const res = await fetch(`https://formsubmit.co/ajax/${NOTIFY_EMAIL}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json", Origin: SITE_URL, Referer: `${SITE_URL}/kontakt` },
-    signal: AbortSignal.timeout(NOTIFY_TIMEOUT_MS),
-    body: JSON.stringify({
-      _subject: `[Kontakt] ${topicLabel(d.topic)}`,
-      _template: "box",
-      _captcha: "false", // the form has its own honeypot and rate limit
-      _replyto: d.email,
-      "Imię": d.name || "(bez imienia)",
-      email: d.email,
-      Temat: topicLabel(d.topic),
-      "Wiadomość": d.message,
-    }),
-  });
-  const answer = await res.json().catch(() => null); // refusals also come back as HTTP 200
-  if (String(answer?.success) !== "true") throw new Error(`FormSubmit ${res.status}: ${String(answer?.message).slice(0, 200)}`);
 }

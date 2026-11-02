@@ -1,13 +1,14 @@
 <script setup>
 // Contact form. Talks straight to the Edge Function `contact-submit` (validation, honeypot, rate
 // limit and CAPTCHA are checked there too). When logged in, the request carries the student's token,
-// so the message is linked to the account and we can help faster.
+// so the message is linked to the account and we can help faster. Once it's saved, the page e-mails
+// it to us through Web3Forms, which only accepts browser requests on its free plan.
 import { reactive, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { CircleAlert, LoaderCircle, Send } from '@lucide/vue'
-import { CONTACT_TOPICS, contactSchema } from '@shared/contact'
+import { CONTACT_TOPICS, contactSchema, topicLabel } from '@shared/contact'
 import { ROUTES } from '@/config/routes'
-import { SITE } from '@/config/site'
+import { SITE, WEB3FORMS_ACCESS_KEY } from '@/config/site'
 import { callEdge } from '@/lib/edge'
 import { useAuthStore } from '@/stores/auth'
 import AppField from '@/ui/AppField.vue'
@@ -42,6 +43,26 @@ function validateField(field) {
   errors.value = { ...errors.value, [field]: issue?.message ?? '' }
 }
 
+/** The message is already saved, so a failed e-mail never stops the student. keepalive: we leave the page right after. */
+function notifyByEmail(d) {
+  if (d.website) return // the honeypot: nothing was saved, so nothing to tell us about
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    keepalive: true,
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: `[Kontakt] ${topicLabel(d.topic)}`,
+      from_name: SITE.name,
+      replyto: d.email,
+      'Imię': d.name || '(bez imienia)',
+      'E-mail': d.email,
+      Temat: topicLabel(d.topic),
+      'Wiadomość': d.message,
+    }),
+  }).catch(err => console.error('Contact e-mail failed:', err))
+}
+
 async function submit() {
   const payload = { ...form }
   const parsed = contactSchema.safeParse(payload)
@@ -64,6 +85,7 @@ async function submit() {
   pending.value = false
   captchaReset.value++ // a token works once
   if (res.ok) {
+    notifyByEmail(payload)
     router.push(ROUTES.contactThanks)
     return
   }

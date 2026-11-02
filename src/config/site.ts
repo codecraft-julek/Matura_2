@@ -50,6 +50,12 @@ export const CAPTCHA_SITE_KEY: string | null = "1x00000000000000000000AA";
  */
 export const STRIPE_PUBLISHABLE_KEY: string | null = "pk_test_51UUB3rJbUGccn9lDF3iWX4bKbSdXu4y19vLjauyzpcCJPFqXy8Nm27wl7XTDdiRLGUeabDKIrO3geNfu4PD4tjjU00GYoo88Lj";
 
+/**
+ * Web3Forms access key: e-mails each contact form message to the address it was created for.
+ * Public by design, it can only send to that address, and its free plan only accepts browser requests.
+ */
+export const WEB3FORMS_ACCESS_KEY = "8cb24cd2-9f8c-4c62-8336-cb728da1a523";
+
 export const SUPABASE = {
   url: "https://mwtqlqbzsxeakqrjyxwg.supabase.co",
   // The publishable key only allows what our RLS policies allow, so it's safe in the browser.
