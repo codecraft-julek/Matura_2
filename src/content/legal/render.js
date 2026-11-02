@@ -15,7 +15,7 @@ export function renderLegalBlocks(blocks) {
 
 export function renderLegalArticle(doc, { downloadable = true } = {}) {
   const e = escapeHtml
-  return `<article class="public-page legal-page"><p class="legal-draft" role="note">${e(doc.notice)}</p>
+  return `<article class="public-page legal-page">${doc.notice ? `<p class="legal-draft" role="note">${e(doc.notice)}</p>` : ''}
 <header><h1>${e(doc.title)}</h1><p>Aktualizacja: ${e(doc.updated)} · Wersja ${e(doc.version)}</p><p class="legal-lead">${e(doc.summary)}</p>${downloadable ? `<p><a href="${documentDownloadPath(doc)}" download>Pobierz dokument (HTML)</a></p>` : ''}</header>
 <nav class="legal-toc" aria-label="Spis treści"><strong>W tym dokumencie</strong><ol>${doc.sections.map(section => `<li><a href="#${e(section.id)}">${e(section.title)}</a></li>`).join('')}</ol></nav>
 <div class="prose">${doc.sections.map(section => `<section id="${e(section.id)}"><h2>${e(section.title)}</h2>${renderLegalBlocks(section.blocks)}</section>`).join('\n')}</div></article>`

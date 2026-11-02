@@ -8,7 +8,7 @@ const printDocument = () => window.print()
 
 <template>
   <article class="public-page legal-page">
-    <p class="legal-draft" role="note">{{ document.notice }}</p>
+    <p v-if="document.notice" class="legal-draft" role="note">{{ document.notice }}</p>
     <header>
       <h1>{{ document.title }}<span class="accent-dot">.</span></h1>
       <p>Aktualizacja: {{ document.updated }} · Wersja {{ document.version }}</p>

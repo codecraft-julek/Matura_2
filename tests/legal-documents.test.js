@@ -70,6 +70,11 @@ describe('accessible and downloadable legal documents', () => {
     }
     expect(withdrawalForm).toContain(LEGAL_OPERATOR.fullName)
   })
+  it('shows no empty testing notice once it is removed for real sales', () => {
+    const live = renderLegalArticle({ ...termsDocument, notice: null })
+    expect(live).not.toContain('legal-draft')
+    expect(live).not.toContain('null')
+  })
   it('still needs the address before real sales', () => {
     expect(missingOperatorDetails()).toEqual(['address'])
   })

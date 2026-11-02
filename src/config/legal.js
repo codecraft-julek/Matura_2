@@ -4,7 +4,7 @@
 export const LEGAL_OPERATOR = Object.freeze({
   brand: 'Ogarnij Maturę',
   status: 'działalność nierejestrowana',
-  fullName: 'Piotr Goraj',
+  fullName: 'Jan Goraj',
   address: null,
   email: 'ogarnijmature@o2.pl',
   phone: '+48 695 485 160',
