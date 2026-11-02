@@ -36,8 +36,13 @@ usePageTitle(() => (essay.value ? `${essay.value.topic || 'Wypowiedź pisemna'} 
 // Pending rows older than ~15 min are closed by the database (fail_stuck_ai_jobs), so stop by then.
 const POLL_MAX = 16 * 60 * 1000
 const justFinished = ref('')
-const pending = () => essay.value?.status === 'pending' && Date.now() - new Date(essay.value.created_at).getTime() < POLL_MAX
+// Vue doesn't track Date.now(): a reactive clock, moved on every poll, lets `stale` switch on when
+// polling gives up (otherwise the spinner would stay forever).
+const now = ref(Date.now())
+const pending = () => essay.value?.status === 'pending' && now.value - new Date(essay.value.created_at).getTime() < POLL_MAX
 usePolling(pending, async () => {
+  now.value = Date.now()
+  if (!pending()) return
   try {
     const fresh = await getEssayStatus(essay.value.id)
     if (!fresh || fresh.status === 'pending' || !data.value?.essay) return

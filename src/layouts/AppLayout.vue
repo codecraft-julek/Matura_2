@@ -2,18 +2,14 @@
 // Shell of the logged-in app: top navigation (desktop), bottom bar with "Więcej" (phones),
 // room for the docked tutor panel (--tutor-w, see styles/app.css).
 import { ref, watch } from 'vue'
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { CircleUser, FileText, Layers, LayoutDashboard, LogOut, MessageCircle, MoreHorizontal, NotebookPen, PenLine, Zap } from '@lucide/vue'
 import BrandLink from '@/ui/BrandLink.vue'
 import AppDialog from '@/ui/AppDialog.vue'
 import { ROUTES } from '@/config/routes'
-import { useAuthStore } from '@/stores/auth'
-import { useBillingStore } from '@/stores/billing'
+import { useSignOut } from '@/composables/useSignOut'
 
-const auth = useAuthStore()
-const billing = useBillingStore()
 const route = useRoute()
-const router = useRouter()
 const moreOpen = ref(false)
 
 const nav = [
@@ -29,11 +25,7 @@ const more = [nav[4], { to: ROUTES.premium, label: 'Premium', icon: Zap }, { to:
 
 watch(() => route.fullPath, () => { moreOpen.value = false })
 
-async function signOut() {
-  await auth.signOut()
-  billing.reset()
-  router.push(ROUTES.home)
-}
+const signOut = useSignOut()
 </script>
 
 <template>

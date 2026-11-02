@@ -12,10 +12,12 @@ import { LEVEL_LABEL, SECTION_LABEL, SUBJECT_LABEL } from '@/lib/exams/labels'
 import { count, formatDateTime } from '@/lib/format'
 import { formatClock, isAnswered, loadSaved, secondsLeft, sectionPoints, storageKey } from '@/components/exams/sheet'
 import NotFound from '@/pages/NotFound.vue'
+import { useAuthStore } from '@/stores/auth'
 import ErrorState from '@/ui/ErrorState.vue'
 import PageSkeleton from '@/ui/PageSkeleton.vue'
 
 const route = useRoute()
+const auth = useAuthStore()
 const examId = computed(() => String(route.params.examId))
 const { data, loading, error, reload } = useAsync(async () => {
   const [found, attempts] = await Promise.all([getExam(examId.value), listMyAttempts(examId.value)])
@@ -30,8 +32,8 @@ const sections = computed(() => (data.value?.tasks ? sectionPoints(data.value.ta
 const saved = computed(() => {
   if (!data.value?.tasks) return {}
   const answered = s => (s ? data.value.tasks.filter(t => isAnswered(t, s.answers[t.number])).length : 0)
-  const practice = loadSaved(storageKey(examId.value, 'practice'))
-  const timed = loadSaved(storageKey(examId.value, 'timed'))
+  const practice = loadSaved(storageKey(auth.user?.id, examId.value, 'practice'))
+  const timed = loadSaved(storageKey(auth.user?.id, examId.value, 'timed'))
   return {
     practice: answered(practice),
     timedLeft: timed?.startedAt ? secondsLeft(timed.startedAt, exam.value.duration_minutes) : null,

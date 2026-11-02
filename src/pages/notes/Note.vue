@@ -36,11 +36,17 @@ const n = computed(() => data.value?.note ?? null)
 const title = computed(() => n.value?.note?.title || n.value?.title || 'Notatka')
 usePageTitle(() => (n.value ? title.value : ''))
 
-const inProgress = computed(() => Boolean(n.value && isInProgress(n.value)))
+// Reactive clock (moved on every poll): an interrupted note stops showing the spinner by itself.
+const now = ref(Date.now())
+const inProgress = computed(() => Boolean(n.value && isInProgress(n.value, now.value)))
 usePolling(() => inProgress.value, async () => {
+  now.value = Date.now()
+  if (!inProgress.value) return
+  const id = n.value.id
   try {
-    const fresh = await getNote(n.value.id)
-    if (fresh) {
+    const fresh = await getNote(id)
+    // The student may have opened another note meanwhile: never show this answer there.
+    if (fresh && id === String(route.params.noteId)) {
       if (fresh.status !== 'pending') billing.refreshAllowances()
       data.value = { ...data.value, note: fresh }
     }
@@ -87,7 +93,7 @@ const print = () => window.print()
     </header>
 
     <template v-if="n.status === 'done' && n.note">
-      <NoteView :note="n.note" :note-id="n.id" />
+      <NoteView :key="n.id" :note="n.note" :note-id="n.id" />
       <div class="card card-purple rating-card no-print">
         <AiRating kind="note" :target-id="n.id" :initial="data.rating" question="Czy ta notatka jest dobra?" />
       </div>
@@ -101,7 +107,7 @@ const print = () => window.print()
     </div>
     <div v-else class="alert alert-error" role="alert">
       <CircleAlert :size="18" />
-      <span>{{ n.status === 'pending' && isInterrupted(n) ? 'Ta notatka została przerwana. Usuń ją i spróbuj ponownie.' : 'Tej notatki nie udało się zrobić. Usuń ją i spróbuj ponownie.' }}
+      <span>{{ n.status === 'pending' && isInterrupted(n, now) ? 'Ta notatka została przerwana. Usuń ją i spróbuj ponownie.' : 'Tej notatki nie udało się zrobić. Usuń ją i spróbuj ponownie.' }}
         <RouterLink :to="ROUTES.newNote" class="link">Nowa notatka</RouterLink></span>
     </div>
 

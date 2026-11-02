@@ -74,8 +74,9 @@ describe('results', () => {
 
 describe('saved progress', () => {
   it('keeps the old storage key', () => {
-    expect(storageKey('2025-maj-angielski-pp', 'timed')).toBe('om:sheet:exam:2025-maj-angielski-pp')
-    expect(storageKey('x', 'practice')).toBe('om:sheet:practice:x')
+    expect(storageKey('u1', '2025-maj-angielski-pp', 'timed')).toBe('om:sheet:u1:exam:2025-maj-angielski-pp')
+    expect(storageKey('u1', 'x', 'practice')).toBe('om:sheet:u1:practice:x')
+    expect(storageKey('u2', 'x', 'practice')).not.toBe(storageKey('u1', 'x', 'practice'))
     expect(attemptMode('timed')).toBe('exam')
   })
   it('reads old and new saved formats, drops junk', () => {

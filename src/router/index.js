@@ -93,7 +93,7 @@ router.beforeEach(async to => {
   if (!auth.isLoggedIn && isProtected(to.path)) {
     return { path: ROUTES.login, query: { next: to.fullPath } } // keeps e.g. ?plan=matura
   }
-  if (auth.isLoggedIn && isGuestOnly(to.path)) return ROUTES.dashboard
+  if (auth.isLoggedIn && isGuestOnly(to.path) && !auth.leaving) return ROUTES.dashboard
 
   if (auth.isLoggedIn && isProtected(to.path)) {
     let profile
@@ -108,7 +108,8 @@ router.beforeEach(async to => {
   return true
 })
 
-router.afterEach(to => {
+router.afterEach((to, from, failure) => {
+  if (failure) return // e.g. "Zostaję" in the timed exam's leave dialog: the page didn't change
   if (to.meta.title !== undefined) document.title = fullTitle(to.meta.title)
 })
 

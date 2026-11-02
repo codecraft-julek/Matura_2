@@ -14,10 +14,11 @@ import { useAsync } from '@/composables/useAsync'
 import { usePageTitle } from '@/composables/usePageTitle'
 import { checkTaskGroup, getExam, submitAttempt } from '@/lib/api/exams'
 import { SECTION_LABEL, pts } from '@/lib/exams/labels'
+import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import {
   attemptMode, formatClock, groupAnswers, groupCheck, groupLocation, groupPoints, groupTasks, isAnswered,
-  loadSaved, pageUrl, secondsLeft, storageKey, storeSaved,
+  loadSaved, pageUrl, parseSaved, secondsLeft, storageKey, storeSaved,
 } from '@/components/exams/sheet'
 import ExamPdfViewer from '@/components/exams/ExamPdfViewer.vue'
 import ListeningPlayer from '@/components/exams/ListeningPlayer.vue'
@@ -35,6 +36,7 @@ const modeLabel = computed(() => (timed.value ? 'Egzamin na czas' : 'Tryb ćwicz
 const route = useRoute()
 const router = useRouter()
 const ui = useUiStore()
+const auth = useAuthStore()
 const examId = computed(() => String(route.params.examId))
 const { data, loading, error, reload } = useAsync(async () => (await getExam(examId.value)) ?? { missing: true }, { watch: examId })
 const exam = computed(() => data.value?.exam ?? null)
@@ -43,7 +45,9 @@ const groups = computed(() => groupTasks(tasks.value))
 usePageTitle(() => exam.value && `${modeLabel.value} · ${exam.value.title}`)
 
 // ---------- Session (answers, flags, checks) ----------
-const key = computed(() => storageKey(examId.value, props.mode))
+// The student is fixed for this page: if another tab switches the account, answers stay theirs.
+const studentId = auth.user?.id
+const key = computed(() => storageKey(studentId, examId.value, props.mode))
 const answers = ref({})
 const startedAt = ref(null)
 const flags = ref([])
@@ -76,11 +80,37 @@ watch(data, () => {
   }
 })
 
+let adopting = false // taking over another tab's sheet: don't write it straight back
 function persist() {
-  if (!ready.value || submitted || !startedAt.value) return
+  if (!ready.value || submitted || !startedAt.value || adopting) return
   storageOk.value = storeSaved(key.value, { answers: answers.value, startedAt: startedAt.value, flags: flags.value, checked: checked.value, active: activeKey.value })
 }
 watch([answers, flags, checked, activeKey, startedAt], persist, { deep: true })
+
+// The same sheet open in another tab: every tab saves the whole sheet, so without this the tab
+// that saves last would wipe what was typed in the other one. Take over its answers instead
+// (each tab keeps its own current task), and leave when the other tab handed the sheet in.
+function onStorage(e) {
+  if (e.key !== key.value || !ready.value || submitted) return
+  if (e.newValue === null) {
+    if (!startedAt.value) return
+    submitted = true
+    clearInterval(ticker)
+    ui.toast('Ten arkusz został zakończony w innej karcie.', 'info')
+    router.replace(examRoutes.overview(examId.value))
+    return
+  }
+  const saved = parseSaved(e.newValue)
+  if (!saved) return
+  adopting = true
+  answers.value = saved.answers
+  flags.value = saved.flags
+  if (!timed.value) checked.value = saved.checked
+  if (saved.startedAt) startedAt.value = saved.startedAt
+  nextTick(() => { adopting = false })
+}
+onMounted(() => window.addEventListener('storage', onStorage))
+onBeforeUnmount(() => window.removeEventListener('storage', onStorage))
 
 function setAnswer(number, value) {
   answers.value = { ...answers.value, [number]: value }

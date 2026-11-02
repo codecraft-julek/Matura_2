@@ -24,19 +24,19 @@ export async function recentAttempts(limit = 3) {
  * → { decks: number, due: number, byDeck: [{ id, title, due }] } (decks with most due cards first)
  */
 export async function dueFlashcards(now = new Date()) {
-  const [{ data: decks, error, count }, { data: due, error: dueError }] = await Promise.all([
-    supabase.from('flashcard_decks').select('id, title', { count: 'exact' }).order('updated_at', { ascending: false }).limit(300),
-    supabase.from('flashcards').select('deck_id').lte('due_at', now.toISOString()).limit(1000),
-  ])
+  // Counted by the database (downloading due cards to count them stops at 1000 rows).
+  const { data: decks, error, count } = await supabase
+    .from('flashcard_decks')
+    .select('id, title, due:flashcards(count)', { count: 'exact' })
+    .lte('due.due_at', now.toISOString())
+    .order('updated_at', { ascending: false })
+    .limit(300)
   if (error) throw error
-  if (dueError) throw dueError
-  const dueBy = new Map()
-  for (const c of due ?? []) dueBy.set(c.deck_id, (dueBy.get(c.deck_id) ?? 0) + 1)
   const byDeck = (decks ?? [])
-    .map(d => ({ id: d.id, title: d.title, due: dueBy.get(d.id) ?? 0 }))
+    .map(d => ({ id: d.id, title: d.title, due: d.due?.[0]?.count ?? 0 }))
     .filter(d => d.due > 0)
     .sort((a, b) => b.due - a.due)
-  return { decks: count ?? decks?.length ?? 0, due: (due ?? []).length, byDeck }
+  return { decks: count ?? decks?.length ?? 0, due: byDeck.reduce((sum, d) => sum + d.due, 0), byDeck }
 }
 
 /** The newest note (or null). A note "pending" for over 5 minutes was interrupted. */

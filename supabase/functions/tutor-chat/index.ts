@@ -165,13 +165,24 @@ async function handle(request: Request) {
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
-        const send = (event: StreamEvent) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`));
-        const ping = setInterval(() => controller.enqueue(encoder.encode(": ping\n\n")), 5000);
+        // If the student closes the page (or the phone locks), sending fails, but the job keeps
+        // running and the result is saved; the page shows it when opened again.
+        let open = true;
+        const write = (chunk: string) => {
+          if (!open) return;
+          try {
+            controller.enqueue(encoder.encode(chunk));
+          } catch {
+            open = false;
+          }
+        };
+        const send = (event: StreamEvent) => write(`data: ${JSON.stringify(event)}\n\n`);
+        const ping = setInterval(() => write(": ping\n\n"), 5000);
         send({ type: "start", chatId: job.chatId });
         const result = await runJob(job, (text) => send({ type: "delta", text }));
         clearInterval(ping);
         send(result.ok ? { type: "done", chatId: job.chatId, messageId: result.messageId } : { type: "error", error: result.error });
-        controller.close();
+        if (open) controller.close();
       },
     });
     return new Response(stream, {

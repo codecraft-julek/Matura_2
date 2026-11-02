@@ -4,6 +4,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { supabase } from '@/lib/supabase'
+import { removeOtherStudentsData } from '@/lib/privacy/consent'
+import { useBillingStore } from '@/stores/billing'
 
 export const useAuthStore = defineStore('auth', () => {
   const session = ref(null)
@@ -12,6 +14,8 @@ export const useAuthStore = defineStore('auth', () => {
   const email = computed(() => user.value?.email ?? '')
   const isLoggedIn = computed(() => Boolean(user.value))
   const onboarded = computed(() => Boolean(profile.value?.onboarded_at))
+  /** True while logging out walks to the homepage (the guard lets a still-logged-in student through). */
+  const leaving = ref(false)
   let readyPromise = null
   let profilePromise = null
 
@@ -22,6 +26,11 @@ export const useAuthStore = defineStore('auth', () => {
         const changedUser = next?.user?.id !== session.value?.user?.id
         session.value = next
         if (!next || changedUser) { profile.value = null; profilePromise = null }
+        // Also when another tab switched the account: no plan or limits of the previous student.
+        if (changedUser) useBillingStore().reset()
+        if (next?.user) {
+          try { removeOtherStudentsData(window.localStorage, next.user.id) } catch { /* storage blocked */ }
+        }
         if (event === 'INITIAL_SESSION') resolve()
       })
     })
@@ -56,5 +65,5 @@ export const useAuthStore = defineStore('auth', () => {
     profilePromise = null
   }
 
-  return { session, profile, user, email, isLoggedIn, onboarded, ready, ensureProfile, patchProfile, signOut }
+  return { session, profile, user, email, isLoggedIn, onboarded, leaving, ready, ensureProfile, patchProfile, signOut }
 })

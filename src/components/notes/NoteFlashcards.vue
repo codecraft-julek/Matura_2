@@ -1,7 +1,7 @@
 <script setup>
 // Flashcards from the note: tap to flip, arrows to move (also ← → keys while the card has focus).
 // In print: a plain two-column list.
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { ArrowLeft, ArrowRight } from '@lucide/vue'
 import FlipCard from '@/components/flashcards/FlipCard.vue'
 
@@ -9,6 +9,8 @@ const props = defineProps({ cards: { type: Array, required: true } })
 const index = ref(0)
 const flipped = ref(false)
 const card = computed(() => props.cards[index.value])
+// Other cards (another note): start again from the first one.
+watch(() => props.cards, () => { index.value = 0; flipped.value = false })
 const flipCard = ref(null)
 
 function go(d) {

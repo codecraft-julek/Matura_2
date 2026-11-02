@@ -57,9 +57,15 @@ Deno.serve(async (request) => {
   try {
     await handle(event, secretKey);
   } catch (err) {
-    // A 500 makes Stripe retry later (for up to 3 days), so a hiccup doesn't lose a payment.
-    console.error(`billing-webhook ${event.type} ${event.id} failed:`, err);
-    return text("Failed, please retry", 500);
+    if (err instanceof StudentGone) {
+      // The account was deleted: retrying can't help. Logged so a still-running subscription is
+      // noticed (it should have been cancelled before deleting, see delete_my_account).
+      console.warn(`billing-webhook ${event.type} ${event.id}: ${err.message}`);
+    } else {
+      // A 500 makes Stripe retry later (for up to 3 days), so a hiccup doesn't lose a payment.
+      console.error(`billing-webhook ${event.type} ${event.id} failed:`, err);
+      return text("Failed, please retry", 500);
+    }
   }
   await admin.from("stripe_events").insert({ id: event.id, type: event.type });
   return text("ok");
@@ -132,10 +138,14 @@ async function grantPass(userId: string, customerId: string) {
   console.log(`Pakiet do matury on for ${userId}`);
 }
 
+/** The student behind a Stripe event no longer exists (account deleted). */
+class StudentGone extends Error {}
+
 async function upsert(userId: string, values: Record<string, unknown>) {
   const { error } = await admin
     .from("billing_accounts")
     .upsert({ user_id: userId, ...values, updated_at: new Date().toISOString() }, { onConflict: "user_id" });
+  if (error?.code === "23503") throw new StudentGone(`no account ${userId} (deleted)`); // foreign key: user is gone
   if (error) throw error;
 }
 
@@ -143,6 +153,6 @@ async function upsert(userId: string, values: Record<string, unknown>) {
 async function userIdFor(metadataUserId: string | undefined, customerId: unknown): Promise<string> {
   if (metadataUserId && /^[0-9a-f-]{36}$/i.test(metadataUserId)) return metadataUserId;
   const { data } = await admin.from("billing_accounts").select("user_id").eq("stripe_customer_id", String(customerId)).maybeSingle();
-  if (!data) throw new Error(`no student for Stripe customer ${customerId}`);
+  if (!data) throw new StudentGone(`no student for Stripe customer ${customerId}`);
   return data.user_id;
 }

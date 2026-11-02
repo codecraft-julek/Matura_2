@@ -205,7 +205,8 @@ const examName = a => (a.exam ? `${SUBJECT_LABEL[a.exam.subject] ?? a.exam.title
 .qa-text small { font-size: 12.5px; color: var(--text-soft); line-height: 1.4; }
 .qa-arrow { margin-left: auto; color: var(--text-soft); }
 
-.dash-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; }
+.dash-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; }
+.dash-grid > * { min-width: 0; }
 .card-head { margin-bottom: 14px; }
 .card-head .section-title { margin-bottom: 0; }
 .attempt-row { padding: 13px 15px; }
@@ -251,7 +252,7 @@ const examName = a => (a.exam ? `${SUBJECT_LABEL[a.exam.subject] ?? a.exam.title
 
 @media (max-width: 1000px) { .quick-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 760px) {
-  .dash-grid { grid-template-columns: 1fr; }
+  .dash-grid { grid-template-columns: minmax(0, 1fr); }
   .premium-banner { flex-wrap: wrap; }
   .premium-banner .button { width: 100%; }
 }

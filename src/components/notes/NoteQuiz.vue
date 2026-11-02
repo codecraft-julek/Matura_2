@@ -1,6 +1,6 @@
 <script setup>
 // A short single-choice quiz from the note. Answers are checked right away, with an explanation.
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Check, RotateCw, X } from '@lucide/vue'
 
 const props = defineProps({ questions: { type: Array, required: true } })
@@ -20,6 +20,7 @@ function state(i, j) {
   return j === choice ? 'is-wrong' : 'is-dim'
 }
 const reset = () => { picked.value = props.questions.map(() => null) }
+watch(() => props.questions, reset) // other questions (another note): no old answers
 </script>
 
 <template>

@@ -34,6 +34,20 @@ export function filterAnalyticsEvent(event, consent, origin, now = Date.now()) {
   } catch { return null }
 }
 
+// Drafts and saved exam sheets are stored per student: <prefix><userId>:… (useDraft, sheet.storageKey).
+const STUDENT_PREFIXES = ['ogarnij-mature:draft:', 'om:sheet:']
+
+/**
+ * When a student signs in, removes what another student (or the old unscoped format) left in this
+ * browser: on a shared computer their essays and answers must not stay readable. → removed count
+ */
+export function removeOtherStudentsData(storage, userId) {
+  const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index))
+  const foreign = keys.filter(key => key && STUDENT_PREFIXES.some(p => key.startsWith(p) && !key.startsWith(`${p}${userId}:`)))
+  for (const key of foreign) storage.removeItem(key)
+  return foreign.length
+}
+
 export function clearLocalStudyData(storage) {
   const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index))
   const owned = keys.filter(key => key && (key.startsWith('ogarnij-mature:draft:') || key.startsWith('om:sheet:') ||

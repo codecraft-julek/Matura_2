@@ -40,7 +40,8 @@ export async function callEdge(name, body = {}, { auth = true } = {}) {
 /**
  * Streamed call. `onEvent(event)` gets every parsed `data:` event (`: ping` keep-alives are skipped).
  * Resolves with the `done` event as `{ ok: true, ...event }`, the `error` event as `{ ok: false, error }`,
- * or `{ ok: false, error: interrupted }` when the stream ends without either.
+ * or `{ ok: false, error: interrupted, interrupted: true }` when the stream breaks off without either
+ * (the server job may still finish and save its result).
  */
 export async function streamEdge(name, body, { onEvent, interrupted, signal } = {}) {
   const h = await headers({ accept: 'text/event-stream' })
@@ -80,7 +81,7 @@ export async function streamEdge(name, body, { onEvent, interrupted, signal } = 
       }
     }
   } catch {
-    return { ok: false, error: NETWORK_ERROR }
+    return { ok: false, error: NETWORK_ERROR, interrupted: true }
   }
-  return { ok: false, error: interrupted ?? 'Połączenie zostało przerwane. Spróbuj ponownie.' }
+  return { ok: false, error: interrupted ?? 'Połączenie zostało przerwane. Spróbuj ponownie.', interrupted: true }
 }

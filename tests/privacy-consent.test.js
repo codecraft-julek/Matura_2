@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { clearLocalStudyData, CONSENT_TTL, createPrivacyChoice, filterAnalyticsEvent, parsePrivacyChoice, PRIVACY_KEY, readPrivacyChoice } from '../src/lib/privacy/consent'
+import { clearLocalStudyData, removeOtherStudentsData, CONSENT_TTL, createPrivacyChoice, filterAnalyticsEvent, parsePrivacyChoice, PRIVACY_KEY, readPrivacyChoice } from '../src/lib/privacy/consent'
 
 const now = Date.UTC(2026, 9, 30)
 const origin = 'https://matura-2.vercel.app'
@@ -49,5 +49,19 @@ describe('optional analytics consent', () => {
     const storage = { get length() { return values.size }, key: index => [...values.keys()][index], removeItem: key => values.delete(key) }
     expect(clearLocalStudyData(storage)).toBe(4)
     expect([...values.keys()]).toEqual(['sb-project-auth-token', PRIVACY_KEY, 'unrelated'])
+  })
+
+  it('on sign-in removes drafts and sheets of other students and the old unscoped format', () => {
+    const values = new Map([
+      ['ogarnij-mature:draft:student-b:essay-new', 'mine'], ['om:sheet:student-b:exam:2026', 'mine'],
+      ['ogarnij-mature:draft:student-a:essay-new', 'theirs'], ['om:sheet:student-a:exam:2026', 'theirs'],
+      ['ogarnij-mature:draft:essay-new', 'old'], ['om:sheet:exam:2026', 'old'],
+      ['ogarnij-mature:polski-2026:v1', 'demo'], ['sb-project-auth-token', 'session'],
+    ])
+    const storage = { get length() { return values.size }, key: index => [...values.keys()][index], removeItem: key => values.delete(key) }
+    expect(removeOtherStudentsData(storage, 'student-b')).toBe(4)
+    expect([...values.keys()]).toEqual([
+      'ogarnij-mature:draft:student-b:essay-new', 'om:sheet:student-b:exam:2026', 'ogarnij-mature:polski-2026:v1', 'sb-project-auth-token',
+    ])
   })
 })

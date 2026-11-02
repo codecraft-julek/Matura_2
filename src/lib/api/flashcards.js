@@ -53,22 +53,18 @@ async function userId() {
 
 /** Decks with their card count and how many cards are due now. */
 export async function listDecks() {
-  const nowIso = new Date().toISOString()
-  const [{ data: decks, error }, { data: due }] = await Promise.all([
-    supabase
-      .from('flashcard_decks')
-      .select('id, title, subject, source_kind, source_label, updated_at, flashcards(count)')
-      .order('updated_at', { ascending: false })
-      .limit(300),
-    supabase.from('flashcards').select('deck_id').lte('due_at', nowIso).limit(20000),
-  ])
+  // Counted by the database (downloading due cards to count them stops at 1000 rows).
+  const { data: decks, error } = await supabase
+    .from('flashcard_decks')
+    .select('id, title, subject, source_kind, source_label, updated_at, cards:flashcards(count), due:flashcards(count)')
+    .lte('due.due_at', new Date().toISOString())
+    .order('updated_at', { ascending: false })
+    .limit(300)
   if (error) throw error
-  const dueBy = new Map()
-  for (const c of due ?? []) dueBy.set(c.deck_id, (dueBy.get(c.deck_id) ?? 0) + 1)
-  return (decks ?? []).map(({ flashcards, ...d }) => ({
+  return (decks ?? []).map(({ cards, due, ...d }) => ({
     ...d,
-    cards: flashcards?.[0]?.count ?? 0,
-    due: dueBy.get(d.id) ?? 0,
+    cards: cards?.[0]?.count ?? 0,
+    due: due?.[0]?.count ?? 0,
   }))
 }
 

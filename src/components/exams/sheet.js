@@ -123,8 +123,11 @@ export function wordsRule(words) {
 
 // ---------- Saved progress (localStorage) ----------
 
-/** Same key as the old app, so a half-solved sheet survives the switch. */
-export const storageKey = (examId, mode) => `om:sheet:${attemptMode(mode)}:${examId}`
+/**
+ * Per student: on a shared browser, another student must never see (or auto-submit) these answers.
+ * Old unscoped keys (om:sheet:<mode>:<examId>) are removed on sign-in, see removeOtherStudentsData.
+ */
+export const storageKey = (userId, examId, mode) => `om:sheet:${userId}:${attemptMode(mode)}:${examId}`
 
 const MAX_ANSWER = 5000
 

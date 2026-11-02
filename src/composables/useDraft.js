@@ -1,10 +1,12 @@
 // Keeps a form draft in localStorage (essay, note, new deck), so a refresh never loses work.
 //   const draft = useDraft('essay-new', { topic: '', text: '' }); draft.value.text = '…'; draft.clear()
+// Drafts are stored per student, so on a shared browser nobody else ever sees them.
 
 import { ref, watch } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 export function useDraft(key, initial) {
-  const storageKey = `ogarnij-mature:draft:${key}`
+  const storageKey = `ogarnij-mature:draft:${useAuthStore().user?.id}:${key}`
   let saved = null
   try { saved = JSON.parse(window.localStorage.getItem(storageKey) ?? 'null') } catch {}
   const draft = ref(saved && typeof saved === 'object' ? { ...initial, ...saved } : { ...initial })

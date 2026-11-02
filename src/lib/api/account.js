@@ -70,40 +70,72 @@ export async function saveProfile(userId, values, { onboard = false } = {}) {
 
 export const EXPORT_FILENAME = 'ogarnij-mature-moje-dane.json'
 
+// The API returns at most 1000 rows per request (max_rows), so every list is read page by page.
+// The last order column is the primary key, so pages never skip or repeat a row.
+const EXPORT_PAGE = 1000
+async function selectAll(table, columns, order) {
+  const rows = []
+  for (let from = 0; ; from += EXPORT_PAGE) {
+    let query = supabase.from(table).select(columns)
+    for (const column of [...order, 'id']) query = query.order(column)
+    const { data, error } = await query.range(from, from + EXPORT_PAGE - 1)
+    if (error) throw error
+    rows.push(...data)
+    if (data.length < EXPORT_PAGE) return rows
+  }
+}
+
+// Up to 300 decks × 1000 cards: group once instead of filtering all cards for every deck.
+const groups = new WeakMap()
+function groupBy(rows, key) {
+  if (!groups.has(rows)) {
+    const map = new Map()
+    for (const row of rows) {
+      if (!map.has(row[key])) map.set(row[key], [])
+      map.get(row[key]).push(row)
+    }
+    groups.set(rows, map)
+  }
+  return groups.get(rows)
+}
+
 /**
- * Everything we store about the student, in one object (the same 9 queries as the old
- * /konto/eksport route). When new tables with user data are added, add them here too.
- * Throws when any query fails, so the student never gets a silently incomplete file.
+ * Everything we store about the student, in one object (the same tables as the old
+ * /konto/eksport route, plus the payment status). When new tables with user data are added,
+ * add them here too. Throws when any query fails, so the student never gets an incomplete file.
  */
 export async function buildDataExport() {
   const { data: auth, error: authError } = await supabase.auth.getUser()
   if (authError || !auth.user) throw authError ?? new Error('Not logged in')
   const user = auth.user
 
-  const results = await Promise.all([
+  const [single, billing, ...lists] = await Promise.all([
     supabase.from('profiles').select('*').eq('id', user.id).single(),
-    supabase.from('exam_attempts').select('*').order('submitted_at'),
-    supabase.from('essays').select('*').order('created_at'),
-    supabase.from('tutor_chats').select('*').order('created_at'),
-    supabase.from('tutor_messages').select('chat_id, role, content, created_at').order('id'),
-    supabase.from('notes').select('id, subject, source_kind, source_text, title, status, note, created_at').order('created_at'),
-    supabase.from('flashcard_decks').select('*').order('created_at'),
-    supabase.from('flashcards').select('deck_id, front, back, due_at, interval_days, ease, reps, lapses, last_reviewed_at, created_at').order('position'),
-    supabase.from('ai_ratings').select('target_kind, target_id, rating, comment, created_at, updated_at').order('created_at'),
+    supabase.from('billing_accounts').select('subscription_status, subscription_until, cancel_at_period_end, pass_until, updated_at').maybeSingle(),
+    selectAll('exam_attempts', '*', ['submitted_at']),
+    selectAll('essays', '*', ['created_at']),
+    selectAll('tutor_chats', '*', ['created_at']),
+    selectAll('tutor_messages', 'chat_id, role, content, created_at', []),
+    selectAll('notes', 'id, subject, source_kind, source_text, title, status, note, created_at', ['created_at']),
+    selectAll('flashcard_decks', '*', ['created_at']),
+    selectAll('flashcards', 'deck_id, front, back, due_at, interval_days, ease, reps, lapses, last_reviewed_at, created_at', ['deck_id', 'position']),
+    selectAll('ai_ratings', 'target_kind, target_id, rating, comment, created_at, updated_at', ['created_at']),
   ])
-  const failed = results.find(r => r.error)
-  if (failed) throw failed.error
-  const [profile, examAttempts, essays, chats, messages, notes, decks, cards, ratings] = results.map(r => r.data)
+  if (single.error) throw single.error
+  if (billing.error) throw billing.error
+  const profile = single.data
+  const [examAttempts, essays, chats, messages, notes, decks, cards, ratings] = lists
 
   return {
     exported_at: new Date().toISOString(),
     account: { id: user.id, email: user.email, created_at: user.created_at, last_sign_in_at: user.last_sign_in_at },
     profile,
+    billing: billing.data ?? null,
     exam_attempts: examAttempts ?? [],
     essays: essays ?? [],
-    tutor_chats: (chats ?? []).map(c => ({ ...c, messages: (messages ?? []).filter(m => m.chat_id === c.id) })),
+    tutor_chats: chats.map(c => ({ ...c, messages: groupBy(messages, 'chat_id').get(c.id) ?? [] })),
     notes: notes ?? [],
-    flashcard_decks: (decks ?? []).map(d => ({ ...d, cards: (cards ?? []).filter(c => c.deck_id === d.id) })),
+    flashcard_decks: decks.map(d => ({ ...d, cards: groupBy(cards, 'deck_id').get(d.id) ?? [] })),
     ai_ratings: ratings ?? [],
   }
 }
@@ -148,6 +180,7 @@ export const RENEWING_SUBSCRIPTION_ERROR =
 export async function deleteMyAccount() {
   try {
     const { error } = await supabase.rpc('delete_my_account')
+    if (error?.message?.includes('subscription still renews')) return { ok: false, error: RENEWING_SUBSCRIPTION_ERROR }
     if (error) {
       console.error('Account deletion failed:', error.code, error.message)
       return { ok: false, error: 'Nie udało się usunąć konta. Napisz do nas, a zrobimy to ręcznie.' }

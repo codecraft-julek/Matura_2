@@ -2,7 +2,7 @@
 // /konto: plan and payments, profile, password, data export (GDPR access), account deletion
 // (GDPR erasure) and signing out.
 import { computed, ref } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { Download, KeyRound, LoaderCircle, LogOut, Trash2, UserRound, Zap, FileJson } from '@lucide/vue'
 import ErrorState from '@/ui/ErrorState.vue'
 import BillingStatus from '@/components/premium/BillingStatus.vue'
@@ -11,6 +11,7 @@ import DeleteAccount from '@/components/account/DeleteAccount.vue'
 import FormMessage from '@/components/account/FormMessage.vue'
 import ProfileForm from '@/components/account/ProfileForm.vue'
 import { useAsync } from '@/composables/useAsync'
+import { useSignOut } from '@/composables/useSignOut'
 import { ROUTES } from '@/config/routes'
 import { EXPORT_FILENAME, downloadDataExport } from '@/lib/api/account'
 import { useAuthStore } from '@/stores/auth'
@@ -20,7 +21,6 @@ import { useUiStore } from '@/stores/ui'
 const auth = useAuthStore()
 const billingStore = useBillingStore()
 const ui = useUiStore()
-const router = useRouter()
 
 const profile = useAsync(() => auth.ensureProfile())
 const billing = useAsync(() => billingStore.loadBilling())
@@ -44,11 +44,10 @@ async function exportData() {
 
 // Sign out (all devices, like the old app)
 const signingOut = ref(false)
+const leaveAndSignOut = useSignOut()
 async function signOut() {
   signingOut.value = true
-  try { await auth.signOut() } catch { /* the local session is cleared anyway */ }
-  billingStore.reset()
-  router.push(ROUTES.home)
+  if (!(await leaveAndSignOut())) signingOut.value = false
 }
 </script>
 
