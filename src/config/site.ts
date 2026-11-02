@@ -34,13 +34,12 @@ export { LEGAL_VERSION as TERMS_VERSION } from './legal.js';
 /**
  * Cloudflare Turnstile (CAPTCHA) on signup, login and password reset: stops bots from making
  * hundreds of accounts to use up the free AI. The site key is public by design.
- *   "1x0000…AA" = Cloudflare's TEST key: the widget shows (with a "testing only" note) and always
- *                 passes. Used everywhere until you create your own key.
- *   null        = no widget at all.
- * Going live: replace it with your site key AND enable CAPTCHA protection (Turnstile + secret key)
- * in Supabase Dashboard → Authentication → Attack Protection. Do both together.
+ *   null = no widget at all.
+ * The matching secret key lives in Supabase Dashboard → Authentication → Attack Protection, and as
+ * the TURNSTILE_SECRET_KEY secret for the contact form. The widget only works on the hostnames
+ * listed for this key in Cloudflare.
  */
-export const CAPTCHA_SITE_KEY: string | null = "1x00000000000000000000AA";
+export const CAPTCHA_SITE_KEY: string | null = "0x4AAAAAAFwlycQEy94eTUSl";
 
 /**
  * Stripe publishable key (pk_test_… in the sandbox, pk_live_… for real payments). Public by design,
