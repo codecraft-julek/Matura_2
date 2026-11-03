@@ -16,7 +16,7 @@ const props = defineProps({
   headingTag: { type: String, default: 'h2' },
 })
 const until = computed(() => (props.billing.until ? formatDate(props.billing.until) : ''))
-const monthlyPrice = planById('monthly')?.price
+const monthlyPrice = planById('monthly')?.renewalPrice
 </script>
 
 <template>

@@ -13,7 +13,7 @@
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
-import { BILLING_PLANS, CURRENCY, MATURA_PASS_UNTIL, isBillingPlan, returnOrigin, stripe } from "../_shared/billing.ts";
+import { BILLING_PLANS, CURRENCY, MATURA_PASS_UNTIL, MONTHLY_INTRO_COUPON, isBillingPlan, returnOrigin, stripe } from "../_shared/billing.ts";
 import { validPurchaseConsents, purchaseConsentMetadata } from "../_shared/purchase-consents.ts";
 
 const corsHeaders = {
@@ -74,7 +74,7 @@ async function handle(request: Request) {
   // 4. Already Premium? Don't take money twice.
   const { data: account } = await admin
     .from("billing_accounts")
-    .select("stripe_customer_id, subscription_until, pass_until")
+    .select("stripe_customer_id, stripe_subscription_id, subscription_until, pass_until")
     .eq("user_id", user.id)
     .maybeSingle();
   const until = [account?.subscription_until, account?.pass_until].filter(Boolean).map((d) => new Date(d!).getTime());
@@ -128,7 +128,11 @@ async function handle(request: Request) {
       : { payment_intent_data: { metadata: { ...metadata, pass_until: MATURA_PASS_UNTIL } } }),
     // Codes only for the one-time Pakiet: a 100% code on the subscription still asks for a card
     // and starts charging from the second month, which testers don't expect.
-    allow_promotion_codes: plan.mode === "payment",
+    // Stripe refuses both fields together, so the subscription sends only its first-month discount,
+    // and only for a student who never had a subscription.
+    ...(plan.mode === "payment"
+      ? { allow_promotion_codes: true }
+      : account?.stripe_subscription_id ? {} : { discounts: [{ coupon: MONTHLY_INTRO_COUPON.id }] }),
     ...(embedded
       ? {
         ui_mode: "embedded_page",
@@ -144,14 +148,27 @@ async function handle(request: Request) {
       }),
   });
 
+  // First sale on this Stripe account: the coupon doesn't exist yet, so make it and try again.
+  const createSessionWithCoupon = async (customer: string) => {
+    try {
+      return await createSession(customer);
+    } catch (err) {
+      if (!/No such coupon/i.test(String(err))) throw err;
+      await stripe(secretKey, "POST", "coupons", MONTHLY_INTRO_COUPON).catch((e) => {
+        if (!/already exists/i.test(String(e))) throw e; // another student's checkout just made it
+      });
+      return await createSession(customer);
+    }
+  };
+
   let session: { id: string; url: string | null; client_secret: string | null };
   try {
-    session = await createSession(customerId);
+    session = await createSessionWithCoupon(customerId);
   } catch (err) {
     // The saved customer is gone (deleted in Stripe, or you switched from test to live keys): make a new one.
     if (!/No such customer/i.test(String(err))) throw err;
     customerId = await newCustomer();
-    session = await createSession(customerId);
+    session = await createSessionWithCoupon(customerId);
   }
   return embedded
     ? json({ ok: true, clientSecret: session.client_secret!, sessionId: session.id })

@@ -3,7 +3,8 @@
 // stops claiming a saving.
 import { PASS_UNTIL, PLANS } from '@/config/plans'
 
-const grosze = id => Math.round(parseFloat(PLANS.find(p => p.id === id).price.replace(',', '.')) * 100)
+const grosze = price => Math.round(parseFloat(price.replace(',', '.')) * 100)
+const planOf = id => PLANS.find(p => p.id === id)
 
 /** The same day k months later, or the month's last day when it is shorter. */
 function monthsLater(from, k) {
@@ -16,8 +17,9 @@ export function passSavings(now = new Date()) {
   let payments = 0
   while (monthsLater(now, payments) <= until) payments++
 
-  const monthly = grosze('monthly') * payments
-  const saved = monthly - grosze('matura')
+  const { price, renewalPrice } = planOf('monthly')
+  const monthly = grosze(price) + grosze(renewalPrice) * (payments - 1)
+  const saved = monthly - grosze(planOf('matura').price)
   if (saved <= 0) return null
   return { payments, percent: Math.floor((saved / monthly) * 100) }
 }

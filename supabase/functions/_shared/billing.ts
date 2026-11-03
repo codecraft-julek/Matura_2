@@ -7,7 +7,7 @@ export const BILLING_PLANS = {
   monthly: {
     name: "Ogarnij Maturę Premium",
     description: "Więcej narzędzi AI: sprawdzanie wypracowań, notatki, fiszki i tutor. Odnawia się co miesiąc.",
-    amount: 2499, // grosze: 24,99 zł
+    amount: 2999, // grosze: 29,99 zł; the first month is cheaper, see MONTHLY_INTRO_COUPON
     mode: "subscription",
   },
   matura: {
@@ -19,6 +19,9 @@ export const BILLING_PLANS = {
 } as const;
 export type BillingPlanId = keyof typeof BILLING_PLANS;
 export const CURRENCY = "pln";
+
+/** First month 24,99 zł: takes 5 zł off one invoice of a first subscription. billing-checkout creates it in Stripe when missing. */
+export const MONTHLY_INTRO_COUPON = { id: "pierwszy-miesiac", name: "Pierwszy miesiąc", amount_off: 500, currency: CURRENCY, duration: "once" } as const;
 
 /** "Pakiet do matury" works until the end of this day (Polish time). Update before selling for the next year. */
 export const MATURA_PASS_UNTIL = "2027-05-31T23:59:59+02:00";

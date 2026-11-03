@@ -23,6 +23,10 @@ const billingStore = useBillingStore()
 const { data: billing, loading, error: loadError, reload } = useAsync(() => billingStore.loadBilling(true))
 const plan = computed(() => planById(String(route.query.plan ?? '')) ?? PAID_PLANS[0])
 const monthly = computed(() => plan.value.id === 'monthly')
+// The same rule as billing-checkout: 24,99 zł only for a first subscription.
+const firstMonth = computed(() => !billing.value?.hadSubscription)
+const priceOf = p => (p.id === 'monthly' && !firstMonth.value ? p.renewalPrice : p.price)
+const priceSuffix = p => (p.id !== 'monthly' ? ' jednorazowo' : firstMonth.value ? ' za pierwszy miesiąc' : ' / miesiąc')
 const terms = ref(false)
 const age = ref(false)
 const earlyStart = ref(false)
@@ -127,7 +131,7 @@ onBeforeUnmount(closeEmbedded)
         <button type="button" class="back-button" @click="backToDetails"><ArrowLeft :size="15" /> Zmień plan</button>
         <div class="payment-title">
           <h2 id="payment-heading" ref="paymentHeading" tabindex="-1">Płatność</h2>
-          <p>{{ plan.name }} · <strong class="tabular">{{ plan.price }}</strong>{{ monthly ? ' / miesiąc' : ' jednorazowo' }}</p>
+          <p>{{ plan.name }} · <strong class="tabular">{{ priceOf(plan) }}</strong>{{ priceSuffix(plan) }}</p>
         </div>
         <p class="secure-note"><Lock :size="14" aria-hidden="true" /> Bezpieczny formularz Stripe</p>
       </div>
@@ -147,8 +151,8 @@ onBeforeUnmount(closeEmbedded)
             <label v-for="p in PAID_PLANS" :key="p.id" class="plan-option" :class="{ 'is-selected': plan.id === p.id }">
               <input type="radio" name="plan" :value="p.id" :checked="plan.id === p.id" @change="selectPlan(p.id)" />
               <span class="plan-label">{{ p.id === 'monthly' ? 'Co miesiąc' : 'Do matury' }}</span>
-              <span class="plan-price tabular">{{ p.price }}<small>{{ p.id === 'monthly' ? ' / miesiąc' : ' jednorazowo' }}</small></span>
-              <span class="plan-description">{{ p.id === 'monthly' ? 'Odnawia się co miesiąc.' : 'Dostęp do 31 maja 2027.' }}</span>
+              <span class="plan-price tabular">{{ priceOf(p) }}<small>{{ priceSuffix(p) }}</small></span>
+              <span class="plan-description">{{ p.id !== 'monthly' ? 'Dostęp do 31 maja 2027.' : firstMonth ? `Potem ${p.renewalPrice} co miesiąc.` : 'Odnawia się co miesiąc.' }}</span>
               <span class="plan-note">{{ p.id === 'monthly' ? 'Anulujesz, kiedy chcesz.' : 'Bez automatycznego odnawiania.' }}</span>
             </label>
           </div>
@@ -174,15 +178,15 @@ onBeforeUnmount(closeEmbedded)
         <div class="summary-top"><h2 id="summary-heading">Twoje zamówienie</h2><Lock :size="16" aria-hidden="true" /></div>
         <div class="price-summary" aria-live="polite" aria-atomic="true">
           <p class="summary-plan">{{ plan.name }}</p>
-          <div class="total"><span>Do zapłaty dziś</span><strong class="tabular">{{ plan.price }}</strong></div>
-          <p class="renewal-note">{{ monthly ? `${plan.price} co miesiąc. Automatyczne odnawianie wyłączysz w ustawieniach konta.` : 'Jedna płatność za dostęp do 31 maja 2027. Pakiet nie odnawia się automatycznie.' }}</p>
+          <div class="total"><span>Do zapłaty dziś</span><strong class="tabular">{{ priceOf(plan) }}</strong></div>
+          <p class="renewal-note">{{ monthly ? `${firstMonth ? 'Od drugiego miesiąca' : 'Odnowienie'} ${plan.renewalPrice} co miesiąc. Automatyczne odnawianie wyłączysz w ustawieniach konta.` : 'Jedna płatność za dostęp do 31 maja 2027. Pakiet nie odnawia się automatycznie.' }}</p>
         </div>
 
         <fieldset class="consents" :disabled="paying" :aria-describedby="submitted && missingConsent ? 'consent-error' : undefined">
           <legend>Potwierdź przed przejściem dalej <span>(wymagane)</span></legend>
           <label class="check-row" :class="{ 'has-error': submitted && !terms }">
             <input v-model="terms" name="terms" type="checkbox" required :aria-invalid="submitted && !terms" :aria-describedby="submitted && !terms ? 'consent-error' : undefined" />
-            <span>Akceptuję <RouterLink :to="ROUTES.terms" target="_blank" rel="noopener" class="link">regulamin</RouterLink>{{ monthly ? ' i rozumiem, że Premium odnawia się co miesiąc, dopóki go nie anuluję.' : ' i rozumiem, że Pakiet działa do 31 maja 2027 i się nie odnawia.' }}</span>
+            <span>Akceptuję <RouterLink :to="ROUTES.terms" target="_blank" rel="noopener" class="link">regulamin</RouterLink>{{ monthly ? ` i rozumiem, że Premium odnawia się co miesiąc za ${plan.renewalPrice}, dopóki go nie anuluję.` : ' i rozumiem, że Pakiet działa do 31 maja 2027 i się nie odnawia.' }}</span>
           </label>
           <label class="check-row" :class="{ 'has-error': submitted && !age }">
             <input v-model="age" name="age" type="checkbox" required :aria-invalid="submitted && !age" :aria-describedby="submitted && !age ? 'consent-error' : undefined" />
@@ -199,7 +203,7 @@ onBeforeUnmount(closeEmbedded)
 
         <button type="submit" class="button button-lime button-large full-width pay-button" :disabled="paying" :aria-busy="paying" aria-describedby="payment-handoff">
           <LoaderCircle v-if="paying" :size="18" class="spin" />
-          <span>{{ paying ? 'Otwieram płatność…' : `Przejdź do płatności · ${plan.price}` }}</span>
+          <span>{{ paying ? 'Otwieram płatność…' : `Przejdź do płatności · ${priceOf(plan)}` }}</span>
           <ArrowRight v-if="!paying" :size="18" />
         </button>
         <p id="payment-handoff" class="handoff-note">W następnym kroku wybierzesz metodę i zatwierdzisz płatność w formularzu Stripe.</p>

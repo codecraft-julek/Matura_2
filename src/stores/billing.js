@@ -25,6 +25,8 @@ export function toMyBilling(data, now = Date.now()) {
     cancelAtPeriodEnd: kind === 'subscription' && Boolean(data?.cancel_at_period_end),
     paymentProblem: data?.subscription_status === 'past_due',
     hasCustomer: Boolean(data?.stripe_customer_id),
+    /** The cheaper first month is for a first subscription only. */
+    hadSubscription: Boolean(data?.stripe_subscription_id),
     canWithdraw: kind !== null && Boolean(data?.last_checkout_at) && now - new Date(data.last_checkout_at).getTime() < WITHDRAWAL_LINK_MS,
     /** Raw subscription status (account deletion refuses while a subscription still renews). */
     subscriptionStatus: data?.subscription_status ?? null,
@@ -41,7 +43,7 @@ export const useBillingStore = defineStore('billing', () => {
     if (billing.value && !force) return billing.value
     const { data, error } = await supabase
       .from('billing_accounts')
-      .select('stripe_customer_id, subscription_status, subscription_until, cancel_at_period_end, pass_until, last_checkout_at')
+      .select('stripe_customer_id, stripe_subscription_id, subscription_status, subscription_until, cancel_at_period_end, pass_until, last_checkout_at')
       .maybeSingle()
     if (error) throw error
     billing.value = toMyBilling(data)

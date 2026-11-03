@@ -8,7 +8,7 @@ const list = (...items) => ({ type: 'list', items })
 const links = (...items) => ({ type: 'links', items: items.map(([label, href]) => ({ label, href })) })
 const table = (headers, rows) => ({ type: 'table', headers, rows })
 const section = (id, title, ...blocks) => ({ id, title, blocks })
-const monthly = PLANS.find(plan => plan.id === 'monthly').price
+const monthly = PLANS.find(plan => plan.id === 'monthly')
 const pass = PLANS.find(plan => plan.id === 'matura').price
 const identity = () => list(
   `Nazwa serwisu: ${operator.brand}.`,
@@ -74,7 +74,7 @@ export const termsDocument = {
       )),
     section('platnosci', '7. Premium: cena, zakup i odnowienie',
       table(['Plan', 'Cena i czas trwania', 'Odnowienie'], [
-        ['Premium miesięczne', `${monthly} za miesięczny okres rozliczeniowy.`, 'Automatyczne co miesiąc do anulowania.'],
+        ['Premium miesięczne', `${monthly.price} za pierwszy miesiąc, a potem ${monthly.renewalPrice} za każdy kolejny miesięczny okres rozliczeniowy.`, 'Automatyczne co miesiąc do anulowania.'],
         ['Pakiet do matury', `${pass} jednorazowo za dostęp do 31 maja 2027 r.`, 'Nie odnawia się.'],
       ]),
       p('Ceny są cenami końcowymi w złotych, z uwzględnieniem podatków, jeśli mają zastosowanie. Przed zatwierdzeniem płatności widzisz wybrany plan, należność, czas trwania i zasady odnowienia. Cena nie jest indywidualnie ustalana na podstawie automatycznego profilowania.'),
