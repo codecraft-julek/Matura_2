@@ -10,7 +10,7 @@
 import { next } from '@vercel/functions'
 import { MAINTENANCE_CSP, renderMaintenancePage, retryAfterSeconds } from './maintenance/page.js'
 
-export const MAINTENANCE_ON = true
+export const MAINTENANCE_ON = false
 // Planned end, ISO 8601 with offset, e.g. '2026-11-08T09:00:00+01:00'. Unset: the page says "za 24 godziny".
 const MAINTENANCE_UNTIL = undefined
 
