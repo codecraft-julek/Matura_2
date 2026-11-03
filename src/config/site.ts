@@ -47,7 +47,7 @@ export const CAPTCHA_SITE_KEY: string | null = "0x4AAAAAAFwlycQEy94eTUSl";
  * form opens inside our payment page; null → students go to Stripe's own payment page.
  * It must come from the same Stripe account as STRIPE_SECRET_KEY in Supabase.
  */
-export const STRIPE_PUBLISHABLE_KEY: string | null = "pk_test_51UUB3rJbUGccn9lDF3iWX4bKbSdXu4y19vLjauyzpcCJPFqXy8Nm27wl7XTDdiRLGUeabDKIrO3geNfu4PD4tjjU00GYoo88Lj";
+export const STRIPE_PUBLISHABLE_KEY: string | null = "pk_live_51UVZ3DJmbNO0yPKJ8rkJPsIbavAxxAcZbWzR8LvIedOhtdY5CrkgA6N7T07Wr9pctw4jx8sdhPfZ6Hg1q742nMC600N99C73dM";
 
 /**
  * Web3Forms access key: e-mails each contact form message to the address it was created for.

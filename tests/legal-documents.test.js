@@ -75,11 +75,11 @@ describe('accessible and downloadable legal documents', () => {
     expect(live).not.toContain('legal-draft')
     expect(live).not.toContain('null')
   })
-  it('still needs the address before real sales', () => {
-    expect(missingOperatorDetails()).toEqual(['address'])
+  it('has the seller details required for real sales', () => {
+    expect(missingOperatorDetails()).toEqual([])
   })
   it('knows which seller details are still needed before real sales', () => {
-    expect(missingOperatorDetails({ fullName: null, address: '', phone: '500' })).toEqual(['fullName', 'address'])
+    expect(missingOperatorDetails({ fullName: null, address: '', phone: '500' })).toEqual(['fullName'])
     expect(missingOperatorDetails({ fullName: 'A', address: 'B', phone: 'C' })).toEqual([])
     expect(missingOperatorDetails({ fullName: '[IMIĘ I NAZWISKO]', address: 'B', phone: '[NUMER TELEFONU]' })).toEqual(['fullName', 'phone'])
   })
