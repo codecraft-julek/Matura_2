@@ -5,7 +5,7 @@ export const PLAN_DETAILS = {
   free: {
     label: 'NA START',
     description: 'Wchodzisz i robisz swoje. Bez zobowiązań.',
-    features: ['Arkusze CKE bez limitu', 'Fiszki i powtórki bez limitu', '2 sprawdzenia wypracowania na tydzień', 'Tutor: 10 wiadomości dziennie'],
+    features: ['Arkusze CKE bez limitu', 'Fiszki i powtórki bez limitu', '1 sprawdzenie wypracowania na tydzień', 'Tutor: 5 wiadomości dziennie'],
     footnote: 'Bez karty. Bez zobowiązań.',
   },
   monthly: {

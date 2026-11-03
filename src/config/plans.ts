@@ -30,7 +30,7 @@ export const PLANS: Plan[] = [
     name: "Pakiet do matury",
     price: "129 zł",
     period: "jednorazowo, do 31 maja 2027",
-    note: "Bez subskrypcji. Kupiony teraz wychodzi ok. 18 zł miesięcznie.",
+    note: "Bez subskrypcji. Płacisz raz i masz spokój do matury.",
     badge: "najbardziej się opłaca",
     cta: "Kup pakiet",
   },
@@ -40,12 +40,15 @@ export const PLANS: Plan[] = [
 export const FEATURES: [string, string, string][] = [
   ["Arkusze CKE, tryb ćwiczeń i egzamin na czas", "bez limitu", "bez limitu"],
   ["Nauka fiszek, import z Quizletu i Anki", "bez limitu", "bez limitu"],
-  ["Sprawdzenie wypracowania przez AI", "2 na tydzień", "2 dziennie"],
-  ["Ocena odpowiedzi otwartych (polski)", "2 na tydzień", "10 dziennie"],
-  ["Tutor AI", "10 wiadomości dziennie", "50 wiadomości dziennie"],
-  ["Notatki AI ze zdjęć i plików", "3 na tydzień", "5 dziennie"],
-  ["Fiszki z AI (PDF, YouTube, strony)", "3 na tydzień", "10 dziennie"],
+  ["Sprawdzenie wypracowania przez AI", "1 na tydzień", "2 dziennie"],
+  ["Ocena odpowiedzi otwartych (polski)", "1 na tydzień", "10 dziennie"],
+  ["Tutor AI", "5 wiadomości dziennie", "50 wiadomości dziennie"],
+  ["Notatki AI ze zdjęć i plików", "1 na tydzień", "5 dziennie"],
+  ["Fiszki z AI (PDF, YouTube, strony)", "2 na tydzień", "10 dziennie"],
 ];
+
+/** The last moment of the Pakiet. Must match MATURA_PASS_UNTIL in supabase/functions/_shared/billing.ts. */
+export const PASS_UNTIL = "2027-05-31T23:59:59+02:00";
 
 export const PAID_PLANS = PLANS.filter((p) => p.id !== "free");
 export const planById = (id: string | undefined) => PAID_PLANS.find((p) => p.id === id) ?? null;

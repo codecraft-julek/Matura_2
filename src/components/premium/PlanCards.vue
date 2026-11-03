@@ -10,6 +10,9 @@ import { ArrowUpRight, Check, Zap } from '@lucide/vue'
 import { PLANS } from '@/config/plans'
 import { ROUTES, checkoutRoute } from '@/config/routes'
 import { PLAN_DETAILS as DETAILS } from './planDetails'
+import { passSavings } from './passSavings'
+
+const savings = passSavings()
 
 defineProps({
   variant: { type: String, default: 'landing' },
@@ -24,7 +27,8 @@ const amount = price => price.replace(/\s*zł$/, '')
 <template>
   <div class="pricing-grid plan-cards" :class="`is-${variant}`">
     <article v-for="plan in PLANS" :key="plan.id" class="pricing-card" :class="{ featured: plan.id === 'monthly' }">
-      <div v-if="plan.badge" class="recommended-label" :class="{ 'is-soft': plan.id !== 'monthly' }"><Zap v-if="plan.id === 'monthly'" :size="13" fill="currentColor" /> {{ plan.badge.toUpperCase() }}</div>
+      <div v-if="plan.badge && (plan.id !== 'matura' || savings)" class="recommended-label" :class="{ 'is-soft': plan.id !== 'monthly' }"><Zap v-if="plan.id === 'monthly'" :size="13" fill="currentColor" /> {{ plan.badge.toUpperCase() }}</div>
+      <span v-if="plan.id === 'matura' && savings" class="pass-corner">{{ savings.percent }}% taniej</span>
       <span class="plan-label">{{ DETAILS[plan.id].label }}</span>
       <component :is="headingTag" class="plan-name">{{ plan.name }}</component>
       <p class="plan-description">{{ plan.note ?? DETAILS[plan.id].description }}</p>
@@ -37,7 +41,7 @@ const amount = price => price.replace(/\s*zł$/, '')
       </span>
       <RouterLink v-else-if="plan.id === 'free'" :to="ROUTES.signup" class="button button-outline full-width">Załóż darmowe konto <ArrowUpRight :size="18" /></RouterLink>
       <RouterLink v-else :to="checkoutRoute(plan.id)" class="button full-width" :class="plan.id === 'monthly' ? 'button-lime' : 'button-dark'">{{ plan.cta }} <ArrowUpRight :size="18" /></RouterLink>
-      <p class="plan-note">{{ DETAILS[plan.id].footnote }}</p>
+      <p class="plan-note">{{ DETAILS[plan.id].footnote }}<template v-if="plan.id === 'matura' && savings"><br>{{ savings.percent }}% taniej niż płacenie co miesiąc do końca maja.</template></p>
     </article>
   </div>
 </template>
@@ -48,6 +52,7 @@ const amount = price => price.replace(/\s*zł$/, '')
 .recommended-label.is-soft { background: #eef3e5; color: var(--accent); }
 .is-app .recommended-label { border-color: var(--paper); }
 .is-app { margin-top: 0; }
+.pass-corner { position: absolute; top: 30px; right: 18px; padding: 4px 10px; border-radius: 999px; background: #d7f781; color: #1c3c32; font-size: 12px; font-weight: 700; line-height: 1.3; white-space: nowrap; }
 .plan-current { border-color: var(--line-strong); color: var(--text-soft); cursor: default; }
 .plan-current:hover { transform: none; }
 .featured .plan-current { border-color: #416047; color: #c4d2bd; }
