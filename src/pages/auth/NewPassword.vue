@@ -11,6 +11,7 @@ import { focusFirstInvalid, schemaError, useFieldErrors } from '@/components/acc
 import { ROUTES } from '@/config/routes'
 import { supabase } from '@/lib/supabase'
 import { NETWORK_ERROR } from '@/lib/api/account'
+import { loadAffiliatePanel } from '@/lib/api/affiliates'
 import { authErrorMessage, newPasswordSchema, passwordSchema, toFieldErrors } from '@/lib/validation/auth'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
@@ -53,7 +54,9 @@ async function onSubmit() {
     return
   }
   ui.toast('Nowe hasło ustawione ✓')
-  router.replace(ROUTES.dashboard)
+  // Creators came here from the panel's e-mail: back to their numbers, not the student dashboard.
+  const creator = await loadAffiliatePanel().catch(() => null)
+  router.replace(creator ? ROUTES.creators : ROUTES.dashboard)
 }
 </script>
 

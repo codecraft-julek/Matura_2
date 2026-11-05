@@ -69,6 +69,16 @@ const routes = [
   { path: ROUTES.checkout, component: page(() => import('@/pages/premium/Checkout.vue')), meta: { layout: 'checkout', title: 'Włącz Premium' } },
   { path: ROUTES.premiumDone, component: page(() => import('@/pages/premium/PaymentDone.vue')), meta: { layout: 'checkout', title: 'Status płatności', skipOnboarding: true } },
 
+  // Creators (logged-out visitors of /creators go to their own login, see the guard below)
+  { path: ROUTES.creators, component: page(() => import('@/pages/creators/CreatorPanel.vue')), meta: { layout: 'public', title: 'Panel twórcy' } },
+  { path: ROUTES.creatorsLogin, component: page(() => import('@/pages/creators/CreatorLogin.vue')), meta: { layout: 'auth', title: 'Panel twórcy: logowanie' } },
+
+  // Admin (the pages check app_admins; the database checks it again)
+  { path: ROUTES.admin, component: page(() => import('@/pages/admin/AdminCreators.vue')), meta: { layout: 'public', title: 'Twórcy', skipOnboarding: true } },
+  { path: ROUTES.adminNewCreator, component: page(() => import('@/pages/admin/AdminCreatorForm.vue')), meta: { layout: 'public', title: 'Nowy twórca', skipOnboarding: true } },
+  { path: '/admin/tworcy/:id', component: page(() => import('@/pages/admin/AdminCreator.vue')), meta: { layout: 'public', title: 'Twórca', skipOnboarding: true } },
+  { path: '/admin/tworcy/:id/edytuj', component: page(() => import('@/pages/admin/AdminCreatorForm.vue')), meta: { layout: 'public', title: 'Edytuj twórcę', skipOnboarding: true } },
+
   // Old hash URL of the demo (#/test/polski-2026) is rewritten in main.js; 404 last.
   { path: '/:pathMatch(.*)*', component: page(() => import('@/pages/NotFound.vue')), meta: { layout: 'public', title: 'Nie ma takiej strony' } },
 ]
@@ -91,6 +101,10 @@ export const router = createRouter({
 router.beforeEach(async to => {
   const auth = useAuthStore()
   await auth.ready()
+
+  // Creators have their own login page; it isn't for someone already logged in.
+  if (to.path === ROUTES.creators && !auth.isLoggedIn) return ROUTES.creatorsLogin
+  if (to.path === ROUTES.creatorsLogin && auth.isLoggedIn) return ROUTES.creators
 
   if (!auth.isLoggedIn && isProtected(to.path)) {
     return { path: ROUTES.login, query: { next: to.fullPath } } // keeps e.g. ?plan=matura

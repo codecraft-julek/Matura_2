@@ -51,12 +51,13 @@ export const gradeOpenAnswers = body => callEdge('grade-open-answers', body)
  * → { ok: true, clientSecret, sessionId } (Stripe's form shown inside our payment page).
  * billing-portal → { ok: true, url }.
  */
-export const startCheckout = (plan, termsVersion, consents, { embedded = false } = {}) =>
+export const startCheckout = (plan, termsVersion, consents, { embedded = false, code } = {}) =>
   // Keep the old wire field during rollout; it now carries the early-start request, not a waiver.
   // Explicit values come from the form, rather than silently manufacturing every consent.
   callEdge('billing-checkout', {
     plan, termsVersion, consents: { ...consents, withdrawal: consents?.earlyStart === true },
     ...(embedded ? { ui: 'embedded' } : {}),
+    ...(code ? { code } : {}),
   })
 export const openBillingPortal = () => callEdge('billing-portal')
 

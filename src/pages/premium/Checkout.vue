@@ -5,9 +5,11 @@ import { ArrowLeft, ArrowRight, Check, ChevronDown, CircleAlert, CreditCard, Loa
 import { PAID_PLANS, planById } from '@/config/plans'
 import { ROUTES } from '@/config/routes'
 import { TERMS_VERSION } from '@/config/site'
+import { checkoutCoupon, firstPayment, formatPln } from '@shared/affiliates'
 import { EARLY_START_LABEL } from '@shared/purchase-consents'
 import { PLAN_DETAILS } from '@/components/premium/planDetails'
 import { startCheckout } from '@/lib/ai'
+import { checkAffiliateCode } from '@/lib/api/affiliates'
 import { loadStripe, mountEmbeddedCheckout } from '@/lib/billing/stripe'
 import { useAsync } from '@/composables/useAsync'
 import { useAuthStore } from '@/stores/auth'
@@ -23,9 +25,15 @@ const billingStore = useBillingStore()
 const { data: billing, loading, error: loadError, reload } = useAsync(() => billingStore.loadBilling(true))
 const plan = computed(() => planById(String(route.query.plan ?? '')) ?? PAID_PLANS[0])
 const monthly = computed(() => plan.value.id === 'monthly')
-// The same rule as billing-checkout: 24,99 zł only for a first subscription.
-const firstMonth = computed(() => !billing.value?.hadSubscription)
-const priceOf = p => (p.id === 'monthly' && !firstMonth.value ? p.renewalPrice : p.price)
+// A creator's code, checked with the server before it changes the price.
+const codeInput = ref('')
+const appliedCode = ref(null)
+const codeError = ref('')
+const checkingCode = ref(false)
+// The same rule as billing-checkout: 24,99 zł only for a first subscription, or the code if it saves more.
+const couponOf = p => checkoutCoupon(p.id, appliedCode.value?.discountPercent ?? 0, !billing.value?.hadSubscription)
+const priceOf = p => formatPln(firstPayment(p.id, couponOf(p)))
+const firstMonth = computed(() => Boolean(couponOf(planById('monthly'))))
 const priceSuffix = p => (p.id !== 'monthly' ? ' jednorazowo' : firstMonth.value ? ' za pierwszy miesiąc' : ' / miesiąc')
 const terms = ref(false)
 const age = ref(false)
@@ -54,8 +62,31 @@ const paymentEl = ref(null)
 const paymentHeading = ref(null)
 let embedded = null
 
+/** → false when the typed code doesn't work (the message is on the screen). */
+async function applyCode() {
+  const typed = codeInput.value.trim()
+  codeError.value = ''
+  if (!typed) { appliedCode.value = null; return true }
+  if (typed.toUpperCase() === appliedCode.value?.code) return true
+  checkingCode.value = true
+  try {
+    appliedCode.value = await checkAffiliateCode(typed)
+    if (!appliedCode.value) codeError.value = 'Ten kod nie działa. Popraw go albo usuń.'
+  } catch {
+    appliedCode.value = null
+    codeError.value = 'Nie udało się sprawdzić kodu. Spróbuj ponownie.'
+  }
+  checkingCode.value = false
+  return Boolean(appliedCode.value)
+}
+function removeCode() {
+  codeInput.value = ''
+  appliedCode.value = null
+  codeError.value = ''
+}
+
 async function pay() {
-  if (paying.value) return
+  if (paying.value || checkingCode.value) return
   submitted.value = true
   payError.value = ''
   if (missingConsent.value) {
@@ -63,12 +94,14 @@ async function pay() {
     form.value?.querySelector('input[aria-invalid="true"]')?.focus()
     return
   }
+  // A code typed but not applied still counts, and a wrong one must not silently cost the discount.
+  if (!(await applyCode())) return
   paying.value = true
   const consents = { terms: terms.value, age: age.value, earlyStart: earlyStart.value }
   try {
     const stripe = await loadStripe()
     if (stripe && await openEmbedded(stripe, consents)) return
-    const res = await startCheckout(plan.value.id, TERMS_VERSION, consents)
+    const res = await startCheckout(plan.value.id, TERMS_VERSION, consents, { code: appliedCode.value?.code })
     if (!res.ok) throw new Error(res.error)
     window.location.assign(res.url)
     // Stay busy until navigation, preventing duplicate checkout sessions.
@@ -80,7 +113,7 @@ async function pay() {
 
 /** → true when the form is showing; false = use Stripe's own page. Throws server errors (shown). */
 async function openEmbedded(stripe, consents) {
-  const res = await startCheckout(plan.value.id, TERMS_VERSION, consents, { embedded: true })
+  const res = await startCheckout(plan.value.id, TERMS_VERSION, consents, { embedded: true, code: appliedCode.value?.code })
   if (!res.ok) throw new Error(res.error)
   step.value = 'payment'
   await nextTick()
@@ -182,6 +215,17 @@ onBeforeUnmount(closeEmbedded)
           <p class="renewal-note">{{ monthly ? `${firstMonth ? 'Od drugiego miesiąca' : 'Odnowienie'} ${plan.renewalPrice} co miesiąc. Automatyczne odnawianie wyłączysz w ustawieniach konta.` : 'Jedna płatność za dostęp do 31 maja 2027. Pakiet nie odnawia się automatycznie.' }}</p>
         </div>
 
+        <div class="code-box">
+          <label for="affiliate-code">Masz kod?</label>
+          <div class="code-row">
+            <input id="affiliate-code" v-model="codeInput" class="input" name="code" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" :disabled="paying || Boolean(appliedCode)" :aria-invalid="Boolean(codeError)" :aria-describedby="codeError ? 'code-error' : undefined" @keydown.enter.prevent="applyCode" />
+            <button v-if="appliedCode" type="button" class="button button-outline button-sm" :disabled="paying" @click="removeCode">Usuń</button>
+            <button v-else type="button" class="button button-outline button-sm" :disabled="paying || checkingCode || !codeInput.trim()" @click="applyCode">{{ checkingCode ? 'Sprawdzam…' : 'Zastosuj' }}</button>
+          </div>
+          <p v-if="codeError" id="code-error" class="field-error" role="alert">{{ codeError }}</p>
+          <p v-else-if="appliedCode" class="code-ok" role="status"><Check :size="14" aria-hidden="true" /> {{ appliedCode.discountPercent ? `Kod ${appliedCode.code}: ${appliedCode.discountPercent}% taniej${plan.id === 'monthly' ? ' za pierwszy miesiąc' : ''}.` : `Kod ${appliedCode.code} dodany.` }}</p>
+        </div>
+
         <fieldset class="consents" :disabled="paying" :aria-describedby="submitted && missingConsent ? 'consent-error' : undefined">
           <legend>Potwierdź przed przejściem dalej <span>(wymagane)</span></legend>
           <label class="check-row" :class="{ 'has-error': submitted && !terms }">
@@ -265,6 +309,14 @@ fieldset { padding: 0; border: 0; margin: 0; min-width: 0; }
 .total > span { font-size: 14px; font-weight: 650; }
 .total strong { font: 750 32px/1.3 var(--heading); letter-spacing: -1px; white-space: nowrap; }
 .renewal-note { font-size: 12px; line-height: 1.6; color: var(--text-soft); }
+.code-box { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.code-box label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.code-row { display: flex; gap: 8px; }
+.code-row .input { flex: 1; min-width: 0; text-transform: uppercase; }
+.code-row .button { flex-shrink: 0; }
+.code-box .field-error { margin-top: 8px; }
+.code-ok { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; line-height: 1.5; color: var(--ok); }
+.code-ok svg { flex-shrink: 0; }
 .consents legend { font-size: 12px; font-weight: 700; margin-bottom: 12px; }
 .consents legend > span { font-weight: 400; color: var(--text-soft); }
 .withdrawal-note { font-size: 12px; line-height: 1.6; margin-top: 12px; color: var(--text-soft); }

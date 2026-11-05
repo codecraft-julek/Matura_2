@@ -83,6 +83,15 @@ async function handle(event: StripeEvent, secretKey: string) {
         // no_payment_required: a 100% promotion code (e.g. for testers), nothing was charged.
         await grantPass(await userIdFor(o.metadata?.user_id, o.customer), String(o.customer));
         await noteCheckout(o);
+        await recordAffiliateSale(o.metadata?.affiliate_id, {
+          stripe_ref: String(o.id),
+          stripe_customer_id: String(o.customer),
+          stripe_subscription_id: null,
+          stripe_payment_intent: o.payment_intent ? String(o.payment_intent) : null,
+          plan: "matura",
+          amount_paid: o.amount_total ?? 0,
+          paid_at: new Date(o.created * 1000).toISOString(),
+        });
       }
       return;
     }
@@ -93,6 +102,18 @@ async function handle(event: StripeEvent, secretKey: string) {
     case "invoice.paid": {
       const subId = o.subscription ?? o.parent?.subscription_details?.subscription;
       if (subId) await syncSubscription(secretKey, String(subId));
+      const affiliateId = (o.parent?.subscription_details?.metadata ?? o.subscription_details?.metadata)?.affiliate_id;
+      if (subId && affiliateId && o.amount_paid > 0) {
+        await recordAffiliateSale(affiliateId, {
+          stripe_ref: String(o.id),
+          stripe_customer_id: String(o.customer),
+          stripe_subscription_id: String(subId),
+          stripe_payment_intent: await invoicePaymentIntent(secretKey, o),
+          plan: "monthly",
+          amount_paid: o.amount_paid,
+          paid_at: new Date((o.status_transitions?.paid_at ?? o.created) * 1000).toISOString(),
+        });
+      }
       return;
     }
     case "charge.refunded": {
@@ -103,6 +124,12 @@ async function handle(event: StripeEvent, secretKey: string) {
         .eq("stripe_customer_id", String(o.customer))
         .is("refunded_at", null);
       if (error) throw error;
+      // amount_refunded is the total so far, so the commission follows every partial refund.
+      const { error: saleError } = await admin
+        .from("affiliate_sales")
+        .update({ refunded_amount: o.amount_refunded ?? 0 })
+        .eq("stripe_payment_intent", String(o.payment_intent));
+      if (saleError) throw saleError;
       // Partial refunds count too: after withdrawing, the student gets back all but the used part.
       const pi = await stripe<{ metadata?: Record<string, string> }>(secretKey, "GET", `payment_intents/${o.payment_intent}`);
       if (pi.metadata?.plan !== "matura") return; // subscription refunds: cancel the subscription in Stripe
@@ -151,6 +178,50 @@ async function grantPass(userId: string, customerId: string) {
 async function noteCheckout(session: Record<string, any>) {
   const userId = await userIdFor(session.metadata?.user_id, session.customer);
   await upsert(userId, { last_checkout_at: new Date(session.created * 1000).toISOString() });
+}
+
+type AffiliateSale = {
+  stripe_ref: string;
+  stripe_customer_id: string;
+  stripe_subscription_id: string | null;
+  stripe_payment_intent: string | null;
+  plan: "monthly" | "matura";
+  amount_paid: number;
+  paid_at: string;
+};
+
+/** One payment made with a creator's code. A retried event adds nothing (stripe_ref is unique). */
+async function recordAffiliateSale(affiliateId: string | undefined, sale: AffiliateSale) {
+  if (!affiliateId || sale.amount_paid <= 0) return; // a 100% code: nothing paid, nothing earned
+  const { data: affiliate, error } = await admin
+    .from("affiliates")
+    .select("commission_percent, commission_months")
+    .eq("id", affiliateId)
+    .maybeSingle();
+  if (error) throw error;
+  if (!affiliate) return;
+
+  // Only the first commission_months paid months of a subscription earn a commission.
+  if (sale.stripe_subscription_id && affiliate.commission_months) {
+    const { count, error: countError } = await admin
+      .from("affiliate_sales")
+      .select("id", { count: "exact", head: true })
+      .eq("stripe_subscription_id", sale.stripe_subscription_id);
+    if (countError) throw countError;
+    if ((count ?? 0) >= affiliate.commission_months) return;
+  }
+
+  const { error: insertError } = await admin
+    .from("affiliate_sales")
+    .upsert({ ...sale, affiliate_id: affiliateId, commission_percent: affiliate.commission_percent }, { onConflict: "stripe_ref", ignoreDuplicates: true });
+  if (insertError) throw insertError;
+}
+
+/** Newer Stripe API versions keep an invoice's payment in its `payments` list. Needed to match a later refund. */
+async function invoicePaymentIntent(secretKey: string, invoice: Record<string, any>): Promise<string | null> {
+  if (invoice.payment_intent) return String(invoice.payment_intent);
+  const full = await stripe<{ payments?: { data?: { payment?: { payment_intent?: string } }[] } }>(secretKey, "GET", `invoices/${invoice.id}`, { expand: ["payments"] });
+  return full.payments?.data?.[0]?.payment?.payment_intent ?? null;
 }
 
 /** The student behind a Stripe event no longer exists (account deleted). */

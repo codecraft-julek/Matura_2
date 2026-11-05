@@ -31,10 +31,16 @@ export const ROUTES = {
   terms: "/regulamin",
   goodbye: "/do-zobaczenia",
   dataExport: "/konto/eksport",
+  /** Numbers for creators with a code. Not linked from the site: they get the address from us. */
+  creators: "/creators",
+  creatorsLogin: "/creators/logowanie",
+  /** Creators and payouts, for app_admins only. */
+  admin: "/admin",
+  adminNewCreator: "/admin/tworcy/nowy",
 } as const;
 
 // Pages that require a logged-in student. proxy.ts sends everyone else to the login page.
-export const PROTECTED_PREFIXES = [ROUTES.dashboard, ROUTES.onboarding, ROUTES.account, ROUTES.exams, ROUTES.essays, ROUTES.tutor, ROUTES.notes, ROUTES.flashcards, ROUTES.premium, ROUTES.newPassword];
+export const PROTECTED_PREFIXES = [ROUTES.dashboard, ROUTES.onboarding, ROUTES.account, ROUTES.exams, ROUTES.essays, ROUTES.tutor, ROUTES.notes, ROUTES.flashcards, ROUTES.premium, ROUTES.newPassword, ROUTES.admin];
 
 // Pages a logged-in student shouldn't see (they get sent to the dashboard instead).
 export const AUTH_PAGES = [ROUTES.login, ROUTES.signup];
@@ -59,5 +65,7 @@ export const tutorChatRoute = (id: string) => `${ROUTES.tutor}/${id}`;
 export const noteRoute = (id: string) => `${ROUTES.notes}/${id}`;
 export const checkoutRoute = (plan: string) => `${ROUTES.checkout}?plan=${plan}`;
 export const publicExamRoute = (id: string) => `${ROUTES.publicExams}/${id}`;
-export const deckRoute = (id: string) => `${ROUTES.flashcards}/${id}`;
+export const adminCreatorRoute = (id: string) => `${ROUTES.admin}/tworcy/${id}`;
+export const adminEditCreatorRoute = (id: string) => `${ROUTES.admin}/tworcy/${id}/edytuj`;
+export const deckRoute =(id: string) => `${ROUTES.flashcards}/${id}`;
 export const studyRoute = (id: string, all = false) => `${ROUTES.flashcards}/${id}/nauka${all ? "?wszystkie=1" : ""}`;

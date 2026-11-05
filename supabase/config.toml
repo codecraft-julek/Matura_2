@@ -471,3 +471,7 @@ verify_jwt = false
 # "Odstąp od umowy tutaj". Verifies the student's login itself, like billing-portal.
 [functions.billing-withdrawal]
 verify_jwt = false
+
+# Creators and payouts on /admin. Verifies the login and the admin list itself.
+[functions.affiliate-admin]
+verify_jwt = false

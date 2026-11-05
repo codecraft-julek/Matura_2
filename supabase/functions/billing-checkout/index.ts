@@ -1,9 +1,10 @@
-// Supabase Edge Function: POST /functions/v1/billing-checkout   body: { plan, consents, termsVersion, ui? }
+// Supabase Edge Function: POST /functions/v1/billing-checkout   body: { plan, consents, termsVersion, ui?, code? }
 //
 // Starts a payment: check login → validate the plan and consents → refuse if the student already
 // has Premium → find or create their Stripe customer → create a Stripe Checkout session.
 //   ui: "embedded" → { clientSecret }: the website shows Stripe's form inside its payment page
 //   otherwise      → { url }: the website sends the student to Stripe's own page
+//   code           a creator's code: its discount, and billing-webhook credits the creator's sales
 // Card/BLIK details are typed only into Stripe's form (an iframe from stripe.com in both cases).
 // Premium is switched on later by `billing-webhook`, never here.
 //
@@ -13,7 +14,8 @@
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are injected by Supabase automatically.
 
 import { createClient } from "@supabase/supabase-js";
-import { BILLING_PLANS, CURRENCY, MATURA_PASS_UNTIL, MONTHLY_INTRO_COUPON, isBillingPlan, returnOrigin, stripe } from "../_shared/billing.ts";
+import { checkoutCoupon, normalizeAffiliateCode, validAffiliateCode } from "../_shared/affiliates.ts";
+import { BILLING_PLANS, CURRENCY, MATURA_PASS_UNTIL, isBillingPlan, returnOrigin, stripe } from "../_shared/billing.ts";
 import { validPurchaseConsents, purchaseConsentMetadata } from "../_shared/purchase-consents.ts";
 
 const corsHeaders = {
@@ -56,7 +58,7 @@ async function handle(request: Request) {
   // 3. Validate: a plan we sell, and all three consents ticked (the website shows them).
   const raw = await request.text();
   if (raw.length > 2_000) return json({ ok: false, error: "Nieprawidłowe dane." }, 413);
-  let body: { plan?: unknown; consents?: unknown; termsVersion?: unknown; ui?: unknown };
+  let body: { plan?: unknown; consents?: unknown; termsVersion?: unknown; ui?: unknown; code?: unknown };
   try {
     body = JSON.parse(raw || "{}");
   } catch {
@@ -82,6 +84,18 @@ async function handle(request: Request) {
     return json({ ok: false, error: "Masz już Premium. Szczegóły znajdziesz na stronie konta." }, 409);
   }
 
+  // A creator's code: must exist, be active, and not be the buyer's own.
+  const code = normalizeAffiliateCode(body.code);
+  let affiliate: { id: string; discount_percent: number } | null = null;
+  if (code) {
+    const { data, error } = validAffiliateCode(code)
+      ? await admin.from("affiliates").select("id, user_id, discount_percent").eq("code", code).eq("active", true).maybeSingle()
+      : { data: null, error: null };
+    if (error) throw error;
+    if (!data || data.user_id === user.id) return json({ ok: false, error: "Ten kod nie działa. Popraw go albo usuń." }, 400);
+    affiliate = data;
+  }
+
   // 5. One Stripe customer per student (keeps receipts and the subscription together).
   const newCustomer = async () => {
     const customer = await stripe<{ id: string }>(secretKey, "POST", "customers", {
@@ -105,7 +119,10 @@ async function handle(request: Request) {
     plan: planId,
     ...purchaseConsentMetadata(new Date().toISOString()),
     terms_version: typeof body.termsVersion === "string" ? body.termsVersion.slice(0, 20) : "",
+    ...(affiliate ? { affiliate_id: affiliate.id } : {}),
   };
+  // The cheaper first month is for a student who never had a subscription.
+  const coupon = checkoutCoupon(planId, affiliate?.discount_percent ?? 0, !account?.stripe_subscription_id);
   const createSession = (customer: string) => stripe<{ id: string; url: string | null; client_secret: string | null }>(secretKey, "POST", "checkout/sessions", {
     mode: plan.mode,
     customer,
@@ -126,13 +143,12 @@ async function handle(request: Request) {
     ...(plan.mode === "subscription"
       ? { subscription_data: { metadata } }
       : { payment_intent_data: { metadata: { ...metadata, pass_until: MATURA_PASS_UNTIL } } }),
-    // Codes only for the one-time Pakiet: a 100% code on the subscription still asks for a card
-    // and starts charging from the second month, which testers don't expect.
-    // Stripe refuses both fields together, so the subscription sends only its first-month discount,
-    // and only for a student who never had a subscription.
-    ...(plan.mode === "payment"
-      ? { allow_promotion_codes: true }
-      : account?.stripe_subscription_id ? {} : { discounts: [{ coupon: MONTHLY_INTRO_COUPON.id }] }),
+    // Stripe's own code field only for the one-time Pakiet: a 100% code on the subscription still asks
+    // for a card and starts charging from the second month, which testers don't expect.
+    // Stripe refuses both fields together, so a checkout with a discount sends only the discount.
+    ...(coupon
+      ? { discounts: [{ coupon: coupon.id }] }
+      : plan.mode === "payment" ? { allow_promotion_codes: true } : {}),
     ...(embedded
       ? {
         ui_mode: "embedded_page",
@@ -148,13 +164,13 @@ async function handle(request: Request) {
       }),
   });
 
-  // First sale on this Stripe account: the coupon doesn't exist yet, so make it and try again.
+  // First sale with this discount on this Stripe account: the coupon doesn't exist yet, so make it and try again.
   const createSessionWithCoupon = async (customer: string) => {
     try {
       return await createSession(customer);
     } catch (err) {
-      if (!/No such coupon/i.test(String(err))) throw err;
-      await stripe(secretKey, "POST", "coupons", MONTHLY_INTRO_COUPON).catch((e) => {
+      if (!coupon || !/No such coupon/i.test(String(err))) throw err;
+      await stripe(secretKey, "POST", "coupons", coupon).catch((e) => {
         if (!/already exists/i.test(String(e))) throw e; // another student's checkout just made it
       });
       return await createSession(customer);
