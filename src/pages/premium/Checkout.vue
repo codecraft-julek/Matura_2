@@ -8,7 +8,7 @@ import { TERMS_VERSION } from '@/config/site'
 import { checkoutCoupon, firstPayment, formatPln } from '@shared/affiliates'
 import { EARLY_START_LABEL } from '@shared/purchase-consents'
 import { PLAN_DETAILS } from '@/components/premium/planDetails'
-import { startCheckout } from '@/lib/ai'
+import { checkPromotionCode, startCheckout } from '@/lib/ai'
 import { checkAffiliateCode } from '@/lib/api/affiliates'
 import { loadStripe, mountEmbeddedCheckout } from '@/lib/billing/stripe'
 import { useAsync } from '@/composables/useAsync'
@@ -25,13 +25,24 @@ const billingStore = useBillingStore()
 const { data: billing, loading, error: loadError, reload } = useAsync(() => billingStore.loadBilling(true))
 const plan = computed(() => planById(String(route.query.plan ?? '')) ?? PAID_PLANS[0])
 const monthly = computed(() => plan.value.id === 'monthly')
-// A creator's code, checked with the server before it changes the price.
+// A creator's code, or a promotion code from the Stripe Dashboard (kind 'stripe', Pakiet only),
+// checked with the server before it changes the price.
 const codeInput = ref('')
 const appliedCode = ref(null)
 const codeError = ref('')
 const checkingCode = ref(false)
 // The same rule as billing-checkout: 24,99 zł only for a first subscription, or the code if it saves more.
-const couponOf = p => checkoutCoupon(p.id, appliedCode.value?.discountPercent ?? 0, !billing.value?.hadSubscription)
+const stripeCode = computed(() => appliedCode.value?.kind === 'stripe')
+const couponOf = p => (stripeCode.value && p.id === 'matura'
+  ? { amount_off: appliedCode.value.amountOff }
+  : checkoutCoupon(p.id, stripeCode.value ? 0 : appliedCode.value?.discountPercent ?? 0, !billing.value?.hadSubscription))
+const codeWrongPlan = computed(() => stripeCode.value && plan.value.id !== 'matura')
+const codeNote = computed(() => {
+  const c = appliedCode.value
+  if (!c) return ''
+  if (c.kind === 'stripe') return firstPayment('matura', { amount_off: c.amountOff }) <= 0 ? `Kod ${c.code}: Pakiet za darmo.` : `Kod ${c.code}: ${formatPln(c.amountOff)} taniej.`
+  return c.discountPercent ? `Kod ${c.code}: ${c.discountPercent}% taniej${plan.value.id === 'monthly' ? ' za pierwszy miesiąc' : ''}.` : `Kod ${c.code} dodany.`
+})
 const priceOf = p => formatPln(firstPayment(p.id, couponOf(p)))
 const firstMonth = computed(() => Boolean(couponOf(planById('monthly'))))
 const priceSuffix = p => (p.id !== 'monthly' ? ' jednorazowo' : firstMonth.value ? ' za pierwszy miesiąc' : ' / miesiąc')
@@ -67,17 +78,22 @@ async function applyCode() {
   const typed = codeInput.value.trim()
   codeError.value = ''
   if (!typed) { appliedCode.value = null; return true }
-  if (typed.toUpperCase() === appliedCode.value?.code) return true
+  if (typed.toUpperCase() === appliedCode.value?.code) return !codeWrongPlan.value
   checkingCode.value = true
   try {
     appliedCode.value = await checkAffiliateCode(typed)
-    if (!appliedCode.value) codeError.value = 'Ten kod nie działa. Popraw go albo usuń.'
+    if (!appliedCode.value) {
+      // Not a creator's code: maybe one from the Stripe Dashboard. The server says why not.
+      const res = await checkPromotionCode(plan.value.id, typed)
+      if (res.ok) appliedCode.value = { kind: 'stripe', code: res.code, amountOff: res.amountOff }
+      else codeError.value = res.error || 'Ten kod nie działa. Popraw go albo usuń.'
+    }
   } catch {
     appliedCode.value = null
     codeError.value = 'Nie udało się sprawdzić kodu. Spróbuj ponownie.'
   }
   checkingCode.value = false
-  return Boolean(appliedCode.value)
+  return Boolean(appliedCode.value) && !codeWrongPlan.value
 }
 function removeCode() {
   codeInput.value = ''
@@ -218,12 +234,12 @@ onBeforeUnmount(closeEmbedded)
         <div class="code-box">
           <label for="affiliate-code">Masz kod?</label>
           <div class="code-row">
-            <input id="affiliate-code" v-model="codeInput" class="input" name="code" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" :disabled="paying || Boolean(appliedCode)" :aria-invalid="Boolean(codeError)" :aria-describedby="codeError ? 'code-error' : undefined" @keydown.enter.prevent="applyCode" />
+            <input id="affiliate-code" v-model="codeInput" class="input" name="code" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" spellcheck="false" :disabled="paying || Boolean(appliedCode)" :aria-invalid="Boolean(codeError) || codeWrongPlan" :aria-describedby="codeError || codeWrongPlan ? 'code-error' : undefined" @keydown.enter.prevent="applyCode" />
             <button v-if="appliedCode" type="button" class="button button-outline button-sm" :disabled="paying" @click="removeCode">Usuń</button>
             <button v-else type="button" class="button button-outline button-sm" :disabled="paying || checkingCode || !codeInput.trim()" @click="applyCode">{{ checkingCode ? 'Sprawdzam…' : 'Zastosuj' }}</button>
           </div>
-          <p v-if="codeError" id="code-error" class="field-error" role="alert">{{ codeError }}</p>
-          <p v-else-if="appliedCode" class="code-ok" role="status"><Check :size="14" aria-hidden="true" /> {{ appliedCode.discountPercent ? `Kod ${appliedCode.code}: ${appliedCode.discountPercent}% taniej${plan.id === 'monthly' ? ' za pierwszy miesiąc' : ''}.` : `Kod ${appliedCode.code} dodany.` }}</p>
+          <p v-if="codeError || codeWrongPlan" id="code-error" class="field-error" role="alert">{{ codeError || 'Ten kod działa tylko z Pakietem do matury.' }}</p>
+          <p v-else-if="appliedCode" class="code-ok" role="status"><Check :size="14" aria-hidden="true" /> {{ codeNote }}</p>
         </div>
 
         <fieldset class="consents" :disabled="paying" :aria-describedby="submitted && missingConsent ? 'consent-error' : undefined">

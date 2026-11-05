@@ -59,6 +59,8 @@ export const startCheckout = (plan, termsVersion, consents, { embedded = false, 
     ...(embedded ? { ui: 'embedded' } : {}),
     ...(code ? { code } : {}),
   })
+/** billing-checkout check → { ok: true, code, amountOff } for a promotion code from the Stripe Dashboard (Pakiet only). */
+export const checkPromotionCode = (plan, code) => callEdge('billing-checkout', { check: 'code', plan, code })
 export const openBillingPortal = () => callEdge('billing-portal')
 
 /** billing-withdrawal → { ok: true, contract, done } / { ok: true, withdrawal } */

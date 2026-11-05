@@ -1,10 +1,16 @@
 // Supabase Edge Function: POST /functions/v1/billing-checkout   body: { plan, consents, termsVersion, ui?, code? }
+//                                                              or { check: "code", plan, code }
 //
 // Starts a payment: check login → validate the plan and consents → refuse if the student already
 // has Premium → find or create their Stripe customer → create a Stripe Checkout session.
 //   ui: "embedded" → { clientSecret }: the website shows Stripe's form inside its payment page
 //   otherwise      → { url }: the website sends the student to Stripe's own page
-//   code           a creator's code: its discount, and billing-webhook credits the creator's sales
+//   code           a creator's code: its discount, and billing-webhook credits the creator's sales.
+//                  Or a promotion code made in the Stripe Dashboard (e.g. a free Pakiet): Pakiet only,
+//                  like Stripe's own code field, since a 100% code on the subscription would charge
+//                  from the second month.
+//   check: "code"  → { ok, code, amountOff }: what a Stripe promotion code takes off this plan, so the
+//                  payment page shows the price before paying (creators' codes are checked by an RPC).
 // Card/BLIK details are typed only into Stripe's form (an iframe from stripe.com in both cases).
 // Premium is switched on later by `billing-webhook`, never here.
 //
@@ -28,7 +34,13 @@ const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-type Reply = { ok: true; url: string } | { ok: true; clientSecret: string; sessionId: string } | { ok: false; error: string };
+type Reply =
+  | { ok: true; url: string }
+  | { ok: true; clientSecret: string; sessionId: string }
+  | { ok: true; code: string; amountOff: number }
+  | { ok: false; error: string };
+const CODE_FAILED = "Ten kod nie działa. Popraw go albo usuń.";
+const CODE_PAKIET_ONLY = "Ten kod działa tylko z Pakietem do matury.";
 function json(body: Reply, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 }
@@ -58,13 +70,20 @@ async function handle(request: Request) {
   // 3. Validate: a plan we sell, and all three consents ticked (the website shows them).
   const raw = await request.text();
   if (raw.length > 2_000) return json({ ok: false, error: "Nieprawidłowe dane." }, 413);
-  let body: { plan?: unknown; consents?: unknown; termsVersion?: unknown; ui?: unknown; code?: unknown };
+  let body: { plan?: unknown; consents?: unknown; termsVersion?: unknown; ui?: unknown; code?: unknown; check?: unknown };
   try {
     body = JSON.parse(raw || "{}");
   } catch {
     return json({ ok: false, error: "Nieprawidłowe dane." }, 400);
   }
   if (!isBillingPlan(body.plan)) return json({ ok: false, error: "Wybierz plan." }, 400);
+  if (body.check === "code") {
+    const code = normalizeAffiliateCode(body.code);
+    const promo = validAffiliateCode(code) ? await findPromotionCode(secretKey, code, body.plan) : null;
+    if (!promo) return json({ ok: false, error: CODE_FAILED }, 400);
+    if (body.plan !== "matura") return json({ ok: false, error: CODE_PAKIET_ONLY }, 400);
+    return json({ ok: true, code: promo.code, amountOff: promo.amountOff });
+  }
   if (!validPurchaseConsents(body.consents, body.termsVersion)) {
     return json({ ok: false, error: "Odśwież stronę i potwierdź aktualny regulamin, wiek oraz żądanie rozpoczęcia usługi." }, 400);
   }
@@ -84,16 +103,19 @@ async function handle(request: Request) {
     return json({ ok: false, error: "Masz już Premium. Szczegóły znajdziesz na stronie konta." }, 409);
   }
 
-  // A creator's code: must exist, be active, and not be the buyer's own.
+  // A creator's code: must exist, be active, and not be the buyer's own. Otherwise a Stripe promotion code.
   const code = normalizeAffiliateCode(body.code);
   let affiliate: { id: string; discount_percent: number } | null = null;
+  let promo: Promotion | null = null;
   if (code) {
     const { data, error } = validAffiliateCode(code)
       ? await admin.from("affiliates").select("id, user_id, discount_percent").eq("code", code).eq("active", true).maybeSingle()
       : { data: null, error: null };
     if (error) throw error;
-    if (!data || data.user_id === user.id) return json({ ok: false, error: "Ten kod nie działa. Popraw go albo usuń." }, 400);
-    affiliate = data;
+    if (data && data.user_id !== user.id) affiliate = data;
+    else if (!data && validAffiliateCode(code)) promo = await findPromotionCode(secretKey, code, planId);
+    if (!affiliate && !promo) return json({ ok: false, error: CODE_FAILED }, 400);
+    if (promo && planId !== "matura") return json({ ok: false, error: CODE_PAKIET_ONLY }, 400);
   }
 
   // 5. One Stripe customer per student (keeps receipts and the subscription together).
@@ -146,7 +168,9 @@ async function handle(request: Request) {
     // Stripe's own code field only for the one-time Pakiet: a 100% code on the subscription still asks
     // for a card and starts charging from the second month, which testers don't expect.
     // Stripe refuses both fields together, so a checkout with a discount sends only the discount.
-    ...(coupon
+    ...(promo
+      ? { discounts: [{ promotion_code: promo.id }] }
+      : coupon
       ? { discounts: [{ coupon: coupon.id }] }
       : plan.mode === "payment" ? { allow_promotion_codes: true } : {}),
     ...(embedded
@@ -181,6 +205,11 @@ async function handle(request: Request) {
   try {
     session = await createSessionWithCoupon(customerId);
   } catch (err) {
+    // Used up or expired between the check and now: Stripe refuses the code itself.
+    if (promo && /promotion code/i.test(String(err))) {
+      console.warn("Stripe refused the promotion code:", err);
+      return json({ ok: false, error: "Ten kod został już wykorzystany albo wygasł." }, 400);
+    }
     // The saved customer is gone (deleted in Stripe, or you switched from test to live keys): make a new one.
     if (!/No such customer/i.test(String(err))) throw err;
     customerId = await newCustomer();
@@ -189,4 +218,27 @@ async function handle(request: Request) {
   return embedded
     ? json({ ok: true, clientSecret: session.client_secret!, sessionId: session.id })
     : json({ ok: true, url: session.url! });
+}
+
+type Promotion = { id: string; code: string; amountOff: number };
+type StripeCoupon = { valid?: boolean; percent_off?: number | null; amount_off?: number | null; currency?: string | null };
+
+/**
+ * An active promotion code from the Stripe Dashboard → { id, code, amountOff } (grosze off this plan),
+ * or null when there's none, it's used up, or its coupon is in another currency. The coupon is a field
+ * of the code on older API versions and promotion.coupon (an id) on newer ones.
+ */
+async function findPromotionCode(secretKey: string, code: string, planId: keyof typeof BILLING_PLANS): Promise<Promotion | null> {
+  type Code = { id: string; code: string; max_redemptions?: number | null; times_redeemed?: number; coupon?: StripeCoupon | string; promotion?: { coupon?: StripeCoupon | string } };
+  const list = await stripe<{ data?: Code[] }>(secretKey, "GET", "promotion_codes", { code, active: true, limit: 1 });
+  const found = list.data?.[0];
+  if (!found || (found.max_redemptions && (found.times_redeemed ?? 0) >= found.max_redemptions)) return null;
+  const ref = found.promotion?.coupon ?? found.coupon;
+  const coupon = typeof ref === "string" ? await stripe<StripeCoupon>(secretKey, "GET", `coupons/${encodeURIComponent(ref)}`) : ref;
+  if (!coupon?.valid) return null;
+  const price = BILLING_PLANS[planId].amount;
+  const amountOff = coupon.percent_off
+    ? Math.round((price * coupon.percent_off) / 100)
+    : coupon.amount_off && coupon.currency === CURRENCY ? Math.min(coupon.amount_off, price) : null;
+  return amountOff ? { id: found.id, code: found.code, amountOff } : null;
 }

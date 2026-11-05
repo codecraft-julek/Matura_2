@@ -16,6 +16,8 @@ let handler: (request: Request) => Promise<Response>;
 let db: Record<string, Record<string, any>[]>;
 let stripeCalls: { method: string; path: string; form: URLSearchParams }[];
 let missingCoupons: Set<string>;
+let promotionCodes: Record<string, any>[];
+let usedUpCodes: Set<string>;
 let emails: { to: string[]; subject: string; text: string }[];
 
 /** Just enough of supabase-js over plain arrays. */
@@ -68,7 +70,11 @@ const fakeStripe = vi.fn(async (input: string, init: RequestInit) => {
   const path = url.pathname.replace("/v1/", "");
   const form = init.method === "POST" ? (init.body as URLSearchParams) : url.searchParams;
   stripeCalls.push({ method: init.method!, path, form });
+  if (path === "promotion_codes") return stripeReply({ data: promotionCodes.filter((c) => c.code === form.get("code") && c.active) });
+  if (path === "coupons/pakiet-gratis") return stripeReply({ id: "pakiet-gratis", valid: true, percent_off: 100, amount_off: null, currency: null });
   if (path === "checkout/sessions") {
+    const promo = form.get("discounts[0][promotion_code]");
+    if (promo && usedUpCodes.has(promo)) return stripeReply({ error: { message: "This promotion code cannot be redeemed because the associated customer has prior transactions." } }, 400);
     const coupon = form.get("discounts[0][coupon]");
     if (coupon && missingCoupons.has(coupon)) return stripeReply({ error: { message: `No such coupon: '${coupon}'` } }, 400);
     return stripeReply({ id: "cs_new", url: "https://stripe.test/pay", client_secret: "secret" });
@@ -95,6 +101,8 @@ beforeEach(() => {
   stripeCalls = [];
   emails = [];
   missingCoupons = new Set();
+  usedUpCodes = new Set();
+  promotionCodes = [{ id: "promo_free", code: "PAKIET-GRATIS", active: true, max_redemptions: 1, times_redeemed: 0, promotion: { type: "coupon", coupon: "pakiet-gratis" } }];
   db = {
     affiliates: [{ id: AFFILIATE, user_id: "creator", email: "creator@test.pl", code: "ANIA", active: true, commission_percent: 15, discount_percent: 20, commission_months: 3 }],
     affiliate_sales: [],
@@ -250,7 +258,60 @@ describe("billing-checkout takes a creator's code", () => {
     const res = await checkout("matura", code);
     expect(res.status).toBe(400);
     expect((await res.json()).error).toMatch(/kod nie działa/);
-    expect(stripeCalls).toEqual([]);
+    expect(stripeCalls.filter((c) => c.method === "POST")).toEqual([]);
+  });
+});
+
+describe("billing-checkout takes a promotion code from the Stripe Dashboard", () => {
+  const post = (body: Record<string, unknown>) => handler(new Request("https://example.test/billing-checkout", {
+    method: "POST",
+    headers: { authorization: "Bearer token", origin: "https://site.test" },
+    body: JSON.stringify(body),
+  }));
+  const checkout = (plan: string, code: string) => post({ plan, code, termsVersion: PURCHASE_CONSENT_VERSION, consents: { terms: true, age: true, earlyStart: true } });
+  const session = () => stripeCalls.filter((c) => c.path === "checkout/sessions").at(-1)?.form;
+
+  beforeEach(() => start("billing-checkout"));
+
+  it("tells the payment page what the code takes off the Pakiet, without opening a payment", async () => {
+    const res = await post({ check: "code", plan: "matura", code: " pakiet-gratis " });
+    expect(await res.json()).toEqual({ ok: true, code: "PAKIET-GRATIS", amountOff: 12900 });
+    expect(stripeCalls.filter((c) => c.method === "POST")).toEqual([]);
+  });
+
+  it("puts the code on the Pakiet checkout instead of Stripe's code field", async () => {
+    expect((await checkout("matura", "PAKIET-GRATIS")).status).toBe(200);
+    expect(session()!.get("discounts[0][promotion_code]")).toBe("promo_free");
+    expect(session()!.get("allow_promotion_codes")).toBeNull();
+    expect(session()!.get("metadata[affiliate_id]")).toBeNull();
+  });
+
+  it("refuses it on the subscription, where 100% would still charge from the second month", async () => {
+    for (const res of [await post({ check: "code", plan: "monthly", code: "PAKIET-GRATIS" }), await checkout("monthly", "PAKIET-GRATIS")]) {
+      expect(res.status).toBe(400);
+      expect((await res.json()).error).toMatch(/tylko z Pakietem/);
+    }
+    expect(session()).toBeUndefined();
+  });
+
+  it("refuses a used-up code before Stripe does, and says so when Stripe refuses it", async () => {
+    promotionCodes[0].times_redeemed = 1;
+    expect((await post({ check: "code", plan: "matura", code: "PAKIET-GRATIS" })).status).toBe(400);
+    expect((await checkout("matura", "PAKIET-GRATIS")).status).toBe(400);
+    expect(session()).toBeUndefined();
+
+    promotionCodes[0].times_redeemed = 0;
+    usedUpCodes.add("promo_free");
+    const res = await checkout("matura", "PAKIET-GRATIS");
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/wykorzystany albo wygasł/);
+  });
+
+  it("a creator's code still wins over a Stripe code with the same name", async () => {
+    promotionCodes.push({ id: "promo_ania", code: "ANIA", active: true, promotion: { coupon: "pakiet-gratis" } });
+    await checkout("matura", "ANIA");
+    expect(session()!.get("discounts[0][coupon]")).toBe("kod-20-2580");
+    expect(stripeCalls.some((c) => c.path === "promotion_codes")).toBe(false);
   });
 });
 
