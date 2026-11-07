@@ -44,6 +44,14 @@ describe("prompt building", () => {
     expect(buildTutorInstructions()).toBe(p);
   });
 
+  it("asks for diagrams only from pages that can draw them", () => {
+    expect(buildTutorInstructions()).not.toContain("```diagram");
+    const withDiagrams = buildTutorInstructions({ diagrams: true });
+    expect(withDiagrams).toContain("DIAGRAMY");
+    expect(withDiagrams).toContain("```diagram\n{");
+    expect(tutorRequestSchema.safeParse({ message: "Hej", diagrams: true }).success).toBe(true);
+  });
+
   it("describes the task, the key and the student's answers", () => {
     const text = buildTaskContext(ctx, { "1": "PF_" });
     expect(text).toContain("Zadanie 1: Prawda czy fałsz");

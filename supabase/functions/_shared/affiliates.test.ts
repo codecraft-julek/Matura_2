@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PLANS } from "../../../src/config/plans";
 import { affiliateSchema, checkoutCoupon, firstPayment, formatPln, normalizeAffiliateCode, parsePln, payoutSchema, validAffiliateCode } from "./affiliates";
-import { MONTHLY_INTRO_COUPON } from "./billing";
 
 describe("normalizeAffiliateCode", () => {
   it("accepts what people really type", () => {
@@ -16,32 +15,26 @@ describe("normalizeAffiliateCode", () => {
 });
 
 describe("checkoutCoupon", () => {
-  const price = (planId: "monthly" | "matura", percent: number, first: boolean) => formatPln(firstPayment(planId, checkoutCoupon(planId, percent, first)));
+  const price = (planId: "monthly" | "matura", percent: number) => formatPln(firstPayment(planId, checkoutCoupon(planId, percent)));
 
-  it("keeps today's prices when there is no code", () => {
-    expect(checkoutCoupon("monthly", 0, true)).toBe(MONTHLY_INTRO_COUPON);
-    expect(checkoutCoupon("monthly", 0, false)).toBeNull();
-    expect(checkoutCoupon("matura", 0, true)).toBeNull();
+  it("keeps the full prices when there is no code", () => {
+    expect(checkoutCoupon("monthly", 0)).toBeNull();
+    expect(checkoutCoupon("matura", 0)).toBeNull();
   });
 
-  it("takes the code's percent off the cheaper first month", () => {
-    expect(price("monthly", 10, true)).toBe("22,49 zł");
-    expect(price("monthly", 20, true)).toBe("19,99 zł");
-    expect(checkoutCoupon("monthly", 10, true)).toMatchObject({ id: "kod-10-750", amount_off: 750, duration: "once", name: "Pierwszy miesiąc i kod -10%" });
-  });
-
-  it("takes it off the full price for a returning subscriber and the Pakiet", () => {
-    expect(price("monthly", 10, false)).toBe("26,99 zł");
-    expect(price("matura", 10, true)).toBe("116,10 zł");
-    expect(price("matura", 20, false)).toBe("103,20 zł");
-    expect(checkoutCoupon("matura", 10, true)?.name).toBe("Kod -10%");
+  it("takes the code's percent off the first payment", () => {
+    expect(price("monthly", 10)).toBe("35,99 zł");
+    expect(price("monthly", 20)).toBe("31,99 zł");
+    expect(checkoutCoupon("monthly", 10)).toMatchObject({ id: "kod-10-400", amount_off: 400, duration: "once", name: "Kod -10%" });
+    expect(price("matura", 10)).toBe("152,99 zł");
+    expect(price("matura", 20)).toBe("135,99 zł");
   });
 });
 
 describe("formatPln and parsePln", () => {
   it("writes prices the way the pricing page does", () => {
     const shown = (id: string) => PLANS.find((p) => p.id === id)!.price;
-    expect(formatPln(firstPayment("monthly", MONTHLY_INTRO_COUPON))).toBe(shown("monthly"));
+    expect(formatPln(firstPayment("monthly", null))).toBe(shown("monthly"));
     expect(formatPln(firstPayment("matura", null))).toBe(shown("matura"));
     expect(formatPln(0)).toBe("0 zł");
   });

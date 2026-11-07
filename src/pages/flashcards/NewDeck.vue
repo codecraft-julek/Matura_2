@@ -34,6 +34,7 @@ const TABS = [
 const SUBJECTS = [
   { value: 'polish', label: 'Polski' },
   { value: 'english', label: 'Angielski' },
+  { value: 'biology', label: 'Biologia' },
   { value: 'other', label: 'Inne' },
 ]
 const STYLES = [
@@ -47,7 +48,7 @@ const router = useRouter()
 const auth = useAuthStore()
 const billing = useBillingStore()
 const subjects = auth.profile?.subjects ?? []
-const defaultSubject = subjects.includes('polish') ? 'polish' : subjects.includes('english') ? 'english' : 'other'
+const defaultSubject = subjects.includes('polish') ? 'polish' : subjects.includes('english') ? 'english' : subjects.includes('biology') ? 'biology' : 'other'
 const draft = useDraft('deck-new', {
   tab: 'file', subject: defaultSubject, count: 20, style: defaultSubject === 'english' ? 'vocab' : 'auto', url: '', text: '', title: '',
 })

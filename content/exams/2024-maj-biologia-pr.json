@@ -1,0 +1,560 @@
+{
+  "id": "2024-maj-biologia-pr",
+  "subject": "biology",
+  "level": "extended",
+  "year": 2024,
+  "session": "main",
+  "title": "Biologia, poziom rozszerzony, maj 2024",
+  "durationMinutes": 180,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Biologia/MBIP-R0-100-A-2405-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Biologia/MBIP-R0-100-2405-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 4,
+      "items": {
+        "1.1": {
+          "answer": "Białka: monomer aminokwas, wiązanie peptydowe, funkcja np. budulcowa. Polisacharydy: monomer monosacharyd, wiązanie glikozydowe, funkcja np. zapasowa.",
+          "accepted": [],
+          "note": "1 pkt za trzy poprawne komórki tabeli.",
+          "points": 2
+        }
+      },
+      "hint": "To zadanie robisz w arkuszu (rysunek, schemat albo tabela). Tutaj zapisz krótko, co zaznaczasz, a potem porównaj z kluczem."
+    },
+    {
+      "no": 1,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Przyporządkuj odpowiedzi tak jak w tabeli w arkuszu",
+      "page": 4,
+      "items": {
+        "1.2": {
+          "answer": "DBC",
+          "rows": [
+            "I-rzędowa",
+            "II-rzędowa",
+            "III-rzędowa"
+          ]
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "ABCD"
+    },
+    {
+      "no": 2,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 5,
+      "items": {
+        "2": {
+          "answer": "Obszar o aktywności polimerazy: synteza DNA na matrycy RNA (lub DNA). Obszar o aktywności rybonukleazy: rozkład (trawienie) RNA.",
+          "accepted": [],
+          "note": "1 pkt za jedną poprawną funkcję.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 3,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 6,
+      "items": {
+        "3.1": {
+          "answer": "Samica wabi samce innego gatunku i je zjada, więc zdobywa pokarm mniejszym kosztem energii i czasu.",
+          "accepted": []
+        },
+        "3.2": {
+          "answer": "ATP; wzrasta; wystąpienie.",
+          "accepted": [
+            "atp, wzrasta, wystąpienie",
+            "atp wzrasta wystąpienie"
+          ],
+          "note": "1 pkt za dwa poprawne wybory.",
+          "points": 2
+        },
+        "3.3": {
+          "answer": "tracheole.",
+          "accepted": [
+            "tracheole",
+            "tracheola"
+          ]
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 7,
+      "items": {
+        "4": {
+          "answer": "A2",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "AB",
+            "12"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "AB12"
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "W każdym wierszu wybierz T (tak) albo N (nie)",
+      "page": 8,
+      "items": {
+        "5.1": {
+          "answer": "NT"
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "TN"
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 8,
+      "items": {
+        "5.2": {
+          "answer": "cysteina.",
+          "accepted": [
+            "cysteina",
+            "cys"
+          ]
+        },
+        "5.3": {
+          "answer": "Pary G–C łączą się trzema wiązaniami wodorowymi, a A–U dwoma, więc RNA bogatsze w GC jest trwalsze w wysokiej temperaturze.",
+          "accepted": []
+        },
+        "5.4": {
+          "answer": "Termofile, bo ich enzymy (np. polimeraza DNA) nie ulegają denaturacji w wysokich temperaturach stosowanych w PCR.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 9,
+      "items": {
+        "5.5": "D"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 6,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 10,
+      "items": {
+        "6.1": {
+          "answer": "Sporofit jest zielony (ma chlorofil), więc sam prowadzi fotosyntezę i nie zależy od gametofitu.",
+          "accepted": []
+        },
+        "6.2": {
+          "answer": "Roślina dwupienna, bo występują osobne gametofity męskie i żeńskie.",
+          "accepted": []
+        },
+        "6.3": {
+          "answer": "haploidalne; różne.",
+          "accepted": [
+            "haploidalne, różne",
+            "haploidalne różne"
+          ]
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 11,
+      "items": {
+        "7": "C"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 8,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 12,
+      "items": {
+        "8.1": {
+          "answer": "Im dłużej nasiona buka są przechowywane, tym słabiej kiełkują (maleje ich zdolność kiełkowania).",
+          "accepted": []
+        },
+        "8.2": {
+          "answer": "X to liścienie; prowadzą fotosyntezę (albo gromadzą materiały zapasowe dla siewki).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 13,
+      "items": {
+        "9.1": {
+          "answer": "skórka; merystemu wierzchołkowego; żywa.",
+          "accepted": [
+            "skórka, merystemu wierzchołkowego, żywa"
+          ],
+          "note": "1 pkt za dwa poprawne wybory.",
+          "points": 2
+        },
+        "9.2": {
+          "answer": "Cecha budowy skórki (np. ściśle przylegające komórki, kutykula, grube ściany) i jej znaczenie, np. ochrona przed utratą wody albo wnikaniem patogenów.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 14,
+      "items": {
+        "10.1": "B"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 10,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 14,
+      "items": {
+        "10.2": {
+          "answer": "PFF",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 11,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 15,
+      "items": {
+        "11": {
+          "answer": "D – trzustka; B – grasica; C – nadnercza (kora nadnerczy).",
+          "accepted": [
+            "d trzustka, b grasica, c nadnercza"
+          ],
+          "note": "1 pkt za jedną kolumnę albo dwa wiersze.",
+          "points": 2
+        }
+      },
+      "hint": "To zadanie robisz w arkuszu (rysunek, schemat albo tabela). Tutaj zapisz krótko, co zaznaczasz, a potem porównaj z kluczem."
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 16,
+      "items": {
+        "12.1": {
+          "answer": "Biegunka osmotyczna: niestrawione disacharydy zostają w jelicie i zatrzymują w nim wodę (osmoza). Biegunka sekrecyjna: komórki jelita wydzielają jony chlorkowe do światła jelita, a za nimi płynie woda.",
+          "accepted": [],
+          "note": "1 pkt za jeden z dwóch mechanizmów.",
+          "points": 2
+        },
+        "12.2": {
+          "answer": "spada; szybciej.",
+          "accepted": [
+            "spada, szybciej",
+            "spada szybciej"
+          ]
+        },
+        "12.3": {
+          "answer": "Zmniejsza się zapotrzebowanie na energię (np. słabsze oddychanie komórkowe), więc organizm zużywa mniej glukozy.",
+          "accepted": []
+        },
+        "12.4": {
+          "answer": "Wirus uszkadza komórki jelita wytwarzające laktazę, więc laktoza z mleka nie jest trawiona.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 13,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 17,
+      "items": {
+        "13.1": {
+          "answer": "tyroksyna (T4) albo trijodotyronina (T3).",
+          "accepted": [
+            "tyroksyna",
+            "trijodotyronina",
+            "t4",
+            "t3",
+            "trójjodotyronina",
+            "tetrajodotyronina"
+          ]
+        },
+        "13.2": {
+          "answer": "Przy braku jodu tarczyca wytwarza za mało hormonów, więc nie hamują one zwrotnie wydzielania TSH. TSH jest dużo i pobudza tarczycę do rozrostu (wole).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 18,
+      "items": {
+        "14.1": {
+          "answer": "Pajęczaki, bo mają cztery pary odnóży krocznych.",
+          "accepted": []
+        },
+        "14.2": {
+          "answer": "komórek tucznych; rozszerzenie; zwiększenie.",
+          "accepted": [
+            "komórek tucznych, rozszerzenie, zwiększenie"
+          ],
+          "note": "1 pkt za dwa poprawne wybory.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 19,
+      "items": {
+        "15.1": {
+          "answer": "Mitochondria mają własne DNA i rybosomy i wytwarzają część swoich białek, ale większość białek dostają z cytozolu (geny w jądrze), więc są tylko częściowo niezależne.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 19,
+      "items": {
+        "15.2": {
+          "answer": "PFF",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 15,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 20,
+      "items": {
+        "15.3": {
+          "answer": "glikolizy; pirogronian; mleczan.",
+          "accepted": [
+            "glikolizy, pirogronian, mleczan",
+            "glikolizy pirogronian mleczan"
+          ],
+          "note": "1 pkt za dwa poprawne wybory.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 16,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 21,
+      "items": {
+        "16.1": {
+          "answer": "Pełne paskowanie: AABB, AaBB, AABb, AaBb. Skrócony pasek: AAbb, Aabb, aaBB, aaBb.",
+          "accepted": [],
+          "note": "1 pkt za genotypy jednego fenotypu.",
+          "points": 2
+        },
+        "16.2": {
+          "answer": "Krzyżówka dwóch heterozygot AaBb (szachownica 4 × 4 gamet: AB, Ab, aB, ab) i stosunek wzorów paskowania 9 : 6 : 1.",
+          "accepted": [],
+          "note": "1 pkt za samą krzyżówkę.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 17,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 22,
+      "items": {
+        "17.1": {
+          "answer": "A1",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "AB",
+            "12"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "AB12"
+    },
+    {
+      "no": 17,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 22,
+      "items": {
+        "17.2": {
+          "answer": "Ramię akceptorowe przyłącza właściwy aminokwas. Antykodon łączy się komplementarnie z kodonem mRNA.",
+          "accepted": [],
+          "note": "1 pkt za jedną funkcję.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 18,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 23,
+      "items": {
+        "18.1": "D"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 18,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 23,
+      "items": {
+        "18.2": {
+          "answer": "Met–Pro–Ala–Cys (metionina, prolina, alanina, cysteina).",
+          "accepted": [
+            "met-pro-ala-cys",
+            "met pro ala cys",
+            "metionina, prolina, alanina, cysteina"
+          ]
+        }
+      }
+    },
+    {
+      "no": 19,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 24,
+      "items": {
+        "19.1": "C"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 19,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 24,
+      "items": {
+        "19.2": {
+          "answer": "FP"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 20,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 25,
+      "items": {
+        "20.1": {
+          "answer": "Płazy potrzebują wody do rozrodu i rozwoju larw (i wilgoci do oddychania skórą), więc osuszanie odbiera im siedliska.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 20,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 25,
+      "items": {
+        "20.2": "C"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 21,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 26,
+      "items": {
+        "21.1": {
+          "answer": "Hipoteza o wpływie krzewów na rośliny jednoroczne: próby B i C. Hipoteza o wpływie roślin jednorocznych na krzewy: próby A i B.",
+          "accepted": [
+            "b, c; a, b"
+          ],
+          "note": "1 pkt za jeden wiersz.",
+          "points": 2
+        },
+        "21.2": {
+          "answer": "Krzewy ograniczają parowanie wody z gleby i z liści roślin pod nimi, więc te rośliny mają więcej wody (i mogą dłużej prowadzić fotosyntezę), dlatego rosną lepiej.",
+          "accepted": []
+        }
+      }
+    }
+  ]
+}

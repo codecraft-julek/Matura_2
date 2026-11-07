@@ -13,7 +13,7 @@ const LOGGED_OUT = 'Zaloguj się ponownie.'
 const UUID = /^[0-9a-f-]{36}$/i
 
 const uuid = z.uuid()
-const subject = z.enum(['polish', 'english', 'other'])
+const subject = z.enum(['polish', 'english', 'biology', 'other'])
 const title = z.string().trim().min(1, 'Wpisz nazwę talii.').max(120)
 const front = z.string().trim().min(1, 'Uzupełnij przód fiszki.').max(FLASHCARD_LIMITS.frontChars)
 const back = z.string().trim().min(1, 'Uzupełnij tył fiszki.').max(FLASHCARD_LIMITS.backChars)

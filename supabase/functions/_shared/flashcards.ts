@@ -33,7 +33,7 @@ export type CardStyle = (typeof CARD_STYLES)[number];
 
 export const flashcardRequestSchema = z
   .object({
-    subject: z.enum(["polish", "english", "other"]),
+    subject: z.enum(["polish", "english", "biology", "other"]),
     kind: z.enum(AI_SOURCES),
     /** File name, page title or URL, shown on the deck. */
     label: z.string().trim().max(300).default(""),
@@ -106,6 +106,7 @@ const STYLE_HINT: Record<CardStyle, string> = {
 const SUBJECT_HINT: Record<string, string> = {
   polish: "Przedmiot: język polski (matura): epoki, lektury, bohaterowie, motywy, pojęcia, środki stylistyczne.",
   english: "Przedmiot: język angielski (matura). Słówka i zwroty po angielsku, znaczenia i wyjaśnienia po polsku.",
+  biology: "Przedmiot: biologia (matura rozszerzona): pojęcia, procesy, budowa i funkcje, genetyka, ewolucja, ekologia. Używaj polskich nazw zgodnych z podstawą programową, łacińskie tylko gdy są potrzebne.",
   other: "Przedmiot: inny.",
 };
 

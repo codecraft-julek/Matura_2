@@ -17,8 +17,7 @@ export function passSavings(now = new Date()) {
   let payments = 0
   while (monthsLater(now, payments) <= until) payments++
 
-  const { price, renewalPrice } = planOf('monthly')
-  const monthly = grosze(price) + grosze(renewalPrice) * (payments - 1)
+  const monthly = grosze(planOf('monthly').price) * payments
   const saved = monthly - grosze(planOf('matura').price)
   if (saved <= 0) return null
   return { payments, percent: Math.floor((saved / monthly) * 100) }

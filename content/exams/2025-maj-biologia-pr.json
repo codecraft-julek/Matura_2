@@ -1,0 +1,621 @@
+{
+  "id": "2025-maj-biologia-pr",
+  "subject": "biology",
+  "level": "extended",
+  "year": 2025,
+  "session": "main",
+  "title": "Biologia, poziom rozszerzony, maj 2025",
+  "durationMinutes": 180,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Biologia/MBIP-R0-100-A-2505-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MBIP-R0-100-2505-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 3,
+      "items": {
+        "1.1": {
+          "answer": "FP"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 1,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 3,
+      "items": {
+        "1.2": {
+          "answer": "Strukturę III-rzędową, bo rybonukleaza ma jeden łańcuch polipeptydowy, a mostki powstają w jego obrębie.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 2,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 4,
+      "items": {
+        "2.1": {
+          "answer": "chloroplasty (mikrofotografia A) przekształcają się w chromoplasty (mikrofotografia B).",
+          "accepted": [],
+          "note": "1 pkt za trzy poprawne luki.",
+          "points": 2
+        },
+        "2.2": {
+          "answer": "Np. otoczenie dwiema błonami, własne DNA albo rybosomy.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 3,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 5,
+      "items": {
+        "3.1": {
+          "answer": "płyn Lugola (jod w jodku potasu).",
+          "accepted": [
+            "płyn lugola",
+            "lugol",
+            "jodyna",
+            "roztwór jodu w jodku potasu"
+          ]
+        },
+        "3.2": {
+          "answer": "strefa wydłużania (elongacji).",
+          "accepted": [
+            "strefa wydłużania",
+            "strefa elongacyjna",
+            "strefa wzrostu wydłużeniowego",
+            "elongacyjna",
+            "wydłużania"
+          ]
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 7,
+      "items": {
+        "4.1": {
+          "answer": "Np. Wpływ temperatury na aktywność aktynidazy (enzymu z kiwi).",
+          "accepted": []
+        },
+        "4.2": {
+          "answer": "W temperaturze pokojowej aktynidaza jest bardziej aktywna i rozkłada (trawi) kolagen galaretki, więc galaretka się upłynnia.",
+          "accepted": []
+        },
+        "4.3": {
+          "answer": "Próby kontrolne pokazują, że galaretka nie upłynnia się sama w tych temperaturach, więc zmiana wynika z działania aktynidazy.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 7,
+      "items": {
+        "4.4": {
+          "answer": "FPP",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 8,
+      "items": {
+        "5.1": {
+          "answer": "PF"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 8,
+      "items": {
+        "5.2": {
+          "answer": "chityna.",
+          "accepted": [
+            "chityna"
+          ]
+        },
+        "5.3": {
+          "answer": "Twardy oskórek (pancerz) nie rośnie razem z rakiem, więc rak musi go zrzucić, żeby urosnąć.",
+          "accepted": []
+        },
+        "5.4": {
+          "answer": "Tylko rak szlachetny może być wskaźnikiem, bo żyje wyłącznie w czystych wodach, a rak pręgowaty także w zanieczyszczonych.",
+          "accepted": []
+        },
+        "5.5": {
+          "answer": "W dwóch rodzajach, bo mają różne łacińskie nazwy rodzajowe (Astacus i Faxonius).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 10,
+      "items": {
+        "6.1": {
+          "answer": "Płazy potrzebują wody do rozrodu i rozwoju larw (a także wilgoci skóry do oddychania), więc osuszanie odbiera im siedliska.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 11,
+      "items": {
+        "6.2": {
+          "answer": "C2",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "ABC",
+            "123"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "ABC123"
+    },
+    {
+      "no": 6,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 11,
+      "items": {
+        "6.3": {
+          "answer": "FPF",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 7,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 12,
+      "items": {
+        "7.1": {
+          "answer": "W słodkiej wodzie jest mniej jonów Na+ i Cl− niż w płynach ryby, więc ryba je traci (dyfuzja przez skrzela i z dużą ilością moczu) i musi je pobierać.",
+          "accepted": []
+        },
+        "7.2": {
+          "answer": "W pysku samicy jaja i młode są chronione przed drapieżnikami (i mają dobre warunki rozwoju), więc więcej z nich przeżywa.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 13,
+      "items": {
+        "8.1": {
+          "answer": "płazy.",
+          "accepted": [
+            "płazy",
+            "amphibia"
+          ]
+        },
+        "8.2": {
+          "answer": "Tętnice, bo wyprowadzają krew z serca (z komory).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 14,
+      "items": {
+        "8.3": {
+          "answer": "B1",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "AB",
+            "12"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "AB12"
+    },
+    {
+      "no": 9,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 15,
+      "items": {
+        "9.1": {
+          "answer": "1 – kostna (B), 2 – chrzęstna szklista (C), 3 – łączna właściwa zbita (A), 4 – tłuszczowa (D).",
+          "accepted": [],
+          "note": "1 pkt za jedną kolumnę albo dwa wiersze.",
+          "points": 2
+        }
+      },
+      "hint": "To zadanie robisz w arkuszu (rysunek, schemat albo tabela). Tutaj zapisz krótko, co zaznaczasz, a potem porównaj z kluczem."
+    },
+    {
+      "no": 9,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 15,
+      "items": {
+        "9.2": {
+          "answer": "B3",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "AB",
+            "123"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "AB123"
+    },
+    {
+      "no": 9,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 15,
+      "items": {
+        "9.3": {
+          "answer": "Maź stawowa zmniejsza tarcie powierzchni stawowych (i amortyzuje wstrząsy).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 16,
+      "items": {
+        "10.1": {
+          "answer": "Spowolnienie rozkładu acetylocholiny: T i T. Rozluźnienie i zwiotczenie mięśni: N i N.",
+          "accepted": [],
+          "note": "1 pkt za jeden wiersz albo jedną kolumnę.",
+          "points": 2
+        }
+      },
+      "hint": "To zadanie robisz w arkuszu (rysunek, schemat albo tabela). Tutaj zapisz krótko, co zaznaczasz, a potem porównaj z kluczem."
+    },
+    {
+      "no": 10,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 17,
+      "items": {
+        "10.2": {
+          "answer": "A1",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "AB",
+            "12"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "AB12"
+    },
+    {
+      "no": 11,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 17,
+      "items": {
+        "11": {
+          "answer": "niedoboru; zwiększenia; nasilenia.",
+          "accepted": [
+            "niedoboru, zwiększenia, nasilenia",
+            "niedoboru zwiększenia nasilenia"
+          ],
+          "note": "1 pkt za dwa poprawne wybory.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Przyporządkuj odpowiedzi tak jak w tabeli w arkuszu",
+      "page": 19,
+      "items": {
+        "12.1": {
+          "answer": "BC",
+          "rows": [
+            "1.",
+            "2."
+          ]
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "ABC"
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 19,
+      "items": {
+        "12.2": {
+          "answer": "Glukoza w komórce wątroby jest od razu fosforylowana (albo zamieniana w glikogen), więc jej stężenie w komórce pozostaje niższe niż we krwi i glukoza dalej dyfunduje do środka.",
+          "accepted": []
+        },
+        "12.3": {
+          "answer": "GLUT2 umożliwia dyfuzję (polarnej) glukozy przez błonę, np. jej wyjście z komórek wątroby do krwi w czasie głodu.",
+          "accepted": []
+        },
+        "12.4": {
+          "answer": "Np. glukagon albo adrenalina.",
+          "accepted": [
+            "glukagon",
+            "adrenalina",
+            "epinefryna",
+            "kortyzol",
+            "noradrenalina",
+            "hormon wzrostu"
+          ]
+        }
+      }
+    },
+    {
+      "no": 13,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 21,
+      "items": {
+        "13.1": {
+          "answer": "Przeciwciała w ADC rozpoznają antygeny występujące tylko na komórkach nowotworowych.",
+          "accepted": []
+        },
+        "13.2": {
+          "answer": "Gdyby łącznik rozpadł się po drodze, lek uwolniłby się we krwi: nie dotarłby do komórek nowotworowych i szkodziłby zdrowym komórkom.",
+          "accepted": []
+        },
+        "13.3": {
+          "answer": "Enzymy lizosomów rozkładają ADC (łącznik) i uwalniają lek wewnątrz komórki nowotworowej.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 22,
+      "items": {
+        "14.1": {
+          "answer": "E1 – restryktaza, tnie DNA (plazmid). E2 – ligaza, łączy fragmenty DNA.",
+          "accepted": [
+            "e1 restryktaza, e2 ligaza"
+          ],
+          "note": "1 pkt za jeden wiersz.",
+          "points": 2
+        },
+        "14.2": {
+          "answer": "Bakteria przenosi zrekombinowany plazmid (obcy gen) do komórki roślinnej.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Przyporządkuj odpowiedzi tak jak w tabeli w arkuszu",
+      "page": 23,
+      "items": {
+        "15": {
+          "answer": "CB",
+          "rows": [
+            "nekroza",
+            "apoptoza"
+          ],
+          "points": 2
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "ABC"
+    },
+    {
+      "no": 16,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 24,
+      "items": {
+        "16.1": {
+          "answer": "delecja.",
+          "accepted": [
+            "delecja"
+          ]
+        },
+        "16.2": {
+          "answer": "Leu–Val–Val–Pro–Leu.",
+          "accepted": [
+            "leu-val-val-pro-leu",
+            "leu val val pro leu",
+            "lvvpl",
+            "leucyna, walina, walina, prolina, leucyna"
+          ]
+        }
+      }
+    },
+    {
+      "no": 16,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 25,
+      "items": {
+        "16.3": "A"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 16,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 25,
+      "items": {
+        "16.4": {
+          "answer": "HHIᴬIᴬ, HhIᴬIᴬ, HHIᴬi, HhIᴬi (czyli H_Iᴬ_).",
+          "accepted": []
+        }
+      },
+      "hint": "Allele możesz zapisać zwykłymi literami, np. HHIAIA."
+    },
+    {
+      "no": 17,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 27,
+      "items": {
+        "17.1": {
+          "answer": "Około 23 °C (między 20 a 25 °C).",
+          "accepted": [
+            "23 °c",
+            "23°c",
+            "około 23 °c",
+            "23 stopnie c"
+          ]
+        },
+        "17.2": {
+          "answer": "Tak, bo powyżej optimum (ok. 25 °C) aktywność ryby wyraźnie spada.",
+          "accepted": []
+        },
+        "17.3": {
+          "answer": "Dwie cechy i ich rola, np. spłaszczone ciało i zakopywanie się w piasku (atak z ukrycia), zmiana ubarwienia (kamuflaż), oczy na szczycie głowy.",
+          "accepted": [],
+          "note": "1 pkt za jedną cechę z wyjaśnieniem.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 18,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 28,
+      "items": {
+        "18.1": {
+          "answer": "To konwergencja, bo formy poduszkowe powstały niezależnie u niespokrewnionych roślin w podobnych warunkach.",
+          "accepted": []
+        },
+        "18.2": {
+          "answer": "Np. niska temperatura (mróz), silny wiatr, mała dostępność wody albo silne nasłonecznienie.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 18,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "W każdym wierszu wybierz T (tak) albo N (nie)",
+      "page": 29,
+      "items": {
+        "18.3": {
+          "answer": "NTTT",
+          "rows": [
+            "ż. – pyłek",
+            "ż. – owoce",
+            "ob. – pyłek",
+            "ob. – owoce"
+          ]
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "TN"
+    },
+    {
+      "no": 19,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 30,
+      "items": {
+        "19.1": {
+          "answer": "Ptaki z ogrodów zoologicznych zwiększają różnorodność genetyczną populacji, co ogranicza skutki chowu wsobnego i zwiększa szanse jej przetrwania.",
+          "accepted": []
+        },
+        "19.2": {
+          "answer": "CITES zakazuje (reguluje) międzynarodowego handlu tym gatunkiem, co ogranicza odławianie ptaków.",
+          "accepted": []
+        }
+      }
+    }
+  ]
+}

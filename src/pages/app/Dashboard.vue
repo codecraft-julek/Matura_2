@@ -60,7 +60,7 @@ const actions = computed(() => [
 ])
 
 const MODE = { exam: 'egzamin', practice: 'ćwiczenia' }
-const NOTE_SUBJECT = { polish: 'polski', english: 'angielski', other: 'inne' }
+const NOTE_SUBJECT = { polish: 'polski', english: 'angielski', biology: 'biologia', other: 'inne' }
 const examName = a => (a.exam ? `${SUBJECT_LABEL[a.exam.subject] ?? a.exam.title} ${a.exam.year}, ${a.exam.level === 'extended' ? 'rozszerzony' : 'podstawowy'}` : 'Arkusz')
 </script>
 

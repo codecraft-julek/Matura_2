@@ -10,6 +10,7 @@ import { TUTOR_LIMITS } from '@shared/tutor'
 import AiRating from '@/ui/AiRating.vue'
 import { ROUTES } from '@/config/routes'
 import { streamTutorReply } from '@/lib/ai'
+import { plainTutorText } from '@/lib/tutor/format'
 import { useBillingStore } from '@/stores/billing'
 import TutorDeckOffer from './TutorDeckOffer.vue'
 import TutorText from './TutorText.vue'
@@ -108,7 +109,7 @@ async function send(text) {
     const content = res.reply ?? reply
     messages.value.push({ role: 'assistant', content, id: res.messageId, rating: null, deck_proposal: res.deckProposal ?? null, deck_id: null })
     streaming.value = null
-    announce.value = `Tutor: ${content}`
+    announce.value = `Tutor: ${plainTutorText(content)}`
     if (created) {
       chatId.value = created
       emit('chat-created', created, messages.value)

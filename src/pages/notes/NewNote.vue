@@ -21,6 +21,7 @@ import AppField from '@/ui/AppField.vue'
 const SUBJECTS = [
   { value: 'polish', label: 'Polski' },
   { value: 'english', label: 'Angielski' },
+  { value: 'biology', label: 'Biologia' },
   { value: 'other', label: 'Inne' },
 ]
 /** A finished note is about this many characters of JSON; used to show real progress. */
@@ -36,7 +37,7 @@ const router = useRouter()
 const auth = useAuthStore()
 const billing = useBillingStore()
 const subjects = auth.profile?.subjects ?? []
-const defaultSubject = subjects.includes('polish') ? 'polish' : subjects.includes('english') ? 'english' : 'other'
+const defaultSubject = subjects.includes('polish') ? 'polish' : subjects.includes('english') ? 'english' : subjects.includes('biology') ? 'biology' : 'other'
 const draft = useDraft('note-new', { subject: defaultSubject, text: '' })
 
 const photos = ref([]) // [{ id, url }]

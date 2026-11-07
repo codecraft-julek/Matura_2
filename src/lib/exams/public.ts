@@ -8,7 +8,7 @@ import { examContentSchema } from "./content.ts";
 
 export type PublicExam = {
   id: string;
-  subject: "polish" | "english";
+  subject: "polish" | "english" | "biology";
   level: "basic" | "extended";
   year: number;
   session: "main" | "june" | "august" | "sample";
@@ -58,14 +58,15 @@ export function toPublicExam(raw: unknown): PublicExam {
   };
 }
 
-/** Newest first (polish before english, basic before extended). */
+/** Newest first (polish, english, biology; basic before extended). */
 export function sortPublicExams(exams: PublicExam[]): PublicExam[] {
-  const order = (e: PublicExam) => (e.subject === "polish" ? 0 : 2) + (e.level === "basic" ? 0 : 1);
+  const SUBJECT_ORDER = { polish: 0, english: 2, biology: 4 };
+  const order = (e: PublicExam) => SUBJECT_ORDER[e.subject] + (e.level === "basic" ? 0 : 1);
   return [...exams].sort((a, b) => b.year - a.year || order(a) - order(b));
 }
 
 // Wording for titles: "Matura z angielskiego 2025, poziom podstawowy".
-export const SUBJECT_FROM: Record<PublicExam["subject"], string> = { polish: "z polskiego", english: "z angielskiego" };
+export const SUBJECT_FROM: Record<PublicExam["subject"], string> = { polish: "z polskiego", english: "z angielskiego", biology: "z biologii" };
 export const LEVEL_SHORT: Record<PublicExam["level"], string> = { basic: "podstawowy", extended: "rozszerzony" };
 
 export function examHeadline(e: PublicExam): string {

@@ -1,0 +1,703 @@
+{
+  "id": "2026-maj-biologia-pr",
+  "subject": "biology",
+  "level": "extended",
+  "year": 2026,
+  "session": "main",
+  "title": "Biologia, poziom rozszerzony, maj 2026",
+  "durationMinutes": 180,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Biologia/MBIP-R0-100-A-2605-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Biologia/MBIP-R0-100-2605-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 3,
+      "items": {
+        "1.1": {
+          "answer": "35 reszt cysteiny daje najwyżej 17 par, czyli 17 mostków disiarczkowych, więc strukturę stabilizuje maksymalna możliwa ich liczba.",
+          "accepted": []
+        },
+        "1.2": {
+          "answer": "Długie kwasy tłuszczowe słabo rozpuszczają się w osoczu (wodzie), a albumina dobrze, więc albumina je przenosi.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 2,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 4,
+      "items": {
+        "2.1": "B"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 2,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 5,
+      "items": {
+        "2.2": {
+          "answer": "Elektrony wybite światłem z centrum reakcji PS II są uzupełniane elektronami z rozkładu wody, który przeprowadza enzym rozszczepiający wodę.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 2,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Uzupełnij zdanie: wybierz po jednej odpowiedzi do każdej luki",
+      "page": 5,
+      "items": {
+        "2.3": {
+          "answer": "BC",
+          "rows": [
+            "luka 1",
+            "luka 2"
+          ],
+          "rowOptions": [
+            "AB",
+            "CD"
+          ]
+        }
+      },
+      "hint": "Pierwsza luka to wybór A albo B, druga to C albo D.",
+      "options": "ABCD"
+    },
+    {
+      "no": 3,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 7,
+      "items": {
+        "3.1": {
+          "answer": "Szczepy wymieniły geny, więc powstały bakterie, które same syntetyzują wszystkie potrzebne aminokwasy i witaminy.",
+          "accepted": []
+        },
+        "3.2": {
+          "answer": "Filtr oddzielał bakterie, więc nie mogła zajść koniugacja (wymiana genów wymaga kontaktu komórek).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 3,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 7,
+      "items": {
+        "3.3": {
+          "answer": "A2",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "AB",
+            "12"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "AB12"
+    },
+    {
+      "no": 4,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 8,
+      "items": {
+        "4.1": {
+          "answer": "Linezolid blokuje rybosomy, więc bakteria nie może syntetyzować białek.",
+          "accepted": []
+        },
+        "4.2": {
+          "answer": "Np. bakterie Gram (+) mają grubą ścianę z peptydoglikanu, a Gram (−) cienką ścianę i dodatkową błonę zewnętrzną.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "W każdym wierszu wybierz T (tak) albo N (nie)",
+      "page": 9,
+      "items": {
+        "5.1": {
+          "answer": "TT"
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "TN"
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 9,
+      "items": {
+        "5.2": {
+          "answer": "Przyśpiesza, bo parowanie wody z liści (transpiracja) wytwarza ssanie, które ciągnie słup wody w drewnie (kohezja).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 10,
+      "items": {
+        "6.1": {
+          "answer": "Nasiona nie miały wody, a woda jest potrzebna do pęcznienia i uruchomienia metabolizmu, czyli do kiełkowania.",
+          "accepted": []
+        },
+        "6.2": {
+          "answer": "Świeże rośliny zawierają zmienną ilość wody, która zafałszowałaby wynik.",
+          "accepted": []
+        },
+        "6.3": {
+          "answer": "Grupa 1., bo nasiona prawie nie prowadziły metabolizmu, więc zachowały wyjściową ilość związków organicznych.",
+          "accepted": []
+        },
+        "6.4": {
+          "answer": "Rośliny z grupy 2. przybrały na suchej masie, a przyrost masy wymaga fotosyntezy.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "W każdym wierszu wybierz T (tak) albo N (nie)",
+      "page": 11,
+      "items": {
+        "6.5": {
+          "answer": "TT"
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "TN"
+    },
+    {
+      "no": 7,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 12,
+      "items": {
+        "7.1": {
+          "answer": "B2",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "AB",
+            "12"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "AB12"
+    },
+    {
+      "no": 7,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 12,
+      "items": {
+        "7.2": {
+          "answer": "I – łyko (floem), II – drewno (ksylem).",
+          "accepted": [
+            "łyko, drewno",
+            "floem, ksylem",
+            "i – łyko, ii – drewno"
+          ]
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 13,
+      "items": {
+        "8.1": {
+          "answer": "Nie, bo w organizmie człowieka pasożyt nie rozmnaża się płciowo (człowiek jest żywicielem pośrednim).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 13,
+      "items": {
+        "8.2": {
+          "answer": "PP"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 8,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 13,
+      "items": {
+        "8.3": {
+          "answer": "Nie, bo toksoplazmozą nie zaraża się od drugiego człowieka, tylko np. przez skażoną glebę, surowe mięso albo odchody kota.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 9,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 14,
+      "items": {
+        "9": {
+          "answer": "X – obojczyk, Y – łopatka.",
+          "accepted": [
+            "obojczyk, łopatka",
+            "x – obojczyk, y – łopatka",
+            "x obojczyk, y łopatka"
+          ]
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Uzupełnij zdanie: wybierz po jednej odpowiedzi do każdej luki",
+      "page": 14,
+      "items": {
+        "10": {
+          "answer": "AD",
+          "rows": [
+            "luka 1",
+            "luka 2"
+          ],
+          "rowOptions": [
+            "AB",
+            "CD"
+          ]
+        }
+      },
+      "hint": "Pierwsza luka to wybór A albo B, druga to C albo D.",
+      "options": "ABCD"
+    },
+    {
+      "no": 11,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Uzupełnij zdanie: wybierz po jednej odpowiedzi do każdej luki",
+      "page": 15,
+      "items": {
+        "11.1": {
+          "answer": "AD",
+          "rows": [
+            "luka 1",
+            "luka 2"
+          ],
+          "rowOptions": [
+            "AB",
+            "CD"
+          ]
+        }
+      },
+      "hint": "Pierwsza luka to wybór A albo B, druga to C albo D.",
+      "options": "ABCD"
+    },
+    {
+      "no": 11,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 15,
+      "items": {
+        "11.2": {
+          "answer": "PP"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "W każdym wierszu wybierz T (tak) albo N (nie)",
+      "page": 17,
+      "items": {
+        "12.1": {
+          "answer": "NT"
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "TN"
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 17,
+      "items": {
+        "12.2": {
+          "answer": "TMAO chroni białko CI2 przed denaturacją wywołaną przez mocznik.",
+          "accepted": []
+        },
+        "12.3": {
+          "answer": "Im głębiej żyją ryby (kostno- i chrzęstnoszkieletowe), tym więcej TMAO mają w mięśniach.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 17,
+      "items": {
+        "12.4": {
+          "answer": "PP"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 13,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 19,
+      "items": {
+        "13.1": {
+          "answer": "Próba kontrolna pokazuje, że tlen w bańce powietrza ubywa z powodu oddychania jaszczurki, a nie innych czynników.",
+          "accepted": []
+        },
+        "13.2": {
+          "answer": "Hipoteza się potwierdza: tlenu w bańce przy głowie jaszczurki ubywa, a w próbie kontrolnej jego ilość jest stała.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 21,
+      "items": {
+        "14.1": {
+          "answer": "Limfocyty CAR-T mogłyby niszczyć zdrowe komórki organizmu.",
+          "accepted": []
+        },
+        "14.2": {
+          "answer": "Zwykły limfocyt T rozpoznaje antygen tylko podany przez cząsteczki MHC, a CAR-T rozpoznaje antygen komórki nowotworowej bezpośrednio.",
+          "accepted": []
+        },
+        "14.3": {
+          "answer": "Retrowirus wbudowuje gen receptora CAR do genomu limfocytu, więc jest on stale wytwarzany (także w komórkach potomnych). Przy elektroporacji do komórki trafia mRNA, które szybko się rozkłada (i rozcieńcza przy podziałach), więc receptor powstaje krótko.",
+          "accepted": [],
+          "note": "1 pkt za jedną z dwóch metod.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 22,
+      "items": {
+        "14.4": {
+          "answer": "PP"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 14,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 22,
+      "items": {
+        "14.5": {
+          "answer": "grasica.",
+          "accepted": [
+            "grasica",
+            "thymus"
+          ]
+        }
+      }
+    },
+    {
+      "no": 15,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 22,
+      "items": {
+        "15.1": {
+          "answer": "Przeciwciała pojawiają się po zakończonej, skutecznej odpowiedzi odpornościowej, więc świadczą o przebytym zakażeniu.",
+          "accepted": []
+        },
+        "15.2": {
+          "answer": "HCV ma RNA, a PCR powiela DNA, więc najpierw odwrotna transkryptaza przepisuje RNA wirusa na DNA.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 16,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Uzupełnij zdanie: wybierz po jednej odpowiedzi do każdej luki",
+      "page": 23,
+      "items": {
+        "16.1": {
+          "answer": "BC",
+          "rows": [
+            "luka 1",
+            "luka 2"
+          ],
+          "rowOptions": [
+            "AB",
+            "CD"
+          ]
+        }
+      },
+      "hint": "Pierwsza luka to wybór A albo B, druga to C albo D.",
+      "options": "ABCD"
+    },
+    {
+      "no": 16,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 23,
+      "items": {
+        "16.2": {
+          "answer": "Np. jądro – translacja nie zachodzi; mitochondrium – translacja zachodzi.",
+          "accepted": [],
+          "note": "1 pkt za pierwszą kolumnę albo jeden wiersz.",
+          "points": 2
+        }
+      },
+      "hint": "To zadanie robisz w arkuszu (rysunek, schemat albo tabela). Tutaj zapisz krótko, co zaznaczasz, a potem porównaj z kluczem."
+    },
+    {
+      "no": 17,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 24,
+      "items": {
+        "17.1": {
+          "answer": "peptydowe.",
+          "accepted": [
+            "peptydowe",
+            "peptydowe (amidowe)",
+            "amidowe",
+            "wiązanie peptydowe"
+          ]
+        },
+        "17.2": {
+          "answer": "metafaza i anafaza (na ich granicy).",
+          "accepted": [
+            "metafaza, anafaza",
+            "metafaza i anafaza",
+            "anafaza, metafaza"
+          ]
+        },
+        "17.3": {
+          "answer": "faza S (interfazy).",
+          "accepted": [
+            "faza s",
+            "s",
+            "interfaza",
+            "faza s interfazy"
+          ]
+        }
+      }
+    },
+    {
+      "no": 18,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "W każdym wierszu wybierz T (tak) albo N (nie)",
+      "page": 25,
+      "items": {
+        "18.1": {
+          "answer": "NT"
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "TN"
+    },
+    {
+      "no": 18,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 25,
+      "items": {
+        "18.2": "A"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 19,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 26,
+      "items": {
+        "19": {
+          "answer": "Samica: bd//bd. Gamety drugiego rodzica: BD i bd po 41,25%, Bd i bD po 8,75%. Prawdopodobieństwo osobnika brązowego o normalnych odnóżach: 41,25%.",
+          "accepted": [],
+          "note": "Za każdy z trzech elementów 1 pkt.",
+          "points": 3
+        }
+      },
+      "hint": "Rozpisz to na kartce. Pamiętaj, że geny są sprzężone, więc liczy się częstość crossing-over."
+    },
+    {
+      "no": 20,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 27,
+      "items": {
+        "20.1": {
+          "answer": "To ewolucja zbieżna (konwergencja): szablaste zęby powstały niezależnie u niespokrewnionych zwierząt.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 20,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 27,
+      "items": {
+        "20.2": {
+          "answer": "FF"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 21,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 28,
+      "items": {
+        "21.1": {
+          "answer": "Mutualizm (fakultatywny), bo oba gatunki korzystają: np. żaba zjada mrówki i larwy much niszczące jaja pająka, a pająk chroni żabę i daje jej miejsce do żerowania.",
+          "accepted": []
+        },
+        "21.2": {
+          "answer": "Pająki zaczynają trawić pokarm poza ciałem (wstrzykują enzymy), a płazy trawią tylko wewnątrz przewodu pokarmowego.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 22,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 29,
+      "items": {
+        "22.1": {
+          "answer": "Żywiciele pośredni: racicznica zmienna i ryby karpiowate. Żywiciele ostateczni: ryby rybożerne.",
+          "accepted": []
+        }
+      },
+      "hint": "Wypisz z tekstu wszystkich żywicieli, osobno pośrednich i ostatecznych."
+    },
+    {
+      "no": 22,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 29,
+      "items": {
+        "22.2": {
+          "answer": "Pierwszym żywicielem pośrednim może być tylko racicznica zmienna, więc bez niej cykl przywry się nie zamknie.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 23,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 30,
+      "items": {
+        "23.1": {
+          "answer": "FF"
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 23,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 31,
+      "items": {
+        "23.2": {
+          "answer": "Fałszywe, bo nisza podstawowa to zbiór warunków potrzebnych gatunkowi do życia, a nie obszar jego występowania.",
+          "accepted": []
+        },
+        "23.3": {
+          "answer": "Przedział mniej więcej od 10 °C do 25 °C (dolna granica 9–13 °C, górna 21–26 °C).",
+          "accepted": []
+        }
+      }
+    }
+  ]
+}

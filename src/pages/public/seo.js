@@ -18,12 +18,12 @@ export const PAGE_SEO = {
   home: {
     path: ROUTES.home,
     title: 'Arkusze maturalne CKE, feedback AI i fiszki',
-    description: 'Prawdziwe arkusze maturalne CKE z polskiego i angielskiego sprawdzane od razu według klucza, feedback AI do wypracowań, notatki AI i fiszki. Darmowe konto na start.',
+    description: 'Prawdziwe arkusze maturalne CKE z polskiego, angielskiego i biologii sprawdzane od razu według klucza, feedback AI do wypracowań, notatki AI i fiszki. Darmowe konto na start.',
   },
   publicExams: {
     path: ROUTES.publicExams,
-    title: 'Arkusze maturalne CKE z odpowiedziami – polski i angielski',
-    description: 'Wszystkie arkusze maturalne CKE w formule 2023 z polskiego i angielskiego (poziom podstawowy i rozszerzony). Rozwiązuj online i od razu sprawdzaj odpowiedzi.',
+    title: 'Arkusze maturalne CKE z odpowiedziami – polski, angielski, biologia',
+    description: 'Wszystkie arkusze maturalne CKE w formule 2023 z polskiego i angielskiego (poziom podstawowy i rozszerzony) oraz z biologii (poziom rozszerzony). Rozwiązuj online i od razu sprawdzaj odpowiedzi.',
   },
   contact: {
     path: ROUTES.contact,

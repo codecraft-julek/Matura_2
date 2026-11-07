@@ -3,7 +3,8 @@
 // The exam text itself is in the official CKE PDF; here students only mark/type answers.
 //   choice            → letters (A–H, T/F, P/F, digits) as round radio buttons
 //   choice + meta.rows → one row of letters per part, answer = one character per row, "_" = empty
-//   open, section test → Polish open answer, textarea (3000)
+//                        (meta.rowOptions: different letters per row, e.g. biology "A–C" then "1–3")
+//   open, section test → Polish open answer, textarea (3000); biology ("tasks") too
 //   open              → English short answer, input (200)
 //   writing           → textarea with word counter (meta.words), rules and criteria
 import { computed, useId } from 'vue'
@@ -27,12 +28,19 @@ function letterLabel(letter) {
   const opts = props.task.options.join('')
   if (opts === 'TF') return letter === 'T' ? 'T — True' : 'F — False'
   if (opts === 'PF') return letter === 'P' ? 'P — prawda' : 'F — fałsz'
+  if (opts === 'TN') return letter === 'T' ? 'T — tak' : 'N — nie'
   return letter
 }
 
 const rows = computed(() => props.task.meta?.rows ?? null)
 const parts = computed(() => (rows.value ? rowParts(rows.value, props.modelValue) : []))
 const setPart = (i, letter) => set(setRowPart(rows.value, props.modelValue, i, letter))
+const rowLetters = i => props.task.meta?.rowOptions?.[i]?.split('') ?? props.task.options
+// Longer row labels (biology: "uzasadnienie") get a column as wide as the longest, so letters stay aligned.
+const labelWidth = computed(() => {
+  const longest = Math.max(0, ...(rows.value ?? []).map(r => r.length))
+  return longest > 4 ? `${longest + 1}ch` : null
+})
 
 const words = computed(() => (props.task.kind === 'writing' ? countWords(props.modelValue) : 0))
 const rule = computed(() => wordsRule(props.task.meta?.words))
@@ -62,8 +70,8 @@ const criteriaText = computed(() => (props.task.meta?.criteria ?? []).map(c => `
     <span v-if="isSubtask(task)" class="task-no">{{ task.number }}</span>
     <div class="multi-rows">
       <div v-for="(row, i) in rows" :key="row" role="radiogroup" :aria-label="`Zadanie ${task.number}, ${row}`" class="multi-row">
-        <span class="row-label">{{ row }}</span>
-        <label v-for="letter in task.options" :key="letter" class="letter" :class="{ 'is-on': parts[i] === letter }">
+        <span class="row-label" :style="labelWidth && { width: labelWidth }">{{ row }}</span>
+        <label v-for="letter in rowLetters(i)" :key="letter" class="letter" :class="{ 'is-on': parts[i] === letter }">
           <input type="radio" :name="`${fieldId}-${i}`" :value="letter" :checked="parts[i] === letter" :aria-label="letterLabel(letter)" @change="setPart(i, letter)" />
           {{ letter }}
         </label>
@@ -72,8 +80,8 @@ const criteriaText = computed(() => (props.task.meta?.criteria ?? []).map(c => `
     <div v-if="result" class="result-line"><ResultBadge :result="result" /></div>
   </div>
 
-  <!-- Polish open tasks need sentences, not a few words -->
-  <div v-else-if="task.kind === 'open' && task.section === 'test'" class="task-input">
+  <!-- Polish and biology open tasks need sentences, not a few words -->
+  <div v-else-if="task.kind === 'open' && (task.section === 'test' || task.section === 'tasks')" class="task-input">
     <label :for="fieldId" :class="isSubtask(task) ? 'task-no' : 'sr-only'">{{ isSubtask(task) ? task.number : `Odpowiedź do zadania ${task.number}` }}</label>
     <textarea :id="fieldId" class="textarea open-area" :value="modelValue" :rows="task.points >= 3 ? 7 : 3" maxlength="3000" placeholder="Twoja odpowiedź…" @input="set($event.target.value)"></textarea>
     <div v-if="result" class="result-line"><ResultBadge :result="result" /></div>

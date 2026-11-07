@@ -1,0 +1,598 @@
+{
+  "id": "2023-maj-biologia-pr",
+  "subject": "biology",
+  "level": "extended",
+  "year": 2023,
+  "session": "main",
+  "title": "Biologia, poziom rozszerzony, maj 2023",
+  "durationMinutes": 180,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Biologia/MBIP-R0-100-2305.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Biologia/MBIP-R0-100-2305-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 4,
+      "items": {
+        "1.1": {
+          "answer": "transacetylacja – E2, dehydrogenacja – E3, dekarboksylacja – E1.",
+          "accepted": [
+            "e2, e3, e1",
+            "e2 e3 e1",
+            "e2e3e1"
+          ]
+        }
+      },
+      "hint": "Wpisz oznaczenia enzymów w kolejności: transacetylacja, dehydrogenacja, dekarboksylacja."
+    },
+    {
+      "no": 1,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 5,
+      "items": {
+        "1.2": "B"
+      },
+      "options": "ABCDE"
+    },
+    {
+      "no": 1,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 5,
+      "items": {
+        "1.3": {
+          "answer": "Pirogronian (produkt glikolizy) musi zostać przekształcony w acetylo-CoA (substrat cyklu Krebsa). Robi to właśnie dehydrogenaza pirogronianowa, więc bez niej oba szlaki nie byłyby połączone.",
+          "accepted": []
+        },
+        "1.4": {
+          "answer": "Pirogronian z glikolizy nie jest w całości przekształcany w acetylo-CoA, więc jego nadmiar jest redukowany do mleczanu (fermentacja mleczanowa) i stężenie mleczanu rośnie.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 2,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 6,
+      "items": {
+        "2.1": {
+          "answer": "A – korona (płatki korony), B – kielich (działki kielicha).",
+          "accepted": [
+            "korona, kielich",
+            "a – korona, b – kielich",
+            "a korona, b kielich"
+          ]
+        },
+        "2.2": {
+          "answer": "okrytonasiennych; sporofit.",
+          "accepted": [
+            "okrytonasiennych, sporofit",
+            "okrytonasiennych sporofit",
+            "okrytonasienne, sporofit"
+          ]
+        },
+        "2.3": {
+          "answer": "Barwny kwiat przywabia owady zapylające, co zwiększa szansę na zapylenie i wydanie nasion.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 3,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 7,
+      "items": {
+        "3.1": {
+          "answer": "Mejoza zaznaczona poprawnie na obu schematach (A i B): tam, gdzie liczba chromosomów spada z 2n do n.",
+          "accepted": []
+        }
+      },
+      "hint": "To zadanie robisz w arkuszu (rysunek, schemat albo tabela). Tutaj zapisz krótko, co zaznaczasz, a potem porównaj z kluczem."
+    },
+    {
+      "no": 3,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 7,
+      "items": {
+        "3.2": {
+          "answer": "Przy zapłodnieniu liczba chromosomów się podwaja, więc w cyklu musi zajść mejoza, która ją zmniejsza o połowę. Dzięki temu liczba chromosomów w kolejnych pokoleniach pozostaje stała.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 4,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 9,
+      "items": {
+        "4.1": {
+          "answer": "PFF",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 4,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 9,
+      "items": {
+        "4.2": {
+          "answer": "Żeby rośliny przed doświadczeniem były jak najbardziej do siebie podobne, a różnice w wynikach wynikały tylko z nowych warunków oświetlenia.",
+          "accepted": []
+        },
+        "4.3": {
+          "answer": "To pomiar wyjściowy (kontrolny): pozwala obliczyć, jak zmieniła się zawartość chlorofilu po przeniesieniu roślin do nowych warunków oświetlenia.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 10,
+      "items": {
+        "5.1": {
+          "answer": "A – karboksylacja (przyłączenie CO2 do RuBP), B – redukcja (PGA), C – regeneracja RuBP.",
+          "accepted": [
+            "karboksylacja, redukcja, regeneracja",
+            "a – karboksylacja, b – redukcja, c – regeneracja"
+          ],
+          "note": "1 pkt za dwie poprawne nazwy.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 11,
+      "items": {
+        "5.2": {
+          "answer": "C1",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "ABC",
+            "123"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "ABC123"
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 11,
+      "items": {
+        "5.3": {
+          "answer": "FFF",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 5,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 11,
+      "items": {
+        "5.4": {
+          "answer": "1) Dwuetapowe wiązanie CO2 koncentruje CO2 w komórkach, w których działa RuBisCO, więc enzym rzadziej wiąże tlen. 2) Brak PSII w komórkach pochew okołowiązkowych oznacza brak fotolizy wody i wydzielania tlenu, więc mało w nich O2.",
+          "accepted": [],
+          "note": "1 pkt za jeden z dwóch elementów.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 6,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 12,
+      "items": {
+        "6.1": {
+          "answer": "Auksyny wytwarzane przez młode liście hamują powstawanie strefy odcinającej w ogonkach liściowych.",
+          "accepted": []
+        },
+        "6.2": {
+          "answer": "Zrzucanie liści ogranicza transpirację (utratę wody) w okresie, gdy pobieranie wody z gleby jest utrudnione.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 7,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 13,
+      "items": {
+        "7.1": {
+          "answer": "Płuca płazów są workowate, mało pofałdowane, bez pęcherzyków, więc mają małą powierzchnię wymiany gazowej. Płazy nie mają też mięśni oddechowych (przepony), więc wentylują płuca mniej wydajnie i część gazów wymieniają przez skórę.",
+          "accepted": [],
+          "note": "1 pkt za jedną poprawną różnicę.",
+          "points": 2
+        },
+        "7.2": {
+          "answer": "Mocznik zwiększa stężenie osmotyczne płynów ustrojowych (są hipertoniczne względem otoczenia), dzięki czemu woda napływa do ciała osmotycznie.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Dokończ zdanie i wybierz uzasadnienie",
+      "page": 14,
+      "items": {
+        "8.1": {
+          "answer": "C1",
+          "rows": [
+            "odpowiedź",
+            "uzasadnienie"
+          ],
+          "rowOptions": [
+            "ABC",
+            "123"
+          ]
+        }
+      },
+      "hint": "Najpierw wybierz literę (dokończenie zdania), potem cyfrę (uzasadnienie).",
+      "options": "ABC123"
+    },
+    {
+      "no": 8,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 15,
+      "items": {
+        "8.2": "D"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 9,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 15,
+      "items": {
+        "9.1": {
+          "answer": "deaminacja; glikogenogeneza.",
+          "accepted": [
+            "deaminacja, glikogenogeneza",
+            "deaminacja glikogenogeneza"
+          ]
+        },
+        "9.2": {
+          "answer": "Sole kwasów żółciowych emulgują tłuszcze: rozbijają je na drobne kropelki, co zwiększa powierzchnię, na której działa lipaza.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 17,
+      "items": {
+        "10.1": {
+          "answer": "kolagen; chityna.",
+          "accepted": [
+            "kolagen, chityna",
+            "kolagen chityna"
+          ]
+        },
+        "10.2": {
+          "answer": "krtanią; oskrzela główne.",
+          "accepted": [
+            "krtanią, oskrzela główne",
+            "krtania, oskrzela główne"
+          ]
+        }
+      }
+    },
+    {
+      "no": 10,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 17,
+      "items": {
+        "10.3": "C"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 11,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 19,
+      "items": {
+        "11.1": {
+          "answer": "PFF",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 11,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 19,
+      "items": {
+        "11.2": {
+          "answer": "obniżonego; ułatwia.",
+          "accepted": [
+            "obniżonego, ułatwia",
+            "obniżonego ułatwia"
+          ]
+        },
+        "11.3": {
+          "answer": "Np. transport CO2 albo jonów H+, udział w buforowaniu pH krwi.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 21,
+      "items": {
+        "12.1": {
+          "answer": "PPF",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 21,
+      "items": {
+        "12.2": {
+          "answer": "Struktura IV-rzędowa, bo toksyna jest zbudowana z dwóch łańcuchów polipeptydowych (lekkiego i ciężkiego).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 12,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Przyporządkuj odpowiedzi tak jak w tabeli w arkuszu",
+      "page": 21,
+      "items": {
+        "12.3": {
+          "answer": "1423",
+          "rows": [
+            "wiersz 1",
+            "wiersz 2",
+            "wiersz 3",
+            "wiersz 4"
+          ]
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "1234"
+    },
+    {
+      "no": 13,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 22,
+      "items": {
+        "13.1": {
+          "answer": "Brakujące deoksyrybonukleotydy wpisane zgodnie z zasadą komplementarności (A–T, G–C) do nici matrycowej.",
+          "accepted": []
+        }
+      },
+      "hint": "To zadanie robisz w arkuszu (rysunek, schemat albo tabela). Tutaj zapisz krótko, co zaznaczasz, a potem porównaj z kluczem."
+    },
+    {
+      "no": 13,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 22,
+      "items": {
+        "13.2": {
+          "answer": "Nici rozdziela się wysoką temperaturą (ok. 90–95 °C), czyli przez denaturację termiczną.",
+          "accepted": []
+        },
+        "13.3": {
+          "answer": "Polimeraza DNA nie zaczyna syntezy od zera: dołącza nukleotydy tylko do istniejącego odcinka (startera).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 23,
+      "items": {
+        "14.1": {
+          "answer": "Met–Trp–Phe–Trp (metionina, tryptofan, fenyloalanina, tryptofan).",
+          "accepted": [
+            "met-trp-phe-trp",
+            "met trp phe trp",
+            "metionina, tryptofan, fenyloalanina, tryptofan"
+          ]
+        },
+        "14.2": {
+          "answer": "5′ AUG UGG UUU UGG 3′ oraz 5′ AUG UGG UUC UGG 3′ (fenyloalaninę kodują UUU i UUC).",
+          "accepted": [
+            "aug ugg uuu ugg, aug ugg uuc ugg"
+          ]
+        },
+        "14.3": {
+          "answer": "5′ UGA 3′ (kodon stop).",
+          "accepted": [
+            "uga",
+            "5′ uga 3′",
+            "5' uga 3'"
+          ]
+        }
+      }
+    },
+    {
+      "no": 14,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 24,
+      "items": {
+        "14.4": "C"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 15,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 24,
+      "items": {
+        "15": {
+          "answer": "Poprawna krzyżówka (szachownica gamet rodziców), stosunek fenotypów czarne : brązowe : żółte = 1 : 1 : 2 i prawdopodobieństwo ciemnego nosa u żółtego szczenięcia 1/2 (50%).",
+          "accepted": [],
+          "note": "2 pkt za krzyżówkę i jeden z dwóch wyników, 1 pkt za samą krzyżówkę.",
+          "points": 3
+        }
+      },
+      "hint": "Krzyżówkę rozpisz na kartce, tutaj wpisz stosunek fenotypów i prawdopodobieństwo."
+    },
+    {
+      "no": 16,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Wybierz jedną odpowiedź",
+      "page": 25,
+      "items": {
+        "16.1": "A"
+      },
+      "options": "ABCD"
+    },
+    {
+      "no": 16,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 25,
+      "items": {
+        "16.2": {
+          "answer": "Dzięki podobieństwu do wargatka (czyściciela) aspidont łatwiej zbliża się do ryb, którymi się żywi, albo rzadziej jest atakowany przez drapieżniki.",
+          "accepted": []
+        },
+        "16.3": {
+          "answer": "Osobniki najbardziej podobne do wargatka częściej zdobywały pokarm albo unikały drapieżników, więc częściej przeżywały i zostawiały potomstwo. Dobór naturalny utrwalił ten wygląd w kolejnych pokoleniach.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 17,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "Oceń, czy stwierdzenia są prawdziwe (P) czy fałszywe (F)",
+      "page": 27,
+      "items": {
+        "17.1": {
+          "answer": "PPP",
+          "points": 2
+        }
+      },
+      "hint": "Każdy wiersz to jedno stwierdzenie z arkusza, w tej samej kolejności.",
+      "options": "PF"
+    },
+    {
+      "no": 17,
+      "section": "tasks",
+      "kind": "open",
+      "label": "Zadanie otwarte",
+      "page": 27,
+      "items": {
+        "17.2": {
+          "answer": "Bez koszenia i wypasu rozrosły się krzewy i drzewa, które zacieniły i wyparły (w konkurencji) rośliny murawy kserotermicznej.",
+          "accepted": []
+        },
+        "17.3": {
+          "answer": "B i C.",
+          "accepted": [
+            "b, c",
+            "b c",
+            "bc",
+            "c, b",
+            "b i c"
+          ],
+          "note": "1 pkt za jedną poprawną odpowiedź.",
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 18,
+      "section": "tasks",
+      "kind": "choice",
+      "label": "W każdym wierszu wybierz T (tak) albo N (nie)",
+      "page": 28,
+      "items": {
+        "18": {
+          "answer": "TTT",
+          "points": 2
+        }
+      },
+      "hint": "Wiersze idą w tej samej kolejności co w arkuszu.",
+      "options": "TN"
+    }
+  ]
+}

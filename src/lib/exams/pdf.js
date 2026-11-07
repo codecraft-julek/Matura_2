@@ -9,7 +9,7 @@ export function officialPdfPath(source) {
   const path = url.pathname.slice(CKE_SHEETS_PATH.length)
   if (url.origin !== 'https://cke.gov.pl' || url.username || url.password || url.search
     || !url.pathname.startsWith(CKE_SHEETS_PATH)
-    || !/^20\d{2}\/Jezyk_(polski|angielski)\/poziom_(podstawowy|rozszerzony)\/[A-Za-z0-9_-]+\.pdf$/.test(path)) {
+    || !/^20\d{2}\/(Jezyk_(polski|angielski)\/poziom_(podstawowy|rozszerzony)|Biologia)\/[A-Za-z0-9_-]+\.pdf$/.test(path)) {
     throw new Error('Unsupported official exam URL')
   }
   return `${PDF_PROXY_PATH}${path}`

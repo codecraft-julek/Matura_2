@@ -26,7 +26,7 @@ const { data, loading, error, reload } = useAsync(async () => {
 
 const mySubjects = computed(() => auth.profile?.subjects ?? [])
 // Show the student's subjects first, but don't hide the rest.
-const subjects = computed(() => ['polish', 'english'].sort((a, b) => Number(mySubjects.value.includes(b)) - Number(mySubjects.value.includes(a))))
+const subjects = computed(() => ['polish', 'english', 'biology'].sort((a, b) => Number(mySubjects.value.includes(b)) - Number(mySubjects.value.includes(a))))
 
 const years = computed(() => [...new Set((data.value?.exams ?? []).map(e => e.year))].sort((a, b) => b - a))
 const year = computed(() => (route.query.rok ? Number(route.query.rok) : null))

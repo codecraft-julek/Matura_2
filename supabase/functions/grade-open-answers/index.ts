@@ -20,6 +20,7 @@ import {
   buildGradingContent,
   buildGradingInstructions,
   completeGrades,
+  GRADED_SUBJECT,
   gradeRequestSchema,
   officialGradingFiles,
   openAiGradesSchema,
@@ -88,7 +89,7 @@ async function handle(request: Request) {
     .maybeSingle();
   if (!attempt) return json({ ok: false, error: "Nie znaleziono tego podejścia." }, 404);
   const exam = attempt.exams as unknown as GradingExam;
-  if (!["polish", "english"].includes(exam.subject)) {
+  if (!GRADED_SUBJECT[exam.subject]) {
     return json({ ok: false, error: "Ocena AI nie obsługuje jeszcze tego przedmiotu." }, 400);
   }
 

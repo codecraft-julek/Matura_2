@@ -18,7 +18,8 @@ export function streamEssayFeedback(body, { onStart, onText } = {}) {
 /** tutor-chat (SSE: start {chatId} → delta {text}… → done {chatId, messageId}). */
 export function streamTutorReply(body, { onStart, onText } = {}) {
   let text = ''
-  return streamEdge('tutor-chat', body, {
+  // diagrams: this page draws ```diagram blocks, so the tutor may use them.
+  return streamEdge('tutor-chat', { ...body, diagrams: true }, {
     interrupted: 'Połączenie zostało przerwane. Spróbuj wysłać jeszcze raz.',
     onEvent(e) {
       if (e.type === 'start') onStart?.(e.chatId)

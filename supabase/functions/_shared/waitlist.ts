@@ -11,6 +11,7 @@ export const CONSENT_VERSION = "2026-10-17";
 export const SUBJECTS = [
   { value: "polish", label: "Polski" },
   { value: "english", label: "Angielski" },
+  { value: "biology", label: "Biologia" },
 ] as const;
 
 export const MATURA_YEARS = [
@@ -37,7 +38,7 @@ export const waitlistSchema = z.object({
     .max(254, "Ten adres jest za długi.")
     .pipe(z.email("Sprawdź adres e-mail, coś jest nie tak.")),
   subjects: z
-    .array(z.enum(["polish", "english"]), { error: "Zaznacz przynajmniej jeden przedmiot." })
+    .array(z.enum(["polish", "english", "biology"]), { error: "Zaznacz przynajmniej jeden przedmiot." })
     .min(1, "Zaznacz przynajmniej jeden przedmiot.")
     .transform((list) => [...new Set(list)]),
   maturaYear: z.enum(["2027", "2028", "other"], {

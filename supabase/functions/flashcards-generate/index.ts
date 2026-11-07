@@ -315,7 +315,7 @@ type StreamEvent =
 
 type Job = {
   userId: string;
-  subject: "polish" | "english" | "other";
+  subject: "polish" | "english" | "biology" | "other";
   kind: DeckSource;
   label: string;
   text: string;

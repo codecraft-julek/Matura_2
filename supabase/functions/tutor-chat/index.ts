@@ -161,6 +161,7 @@ async function handle(request: Request) {
     userMessageId: userMsg.id as number,
     isNewChat,
     wantsDeck: wantsFlashcards(req.message),
+    diagrams: req.diagrams === true,
     fake,
     model: Deno.env.get("AI_TUTOR_MODEL") ?? aiModel(),
     input: buildTutorInput(history, ctx ? buildTaskContext(ctx, req.answers) : null),
@@ -218,6 +219,7 @@ type Job = {
   userMessageId: number;
   isNewChat: boolean;
   wantsDeck: boolean;
+  diagrams: boolean;
   fake: boolean;
   model: string;
   input: ReturnType<typeof buildTutorInput>;
@@ -298,10 +300,10 @@ async function loadTaskContext(examId: string, groupNo: number): Promise<TutorTa
 async function askModel(job: Job, onDelta: (text: string) => void): Promise<{ reply: string; usage: Usage }> {
   const { text, usage, model } = await askAi({
     model: job.model,
-    instructions: buildTutorInstructions(),
+    instructions: buildTutorInstructions({ diagrams: job.diagrams }),
     input: job.input,
     maxTokens: 6000,
-    cacheKey: "tutor", // same instructions for everyone → cached, cheaper and faster
+    cacheKey: job.diagrams ? "tutor-diagrams" : "tutor", // same instructions for everyone → cached, cheaper and faster
     timeoutMs: AI_TIMEOUT_MS,
     onDelta,
     allowIncomplete: true, // a reply cut off at the limit is still useful

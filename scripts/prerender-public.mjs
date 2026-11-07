@@ -63,10 +63,10 @@ function homeBody() {
   }).join('')
   return `<div class="public-page prose">
 <h1>Matura? Spokojnie, ogarniesz.</h1>
-<p>Prawdziwe arkusze CKE sprawdzane od razu, feedback AI do wypracowań, notatki i fiszki. Twój plan na maturę z polskiego i angielskiego. Bez spiny.</p>
+<p>Prawdziwe arkusze CKE sprawdzane od razu, feedback AI do wypracowań, notatki i fiszki. Twój plan na maturę z polskiego, angielskiego i biologii. Bez spiny.</p>
 <p>${a(ROUTES.signup, 'Załóż darmowe konto', 'button button-lime')} ${a(EXAM_DEMO, 'Wypróbuj bez konta', 'link')} · ${a(ROUTES.login, 'Zaloguj się', 'link')}</p>
 <h2>Twój toolkit: 4 narzędzia, jeden cel</h2>
-<h3>Arkusze CKE. Bez niespodzianek.</h3><p>Majowe arkusze CKE 2023–2026 z polskiego i angielskiego. W trybie ćwiczeń wiesz po każdym zadaniu, co poszło dobrze według klucza CKE. W trybie egzaminu leci zegar. ${a(ROUTES.publicExams, 'Zobacz wszystkie arkusze', 'link')}</p>
+<h3>Arkusze CKE. Bez niespodzianek.</h3><p>Majowe arkusze CKE 2023–2026 z polskiego, angielskiego i biologii. W trybie ćwiczeń wiesz po każdym zadaniu, co poszło dobrze według klucza CKE. W trybie egzaminu leci zegar. ${a(ROUTES.publicExams, 'Zobacz wszystkie arkusze', 'link')}</p>
 <h3>Feedback AI do wypracowań</h3><p>Uwagi kryterium po kryterium według zasad CKE: co już działa, co poprawić i od czego zacząć. Z angielskiego też.</p>
 <h3>Notatki AI</h3><p>Wrzucasz zdjęcie zeszytu, PDF albo prezentację z lekcji. Dostajesz oś czasu, tabelę porównawczą, mapę myśli, fiszki i krótki quiz.</p>
 <h3>Fiszki</h3><p>Z PDF-a, Worda, strony albo filmu, z powtórkami, które układają się same. Import z Quizletu i Anki.</p>
@@ -88,7 +88,7 @@ function examListBody(exams) {
   const years = [...new Set(exams.map(e => e.year))]
   return `<div class="public-page prose">
 <h1>Arkusze maturalne CKE z odpowiedziami</h1>
-<p>Prawdziwe arkusze z polskiego i angielskiego. Czytasz oficjalny PDF z CKE, a odpowiedzi wpisujesz u nas: zadania zamknięte sprawdzamy od razu według klucza, a wypracowanie i odpowiedzi otwarte ocenia AI.</p>
+<p>Prawdziwe arkusze z polskiego, angielskiego i biologii. Czytasz oficjalny PDF z CKE, a odpowiedzi wpisujesz u nas: zadania zamknięte sprawdzamy od razu według klucza, a wypracowanie i odpowiedzi otwarte ocenia AI.</p>
 ${years.map(year => `<h2>Matura ${year}</h2>${ul(exams.filter(e => e.year === year).map(e =>
     `${a(publicExamRoute(e.id), `${SUBJECT_LABEL[e.subject]}, poziom ${LEVEL_SHORT[e.level]} (${SESSION_LABEL[e.session]} ${e.year})`)}: ${e.maxPoints} pkt · ${e.durationMinutes} min · ${esc(tasksLabel(e.taskCount))}`))}`).join('\n')}
 <h2>Rozwiązuj z automatycznym sprawdzaniem</h2>

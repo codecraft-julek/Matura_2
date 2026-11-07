@@ -120,9 +120,12 @@ export function completeGrades(tasks: GradableTask[], ai: AiGrades): Grade[] {
 }
 
 // ─── Prompt ─────────────────────────────────────────────────────────────────
+/** Subjects whose open answers AI can grade (with the official CKE sheet and key). */
+export const GRADED_SUBJECT: Record<string, string> = { polish: "z języka polskiego", english: "z języka angielskiego", biology: "z biologii" };
+
 export function buildGradingInstructions(subject = "polish"): string {
   return [
-    `Oceniasz zadania maturalne z języka ${subject === "english" ? "angielskiego" : "polskiego"} według zasad CKE.`,
+    `Oceniasz zadania maturalne ${GRADED_SUBJECT[subject] ?? GRADED_SUBJECT.polish} według zasad CKE.`,
     "Oceniasz krótkie odpowiedzi ucznia na zadania otwarte.",
     "Otrzymujesz oficjalny arkusz PDF, oficjalne zasady oceniania PDF oraz, dla zadań ze słuchania, transkrypcję. Odczytaj polecenie, tekst źródłowy i zasady dla właściwego numeru zadania.",
     "Zasady:",

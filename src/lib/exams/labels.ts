@@ -3,6 +3,7 @@
 export const SUBJECT_LABEL: Record<string, string> = {
   polish: "Język polski",
   english: "Język angielski",
+  biology: "Biologia",
 };
 
 export const LEVEL_LABEL: Record<string, string> = {
@@ -23,6 +24,7 @@ export const SECTION_LABEL: Record<string, string> = {
   language: "Znajomość środków językowych",
   writing: "Wypowiedź pisemna",
   test: "Arkusz 1 · test",
+  tasks: "Zadania",
 };
 
 export type ResultStatus =

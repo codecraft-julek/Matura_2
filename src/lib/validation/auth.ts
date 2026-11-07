@@ -42,7 +42,7 @@ export const profileSchema = z.object({
     .min(1, "Jak mamy się do Ciebie zwracać?")
     .max(40, "Maksymalnie 40 znaków."),
   subjects: z
-    .array(z.enum(["polish", "english"]), { error: "Zaznacz przynajmniej jeden przedmiot." })
+    .array(z.enum(["polish", "english", "biology"]), { error: "Zaznacz przynajmniej jeden przedmiot." })
     .min(1, "Zaznacz przynajmniej jeden przedmiot.")
     .transform((list) => [...new Set(list)]),
   maturaYear: z.enum(["2027", "2028", "other"], { error: "Wybierz rok matury." }),

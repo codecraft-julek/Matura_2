@@ -11,7 +11,7 @@ export const faqs = [
   },
   {
     question: 'Jakie przedmioty są dostępne?',
-    answer: 'Polski i angielski, poziom podstawowy i rozszerzony: majowe arkusze 2023–2026. Matematyka jest w planach.',
+    answer: 'Polski i angielski (poziom podstawowy i rozszerzony) oraz biologia rozszerzona: majowe arkusze 2023–2026. Matematyka jest w planach.',
   },
   {
     question: 'Jak sprawdzacie otwarte odpowiedzi?',
@@ -23,7 +23,7 @@ export const faqs = [
   },
   {
     question: 'Ile to kosztuje?',
-    answer: `Arkusze CKE i fiszki są darmowe bez limitu, a narzędzia AI mają darmowy limit. Premium za ${price('monthly')} w pierwszym miesiącu, potem ${PLANS.find(p => p.id === 'monthly')?.renewalPrice} miesięcznie, albo Pakiet do matury za ${price('matura')} jednorazowo daje więcej sprawdzeń wypracowań, notatek i rozmów z tutorem.`,
+    answer: `Arkusze CKE i fiszki są darmowe bez limitu, a narzędzia AI mają darmowy limit. Premium za ${price('monthly')} miesięcznie albo Pakiet do matury za ${price('matura')} jednorazowo daje więcej sprawdzeń wypracowań, notatek i rozmów z tutorem.`,
   },
   {
     question: 'Czy to oficjalne narzędzie CKE?',

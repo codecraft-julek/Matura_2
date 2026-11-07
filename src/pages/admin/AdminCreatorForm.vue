@@ -5,6 +5,7 @@ import { computed, reactive, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { ArrowLeft } from '@lucide/vue'
 import { PLATFORMS, affiliateSchema, checkoutCoupon, firstPayment, formatPln, parsePln } from '@shared/affiliates'
+import { BILLING_PLANS } from '@shared/billing'
 import { ROUTES, adminCreatorRoute } from '@/config/routes'
 import { useAsync } from '@/composables/useAsync'
 import { NoAdminAccess, adminAffiliate, adminAffiliates, saveAffiliate } from '@/lib/api/affiliates'
@@ -56,10 +57,10 @@ const preview = computed(() => {
   const discount = Number(values.discountPercent)
   const commission = Number(values.commissionPercent)
   if (!(discount >= 0 && discount <= 90 && commission >= 0 && commission <= 100)) return null
-  const pay = plan => firstPayment(plan, checkoutCoupon(plan, discount, plan === 'monthly'))
+  const pay = plan => firstPayment(plan, checkoutCoupon(plan, discount))
   const earn = amount => formatPln(Math.round((amount * commission) / 100))
   const months = values.commissionMonths === '' ? null : Number(values.commissionMonths)
-  return { monthly: pay('monthly'), matura: pay('matura'), renewal: 2999, months, earn }
+  return { monthly: pay('monthly'), matura: pay('matura'), renewal: BILLING_PLANS.monthly.amount, months, earn }
 })
 
 const errors = ref({})

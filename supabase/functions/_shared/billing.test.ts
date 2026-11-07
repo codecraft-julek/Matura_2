@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import { PLANS } from "../../../src/config/plans";
 import {
   BILLING_PLANS,
-  MONTHLY_INTRO_COUPON,
   quotaMessage,
   returnOrigin,
   subscriptionPeriodEnd,
@@ -61,8 +60,7 @@ describe("prices", () => {
   it("match what the pricing page shows", () => {
     const shown = (id: string) => PLANS.find((p) => p.id === id)!.price;
     const fmt = (grosze: number) => `${(grosze / 100).toLocaleString("pl-PL", { minimumFractionDigits: grosze % 100 ? 2 : 0 })} zł`;
-    expect(fmt(BILLING_PLANS.monthly.amount)).toBe(PLANS.find((p) => p.id === "monthly")!.renewalPrice);
-    expect(fmt(BILLING_PLANS.monthly.amount - MONTHLY_INTRO_COUPON.amount_off)).toBe(shown("monthly"));
+    expect(fmt(BILLING_PLANS.monthly.amount)).toBe(shown("monthly"));
     expect(fmt(BILLING_PLANS.matura.amount)).toBe(shown("matura"));
   });
 });

@@ -21,6 +21,11 @@ describe("content/exams/*.json", () => {
       // multi-row tasks ("PF", "14") store one character per row
       if (task.kind === "choice") for (const c of k.correct ?? "") expect(task.options).toContain(c);
     }
+    // Biology (formula 2023) is only extended: one sheet of 60 points, 180 minutes.
+    if (exam.subject === "biology") {
+      expect([exam.level, exam.maxPoints, exam.durationMinutes]).toEqual(["extended", 60, 180]);
+      expect(new Set(tasks.map((t) => t.section))).toEqual(new Set(["tasks"]));
+    }
     // Polish extended (formula 2023) is one essay: 35 pts, min. 500 words (2023–2024) or 400 (from 2025).
     if (exam.subject === "polish" && exam.level === "extended") {
       expect(tasks.map((t) => t.kind)).toEqual(["writing"]);
@@ -62,6 +67,15 @@ describe("examContentSchema", () => {
     expect(examContentSchema.safeParse(multi).success).toBe(true);
     const rows = { ...multi, groups: [{ ...multi.groups[0], items: { "1": { answer: "PPF", rows: ["A", "B"], points: 2 } } }] };
     expect(examContentSchema.safeParse(rows).success).toBe(false); // 3 answers, 2 rows
+  });
+
+  it("supports rows with their own letters (biology: answer A–C, then reason 1–3)", () => {
+    const combo = { ...base, maxPoints: 1, groups: [{ no: 1, section: "tasks", kind: "choice", label: "Dokończ zdanie", options: "ABC123", items: { "1": { answer: "C2", rows: ["odpowiedź", "uzasadnienie"], rowOptions: ["ABC", "123"] } } }] };
+    expect(examContentSchema.safeParse(combo).success).toBe(true);
+    const wrongRow = { ...combo, groups: [{ ...combo.groups[0], items: { "1": { answer: "2C", rows: ["odpowiedź", "uzasadnienie"], rowOptions: ["ABC", "123"] } } }] };
+    expect(examContentSchema.safeParse(wrongRow).success).toBe(false);
+    const { tasks } = toRows(examContentSchema.parse(combo));
+    expect(tasks[0].meta).toMatchObject({ rows: ["odpowiedź", "uzasadnienie"], rowOptions: ["ABC", "123"] });
   });
 
   it("supports writing tasks with sheet-specific requirements", () => {

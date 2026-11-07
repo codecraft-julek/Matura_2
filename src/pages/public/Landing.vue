@@ -55,7 +55,7 @@ onBeforeUnmount(() => {
   <div class="landing">
     <section class="hero container" aria-labelledby="hero-heading">
       <div class="hero-copy">
-        <div class="hero-eyebrow"><span class="status-dot"></span> MATURA 2027 & 2028 <span class="eyebrow-divider"></span> POLSKI I ANGIELSKI</div>
+        <div class="hero-eyebrow"><span class="status-dot"></span> MATURA 2027 & 2028 <span class="eyebrow-divider"></span> POLSKI, ANGIELSKI, BIOLOGIA</div>
         <h1 id="hero-heading">Matura?<br />Spokojnie,<br /><span class="highlight-word">ogarniesz.<svg viewBox="0 0 420 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 13Q190-2 414 8M36 18Q219 5 390 15" /></svg></span><BrandMark class="heading-spark" /></h1>
         <p class="hero-description">Prawdziwe arkusze CKE sprawdzane od razu,<br class="hide-narrow" /> feedback AI do wypracowań, notatki i fiszki.<br class="hide-narrow" /> Twój plan na maturę. Bez spiny.</p>
         <div class="hero-buttons">
@@ -69,7 +69,7 @@ onBeforeUnmount(() => {
       <a class="hero-scroll" href="#narzedzia"><ArrowDown :size="14" /> ODKRYJ NARZĘDZIA</a>
     </section>
 
-    <div class="benefits-strip"><div class="container benefits-inner"><span><FileCheck2 :size="20" /> Arkusze CKE 2023–2026</span><i></i><span><BookOpen :size="20" /> Polski i angielski</span><i></i><span><Heart :size="20" /> Twoje tempo</span></div></div>
+    <div class="benefits-strip"><div class="container benefits-inner"><span><FileCheck2 :size="20" /> Arkusze CKE 2023–2026</span><i></i><span><BookOpen :size="20" /> Polski, angielski, biologia</span><i></i><span><Heart :size="20" /> Twoje tempo</span></div></div>
 
     <section id="narzedzia" class="tools-section section-spacing container" aria-labelledby="tools-heading">
       <div class="section-heading" data-reveal><div><span class="eyebrow section-eyebrow"><span class="little-line"></span> TWÓJ TOOLKIT</span><h2 id="tools-heading">Mniej zakuwania.<br />Więcej <span class="text-muted-green">ogarniania.</span></h2></div><span class="section-aside">4 narzędzia. Jeden cel. <ArrowDown :size="18" /></span></div>

@@ -206,7 +206,7 @@ describe("billing-checkout takes a creator's code", () => {
 
   it("applies the discount and marks the sale for the Pakiet", async () => {
     expect((await checkout("matura", " ania ")).status).toBe(200);
-    expect(session().get("discounts[0][coupon]")).toBe("kod-20-2580");
+    expect(session().get("discounts[0][coupon]")).toBe("kod-20-3400"); // 169,99 zł − 20% = 135,99 zł
     expect(session().get("allow_promotion_codes")).toBeNull();
     expect(session().get("metadata[affiliate_id]")).toBe(AFFILIATE);
     expect(session().get("payment_intent_data[metadata][affiliate_id]")).toBe(AFFILIATE);
@@ -214,26 +214,26 @@ describe("billing-checkout takes a creator's code", () => {
 
   it("marks the subscription, so renewals reach the creator too", async () => {
     expect((await checkout("monthly", "ANIA")).status).toBe(200);
-    expect(session().get("discounts[0][coupon]")).toBe("kod-20-1000"); // 24,99 zł − 20% = 19,99 zł
+    expect(session().get("discounts[0][coupon]")).toBe("kod-20-800"); // 39,99 zł − 20% = 31,99 zł
     expect(session().get("subscription_data[metadata][affiliate_id]")).toBe(AFFILIATE);
   });
 
-  it("takes the code off the full price for a returning subscriber", async () => {
+  it("gives a returning subscriber the same price", async () => {
     db.billing_accounts.push({ user_id: STUDENT, stripe_customer_id: "cus_1", stripe_subscription_id: "sub_old" });
     await checkout("monthly", "ANIA");
-    expect(session().get("discounts[0][coupon]")).toBe("kod-20-600"); // 29,99 zł − 20% = 23,99 zł
+    expect(session().get("discounts[0][coupon]")).toBe("kod-20-800");
   });
 
   it("credits the creator of a code without a discount", async () => {
     db.affiliates[0].discount_percent = 0;
     await checkout("monthly", "ANIA");
-    expect(session().get("discounts[0][coupon]")).toBe("pierwszy-miesiac");
+    expect(session().get("discounts[0][coupon]")).toBeNull();
     expect(session().get("metadata[affiliate_id]")).toBe(AFFILIATE);
   });
 
   it("changes nothing without a code", async () => {
     await checkout("monthly");
-    expect(session().get("discounts[0][coupon]")).toBe("pierwszy-miesiac");
+    expect(session().get("discounts[0][coupon]")).toBeNull();
     expect(session().get("metadata[affiliate_id]")).toBeNull();
     await checkout("matura");
     expect(session().get("allow_promotion_codes")).toBe("true");
@@ -241,11 +241,11 @@ describe("billing-checkout takes a creator's code", () => {
   });
 
   it("creates the coupon the first time this discount is used", async () => {
-    missingCoupons.add("kod-20-2580");
+    missingCoupons.add("kod-20-3400");
     expect((await checkout("matura", "ANIA")).status).toBe(200);
     const created = stripeCalls.find((c) => c.path === "coupons")!.form;
-    expect([created.get("id"), created.get("amount_off"), created.get("currency"), created.get("duration")]).toEqual(["kod-20-2580", "2580", "pln", "once"]);
-    expect(session().get("discounts[0][coupon]")).toBe("kod-20-2580");
+    expect([created.get("id"), created.get("amount_off"), created.get("currency"), created.get("duration")]).toEqual(["kod-20-3400", "3400", "pln", "once"]);
+    expect(session().get("discounts[0][coupon]")).toBe("kod-20-3400");
   });
 
   it.each([
@@ -275,7 +275,7 @@ describe("billing-checkout takes a promotion code from the Stripe Dashboard", ()
 
   it("tells the payment page what the code takes off the Pakiet, without opening a payment", async () => {
     const res = await post({ check: "code", plan: "matura", code: " pakiet-gratis " });
-    expect(await res.json()).toEqual({ ok: true, code: "PAKIET-GRATIS", amountOff: 12900 });
+    expect(await res.json()).toEqual({ ok: true, code: "PAKIET-GRATIS", amountOff: 16999 });
     expect(stripeCalls.filter((c) => c.method === "POST")).toEqual([]);
   });
 
@@ -310,7 +310,7 @@ describe("billing-checkout takes a promotion code from the Stripe Dashboard", ()
   it("a creator's code still wins over a Stripe code with the same name", async () => {
     promotionCodes.push({ id: "promo_ania", code: "ANIA", active: true, promotion: { coupon: "pakiet-gratis" } });
     await checkout("matura", "ANIA");
-    expect(session()!.get("discounts[0][coupon]")).toBe("kod-20-2580");
+    expect(session()!.get("discounts[0][coupon]")).toBe("kod-20-3400");
     expect(stripeCalls.some((c) => c.path === "promotion_codes")).toBe(false);
   });
 });

@@ -15,22 +15,26 @@ const locator = {
 const taskNumber = z.string().regex(/^\d+(\.\d+)?$/);
 
 const multiItem = z.object({
-  answer: z.string().regex(/^[A-HTPF1-9]{2,8}$/), // one character per row
+  answer: z.string().regex(/^[A-HTPFN1-9]{2,8}$/), // one character per row
   rows: z.array(z.string().max(12)).optional(), // row labels as printed in the sheet, e.g. ["A", "B"]
+  // Different letters per row, e.g. biology "A–C and 1–3" (answer "C2"): ["ABC", "123"]. Default: the group's options.
+  rowOptions: z.array(z.string().regex(/^([A-H]{2,8}|[1-9]{2,9}|TN|PF)$/)).optional(),
   points: z.number().int().positive().optional(),
 });
 
 const choiceGroup = z.object({
   ...locator,
   no: z.number().int().positive(),
-  section: z.enum(["listening", "reading", "language", "test"]),
+  // "tasks": the one sheet of a biology exam.
+  section: z.enum(["listening", "reading", "language", "test", "tasks"]),
   kind: z.literal("choice"),
   label: z.string().min(3),
-  // Letters A–H, "TF" (English True/False), "PF" (Polish Prawda/Fałsz) or digits for matching tables.
-  options: z.string().regex(/^([A-H]{2,8}|TF|PF|[1-9]{2,9})$/),
+  // Letters A–H, "TF" (English True/False), "PF" (Polish Prawda/Fałsz), "TN" (Tak/Nie), digits for
+  // matching tables, or letters then digits when the rows differ (with rowOptions on the items).
+  options: z.string().regex(/^([A-H]{2,8}|TF|PF|TN|[1-9]{2,9}|[A-H]{2,8}[1-9]{2,9})$/),
   // Simple: "1.1": "B". Multi-part (several rows, one answer each, scored together):
   // "4": { "answer": "PF", "rows": ["1.", "2."], "points": 1 }
-  items: z.record(taskNumber, z.union([z.string().regex(/^[A-HTPF1-9]$/), multiItem])),
+  items: z.record(taskNumber, z.union([z.string().regex(/^[A-HTPFN1-9]$/), multiItem])),
 });
 
 const openItem = z.object({
@@ -43,7 +47,7 @@ const openItem = z.object({
 const openGroup = z.object({
   ...locator,
   no: z.number().int().positive(),
-  section: z.enum(["listening", "reading", "language", "test"]),
+  section: z.enum(["listening", "reading", "language", "test", "tasks"]),
   kind: z.literal("open"),
   label: z.string().min(3),
   items: z.record(taskNumber, openItem),
@@ -68,7 +72,7 @@ const writingGroup = z.object({
 export const examContentSchema = z
   .object({
     id: z.string().regex(/^\d{4}-[a-z]+-[a-z]+-(pp|pr)$/),
-    subject: z.enum(["polish", "english"]),
+    subject: z.enum(["polish", "english", "biology"]),
     level: z.enum(["basic", "extended"]),
     year: z.number().int().min(2023),
     session: z.enum(["main", "june", "august", "sample"]),
@@ -109,6 +113,14 @@ export const examContentSchema = z
         }
         if (typeof value === "object" && value.rows && value.rows.length !== answer.length) {
           ctx.addIssue({ code: "custom", message: `${num}: ${value.rows.length} rows but answer has ${answer.length} parts` });
+        }
+        if (typeof value === "object" && value.rowOptions) {
+          if (value.rowOptions.length !== answer.length) {
+            ctx.addIssue({ code: "custom", message: `${num}: ${value.rowOptions.length} row option sets but answer has ${answer.length} parts` });
+          }
+          [...answer].forEach((letter, i) => {
+            if (!value.rowOptions?.[i]?.includes(letter)) ctx.addIssue({ code: "custom", message: `${num}: answer ${letter} not in row ${i + 1} options` });
+          });
         }
       }
     }
@@ -190,7 +202,13 @@ export function toRows(exam: ExamContent): { tasks: TaskRow[]; keys: KeyRow[] } 
         options: g.kind === "choice" ? g.options.split("") : [], points, sort: sortKey(number),
         group_label: g.label,
         // Multi-part closed task: the UI shows one row per character of the answer.
-        meta: multi ? { ...locate(g), rows: multi.rows ?? multi.answer.split("").map((_: string, i: number) => `${i + 1}.`) } : locate(g),
+        meta: multi
+          ? {
+            ...locate(g),
+            rows: multi.rows ?? multi.answer.split("").map((_: string, i: number) => `${i + 1}.`),
+            ...(multi.rowOptions ? { rowOptions: multi.rowOptions } : {}),
+          }
+          : locate(g),
       });
       if (g.kind === "choice") {
         const answer = typeof value === "string" ? value : (value as z.infer<typeof multiItem>).answer;

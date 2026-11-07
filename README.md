@@ -1,6 +1,6 @@
 # Ogarnij Maturę 2.0
 
-Aplikacja do nauki do matury (polski i angielski): arkusze CKE ze sprawdzaniem, feedback AI do wypracowań, tutor AI, notatki AI i fiszki z powtórkami. Wersja 2.0 to nowy interfejs w **Vue 3 + Vite** na **tym samym backendzie Supabase** co poprzednia aplikacja Next.js (`~/Documents/Web-Projects/Matura`). Zakres i decyzje migracji: [`docs/MIGRATION-PLAN.md`](docs/MIGRATION-PLAN.md), konwencje kodu: [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md).
+Aplikacja do nauki do matury (polski, angielski i biologia rozszerzona): arkusze CKE ze sprawdzaniem, feedback AI do wypracowań, tutor AI, notatki AI i fiszki z powtórkami. Wersja 2.0 to nowy interfejs w **Vue 3 + Vite** na **tym samym backendzie Supabase** co poprzednia aplikacja Next.js (`~/Documents/Web-Projects/Matura`). Zakres i decyzje migracji: [`docs/MIGRATION-PLAN.md`](docs/MIGRATION-PLAN.md), konwencje kodu: [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md).
 
 **Stos:** Vue 3.5 · vue-router 4 (history) · Pinia · supabase-js · zod 4 · Lucide · pdf.js · Vite 8 · Supabase (Postgres + RLS + Edge Functions + pg_cron) · Vercel
 

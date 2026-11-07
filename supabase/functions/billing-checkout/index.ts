@@ -143,8 +143,7 @@ async function handle(request: Request) {
     terms_version: typeof body.termsVersion === "string" ? body.termsVersion.slice(0, 20) : "",
     ...(affiliate ? { affiliate_id: affiliate.id } : {}),
   };
-  // The cheaper first month is for a student who never had a subscription.
-  const coupon = checkoutCoupon(planId, affiliate?.discount_percent ?? 0, !account?.stripe_subscription_id);
+  const coupon = checkoutCoupon(planId, affiliate?.discount_percent ?? 0);
   const createSession = (customer: string) => stripe<{ id: string; url: string | null; client_secret: string | null }>(secretKey, "POST", "checkout/sessions", {
     mode: plan.mode,
     customer,

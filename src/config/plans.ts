@@ -8,8 +8,6 @@ export type Plan = {
   id: PlanId;
   name: string;
   price: string;
-  /** Monthly plan: what every month after the first one costs. */
-  renewalPrice?: string;
   period: string;
   note?: string;
   badge?: string;
@@ -21,17 +19,16 @@ export const PLANS: Plan[] = [
   {
     id: "monthly",
     name: "Premium",
-    price: "24,99 zł",
-    renewalPrice: "29,99 zł",
-    period: "za pierwszy miesiąc",
-    note: "Potem 29,99 zł miesięcznie. Anulujesz, kiedy chcesz.",
+    price: "39,99 zł",
+    period: "miesięcznie",
+    note: "Odnawia się co miesiąc. Anulujesz, kiedy chcesz.",
     badge: "najczęściej wybierany",
     cta: "Wybierz Premium",
   },
   {
     id: "matura",
     name: "Pakiet do matury",
-    price: "129 zł",
+    price: "169,99 zł",
     period: "jednorazowo, do 31 maja 2027",
     note: "Bez subskrypcji. Płacisz raz i masz spokój do matury.",
     badge: "najbardziej się opłaca",

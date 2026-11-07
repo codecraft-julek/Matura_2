@@ -45,7 +45,7 @@ export const termsDocument = {
       p('Regulamin określa zasady świadczenia usług drogą elektroniczną w serwisie Ogarnij Maturę. Określenia „my” i „usługodawca” oznaczają osobę prowadzącą serwis, opisaną powyżej. Działalność nierejestrowana nie wyłącza praw konsumenta.'),
       links(['Formularz kontaktowy', ROUTES.contact])),
     section('uslugi', '2. Co oferuje serwis',
-      p('Serwis służy do samodzielnej nauki do matury z języka polskiego i angielskiego. Udostępnia informacje o arkuszach CKE, ćwiczenia, zapisywanie odpowiedzi i wyników, ocenę prac przez AI, tutora AI, notatki oraz fiszki. Zakres funkcji i dostępne materiały są opisane przy poszczególnych narzędziach.'),
+      p('Serwis służy do samodzielnej nauki do matury z języka polskiego, języka angielskiego i biologii. Udostępnia informacje o arkuszach CKE, ćwiczenia, zapisywanie odpowiedzi i wyników, ocenę prac przez AI, tutora AI, notatki oraz fiszki. Zakres funkcji i dostępne materiały są opisane przy poszczególnych narzędziach.'),
       p('Przeglądanie publicznych stron i udostępnionego treningu nie wymaga konta. Konto i podstawowy plan są bezpłatne. Płatne plany zapewniają dostęp do wyższych limitów narzędzi AI przez określony czas; nie kupujesz oficjalnej oceny egzaminacyjnej.'),
       p('Limity są wskazane w ofercie przed zakupem i przy narzędziach. Niewykorzystane limity nie przechodzą na kolejny okres. Nie zmniejszamy zakresu opłaconej usługi w trakcie jej trwania z pominięciem uprawnień opisanych w punkcie 12.'),
       links(['Plany i aktualne limity', ROUTES.premium])),
@@ -74,7 +74,7 @@ export const termsDocument = {
       )),
     section('platnosci', '7. Premium: cena, zakup i odnowienie',
       table(['Plan', 'Cena i czas trwania', 'Odnowienie'], [
-        ['Premium miesięczne', `${monthly.price} za pierwszy miesiąc, a potem ${monthly.renewalPrice} za każdy kolejny miesięczny okres rozliczeniowy.`, 'Automatyczne co miesiąc do anulowania.'],
+        ['Premium miesięczne', `${monthly.price} za każdy miesięczny okres rozliczeniowy.`, 'Automatyczne co miesiąc do anulowania.'],
         ['Pakiet do matury', `${pass} jednorazowo za dostęp do 31 maja 2027 r.`, 'Nie odnawia się.'],
       ]),
       p('Ceny są cenami końcowymi w złotych, z uwzględnieniem podatków, jeśli mają zastosowanie. Przed zatwierdzeniem płatności widzisz wybrany plan, należność, czas trwania i zasady odnowienia. Cena nie jest indywidualnie ustalana na podstawie automatycznego profilowania.'),

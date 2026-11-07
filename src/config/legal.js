@@ -13,8 +13,8 @@ export const LEGAL_OPERATOR = Object.freeze({
 /** Seller details the documents must state before selling to consumers. */
 export const missingOperatorDetails = (op = LEGAL_OPERATOR) => ['fullName', 'phone'].filter(field => !op[field] || op[field].startsWith('['))
 
-export const LEGAL_VERSION = '2026-11-03'
-export const LEGAL_UPDATED = '3 listopada 2026'
+export const LEGAL_VERSION = '2026-11-07'
+export const LEGAL_UPDATED = '7 listopada 2026'
 export const LEGAL_DRAFT_NOTICE = null
 
 // Confirmed by the owner; no claim about EU-only processing by every subprocessor.

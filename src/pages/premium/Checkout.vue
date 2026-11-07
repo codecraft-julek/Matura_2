@@ -31,11 +31,11 @@ const codeInput = ref('')
 const appliedCode = ref(null)
 const codeError = ref('')
 const checkingCode = ref(false)
-// The same rule as billing-checkout: 24,99 zł only for a first subscription, or the code if it saves more.
+// The same rule as billing-checkout: a creator's code takes its percent off the first payment.
 const stripeCode = computed(() => appliedCode.value?.kind === 'stripe')
 const couponOf = p => (stripeCode.value && p.id === 'matura'
   ? { amount_off: appliedCode.value.amountOff }
-  : checkoutCoupon(p.id, stripeCode.value ? 0 : appliedCode.value?.discountPercent ?? 0, !billing.value?.hadSubscription))
+  : checkoutCoupon(p.id, stripeCode.value ? 0 : appliedCode.value?.discountPercent ?? 0))
 const codeWrongPlan = computed(() => stripeCode.value && plan.value.id !== 'matura')
 const codeNote = computed(() => {
   const c = appliedCode.value
@@ -201,7 +201,7 @@ onBeforeUnmount(closeEmbedded)
               <input type="radio" name="plan" :value="p.id" :checked="plan.id === p.id" @change="selectPlan(p.id)" />
               <span class="plan-label">{{ p.id === 'monthly' ? 'Co miesiąc' : 'Do matury' }}</span>
               <span class="plan-price tabular">{{ priceOf(p) }}<small>{{ priceSuffix(p) }}</small></span>
-              <span class="plan-description">{{ p.id !== 'monthly' ? 'Dostęp do 31 maja 2027.' : firstMonth ? `Potem ${p.renewalPrice} co miesiąc.` : 'Odnawia się co miesiąc.' }}</span>
+              <span class="plan-description">{{ p.id !== 'monthly' ? 'Dostęp do 31 maja 2027.' : firstMonth ? `Potem ${p.price} co miesiąc.` : 'Odnawia się co miesiąc.' }}</span>
               <span class="plan-note">{{ p.id === 'monthly' ? 'Anulujesz, kiedy chcesz.' : 'Bez automatycznego odnawiania.' }}</span>
             </label>
           </div>
@@ -228,7 +228,7 @@ onBeforeUnmount(closeEmbedded)
         <div class="price-summary" aria-live="polite" aria-atomic="true">
           <p class="summary-plan">{{ plan.name }}</p>
           <div class="total"><span>Do zapłaty dziś</span><strong class="tabular">{{ priceOf(plan) }}</strong></div>
-          <p class="renewal-note">{{ monthly ? `${firstMonth ? 'Od drugiego miesiąca' : 'Odnowienie'} ${plan.renewalPrice} co miesiąc. Automatyczne odnawianie wyłączysz w ustawieniach konta.` : 'Jedna płatność za dostęp do 31 maja 2027. Pakiet nie odnawia się automatycznie.' }}</p>
+          <p class="renewal-note">{{ monthly ? `${firstMonth ? 'Od drugiego miesiąca' : 'Odnowienie'} ${plan.price} co miesiąc. Automatyczne odnawianie wyłączysz w ustawieniach konta.` : 'Jedna płatność za dostęp do 31 maja 2027. Pakiet nie odnawia się automatycznie.' }}</p>
         </div>
 
         <div class="code-box">
@@ -246,7 +246,7 @@ onBeforeUnmount(closeEmbedded)
           <legend>Potwierdź przed przejściem dalej <span>(wymagane)</span></legend>
           <label class="check-row" :class="{ 'has-error': submitted && !terms }">
             <input v-model="terms" name="terms" type="checkbox" required :aria-invalid="submitted && !terms" :aria-describedby="submitted && !terms ? 'consent-error' : undefined" />
-            <span>Akceptuję <RouterLink :to="ROUTES.terms" target="_blank" rel="noopener" class="link">regulamin</RouterLink>{{ monthly ? ` i rozumiem, że Premium odnawia się co miesiąc za ${plan.renewalPrice}, dopóki go nie anuluję.` : ' i rozumiem, że Pakiet działa do 31 maja 2027 i się nie odnawia.' }}</span>
+            <span>Akceptuję <RouterLink :to="ROUTES.terms" target="_blank" rel="noopener" class="link">regulamin</RouterLink>{{ monthly ? ` i rozumiem, że Premium odnawia się co miesiąc za ${plan.price}, dopóki go nie anuluję.` : ' i rozumiem, że Pakiet działa do 31 maja 2027 i się nie odnawia.' }}</span>
           </label>
           <label class="check-row" :class="{ 'has-error': submitted && !age }">
             <input v-model="age" name="age" type="checkbox" required :aria-invalid="submitted && !age" :aria-describedby="submitted && !age ? 'consent-error' : undefined" />
