@@ -21,7 +21,7 @@ const tabs = [
     <div class="study-window">
       <div class="window-bar">
         <div class="window-dots" aria-hidden="true"><i></i><i></i><i></i></div>
-        <span>ogarnijmature.pl/panel</span>
+        <span>ogarnijmature.com/panel</span>
         <span class="window-logo"><BrandMark /></span>
       </div>
       <div class="window-content">
