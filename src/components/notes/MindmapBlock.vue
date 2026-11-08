@@ -20,7 +20,7 @@ const tone = i => `tone-${i % 6}`
 </script>
 
 <template>
-  <NoteBlockShell kind="mapa myśli" :from-notes="block.from_notes">
+  <NoteBlockShell kind="mapa myśli">
     <!-- Phones -->
     <div class="mm-tree">
       <p class="mm-center">{{ block.center }}</p>

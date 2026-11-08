@@ -1,7 +1,7 @@
 <script setup>
 // /notatki — the student's AI notes with source and status. Notes still being made are re-checked
 // every few seconds (UX: no "refresh the page"); after 5 minutes a pending note counts as interrupted.
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { ChevronRight, CircleAlert, LoaderCircle, NotebookPen, Plus } from '@lucide/vue'
 import { useAsync } from '@/composables/useAsync'
@@ -10,14 +10,23 @@ import { ROUTES, noteRoute } from '@/config/routes'
 import { NOTE_SOURCE, NOTE_SUBJECT, isInProgress, listNotes } from '@/lib/api/notes'
 import { formatDateTime } from '@/lib/format'
 import { useBillingStore } from '@/stores/billing'
+import { useSubjectStore } from '@/stores/subject'
+import SubjectFilter from '@/components/layout/SubjectFilter.vue'
+import SubjectTag from '@/components/layout/SubjectTag.vue'
 import AllowanceNote from '@/ui/AllowanceNote.vue'
 import EmptyState from '@/ui/EmptyState.vue'
 import ErrorState from '@/ui/ErrorState.vue'
 import PageSkeleton from '@/ui/PageSkeleton.vue'
 
 const billing = useBillingStore()
+const subject = useSubjectStore()
 const { data: notes, loading, error, reload } = useAsync(() => listNotes())
 onMounted(() => billing.loadAllowances().catch(() => {}))
+
+// Only the active subject's notes (or the ones about no subject, "Inne"), so subjects never mix.
+const filter = ref('subject') // 'subject' | 'other'
+const shown = computed(() => (notes.value ?? []).filter(n => n.subject === (filter.value === 'other' ? 'other' : subject.active)))
+watch(() => subject.active, () => { filter.value = 'subject' })
 
 // Silent refresh while something is in progress (no skeleton, a failed check is just skipped).
 const anyInProgress = computed(() => (notes.value ?? []).some(n => isInProgress(n)))
@@ -38,7 +47,7 @@ const status = n => (n.status === 'done' ? 'done' : n.interrupted || n.status ==
   <template v-else>
     <header class="page-header">
       <div>
-        <span class="page-kicker"><NotebookPen :size="14" /> Notatki AI</span>
+        <span class="page-kicker"><NotebookPen :size="14" /> Notatki AI <SubjectTag /></span>
         <h1>Notatki AI<span class="accent-dot">.</span></h1>
         <p>Zrób zdjęcie zeszytu, dodaj prezentację lub PDF albo wklej tekst, a AI ułoży z tego notatkę do powtórki: z osią czasu, tabelami, mapą myśli, fiszkami i krótkim quizem.</p>
       </div>
@@ -54,8 +63,12 @@ const status = n => (n.status === 'done' ? 'done' : n.interrupted || n.status ==
 
     <section v-else aria-labelledby="notes-title">
       <h2 id="notes-title" class="section-title">Twoje notatki</h2>
-      <ul class="list">
-        <li v-for="n in notes" :key="n.id">
+      <SubjectFilter v-model="filter" :items="notes" noun="notatki" />
+      <EmptyState v-if="!shown.length" :icon="NotebookPen" :title="filter === 'other' ? 'Brak notatek z innych tematów' : `Brak notatek ${subject.current.from}`" text="Zdjęcie zeszytu z ostatniej lekcji wystarczy na pierwszą notatkę.">
+        <RouterLink :to="ROUTES.newNote" class="button button-dark">Zrób notatkę {{ subject.current.from }}</RouterLink>
+      </EmptyState>
+      <ul v-else class="list">
+        <li v-for="n in shown" :key="n.id">
           <RouterLink :to="noteRoute(n.id)" class="list-row note-row">
             <span class="note-main">
               <span class="note-title">{{ n.title || 'Notatka' }}</span>

@@ -17,8 +17,10 @@ import { createDeck } from '@/lib/api/flashcards'
 import { extractFile } from '@/lib/flashcards/extract'
 import { count as countOf } from '@/lib/format'
 import { shrinkPhoto } from '@/lib/notes/image'
-import { useAuthStore } from '@/stores/auth'
 import { useBillingStore } from '@/stores/billing'
+import { useSubjectStore } from '@/stores/subject'
+import SubjectIcon from '@/components/layout/SubjectIcon.vue'
+import SubjectTag from '@/components/layout/SubjectTag.vue'
 import AllowanceNote from '@/ui/AllowanceNote.vue'
 import AppField from '@/ui/AppField.vue'
 
@@ -31,12 +33,6 @@ const TABS = [
   { id: 'import', label: 'Quizlet / Anki', icon: Import },
   { id: 'manual', label: 'Ręcznie', icon: Plus },
 ]
-const SUBJECTS = [
-  { value: 'polish', label: 'Polski' },
-  { value: 'english', label: 'Angielski' },
-  { value: 'biology', label: 'Biologia' },
-  { value: 'other', label: 'Inne' },
-]
 const STYLES = [
   { value: 'auto', label: 'Sam wybierz' },
   { value: 'qa', label: 'Pytania i odpowiedzi' },
@@ -45,13 +41,15 @@ const STYLES = [
 const CARDS = ['fiszka', 'fiszki', 'fiszek']
 
 const router = useRouter()
-const auth = useAuthStore()
 const billing = useBillingStore()
-const subjects = auth.profile?.subjects ?? []
-const defaultSubject = subjects.includes('polish') ? 'polish' : subjects.includes('english') ? 'english' : subjects.includes('biology') ? 'biology' : 'other'
+const subjectStore = useSubjectStore()
+const defaultSubject = subjectStore.active
 const draft = useDraft('deck-new', {
   tab: 'file', subject: defaultSubject, count: 20, style: defaultSubject === 'english' ? 'vocab' : 'auto', url: '', text: '', title: '',
 })
+// The deck is about the active subject (the header), unless the student marks it as "Inne".
+const SUBJECTS = computed(() => [{ value: subjectStore.active, label: subjectStore.current.short, subject: subjectStore.current }, { value: 'other', label: 'Inne' }])
+watch(() => subjectStore.active, () => { draft.value.subject = subjectStore.active }, { immediate: draft.value.subject !== 'other' })
 if (!TABS.some(t => t.id === draft.value.tab)) draft.value.tab = 'file'
 
 const file = ref(null)
@@ -203,7 +201,7 @@ const stage = computed(() => {
     <nav class="breadcrumbs" aria-label="Okruszki"><RouterLink :to="ROUTES.flashcards"><ArrowLeft :size="14" /> Fiszki</RouterLink></nav>
     <header class="page-header">
       <div>
-        <span class="page-kicker">Fiszki</span>
+        <span class="page-kicker">Fiszki <SubjectTag /></span>
         <h1>Nowa talia<span class="accent-dot">.</span></h1>
         <p>Skąd mamy wziąć fiszki?</p>
       </div>
@@ -282,7 +280,8 @@ const stage = computed(() => {
       <!-- ── Options ── -->
       <fieldset class="field">
         <legend class="field-label">Przedmiot</legend>
-        <div class="chip-group"><label v-for="o in SUBJECTS" :key="o.value" class="chip"><input v-model="draft.subject" type="radio" name="subject" :value="o.value" />{{ o.label }}</label></div>
+        <div class="chip-group"><label v-for="o in SUBJECTS" :key="o.value" class="chip"><input v-model="draft.subject" type="radio" name="subject" :value="o.value" /><SubjectIcon v-if="o.subject" :subject="o.subject" />{{ o.label }}</label></div>
+        <p v-if="subjectStore.canSwitch" class="field-hint">Inny przedmiot? Przełącz go w górnym pasku.</p>
       </fieldset>
       <template v-if="isAi">
         <fieldset class="field">

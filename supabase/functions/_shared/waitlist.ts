@@ -14,6 +14,10 @@ export const SUBJECTS = [
   { value: "biology", label: "Biologia" },
 ] as const;
 
+export type SubjectValue = (typeof SUBJECTS)[number]["value"];
+/** The subject ids as a zod-friendly tuple: z.enum(SUBJECT_VALUES). */
+export const SUBJECT_VALUES = SUBJECTS.map((s) => s.value) as [SubjectValue, ...SubjectValue[]];
+
 export const MATURA_YEARS = [
   { value: "2027", label: "2027" },
   { value: "2028", label: "2028" },
@@ -38,7 +42,7 @@ export const waitlistSchema = z.object({
     .max(254, "Ten adres jest za długi.")
     .pipe(z.email("Sprawdź adres e-mail, coś jest nie tak.")),
   subjects: z
-    .array(z.enum(["polish", "english", "biology"]), { error: "Zaznacz przynajmniej jeden przedmiot." })
+    .array(z.enum(SUBJECT_VALUES), { error: "Zaznacz przynajmniej jeden przedmiot." })
     .min(1, "Zaznacz przynajmniej jeden przedmiot.")
     .transform((list) => [...new Set(list)]),
   maturaYear: z.enum(["2027", "2028", "other"], {

@@ -6,7 +6,7 @@
 //                      buy buttons.
 // Prices and names come from src/config/plans.ts (the charged amounts are checked against them).
 import { RouterLink } from 'vue-router'
-import { ArrowUpRight, Check, Zap } from '@lucide/vue'
+import { Check } from '@lucide/vue'
 import { PLANS } from '@/config/plans'
 import { ROUTES, checkoutRoute } from '@/config/routes'
 import { PLAN_DETAILS as DETAILS } from './planDetails'
@@ -27,7 +27,7 @@ const amount = price => price.replace(/\s*zł$/, '')
 <template>
   <div class="pricing-grid plan-cards" :class="`is-${variant}`">
     <article v-for="plan in PLANS" :key="plan.id" class="pricing-card" :class="{ featured: plan.id === 'monthly' }">
-      <div v-if="plan.badge && (plan.id !== 'matura' || savings)" class="recommended-label" :class="{ 'is-soft': plan.id !== 'monthly' }"><Zap v-if="plan.id === 'monthly'" :size="13" fill="currentColor" /> {{ plan.badge.toUpperCase() }}</div>
+      <div v-if="plan.badge && (plan.id !== 'matura' || savings)" class="recommended-label" :class="{ 'is-soft': plan.id !== 'monthly' }">{{ plan.badge }}</div>
       <span v-if="plan.id === 'matura' && savings" class="pass-corner">{{ savings.percent }}% taniej</span>
       <span class="plan-label">{{ DETAILS[plan.id].label }}</span>
       <component :is="headingTag" class="plan-name">{{ plan.name }}</component>
@@ -39,8 +39,8 @@ const amount = price => price.replace(/\s*zł$/, '')
       <span v-if="variant === 'app' && (plan.id === 'free' || premium)" class="button full-width plan-current">
         {{ plan.id === 'free' ? (premium ? 'Plan podstawowy' : plan.cta) : 'Masz już Premium' }}
       </span>
-      <RouterLink v-else-if="plan.id === 'free'" :to="ROUTES.signup" class="button button-outline full-width">Załóż darmowe konto <ArrowUpRight :size="18" /></RouterLink>
-      <RouterLink v-else :to="checkoutRoute(plan.id)" class="button full-width" :class="plan.id === 'monthly' ? 'button-lime' : 'button-dark'">{{ plan.cta }} <ArrowUpRight :size="18" /></RouterLink>
+      <RouterLink v-else-if="plan.id === 'free'" :to="ROUTES.signup" class="button button-outline full-width">Załóż darmowe konto</RouterLink>
+      <RouterLink v-else :to="checkoutRoute(plan.id)" class="button full-width" :class="plan.id === 'monthly' ? 'button-lime' : 'button-dark'">{{ plan.cta }}</RouterLink>
       <p class="plan-note">{{ DETAILS[plan.id].footnote }}<template v-if="plan.id === 'matura' && savings"><br>{{ savings.percent }}% taniej niż płacenie co miesiąc do końca maja.</template></p>
     </article>
   </div>
@@ -54,7 +54,6 @@ const amount = price => price.replace(/\s*zł$/, '')
 .is-app { margin-top: 0; }
 .pass-corner { position: absolute; top: 30px; right: 18px; padding: 4px 10px; border-radius: 999px; background: #d7f781; color: #1c3c32; font-size: 12px; font-weight: 700; line-height: 1.3; white-space: nowrap; }
 .plan-current { border-color: var(--line-strong); color: var(--text-soft); cursor: default; }
-.plan-current:hover { transform: none; }
 .featured .plan-current { border-color: #416047; color: #c4d2bd; }
 /* Phones: Premium first (the free plan is what they already have). */
 @media (max-width: 680px) {

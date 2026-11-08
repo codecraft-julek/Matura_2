@@ -3,7 +3,9 @@
 // and on the account page. Saves itself, updates the cached profile and emits `saved`.
 import { computed, reactive, ref, useId, watch } from 'vue'
 import { Check } from '@lucide/vue'
-import { MATURA_YEARS, SUBJECTS } from '@shared/waitlist'
+import { MATURA_YEARS } from '@shared/waitlist'
+import { SUBJECTS } from '@/config/subjects'
+import SubjectIcon from '@/components/layout/SubjectIcon.vue'
 import AppField from '@/ui/AppField.vue'
 import { profileSchema } from '@/lib/validation/auth'
 import { saveProfile } from '@/lib/api/account'
@@ -71,9 +73,9 @@ async function onSubmit() {
     <fieldset class="field" :aria-describedby="f.errors.subjects ? `${uid}-subjects-error` : undefined">
       <legend class="field-label">Które przedmioty zdajesz?</legend>
       <div class="chip-group">
-        <label v-for="s in SUBJECTS" :key="s.value" class="chip">
-          <input v-model="values.subjects" type="checkbox" name="subjects" :value="s.value" :aria-invalid="f.errors.subjects ? 'true' : undefined" />
-          <Check v-if="values.subjects.includes(s.value)" :size="15" aria-hidden="true" />{{ s.label }}
+        <label v-for="s in SUBJECTS" :key="s.id" class="chip subject-chip">
+          <input v-model="values.subjects" type="checkbox" name="subjects" :value="s.id" :aria-invalid="f.errors.subjects ? 'true' : undefined" />
+          <SubjectIcon :subject="s" />{{ s.short }}<Check v-if="values.subjects.includes(s.id)" :size="15" aria-hidden="true" />
         </label>
       </div>
       <p v-if="f.errors.subjects" :id="`${uid}-subjects-error`" class="field-error" role="alert">{{ f.errors.subjects }}</p>
@@ -99,4 +101,5 @@ async function onSubmit() {
 <style scoped>
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 legend { padding: 0; margin-bottom: 9px; }
+.subject-chip { padding-left: 9px; }
 </style>

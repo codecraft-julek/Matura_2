@@ -638,6 +638,7 @@ export type Database = {
           created_at: string
           exam_id: string | null
           group_no: number | null
+          subject: string | null
           id: string
           title: string
           updated_at: string
@@ -647,6 +648,7 @@ export type Database = {
           created_at?: string
           exam_id?: string | null
           group_no?: number | null
+          subject?: string | null
           id?: string
           title: string
           updated_at?: string
@@ -656,6 +658,7 @@ export type Database = {
           created_at?: string
           exam_id?: string | null
           group_no?: number | null
+          subject?: string | null
           id?: string
           title?: string
           updated_at?: string

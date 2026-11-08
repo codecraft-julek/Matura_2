@@ -12,6 +12,7 @@ import { ROUTES } from '@/config/routes'
 import { streamTutorReply } from '@/lib/ai'
 import { plainTutorText } from '@/lib/tutor/format'
 import { useBillingStore } from '@/stores/billing'
+import { useSubjectStore } from '@/stores/subject'
 import TutorDeckOffer from './TutorDeckOffer.vue'
 import TutorText from './TutorText.vue'
 
@@ -30,6 +31,7 @@ const props = defineProps({
 const emit = defineEmits(['chat-created'])
 
 const billing = useBillingStore()
+const subjectStore = useSubjectStore()
 const uid = useId()
 const chatId = ref(props.chatId)
 const messages = ref([...props.messages])
@@ -95,8 +97,9 @@ async function send(text) {
   let created = null
   let reply = ''
   const answers = cleanAnswers(props.answers)
+  // The active subject tells the tutor what a general chat is about (a task chat has its exam).
   const res = await streamTutorReply(
-    { message, ...(chatId.value ? { chatId: chatId.value } : props.task ? { examId: props.task.examId, groupNo: props.task.groupNo } : {}), ...(answers ? { answers } : {}) },
+    { message, subject: subjectStore.active, ...(chatId.value ? { chatId: chatId.value } : props.task ? { examId: props.task.examId, groupNo: props.task.groupNo } : {}), ...(answers ? { answers } : {}) },
     {
       onStart: id => { if (!chatId.value) created = id },
       onText: full => { reply = full; streaming.value = full },

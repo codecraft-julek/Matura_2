@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SUBJECT_VALUES } from "./waitlist.ts";
 
 // AI tutor, shared by the Edge Function `tutor-chat` (Deno) and the website (Next.js).
 // Keep this file free of Node- or Deno-specific code.
@@ -34,6 +35,8 @@ export const tutorRequestSchema = z
       .optional(),
     /** Sent by pages that can draw diagrams; older pages would show the JSON as text. */
     diagrams: z.boolean().optional(),
+    /** The student's active subject, so a general chat knows what it is about. Optional (older pages). */
+    subject: z.enum(SUBJECT_VALUES).optional(),
   })
   .refine((r) => (r.examId === undefined) === (r.groupNo === undefined), "examId and groupNo go together");
 export type TutorRequest = z.input<typeof tutorRequestSchema>;
@@ -215,6 +218,12 @@ DIAGRAMY
 `;
 
 const SUBJECT = { polish: "język polski", english: "język angielski", biology: "biologia" } as Record<string, string>;
+
+/** For a general chat (no task): which subject the student is working on right now. */
+export function buildSubjectContext(subject: string | undefined): string | null {
+  const name = subject ? SUBJECT[subject] : undefined;
+  return name ? `Uczeń ma teraz wybrany przedmiot: ${name}. Jeśli pytanie nie wskazuje inaczej, odpowiadaj w kontekście matury z tego przedmiotu.` : null;
+}
 
 /** The task the chat is about, as a developer message. Answers are what the student typed so far. */
 export function buildTaskContext(ctx: TutorTaskContext, answers: Record<string, string> = {}): string {

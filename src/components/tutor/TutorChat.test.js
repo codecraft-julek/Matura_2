@@ -8,6 +8,7 @@ vi.mock('vue-router', () => ({ RouterLink: { render() { return this.$slots.defau
 vi.mock('@/lib/ai', () => ({ streamTutorReply: vi.fn(), streamFlashcards: vi.fn() }))
 vi.mock('@/stores/billing', () => ({ useBillingStore: () => billing }))
 vi.mock('@/stores/ui', () => ({ useUiStore: () => ({ toast: vi.fn() }) }))
+vi.mock('@/stores/subject', () => ({ useSubjectStore: () => ({ active: 'polish' }) }))
 vi.mock('@/ui/AiRating.vue', () => ({ default: { render: () => null } }))
 
 // The proposal as tutor-chat really saved it for "zrób mi talie fiszek z romantyzmu".
@@ -35,6 +36,7 @@ describe('deck offer in the tutor chat', () => {
     button(root, 'zrób mi talie').props.onClick()
     await flush()
     expect(streamTutorReply).toHaveBeenCalledOnce()
+    expect(streamTutorReply.mock.calls[0][0]).toMatchObject({ chatId: 'c1', subject: 'polish' })
     expect(button(root, 'Utwórz talię')).toBeDefined()
   })
   it('shows no button under a reply without a proposal', async () => {

@@ -1,5 +1,5 @@
 // Supabase Edge Function: POST /functions/v1/tutor-chat
-//   body: { chatId?, examId?, groupNo?, message, answers? }   (see _shared/tutor.ts)
+//   body: { chatId?, examId?, groupNo?, message, answers?, subject?, diagrams? }   (see _shared/tutor.ts)
 //
 // AI tutor chat. Flow: check login → validate → load the chat (or the task for a new chat) →
 // check daily limit → save the student's message → ask OpenAI (streamed as Server-Sent Events) →
@@ -22,6 +22,7 @@ import { quotaMessage, type QuotaResult } from "../_shared/billing.ts";
 import {
   TUTOR_LIMITS,
   buildTaskContext,
+  buildSubjectContext,
   buildTutorInput,
   buildTutorInstructions,
   chatTitle,
@@ -141,7 +142,7 @@ async function handle(request: Request) {
   if (isNewChat) {
     const { data: chat, error } = await admin
       .from("tutor_chats")
-      .insert({ user_id: user.id, exam_id: examId, group_no: groupNo, title: chatTitle(req.message, ctx) })
+      .insert({ user_id: user.id, exam_id: examId, group_no: groupNo, subject: ctx?.subject ?? req.subject ?? null, title: chatTitle(req.message, ctx) })
       .select("id")
       .single();
     if (error) throw error;
@@ -164,7 +165,7 @@ async function handle(request: Request) {
     diagrams: req.diagrams === true,
     fake,
     model: Deno.env.get("AI_TUTOR_MODEL") ?? aiModel(),
-    input: buildTutorInput(history, ctx ? buildTaskContext(ctx, req.answers) : null),
+    input: buildTutorInput(history, ctx ? buildTaskContext(ctx, req.answers) : buildSubjectContext(req.subject)),
   };
 
   // 7a. Streaming (what the website uses)

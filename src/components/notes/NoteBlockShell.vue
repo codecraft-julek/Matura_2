@@ -1,20 +1,17 @@
 <script setup>
-// Common frame of a note block: a small label ("oś czasu"), an optional heading and the
-// "dodane przez AI" badge. `tone` tints the card: '' (white) | 'lime' | 'sand' | 'purple'.
-import AiBadge from './AiBadge.vue'
-
+// Common frame of a note block: a small label ("oś czasu") and an optional heading.
+// `tone` tints the card: '' (white) | 'lime' | 'sand' | 'purple'.
 defineProps({
   kind: { type: String, required: true },
   heading: { type: String, default: '' },
-  fromNotes: { type: Boolean, default: true },
   tone: { type: String, default: '' },
 })
 </script>
 
 <template>
   <section class="note-block" :class="tone && `is-${tone}`">
-    <p class="block-kind">{{ kind }}<AiBadge v-if="!heading && !fromNotes" /></p>
-    <h2 v-if="heading" class="block-heading">{{ heading }}<AiBadge v-if="!fromNotes" /></h2>
+    <p class="block-kind">{{ kind }}</p>
+    <h2 v-if="heading" class="block-heading">{{ heading }}</h2>
     <div class="block-body"><slot /></div>
   </section>
 </template>

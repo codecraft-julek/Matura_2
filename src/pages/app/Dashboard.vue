@@ -1,24 +1,28 @@
 <script setup>
 // The student's home (/panel): greeting, quick actions, last exam attempts, flashcards due today,
-// what is left of the AI limits and the newest note. New students get friendly empty states with
-// one clear next step instead of zeros.
+// what is left of the AI limits and the newest note, all for the active subject (the switcher in
+// the header). New students get friendly empty states with one clear next step instead of zeros.
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { ArrowRight, ArrowUpRight, CalendarDays, FileText, Layers, MessageCircle, NotebookPen, Sparkles, WandSparkles, Zap } from '@lucide/vue'
 import { useAsync } from '@/composables/useAsync'
 import { useAuthStore } from '@/stores/auth'
 import { useBillingStore } from '@/stores/billing'
+import { useSubjectStore } from '@/stores/subject'
 import { ROUTES, examRoutes, noteRoute, studyRoute } from '@/config/routes'
 import { count, plural, timeAgo } from '@/lib/format'
 import { leftLabel } from '@/lib/billing/allowance'
 import { SUBJECT_LABEL } from '@/lib/exams/labels'
 import { loadDashboard } from '@/lib/api/dashboard'
+import SubjectIcon from '@/components/layout/SubjectIcon.vue'
 import PageSkeleton from '@/ui/PageSkeleton.vue'
 import ErrorState from '@/ui/ErrorState.vue'
 
 const auth = useAuthStore()
 const billing = useBillingStore()
-const { data, loading, error, reload } = useAsync(() => loadDashboard())
+const subject = useSubjectStore()
+// Switching the subject in the header reloads the page's data (the AI limits stay the same).
+const { data, loading, error, reload } = useAsync(() => loadDashboard(subject.active), { watch: () => subject.active })
 
 const profile = computed(() => auth.profile)
 const name = computed(() => profile.value?.display_name?.trim() || '')
@@ -52,8 +56,11 @@ const isFree = computed(() => limits.value.length > 0 && limits.value.every(f =>
 const flash = computed(() => data.value?.flashcards ?? { decks: 0, due: 0, byDeck: [] })
 const studyTo = computed(() => (flash.value.byDeck[0] ? studyRoute(flash.value.byDeck[0].id) : ROUTES.flashcards))
 
+// Essays are a Polish (and English) thing: for other subjects the first step is a note instead.
 const actions = computed(() => [
-  { to: ROUTES.newEssay, label: 'Nowe wypracowanie', text: 'Feedback AI według kryteriów CKE', icon: WandSparkles, tone: 'purple' },
+  subject.active === 'polish'
+    ? { to: ROUTES.newEssay, label: 'Nowe wypracowanie', text: 'Feedback AI według kryteriów CKE', icon: WandSparkles, tone: 'purple' }
+    : { to: ROUTES.newNote, label: 'Nowa notatka', text: 'Z zeszytu, PDF-a albo prezentacji', icon: NotebookPen, tone: 'purple' },
   { to: ROUTES.tutor, label: 'Zapytaj tutora', text: 'Podpowiedź zamiast gotowca', icon: MessageCircle, tone: 'purple' },
   { to: studyTo.value, label: 'Powtórz fiszki', text: flash.value.due ? `${count(flash.value.due, ['fiszka czeka', 'fiszki czekają', 'fiszek czeka'])}` : 'Pięć minut też się liczy', icon: Layers, tone: 'sand' },
   { to: ROUTES.exams, label: 'Rozwiąż arkusz', text: 'Prawdziwe arkusze CKE', icon: FileText, tone: 'green' },
@@ -74,7 +81,10 @@ const examName = a => (a.exam ? `${SUBJECT_LABEL[a.exam.subject] ?? a.exam.title
         <h1>Ogarniamy maturę{{ year ? ` ${year}` : '' }} razem<span class="accent-dot">.</span></h1>
         <p>Wybierz jeden mały krok na dziś. Arkusz, wypracowanie, notatka czy fiszki: każdy się liczy.</p>
       </div>
-      <span v-if="daysLeft" class="badge badge-lime countdown"><CalendarDays :size="14" /> ok. {{ count(daysLeft, ['dzień', 'dni', 'dni']) }} do matury</span>
+      <div class="header-badges">
+        <span v-if="daysLeft" class="badge badge-lime countdown"><CalendarDays :size="14" /> ok. {{ count(daysLeft, ['dzień', 'dni', 'dni']) }} do matury</span>
+        <span v-if="subject.canSwitch" class="badge subject-badge" :title="`Pokazujemy postępy ${subject.current.from}. Przedmiot zmienisz w górnym pasku.`"><SubjectIcon :subject="subject.current" /> {{ subject.current.label }}</span>
+      </div>
     </header>
 
     <nav class="quick-actions" aria-label="Szybkie akcje">
@@ -109,7 +119,7 @@ const examName = a => (a.exam ? `${SUBJECT_LABEL[a.exam.subject] ?? a.exam.title
         </ul>
         <div v-else class="dash-empty">
           <FileText :size="22" />
-          <p><strong>Jeszcze nic nie rozwiązane.</strong> Zacznij od jednego zadania w trybie ćwiczeń: od razu zobaczysz, co poszło dobrze według klucza CKE.</p>
+          <p><strong>Jeszcze nic nie rozwiązane {{ subject.current.from }}.</strong> Zacznij od jednego zadania w trybie ćwiczeń: od razu zobaczysz, co poszło dobrze według klucza CKE.</p>
           <RouterLink :to="ROUTES.exams" class="button button-dark button-sm">Wybierz arkusz <ArrowRight :size="16" /></RouterLink>
         </div>
       </section>
@@ -129,7 +139,7 @@ const examName = a => (a.exam ? `${SUBJECT_LABEL[a.exam.subject] ?? a.exam.title
         </template>
         <div v-else class="dash-empty">
           <Layers :size="22" />
-          <p><strong>Nie masz jeszcze fiszek.</strong> Zrób talię z PDF-a, zdjęcia, strony albo filmu. Powtórki ułożą się same.</p>
+          <p><strong>Nie masz jeszcze fiszek {{ subject.current.from }}.</strong> Zrób talię z PDF-a, zdjęcia, strony albo filmu. Powtórki ułożą się same.</p>
           <RouterLink :to="ROUTES.newDeck" class="button button-dark button-sm">Nowa talia <ArrowRight :size="16" /></RouterLink>
         </div>
       </section>
@@ -174,7 +184,7 @@ const examName = a => (a.exam ? `${SUBJECT_LABEL[a.exam.subject] ?? a.exam.title
         </RouterLink>
         <div v-else class="dash-empty">
           <NotebookPen :size="22" />
-          <p><strong>Zrób pierwszą notatkę.</strong> Wrzuć zdjęcie zeszytu, PDF albo prezentację, a dostaniesz oś czasu, mapę myśli, fiszki i quiz.</p>
+          <p><strong>Zrób pierwszą notatkę {{ subject.current.from }}.</strong> Wrzuć zdjęcie zeszytu, PDF albo prezentację, a dostaniesz oś czasu, mapę myśli, fiszki i quiz.</p>
           <RouterLink :to="ROUTES.newNote" class="button button-dark button-sm">Nowa notatka <ArrowRight :size="16" /></RouterLink>
         </div>
       </section>
@@ -192,7 +202,9 @@ const examName = a => (a.exam ? `${SUBJECT_LABEL[a.exam.subject] ?? a.exam.title
 </template>
 
 <style scoped>
-.countdown { font-size: 12.5px; padding: 7px 12px; }
+.header-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.countdown, .subject-badge { font-size: 12.5px; padding: 7px 12px; }
+.subject-badge { display: inline-flex; align-items: center; gap: 7px; padding-left: 7px; background: var(--surface); border: 1px solid var(--line-strong); color: var(--text); }
 .quick-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 22px; }
 .quick-action { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface); transition: transform .2s, box-shadow .2s, border-color .2s; min-width: 0; }
 .quick-action:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--line-strong); }

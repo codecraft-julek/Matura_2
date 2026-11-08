@@ -6,7 +6,7 @@ defineProps({ block: { type: Object, required: true } })
 </script>
 
 <template>
-  <NoteBlockShell kind="przyczyny i skutki" :heading="block.heading" :from-notes="block.from_notes">
+  <NoteBlockShell kind="przyczyny i skutki" :heading="block.heading">
     <div class="ce-grid">
       <div v-if="block.causes.length" class="ce-col">
         <p class="ce-title">Przyczyny</p>

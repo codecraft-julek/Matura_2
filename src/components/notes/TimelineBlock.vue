@@ -5,7 +5,7 @@ defineProps({ block: { type: Object, required: true } })
 </script>
 
 <template>
-  <NoteBlockShell kind="oś czasu" :heading="block.heading" :from-notes="block.from_notes">
+  <NoteBlockShell kind="oś czasu" :heading="block.heading">
     <ol class="timeline">
       <li v-for="(e, i) in block.events" :key="i">
         <span class="dot" aria-hidden="true"></span>

@@ -34,8 +34,9 @@ export function filterAnalyticsEvent(event, consent, origin, now = Date.now()) {
   } catch { return null }
 }
 
-// Drafts and saved exam sheets are stored per student: <prefix><userId>:… (useDraft, sheet.storageKey).
-const STUDENT_PREFIXES = ['ogarnij-mature:draft:', 'om:sheet:']
+// Drafts, saved exam sheets and the active subject are stored per student: <prefix><userId>…
+// (useDraft, sheet.storageKey, stores/subject).
+const STUDENT_PREFIXES = ['ogarnij-mature:draft:', 'om:sheet:', 'om:subject:']
 
 /**
  * When a student signs in, removes what another student (or the old unscoped format) left in this
@@ -50,7 +51,7 @@ export function removeOtherStudentsData(storage, userId) {
 
 export function clearLocalStudyData(storage) {
   const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index))
-  const owned = keys.filter(key => key && (key.startsWith('ogarnij-mature:draft:') || key.startsWith('om:sheet:') ||
+  const owned = keys.filter(key => key && (STUDENT_PREFIXES.some(p => key.startsWith(p)) ||
     key === 'ogarnij-mature:polski-2026:v1' || key === 'om:exam-pdf-panel'))
   for (const key of owned) storage.removeItem(key)
   return owned.length

@@ -6,7 +6,7 @@ defineProps({ block: { type: Object, required: true } })
 </script>
 
 <template>
-  <NoteBlockShell kind="zapamiętaj na maturę" :from-notes="block.from_notes" tone="lime">
+  <NoteBlockShell kind="zapamiętaj na maturę" tone="lime">
     <ul class="remember-list">
       <li v-for="(item, i) in block.items" :key="i"><Star :size="15" fill="currentColor" aria-hidden="true" />{{ item }}</li>
     </ul>

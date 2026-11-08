@@ -13,17 +13,13 @@ import { ROUTES, noteRoute } from '@/config/routes'
 import { streamNote } from '@/lib/ai'
 import { extractFile } from '@/lib/flashcards/extract'
 import { shrinkPhoto } from '@/lib/notes/image'
-import { useAuthStore } from '@/stores/auth'
 import { useBillingStore } from '@/stores/billing'
+import { useSubjectStore } from '@/stores/subject'
+import SubjectIcon from '@/components/layout/SubjectIcon.vue'
+import SubjectTag from '@/components/layout/SubjectTag.vue'
 import AllowanceNote from '@/ui/AllowanceNote.vue'
 import AppField from '@/ui/AppField.vue'
 
-const SUBJECTS = [
-  { value: 'polish', label: 'Polski' },
-  { value: 'english', label: 'Angielski' },
-  { value: 'biology', label: 'Biologia' },
-  { value: 'other', label: 'Inne' },
-]
 /** A finished note is about this many characters of JSON; used to show real progress. */
 const EXPECTED_CHARS = 9000
 const STAGES = [
@@ -34,11 +30,12 @@ const STAGES = [
 ]
 
 const router = useRouter()
-const auth = useAuthStore()
 const billing = useBillingStore()
-const subjects = auth.profile?.subjects ?? []
-const defaultSubject = subjects.includes('polish') ? 'polish' : subjects.includes('english') ? 'english' : subjects.includes('biology') ? 'biology' : 'other'
-const draft = useDraft('note-new', { subject: defaultSubject, text: '' })
+const subjectStore = useSubjectStore()
+const draft = useDraft('note-new', { subject: subjectStore.active, text: '' })
+// The note is about the active subject (the header), unless the student marks it as "Inne".
+const SUBJECTS = computed(() => [{ value: subjectStore.active, label: subjectStore.current.short, subject: subjectStore.current }, { value: 'other', label: 'Inne' }])
+watch(() => subjectStore.active, () => { draft.value.subject = subjectStore.active }, { immediate: draft.value.subject !== 'other' })
 
 const photos = ref([]) // [{ id, url }]
 const file = ref(null) // Extracted from extract.ts
@@ -138,7 +135,7 @@ const stage = computed(() => [...STAGES].reverse().find(s => progress.value >= s
     <nav class="breadcrumbs no-print" aria-label="Okruszki"><RouterLink :to="ROUTES.notes"><ArrowLeft :size="14" /> Notatki</RouterLink></nav>
     <header class="page-header">
       <div>
-        <span class="page-kicker">Notatki AI</span>
+        <span class="page-kicker">Notatki AI <SubjectTag /></span>
         <h1>Nowa notatka<span class="accent-dot">.</span></h1>
         <p>Dodaj zdjęcia zeszytu, plik (PDF, Word, PowerPoint) albo wklej tekst. AI wybierze, co najlepiej pokazać na osi czasu, w tabeli albo na mapie myśli, i dorzuci fiszki z quizem.</p>
       </div>
@@ -153,8 +150,9 @@ const stage = computed(() => [...STAGES].reverse().find(s => progress.value >= s
       <fieldset class="field">
         <legend class="field-label">Przedmiot</legend>
         <div class="chip-group" style="margin-top: 8px">
-          <label v-for="o in SUBJECTS" :key="o.value" class="chip"><input v-model="draft.subject" type="radio" name="subject" :value="o.value" />{{ o.label }}</label>
+          <label v-for="o in SUBJECTS" :key="o.value" class="chip"><input v-model="draft.subject" type="radio" name="subject" :value="o.value" /><SubjectIcon v-if="o.subject" :subject="o.subject" />{{ o.label }}</label>
         </div>
+        <p v-if="subjectStore.canSwitch" class="field-hint">Inny przedmiot? Przełącz go w górnym pasku.</p>
       </fieldset>
 
       <div class="field">
@@ -195,7 +193,7 @@ const stage = computed(() => [...STAGES].reverse().find(s => progress.value >= s
       <p v-if="!enough" class="field-hint">Dodaj zdjęcie, plik albo co najmniej {{ NOTE_LIMITS.minTextChars }} znaków tekstu.</p>
       <p class="field-hint privacy">
         Zdjęć i plików nie zapisujemy: pliki czytamy w Twojej przeglądarce, AI dostaje tylko ich treść, a my zachowujemy sam tekst.
-        Nie fotografuj danych osobowych. AI może się pomylić, więc sprawdzaj rzeczy oznaczone jako „dodane przez AI”.
+        Nie fotografuj danych osobowych. AI może się pomylić, więc porównaj notatkę ze swoim materiałem.
       </p>
     </form>
   </div>

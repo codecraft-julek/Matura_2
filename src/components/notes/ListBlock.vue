@@ -5,7 +5,7 @@ defineProps({ block: { type: Object, required: true } })
 </script>
 
 <template>
-  <NoteBlockShell :kind="block.numbered ? 'krok po kroku' : 'w punktach'" :heading="block.heading" :from-notes="block.from_notes">
+  <NoteBlockShell :kind="block.numbered ? 'krok po kroku' : 'w punktach'" :heading="block.heading">
     <component :is="block.numbered ? 'ol' : 'ul'" class="note-list" :class="{ numbered: block.numbered }">
       <li v-for="(item, i) in block.items" :key="i">{{ item }}</li>
     </component>

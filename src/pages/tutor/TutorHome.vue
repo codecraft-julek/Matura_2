@@ -6,25 +6,28 @@ import { RouterLink, useRouter } from 'vue-router'
 import { ChevronRight, FileText, Lightbulb, MessageCircle } from '@lucide/vue'
 import { chatTitle } from '@shared/tutor'
 import AllowanceNote from '@/ui/AllowanceNote.vue'
+import SubjectTag from '@/components/layout/SubjectTag.vue'
 import ErrorState from '@/ui/ErrorState.vue'
 import TutorChat from '@/components/tutor/TutorChat.vue'
-import { GENERAL_SUGGESTIONS } from '@/components/tutor/shared'
+import { generalSuggestions } from '@/components/tutor/shared'
 import { tutorChatRoute } from '@/config/routes'
 import { useAsync } from '@/composables/useAsync'
 import { handOffChat, listMyChats } from '@/lib/api/tutor'
 import { formatDateTime } from '@/lib/format'
 import { useBillingStore } from '@/stores/billing'
+import { useSubjectStore } from '@/stores/subject'
 
 const router = useRouter()
 const billing = useBillingStore()
-const { data: chats, loading, error, reload } = useAsync(() => listMyChats())
+const subject = useSubjectStore()
+const { data: chats, loading, error, reload } = useAsync(() => listMyChats(subject.active), { watch: () => subject.active })
 const allowance = computed(() => billing.allowanceFor('tutor'))
 onMounted(() => billing.loadAllowances().catch(() => {}))
 
 function onChatCreated(id, messages) {
   const first = messages.find(m => m.role === 'user')?.content ?? ''
   handOffChat({
-    chat: { id, title: chatTitle(first, null), exam_id: null, group_no: null, updated_at: new Date().toISOString() },
+    chat: { id, title: chatTitle(first, null), exam_id: null, group_no: null, subject: subject.active, updated_at: new Date().toISOString() },
     messages: messages.map(m => ({ ...m })),
   })
   router.replace(tutorChatRoute(id))
@@ -35,9 +38,9 @@ function onChatCreated(id, messages) {
   <div class="tutor-home">
     <header class="page-header">
       <div>
-        <span class="page-kicker">Pomoc w nauce</span>
+        <span class="page-kicker">Pomoc w nauce <SubjectTag /></span>
         <h1>Tutor AI<span class="accent-dot">.</span></h1>
-        <p>Pytaj o lektury, epoki, gramatykę albo wypracowanie. Tutor najpierw naprowadza, a pełną odpowiedź pokazuje, gdy o nią poprosisz.</p>
+        <p>Pytaj o lektury, epoki, gramatykę, procesy w komórce albo wypracowanie. Tutor najpierw naprowadza, a pełną odpowiedź pokazuje, gdy o nią poprosisz.</p>
       </div>
       <AllowanceNote :allowance="allowance" />
     </header>
@@ -48,7 +51,7 @@ function onChatCreated(id, messages) {
     </p>
 
     <section class="new-chat" aria-label="Nowa rozmowa">
-      <TutorChat :suggestions="GENERAL_SUGGESTIONS" @chat-created="onChatCreated" />
+      <TutorChat :suggestions="generalSuggestions(subject.active)" @chat-created="onChatCreated" />
     </section>
 
     <section class="section-gap" aria-labelledby="chats-title">
@@ -57,7 +60,7 @@ function onChatCreated(id, messages) {
         <div v-for="n in 3" :key="n" class="skeleton" style="height: 66px"></div>
       </div>
       <ErrorState v-else-if="error && !chats" message="Nie udało się wczytać Twoich rozmów." @retry="reload" />
-      <p v-else-if="!chats.length" class="muted empty">Tu pojawią się Twoje rozmowy z tutorem.</p>
+      <p v-else-if="!chats.length" class="muted empty">Tu pojawią się Twoje rozmowy z tutorem {{ subject.current.from }}.</p>
       <ul v-else class="list">
         <li v-for="c in chats" :key="c.id">
           <RouterLink :to="tutorChatRoute(c.id)" class="list-row chat-row">

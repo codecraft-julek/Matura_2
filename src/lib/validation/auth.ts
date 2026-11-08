@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SUBJECT_VALUES } from "@shared/waitlist";
 
 // Validation rules for accounts. Used in the browser (instant feedback) and in Server Actions.
 // Password rules match the Supabase Auth settings in supabase/config.toml (min 8, letters + digits).
@@ -42,7 +43,7 @@ export const profileSchema = z.object({
     .min(1, "Jak mamy się do Ciebie zwracać?")
     .max(40, "Maksymalnie 40 znaków."),
   subjects: z
-    .array(z.enum(["polish", "english", "biology"]), { error: "Zaznacz przynajmniej jeden przedmiot." })
+    .array(z.enum(SUBJECT_VALUES), { error: "Zaznacz przynajmniej jeden przedmiot." })
     .min(1, "Zaznacz przynajmniej jeden przedmiot.")
     .transform((list) => [...new Set(list)]),
   maturaYear: z.enum(["2027", "2028", "other"], { error: "Wybierz rok matury." }),

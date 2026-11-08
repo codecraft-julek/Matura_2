@@ -1,5 +1,4 @@
 <script setup>
-import AiBadge from './AiBadge.vue'
 import NoteBlockShell from './NoteBlockShell.vue'
 
 defineProps({ block: { type: Object, required: true } })
@@ -7,7 +6,7 @@ defineProps({ block: { type: Object, required: true } })
 
 <template>
   <NoteBlockShell kind="pojęcie" class="definition">
-    <p class="term"><mark>{{ block.term }}</mark><AiBadge v-if="!block.from_notes" /></p>
+    <p class="term"><mark>{{ block.term }}</mark></p>
     <p class="meaning">{{ block.meaning }}</p>
     <p v-if="block.example" class="example">np. {{ block.example }}</p>
   </NoteBlockShell>

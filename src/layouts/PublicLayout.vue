@@ -2,7 +2,7 @@
 // Header + footer of the public site (landing, SEO exam pages, contact, legal pages, 404).
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { ArrowUpRight, Menu, X } from '@lucide/vue'
+import { ChevronRight, Menu, X } from '@lucide/vue'
 import BrandLink from '@/ui/BrandLink.vue'
 import { AUTHOR } from '@/config/site'
 import { ROUTES } from '@/config/routes'
@@ -31,18 +31,18 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
         <BrandLink to="/" />
         <nav class="desktop-navigation" aria-label="Menu główne"><RouterLink v-for="item in nav" :key="item.to" :to="item.to">{{ item.label }}</RouterLink></nav>
         <div class="header-actions">
-          <template v-if="auth.isLoggedIn"><RouterLink class="button button-dark header-cta" :to="ROUTES.dashboard">Przejdź do panelu <ArrowUpRight :size="16" /></RouterLink></template>
+          <template v-if="auth.isLoggedIn"><RouterLink class="button button-dark header-cta" :to="ROUTES.dashboard">Przejdź do panelu</RouterLink></template>
           <template v-else>
             <RouterLink class="text-button desktop-demo" :to="ROUTES.login">Zaloguj się</RouterLink>
-            <RouterLink class="button button-dark header-cta" :to="ROUTES.signup">Załóż konto <ArrowUpRight :size="16" /></RouterLink>
+            <RouterLink class="button button-dark header-cta" :to="ROUTES.signup">Załóż konto</RouterLink>
           </template>
           <button class="menu-toggle icon-button" :aria-expanded="menuOpen" aria-controls="mobile-navigation" :aria-label="menuOpen ? 'Zamknij menu' : 'Otwórz menu'" @click="menuOpen = !menuOpen"><X v-if="menuOpen" :size="24" /><Menu v-else :size="24" /></button>
         </div>
       </div>
       <nav v-if="menuOpen" id="mobile-navigation" class="mobile-navigation" aria-label="Menu mobilne">
-        <RouterLink v-for="item in nav" :key="item.to" :to="item.to">{{ item.label }} <ArrowUpRight :size="18" /></RouterLink>
-        <RouterLink v-if="!auth.isLoggedIn" :to="ROUTES.login">Zaloguj się <ArrowUpRight :size="18" /></RouterLink>
-        <RouterLink class="button button-lime" :to="auth.isLoggedIn ? ROUTES.dashboard : ROUTES.signup">{{ auth.isLoggedIn ? 'Przejdź do panelu' : 'Załóż darmowe konto' }} <ArrowUpRight :size="18" /></RouterLink>
+        <RouterLink v-for="item in nav" :key="item.to" :to="item.to">{{ item.label }} <ChevronRight :size="18" /></RouterLink>
+        <RouterLink v-if="!auth.isLoggedIn" :to="ROUTES.login">Zaloguj się <ChevronRight :size="18" /></RouterLink>
+        <RouterLink class="button button-lime" :to="auth.isLoggedIn ? ROUTES.dashboard : ROUTES.signup">{{ auth.isLoggedIn ? 'Przejdź do panelu' : 'Załóż darmowe konto' }}</RouterLink>
       </nav>
     </header>
 

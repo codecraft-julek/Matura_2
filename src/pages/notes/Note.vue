@@ -115,7 +115,7 @@ const print = () => window.print()
       <summary>{{ sourceLabel }}</summary>
       <p class="source-text">{{ n.source_text }}</p>
     </details>
-    <p class="disclaimer">Notatka przygotowana przez AI na podstawie Twoich materiałów. Może zawierać błędy: sprawdzaj zwłaszcza fragmenty oznaczone jako „dodane przez AI”.</p>
+    <p class="disclaimer">Notatka przygotowana przez AI na podstawie Twoich materiałów. Może zawierać błędy, więc w razie wątpliwości porównaj ją z podręcznikiem.</p>
   </article>
 </template>
 

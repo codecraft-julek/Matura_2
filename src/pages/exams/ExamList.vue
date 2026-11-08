@@ -1,19 +1,22 @@
 <script setup>
-// /arkusze — all exams by subject (the student's subjects first, the rest still shown),
-// latest result per exam, filters by year and level (kept in the URL: ?rok=2025&poziom=basic).
-import { computed } from 'vue'
+// /arkusze — the sheets of one subject (the active one from the header, or another one picked
+// here: every subject stays reachable, the sheets are free), latest result per exam, filters by
+// year and level (kept in the URL: ?przedmiot=biology&rok=2025&poziom=basic).
+import { computed, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { ArrowUpRight, Clock3, FileText, Star } from '@lucide/vue'
 import { examRoutes } from '@/config/routes'
+import { SUBJECTS, isSubjectId } from '@/config/subjects'
 import { useAsync } from '@/composables/useAsync'
 import { listExams, listMyAttempts } from '@/lib/api/exams'
-import { LEVEL_LABEL, SESSION_LABEL, SUBJECT_LABEL } from '@/lib/exams/labels'
-import { useAuthStore } from '@/stores/auth'
+import { LEVEL_LABEL, SESSION_LABEL } from '@/lib/exams/labels'
+import { useSubjectStore } from '@/stores/subject'
+import SubjectIcon from '@/components/layout/SubjectIcon.vue'
 import EmptyState from '@/ui/EmptyState.vue'
 import ErrorState from '@/ui/ErrorState.vue'
 import PageSkeleton from '@/ui/PageSkeleton.vue'
 
-const auth = useAuthStore()
+const subjectStore = useSubjectStore()
 const route = useRoute()
 const router = useRouter()
 const { data, loading, error, reload } = useAsync(async () => {
@@ -24,14 +27,23 @@ const { data, loading, error, reload } = useAsync(async () => {
   return { exams, latest }
 })
 
-const mySubjects = computed(() => auth.profile?.subjects ?? [])
-// Show the student's subjects first, but don't hide the rest.
-const subjects = computed(() => ['polish', 'english', 'biology'].sort((a, b) => Number(mySubjects.value.includes(b)) - Number(mySubjects.value.includes(a))))
+const mine = computed(() => subjectStore.available.map(s => s.id))
+// The student's subjects first, the rest still there.
+const subjects = computed(() => [...SUBJECTS].sort((a, b) => Number(mine.value.includes(b.id)) - Number(mine.value.includes(a.id))))
+// ?przedmiot= only for a subject the student doesn't have; their own come from the header switcher.
+const subject = computed(() => (isSubjectId(route.query.przedmiot) && !mine.value.includes(route.query.przedmiot) ? route.query.przedmiot : subjectStore.active))
+const current = computed(() => SUBJECTS.find(s => s.id === subject.value))
+watch(() => subjectStore.active, () => { if (route.query.przedmiot) setFilter('przedmiot', null) })
 
-const years = computed(() => [...new Set((data.value?.exams ?? []).map(e => e.year))].sort((a, b) => b - a))
+function pickSubject(id) {
+  if (mine.value.includes(id)) { subjectStore.set(id); setFilter('przedmiot', null) }
+  else setFilter('przedmiot', id)
+}
+
+const years = computed(() => [...new Set((data.value?.exams ?? []).filter(e => e.subject === subject.value).map(e => e.year))].sort((a, b) => b - a))
 const year = computed(() => (route.query.rok ? Number(route.query.rok) : null))
 const level = computed(() => (['basic', 'extended'].includes(route.query.poziom) ? route.query.poziom : null))
-const filtered = computed(() => (data.value?.exams ?? []).filter(e => (!year.value || e.year === year.value) && (!level.value || e.level === level.value)))
+const filtered = computed(() => (data.value?.exams ?? []).filter(e => e.subject === subject.value && (!year.value || e.year === year.value) && (!level.value || e.level === level.value)))
 const hasFilters = computed(() => Boolean(year.value || level.value))
 
 function setFilter(key, value) {
@@ -40,7 +52,7 @@ function setFilter(key, value) {
   else query[key] = String(value)
   router.replace({ query })
 }
-const clearFilters = () => router.replace({ query: {} })
+const clearFilters = () => router.replace({ query: route.query.przedmiot ? { przedmiot: route.query.przedmiot } : {} })
 
 function lastLabel(a) {
   return a.checkable_points ? `${a.score}/${a.checkable_points} pkt` : 'wypracowanie oddane'
@@ -62,6 +74,15 @@ const percent = a => (a.checkable_points ? Math.round((a.score / a.checkable_poi
 
     <div class="filters" aria-label="Filtry arkuszy" role="region">
       <div class="filter">
+        <span class="filter-label" id="f-subject">Przedmiot</span>
+        <div class="chip-group" role="group" aria-labelledby="f-subject">
+          <button v-for="s in subjects" :key="s.id" type="button" class="chip" :aria-pressed="subject === s.id" @click="pickSubject(s.id)">
+            <SubjectIcon :subject="s" />{{ s.short }}
+            <Star v-if="mine.includes(s.id) && subjectStore.canSwitch" :size="11" fill="currentColor" aria-label="Twój przedmiot" />
+          </button>
+        </div>
+      </div>
+      <div class="filter">
         <span class="filter-label" id="f-year">Rok</span>
         <div class="chip-group" role="group" aria-labelledby="f-year">
           <button type="button" class="chip" :aria-pressed="!year" @click="setFilter('rok', null)">Wszystkie</button>
@@ -77,42 +98,37 @@ const percent = a => (a.checkable_points ? Math.round((a.score / a.checkable_poi
       </div>
     </div>
 
-    <EmptyState v-if="hasFilters && !filtered.length" :icon="FileText" title="Brak arkuszy dla tych filtrów" text="Zmień rok albo poziom, żeby zobaczyć więcej arkuszy.">
-      <button type="button" class="button button-dark" @click="clearFilters">Pokaż wszystkie</button>
-    </EmptyState>
-
-    <template v-else>
-      <section v-for="subject in subjects" :key="subject" class="subject" :aria-labelledby="`s-${subject}`">
-        <div class="subject-head">
-          <h2 :id="`s-${subject}`" class="section-title">{{ SUBJECT_LABEL[subject] }}</h2>
-          <span v-if="mySubjects.includes(subject)" class="badge badge-lime"><Star :size="12" fill="currentColor" /> Twój przedmiot</span>
-        </div>
-        <p v-if="!filtered.some(e => e.subject === subject)" class="subject-empty">
-          {{ hasFilters ? 'Brak arkuszy z tego przedmiotu dla wybranych filtrów.' : 'Arkusze z tego przedmiotu dodajemy w najbliższym czasie.' }}
-        </p>
-        <ul v-else class="exam-grid">
-          <li v-for="exam in filtered.filter(e => e.subject === subject)" :key="exam.id">
-            <RouterLink :to="examRoutes.overview(exam.id)" class="card card-link exam-card" :class="{ 'is-mine': mySubjects.includes(subject) }">
-              <div class="exam-tags">
-                <span class="badge badge-dark tabular">{{ exam.year }}</span>
-                <span class="badge">poziom {{ LEVEL_LABEL[exam.level] }}</span>
-                <span class="muted small">{{ SESSION_LABEL[exam.session] }}</span>
+    <section class="subject" :aria-labelledby="`s-${subject}`">
+      <div class="subject-head">
+        <h2 :id="`s-${subject}`" class="section-title">{{ current.label }}</h2>
+        <span v-if="mine.includes(subject) && subjectStore.canSwitch" class="badge badge-lime"><Star :size="12" fill="currentColor" /> Twój przedmiot</span>
+      </div>
+      <EmptyState v-if="hasFilters && !filtered.length" :icon="FileText" title="Brak arkuszy dla tych filtrów" text="Zmień rok albo poziom, żeby zobaczyć więcej arkuszy.">
+        <button type="button" class="button button-dark" @click="clearFilters">Pokaż wszystkie</button>
+      </EmptyState>
+      <p v-else-if="!filtered.length" class="subject-empty">Arkusze {{ current.from }} dodajemy w najbliższym czasie.</p>
+      <ul v-else class="exam-grid">
+        <li v-for="exam in filtered" :key="exam.id">
+          <RouterLink :to="examRoutes.overview(exam.id)" class="card card-link exam-card" :class="{ 'is-mine': mine.includes(subject) }">
+            <div class="exam-tags">
+              <span class="badge badge-dark tabular">{{ exam.year }}</span>
+              <span class="badge">poziom {{ LEVEL_LABEL[exam.level] }}</span>
+              <span class="muted small">{{ SESSION_LABEL[exam.session] }}</span>
+            </div>
+            <p class="card-title exam-title">{{ exam.title }}</p>
+            <p class="card-meta"><Clock3 :size="13" /> {{ exam.duration_minutes }} min · {{ exam.max_points }} pkt</p>
+            <div v-if="data.latest[exam.id]" class="exam-last">
+              <div class="row-between small">
+                <span class="muted">Ostatnio</span>
+                <strong class="tabular">{{ lastLabel(data.latest[exam.id]) }}</strong>
               </div>
-              <p class="card-title exam-title">{{ exam.title }}</p>
-              <p class="card-meta"><Clock3 :size="13" /> {{ exam.duration_minutes }} min · {{ exam.max_points }} pkt</p>
-              <div v-if="data.latest[exam.id]" class="exam-last">
-                <div class="row-between small">
-                  <span class="muted">Ostatnio</span>
-                  <strong class="tabular">{{ lastLabel(data.latest[exam.id]) }}</strong>
-                </div>
-                <div v-if="data.latest[exam.id].checkable_points" class="progress is-lime" role="progressbar" :aria-valuenow="percent(data.latest[exam.id])" aria-valuemin="0" aria-valuemax="100" :aria-label="`Ostatni wynik: ${percent(data.latest[exam.id])}%`"><span :style="{ width: `${percent(data.latest[exam.id])}%` }"></span></div>
-              </div>
-              <span class="exam-go">{{ data.latest[exam.id] ? 'Rozwiąż ponownie' : 'Zacznij' }} <ArrowUpRight :size="15" /></span>
-            </RouterLink>
-          </li>
-        </ul>
-      </section>
-    </template>
+              <div v-if="data.latest[exam.id].checkable_points" class="progress is-lime" role="progressbar" :aria-valuenow="percent(data.latest[exam.id])" aria-valuemin="0" aria-valuemax="100" :aria-label="`Ostatni wynik: ${percent(data.latest[exam.id])}%`"><span :style="{ width: `${percent(data.latest[exam.id])}%` }"></span></div>
+            </div>
+            <span class="exam-go">{{ data.latest[exam.id] ? 'Rozwiąż ponownie' : 'Zacznij' }} <ArrowUpRight :size="15" /></span>
+          </RouterLink>
+        </li>
+      </ul>
+    </section>
   </template>
 </template>
 
@@ -121,7 +137,8 @@ const percent = a => (a.checkable_points ? Math.round((a.score / a.checkable_poi
 .filter { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .filter-label { font-size: 12px; font-weight: 700; letter-spacing: .4px; color: var(--text-soft); }
 .filter .chip { min-height: 38px; padding: 7px 14px; font-size: 13px; }
-.subject { margin-top: 36px; }
+.filter .chip:has(.subject-icon) { padding-left: 9px; }
+.subject { margin-top: 28px; }
 .subject-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .subject-head .section-title { margin: 0; }
 .subject-empty { padding: 18px 20px; border: 1px dashed var(--line-strong); border-radius: var(--radius-lg); color: var(--text-soft); font-size: 15px; }

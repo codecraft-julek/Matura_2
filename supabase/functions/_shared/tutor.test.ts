@@ -3,6 +3,7 @@ import {
   TUTOR_LIMITS,
   buildTaskContext,
   buildTutorInput,
+  buildSubjectContext,
   buildTutorInstructions,
   chatTitle,
   deckMarkerFilter,
@@ -42,6 +43,13 @@ describe("prompt building", () => {
     expect(p).toContain("NIGDY nie wymyślaj treści tekstu");
     expect(p).toContain("116 111");
     expect(buildTutorInstructions()).toBe(p);
+  });
+
+  it("tells the tutor which subject a general chat is about, and nothing for an unknown one", () => {
+    expect(buildSubjectContext("biology")).toContain("biologia");
+    expect(buildSubjectContext(undefined)).toBeNull();
+    expect(tutorRequestSchema.safeParse({ message: "Hej", subject: "biology" }).success).toBe(true);
+    expect(tutorRequestSchema.safeParse({ message: "Hej", subject: "maths" }).success).toBe(false);
   });
 
   it("asks for diagrams only from pages that can draw them", () => {

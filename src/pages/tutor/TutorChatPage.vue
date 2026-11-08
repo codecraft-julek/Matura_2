@@ -7,17 +7,19 @@ import { ArrowRight, ChevronLeft, Trash2 } from '@lucide/vue'
 import ErrorState from '@/ui/ErrorState.vue'
 import PageSkeleton from '@/ui/PageSkeleton.vue'
 import TutorChat from '@/components/tutor/TutorChat.vue'
-import { GENERAL_SUGGESTIONS, TASK_SUGGESTIONS } from '@/components/tutor/shared'
+import { TASK_SUGGESTIONS, generalSuggestions } from '@/components/tutor/shared'
 import NotFound from '@/pages/NotFound.vue'
 import { ROUTES, examRoutes } from '@/config/routes'
 import { useAsync } from '@/composables/useAsync'
 import { usePageTitle } from '@/composables/usePageTitle'
 import { deleteChat, getChat } from '@/lib/api/tutor'
 import { useUiStore } from '@/stores/ui'
+import { useSubjectStore } from '@/stores/subject'
 
 const route = useRoute()
 const router = useRouter()
 const ui = useUiStore()
+const subject = useSubjectStore()
 const { data, loading, error, reload } = useAsync(() => getChat(String(route.params.chatId)), { watch: () => route.params.chatId })
 const chat = computed(() => data.value?.chat ?? null)
 usePageTitle(() => (chat.value ? `${chat.value.title} · Tutor AI` : ''))
@@ -61,7 +63,7 @@ async function remove() {
       :chat-id="chat.id"
       :messages="data.messages"
       :autofocus="Boolean(data.fresh)"
-      :suggestions="chat.exam_id ? TASK_SUGGESTIONS : GENERAL_SUGGESTIONS"
+      :suggestions="chat.exam_id ? TASK_SUGGESTIONS : generalSuggestions(subject.active)"
     />
   </div>
 </template>

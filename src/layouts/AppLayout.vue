@@ -6,10 +6,13 @@ import { RouterLink, useRoute } from 'vue-router'
 import { CircleUser, FileText, Layers, LayoutDashboard, LogOut, MessageCircle, MoreHorizontal, NotebookPen, PenLine, Zap } from '@lucide/vue'
 import BrandLink from '@/ui/BrandLink.vue'
 import AppDialog from '@/ui/AppDialog.vue'
+import SubjectSwitcher from '@/components/layout/SubjectSwitcher.vue'
 import { ROUTES } from '@/config/routes'
 import { useSignOut } from '@/composables/useSignOut'
+import { useSubjectStore } from '@/stores/subject'
 
 const route = useRoute()
+const subject = useSubjectStore()
 const moreOpen = ref(false)
 
 const nav = [
@@ -39,6 +42,7 @@ const signOut = useSignOut()
           <RouterLink :to="ROUTES.premium" class="nav-premium"><Zap :size="15" fill="currentColor" />Premium</RouterLink>
         </nav>
         <div class="app-header-actions">
+          <SubjectSwitcher v-if="subject.canSwitch" />
           <RouterLink :to="ROUTES.account" class="icon-button" aria-label="Konto" title="Konto"><CircleUser :size="21" /></RouterLink>
           <button type="button" class="icon-button hide-mobile" aria-label="Wyloguj się" title="Wyloguj się" @click="signOut"><LogOut :size="19" /></button>
         </div>

@@ -8,7 +8,7 @@ const warning = computed(() => props.block.body.startsWith('Uwaga'))
 </script>
 
 <template>
-  <NoteBlockShell :kind="warning ? 'uwaga' : 'krótko'" :heading="block.heading" :from-notes="block.from_notes" :tone="warning ? 'sand' : ''">
+  <NoteBlockShell :kind="warning ? 'uwaga' : 'krótko'" :heading="block.heading" :tone="warning ? 'sand' : ''">
     <p>{{ block.body }}</p>
   </NoteBlockShell>
 </template>

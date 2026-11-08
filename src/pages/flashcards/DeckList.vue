@@ -1,6 +1,6 @@
 <script setup>
 // /fiszki — the student's decks with card count and how many cards are due today.
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { CircleCheck, Layers, Plus, Repeat } from '@lucide/vue'
 import { useAsync } from '@/composables/useAsync'
@@ -8,6 +8,9 @@ import { ROUTES, deckRoute, studyRoute } from '@/config/routes'
 import { DECK_SOURCE, listDecks } from '@/lib/api/flashcards'
 import { count } from '@/lib/format'
 import { useBillingStore } from '@/stores/billing'
+import { useSubjectStore } from '@/stores/subject'
+import SubjectFilter from '@/components/layout/SubjectFilter.vue'
+import SubjectTag from '@/components/layout/SubjectTag.vue'
 import AllowanceNote from '@/ui/AllowanceNote.vue'
 import EmptyState from '@/ui/EmptyState.vue'
 import ErrorState from '@/ui/ErrorState.vue'
@@ -15,9 +18,15 @@ import PageSkeleton from '@/ui/PageSkeleton.vue'
 
 const CARDS = ['fiszka', 'fiszki', 'fiszek']
 const billing = useBillingStore()
+const subject = useSubjectStore()
 const { data: decks, loading, error, reload } = useAsync(() => listDecks())
 onMounted(() => billing.loadAllowances().catch(() => {}))
-const dueTotal = computed(() => (decks.value ?? []).reduce((n, d) => n + d.due, 0))
+
+// Only the active subject's decks (or the ones about no subject, "Inne"), so subjects never mix.
+const filter = ref('subject') // 'subject' | 'other'
+const shown = computed(() => (decks.value ?? []).filter(d => d.subject === (filter.value === 'other' ? 'other' : subject.active)))
+watch(() => subject.active, () => { filter.value = 'subject' })
+const dueTotal = computed(() => shown.value.reduce((n, d) => n + d.due, 0))
 </script>
 
 <template>
@@ -26,7 +35,7 @@ const dueTotal = computed(() => (decks.value ?? []).reduce((n, d) => n + d.due, 
   <template v-else>
     <header class="page-header">
       <div>
-        <span class="page-kicker"><Layers :size="14" /> Fiszki</span>
+        <span class="page-kicker"><Layers :size="14" /> Fiszki <SubjectTag /></span>
         <h1>Twoje fiszki<span class="accent-dot">.</span></h1>
         <p>Zrób fiszki z PDF-a, Worda, prezentacji, zdjęć, strony albo filmu na YouTube. Powtórki układają się same: fiszka wraca wtedy, kiedy zaczynasz ją zapominać.</p>
       </div>
@@ -41,6 +50,11 @@ const dueTotal = computed(() => (decks.value ?? []).reduce((n, d) => n + d.due, 
     </EmptyState>
 
     <template v-else>
+      <SubjectFilter v-model="filter" :items="decks" noun="talie" />
+      <EmptyState v-if="!shown.length" :icon="Layers" :title="filter === 'other' ? 'Brak talii z innych tematów' : `Brak fiszek ${subject.current.from}`" text="Wgraj prezentację z lekcji albo zdjęcie notatek i zobacz, co z tego wyjdzie.">
+        <RouterLink :to="ROUTES.newDeck" class="button button-dark">Zrób talię {{ subject.current.from }}</RouterLink>
+      </EmptyState>
+      <template v-else>
       <div class="card card-sand due-banner" :class="{ 'all-done': dueTotal === 0 }">
         <span class="due-icon" aria-hidden="true"><Repeat v-if="dueTotal" :size="20" /><CircleCheck v-else :size="20" /></span>
         <p><span class="muted">Do powtórki dziś:</span> <strong class="tabular">{{ dueTotal }}</strong> <span v-if="dueTotal === 0" class="muted">— wszystko powtórzone, brawo!</span></p>
@@ -49,7 +63,7 @@ const dueTotal = computed(() => (decks.value ?? []).reduce((n, d) => n + d.due, 
       <section aria-labelledby="decks-title" class="section-gap" style="margin-top: 26px">
         <h2 id="decks-title" class="section-title">Twoje talie</h2>
         <ul class="deck-grid">
-          <li v-for="d in decks" :key="d.id" class="deck-card">
+          <li v-for="d in shown" :key="d.id" class="deck-card">
             <RouterLink :to="deckRoute(d.id)" class="deck-link">
               <span class="deck-title">{{ d.title }}</span>
               <span class="card-meta">{{ count(d.cards, CARDS) }} · {{ DECK_SOURCE[d.source_kind] ?? d.source_kind }}</span>
@@ -61,6 +75,7 @@ const dueTotal = computed(() => (decks.value ?? []).reduce((n, d) => n + d.due, 
           </li>
         </ul>
       </section>
+      </template>
     </template>
   </template>
 </template>

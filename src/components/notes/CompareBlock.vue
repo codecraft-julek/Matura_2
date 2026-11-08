@@ -5,7 +5,7 @@ defineProps({ block: { type: Object, required: true } })
 </script>
 
 <template>
-  <NoteBlockShell kind="porównanie" :heading="block.heading" :from-notes="block.from_notes">
+  <NoteBlockShell kind="porównanie" :heading="block.heading">
     <!-- Wide tables scroll inside the card on phones instead of squashing the text. -->
     <div class="table-scroll" tabindex="0" role="region" :aria-label="block.heading || 'Tabela porównawcza'">
       <table :class="`cols-${block.columns.length}`">

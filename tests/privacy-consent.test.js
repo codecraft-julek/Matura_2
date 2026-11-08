@@ -55,13 +55,14 @@ describe('optional analytics consent', () => {
     const values = new Map([
       ['ogarnij-mature:draft:student-b:essay-new', 'mine'], ['om:sheet:student-b:exam:2026', 'mine'],
       ['ogarnij-mature:draft:student-a:essay-new', 'theirs'], ['om:sheet:student-a:exam:2026', 'theirs'],
+      ['om:subject:student-b:active', 'mine'], ['om:subject:student-a:active', 'theirs'],
       ['ogarnij-mature:draft:essay-new', 'old'], ['om:sheet:exam:2026', 'old'],
       ['ogarnij-mature:polski-2026:v1', 'demo'], ['sb-project-auth-token', 'session'],
     ])
     const storage = { get length() { return values.size }, key: index => [...values.keys()][index], removeItem: key => values.delete(key) }
-    expect(removeOtherStudentsData(storage, 'student-b')).toBe(4)
+    expect(removeOtherStudentsData(storage, 'student-b')).toBe(5)
     expect([...values.keys()]).toEqual([
-      'ogarnij-mature:draft:student-b:essay-new', 'om:sheet:student-b:exam:2026', 'ogarnij-mature:polski-2026:v1', 'sb-project-auth-token',
+      'ogarnij-mature:draft:student-b:essay-new', 'om:sheet:student-b:exam:2026', 'om:subject:student-b:active', 'ogarnij-mature:polski-2026:v1', 'sb-project-auth-token',
     ])
   })
 })

@@ -5,12 +5,17 @@ import { z } from 'zod'
 import { myRatings } from '@/lib/api/ratings'
 import { supabase } from '@/lib/supabase'
 
-const CHAT_COLUMNS = 'id, title, exam_id, group_no, updated_at'
+const CHAT_COLUMNS = 'id, title, exam_id, group_no, subject, updated_at'
 const isUuid = id => z.uuid().safeParse(id).success
 
-/** Latest 50 chats, newest first. */
-export async function listMyChats() {
-  const { data, error } = await supabase.from('tutor_chats').select(CHAT_COLUMNS).order('updated_at', { ascending: false }).limit(50)
+/** Latest 50 chats about `subject` (plus older chats without a subject), newest first. */
+export async function listMyChats(subject) {
+  const { data, error } = await supabase
+    .from('tutor_chats')
+    .select(CHAT_COLUMNS)
+    .or(`subject.eq.${subject},subject.is.null`)
+    .order('updated_at', { ascending: false })
+    .limit(50)
   if (error) throw error
   return data ?? []
 }

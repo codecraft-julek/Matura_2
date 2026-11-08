@@ -9,12 +9,30 @@ export const TASK_SUGGESTIONS = [
   'Pokaż odpowiedź z wyjaśnieniem',
 ]
 
-export const GENERAL_SUGGESTIONS = [
-  'Jak napisać mocną tezę w wypracowaniu?',
-  'Jak napisać notatkę syntetyzującą?',
-  'Kiedy Present Perfect, a kiedy Past Simple?',
-  'Wyjaśnij mi romantyzm w 5 zdaniach',
-]
+// Starters for a general chat, per subject (the active one from the header).
+const GENERAL_BY_SUBJECT = {
+  polish: [
+    'Jak napisać mocną tezę w wypracowaniu?',
+    'Jak napisać notatkę syntetyzującą?',
+    'Wyjaśnij mi romantyzm w 5 zdaniach',
+    'Jakie motywy są w „Lalce”?',
+  ],
+  english: [
+    'Kiedy Present Perfect, a kiedy Past Simple?',
+    'Jak napisać rozprawkę za i przeciw?',
+    'Jak zdobyć punkty za środki językowe?',
+    'Wyjaśnij mi mowę zależną',
+  ],
+  biology: [
+    'Wyjaśnij mi fotosyntezę krok po kroku',
+    'Jak rozpisać krzyżówkę genetyczną?',
+    'Czym różni się mitoza od mejozy?',
+    'Jak sformułować hipotezę w doświadczeniu?',
+  ],
+}
+
+/** Suggestions for a general chat about `subject` (polish, english, biology). */
+export const generalSuggestions = subject => GENERAL_BY_SUBJECT[subject] ?? GENERAL_BY_SUBJECT.polish
 
 /** Which "Zapytaj tutora" panel is open (a per-button key), so only one is open at a time. */
 export const openTutorPanel = ref(null)

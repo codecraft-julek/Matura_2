@@ -83,6 +83,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, [tabindex]:fo
 .app-nav a.router-link-active { background: var(--surface-3); color: var(--green); }
 .app-nav a.nav-premium { background: var(--lime); color: var(--green); }
 .app-header-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.app-header-actions .subject-switcher { margin-right: 6px; }
 .bottom-nav { display: none; }
 @media (max-width: 1100px) { .app-nav a { padding-inline: 9px; font-size: 13px; } .app-nav a svg { display: none; } }
 @media (max-width: 860px) {
