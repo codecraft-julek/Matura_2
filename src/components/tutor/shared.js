@@ -29,9 +29,15 @@ const GENERAL_BY_SUBJECT = {
     'Czym różni się mitoza od mejozy?',
     'Jak sformułować hipotezę w doświadczeniu?',
   ],
+  chemistry: [
+    'Jak obliczyć pH słabego kwasu?',
+    'Jak dobrać współczynniki metodą bilansu elektronowego?',
+    'Wyjaśnij mi hybrydyzację sp, sp² i sp³',
+    'Jak rozpoznać izomery optyczne?',
+  ],
 }
 
-/** Suggestions for a general chat about `subject` (polish, english, biology). */
+/** Suggestions for a general chat about `subject` (polish, english, biology, chemistry). */
 export const generalSuggestions = subject => GENERAL_BY_SUBJECT[subject] ?? GENERAL_BY_SUBJECT.polish
 
 /** Which "Zapytaj tutora" panel is open (a per-button key), so only one is open at a time. */

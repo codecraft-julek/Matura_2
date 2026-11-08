@@ -26,7 +26,7 @@ const byYear = year => publicExams.filter(e => e.year === year)
       <div>
         <span class="page-kicker">Formuła 2023</span>
         <h1>Arkusze maturalne CKE z odpowiedziami<span class="accent-dot">.</span></h1>
-        <p>Prawdziwe arkusze z polskiego, angielskiego i biologii. Czytasz oficjalny PDF z CKE, a odpowiedzi wpisujesz u nas: zadania zamknięte sprawdzamy od razu według klucza, a wypracowanie i odpowiedzi otwarte ocenia AI.</p>
+        <p>Prawdziwe arkusze z polskiego, angielskiego, biologii i chemii. Czytasz oficjalny PDF z CKE, a odpowiedzi wpisujesz u nas: zadania zamknięte sprawdzamy od razu według klucza, a wypracowanie i odpowiedzi otwarte ocenia AI.</p>
       </div>
     </header>
 

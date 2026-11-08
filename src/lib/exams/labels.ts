@@ -4,6 +4,7 @@ export const SUBJECT_LABEL: Record<string, string> = {
   polish: "Język polski",
   english: "Język angielski",
   biology: "Biologia",
+  chemistry: "Chemia",
 };
 
 export const LEVEL_LABEL: Record<string, string> = {

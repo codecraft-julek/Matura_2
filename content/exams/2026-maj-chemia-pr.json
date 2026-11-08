@@ -1,0 +1,364 @@
+{
+  "id": "2026-maj-chemia-pr",
+  "subject": "chemistry",
+  "level": "extended",
+  "year": 2026,
+  "session": "main",
+  "title": "Chemia, poziom rozszerzony, maj 2026",
+  "durationMinutes": 180,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Chemia/MCHP-R0-100-A-2605-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Chemia/MCHP-R0-100-2605-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę i zapisz konfigurację", "page": 4,
+      "items": {
+        "1.1": {
+          "answer": "Pierwiastek A: Cr (chrom), blok d, maksymalny stopień utlenienia VI.\nPierwiastek Q: N (azot), blok p, maksymalny stopień utlenienia V.",
+          "note": "1 pkt za każdy w pełni poprawny wiersz albo za dwie pełne kolumny. Zapis „N₂” zamiast symbolu N nie jest uznawany.",
+          "accepted": [],
+          "points": 2
+        },
+        "1.2": {
+          "answer": "Chrom: 4s¹ 3d⁵. W klatce 4s jedna strzałka, w każdej z pięciu klatek 3d po jednej strzałce. Wszystkie sześć elektronów jest niesparowanych i ma ten sam zwrot spinu.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 2, "section": "tasks", "kind": "open", "label": "Doświadczenie: rozstrzygnięcie, obserwacje i wniosek", "page": 5,
+      "items": {
+        "2": {
+          "answer": "Rozstrzygnięcie: reakcja zaszła w probówce I (z kwasem).\nObserwacje: roztwór zmienił barwę z żółtej na pomarańczową; w probówce II bez zmian.\nWniosek: jony AO₄²⁻ (CrO₄²⁻) są trwałe w roztworze zasadowym, a w kwasowym przechodzą w jony A₂O₇²⁻: 2CrO₄²⁻ + 2H⁺ → Cr₂O₇²⁻ + H₂O.",
+          "note": "2 pkt za rozstrzygnięcie, obserwacje i wniosek. 1 pkt, gdy brakuje wniosku albo obserwacji. Sama „zmiana barwy” bez podania koloru nie wystarcza.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 3, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę", "page": 5,
+      "items": {
+        "3": {
+          "answer": "Cząsteczka N₂ (N≡N): 1 wiązanie σ, 2 wiązania π, 2 wolne pary elektronowe (po jednej na każdym atomie azotu).",
+          "accepted": ["1 2 2", "1, 2, 2", "σ 1 π 2 wolne pary 2"]
+        }
+      }
+    },
+    {
+      "no": 4, "section": "tasks", "kind": "open", "label": "Ustal wzór na podstawie obliczeń", "page": 6,
+      "items": {
+        "4": {
+          "calc": true,
+          "answer": "Stosunek mas Ca : C : N = 50 : 15 : 35.\nStosunek moli: 50/40 : 15/12 : 35/14 = 1,25 : 1,25 : 2,5 = 1 : 1 : 2.\nWzór sumaryczny związku X: CaCN₂.\nWzór elektronowy anionu: [N=C=N]²⁻ – atom węgla w środku, podwójne wiązanie z każdym atomem azotu, na każdym azocie dwie wolne pary elektronowe, ładunek 2− (taka budowa jak CO₂).",
+          "note": "1 pkt za wzór sumaryczny ustalony z obliczeń, 1 pkt za wzór elektronowy z wolnymi parami i ładunkiem.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 5, "section": "tasks", "kind": "open", "label": "Uzupełnij schemat i policz neutrony", "page": 7,
+      "items": {
+        "5": {
+          "calc": true,
+          "answer": "Równanie: ²³⁹Pu + ¹n → ¹⁴⁴Ba + ⁹⁴Sr + 2 ¹n.\nBrakujący produkt to stront: Z = 94 − 56 = 38, A = 239 + 1 − 144 − 2 = 94.\nLiczba neutronów w jądrze ⁹⁴Sr: 94 − 38 = 56.\nW jednym molu: 56 · 6,02·10²³ = 3,37·10²⁵ neutronów.",
+          "note": "1 pkt za uzupełnienie schematu, 1 pkt za liczbę neutronów. Samo działanie bez wyniku nie wystarcza.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 6, "section": "tasks", "kind": "open", "label": "Rozpoznaj typ kryształów", "page": 7,
+      "items": {
+        "6": {
+          "answer": "Substancja A: kryształy molekularne (niska temperatura topnienia, brak przewodnictwa). Substancja B: kryształy kowalencyjne (bardzo wysoka temperatura topnienia, nierozpuszczalna, nie przewodzi).",
+          "accepted": ["a molekularne b kowalencyjne", "molekularne, kowalencyjne", "molekularne kowalencyjne"]
+        }
+      }
+    },
+    {
+      "no": 7, "section": "tasks", "kind": "open", "label": "Oblicz stężenie", "page": 8,
+      "items": {
+        "7": {
+          "calc": true,
+          "answer": "Z wykresu: stężenie A spadło z 0,10 do 0,04 mol·dm⁻³, czyli ubyło 0,06 mol·dm⁻³.\nZ 1 mola A powstaje 1 mol B i 1 mol C, czyli razem 2 mole produktów.\nŁączne stężenie B i C: 2 · 0,06 = 0,12 mol·dm⁻³.",
+          "note": "Wynik musi mieć jednostkę.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8, "section": "tasks", "kind": "open", "label": "Napisz równania połówkowe i uzupełnij schemat", "page": 9,
+      "items": {
+        "8": {
+          "answer": "Redukcja: MnO₄²⁻ + 2H₂O + 2e⁻ → MnO₂ + 4OH⁻\nUtlenianie: SO₃²⁻ + 2OH⁻ → SO₄²⁻ + H₂O + 2e⁻ (albo SO₃²⁻ + H₂O → SO₄²⁻ + 2H⁺ + 2e⁻)\nSchemat: K₂MnO₄ + K₂SO₃ + H₂O → MnO₂ + K₂SO₄ + 2KOH",
+          "note": "Po 1 pkt za równanie redukcji, równanie utleniania i uzupełniony schemat. Równanie redukcji musi pasować do środowiska obojętnego (woda i jony OH⁻, nie H⁺).",
+          "accepted": [],
+          "points": 3
+        }
+      }
+    },
+    {
+      "no": 9, "section": "tasks", "kind": "open", "label": "Oblicz i ustal wzór hydratu", "page": 10,
+      "items": {
+        "9.1": {
+          "calc": true,
+          "answer": "Z wykresu potencjał standardowy E° = 0,342 V, więc metal Me to miedź.\nPotencjał katody: E = SEM + E°(Zn) = 1,084 + (−0,762) = 0,322 V.\nRównanie Nernsta: 0,322 = 0,342 + (0,059/2) · log c, stąd c(Cu²⁺) = 0,210 mol·dm⁻³.\nn(Cu²⁺) = 0,210 · 0,500 = 0,105 mol. Sole były równomolowe, więc każdej po 0,0525 mol.\nM(CuSO₄·5H₂O) = 249,71 g·mol⁻¹ → masa tej soli: 0,0525 · 249,71 = 13,11 g.\nMasa hydratu CuCl₂·xH₂O: 22,05 − 13,11 = 8,94 g. M(CuCl₂) = 134,45 g·mol⁻¹ → bezwodnej soli było 0,0525 · 134,45 = 7,06 g.\nMasa wody: 8,94 − 7,06 = 1,88 g, czyli 1,88/18,02 = 0,104 mol.\nn(soli) : n(wody) = 0,0525 : 0,104 ≈ 1 : 2.\nWzór hydratu: CuCl₂·2H₂O.",
+          "note": "4 pkt za pełną metodę i poprawny wzór. 3 pkt przy jednej usterce (np. błąd rachunkowy, odczyt log c z wykresu zamiast obliczenia), 2 pkt przy dwóch albo za poprawne liczby moli obu soli, 1 pkt za samo stężenie Cu²⁺ albo za potencjał katody i rozpoznanie miedzi.",
+          "accepted": [],
+          "points": 4
+        }
+      }
+    },
+    {
+      "no": 9, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 12, "options": "PF",
+      "items": { "9.2": { "answer": "PP", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 10, "section": "tasks", "kind": "open", "label": "Wybierz sole i napisz równanie", "page": 12,
+      "items": {
+        "10": {
+          "answer": "W pipecie: K₂CrO₄, w probówce: AgNO₃ (wytrąca się ceglastoczerwony osad chromianu(VI) srebra).\nRównanie: 2Ag⁺ + CrO₄²⁻ → Ag₂CrO₄↓",
+          "note": "1 pkt za wybór soli, 1 pkt za równanie jonowe skrócone.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 11, "section": "tasks", "kind": "open", "label": "Oblicz stężenie", "page": 13,
+      "items": {
+        "11.1": {
+          "calc": true,
+          "answer": "M(Fe₂O₃) = 159,7 g·mol⁻¹ → n(Fe₂O₃) = 0,040/159,7 = 0,00025 mol.\nZ 1 mola Fe₂O₃ pochodzą 2 mole Fe³⁺: n(Fe³⁺) = 0,0005 mol.\nc(Fe³⁺) = 0,0005 mol / 0,1 dm³ = 0,005 mol·dm⁻³ (5·10⁻³ mol·dm⁻³).",
+          "note": "1 pkt za metodę z poprawną liczbą moli Fe³⁺ albo przy błędzie rachunkowym lub złej jednostce.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 11, "section": "tasks", "kind": "choice", "label": "Wybierz jedną odpowiedź", "page": 13, "options": "ABCD",
+      "items": { "11.2": "C" }
+    },
+    {
+      "no": 12, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę ze wskaźnikami", "page": 14,
+      "items": {
+        "12": {
+          "answer": "Litery nad probówkami, od lewej: C, B, C, A, B, C. Wzory w dolnym wierszu: NaCl, NaOH, HCl.\nFenoloftaleina (A) była tylko w jednej probówce, więc tam, gdzie roztwór zasadowy (NaOH). Czerwień Kongo (B) w dwóch probówkach: NaCl i HCl. Błękit bromotymolowy (C) w każdym roztworze.",
+          "note": "1 pkt za każdy roztwór z w pełni poprawnymi trzema polami.",
+          "accepted": [],
+          "points": 3
+        }
+      }
+    },
+    {
+      "no": 13, "section": "tasks", "kind": "open", "label": "Oblicz pH", "page": 14,
+      "items": {
+        "13": {
+          "calc": true,
+          "answer": "Z wodą reaguje jon CO₃²⁻, więc potrzebna jest stała drugiego etapu dysocjacji kwasu węglowego z tablic: Ka2 = 4,68·10⁻¹¹.\nKb = Kw / Ka2 = 1,00·10⁻¹⁴ / 4,68·10⁻¹¹ = 2,14·10⁻⁴.\n[OH⁻] = √(Kb · c) = √(2,14·10⁻⁴ · 0,10) = 4,63·10⁻³ mol·dm⁻³.\npOH = −log(4,63·10⁻³) = 2,33.\npH = 14 − 2,33 = 11,67 ≈ 11,7.",
+          "note": "1 pkt za poprawną metodę z błędem rachunkowym albo za samo stężenie OH⁻. Sprawdzanie stosowalności wzoru uproszczonego nie jest wymagane.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 14, "section": "tasks", "kind": "choice", "label": "Dopasuj numery związków", "page": 16, "options": "123",
+      "items": { "14": { "answer": "31", "rows": ["reforming", "antydetonator"], "rowOptions": ["123", "123"] } }
+    },
+    {
+      "no": 15, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę", "page": 16,
+      "items": {
+        "15.1": {
+          "answer": "Cykloheksan: 1 (jeden pierścień). Heks-1-en: 1 (jedno wiązanie podwójne).",
+          "accepted": ["1 1", "1, 1", "1 i 1"]
+        }
+      }
+    },
+    {
+      "no": 15, "section": "tasks", "kind": "open", "label": "Napisz równanie i wzór", "page": 17,
+      "items": {
+        "15.2": {
+          "answer": "Węglowodór A to cykloheksen (pierścień i jedno wiązanie podwójne, bez trzeciorzędowych atomów węgla).\nRównanie: C₆H₁₀ (cykloheksen) + H₂ → C₆H₁₂ (cykloheksan), katalizator Pt.\nWzór węglowodoru B: CH₃–CH=CH–CH=CH–CH₃ (heksa-2,4-dien).",
+          "note": "1 pkt za równanie, 1 pkt za wzór B.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 16, "section": "tasks", "kind": "open", "label": "Napisz wzór", "page": 18,
+      "items": {
+        "16.1": {
+          "answer": "CH₃–C(CH₃)₂–CH₂–CHO (3,3-dimetylobutanal) albo CH₃–CH(CH₃)–CH(CH₃)–CHO (2,3-dimetylobutanal). Przy atomie węgla sąsiadującym z grupą –CHO musi być atom wodoru.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 16, "section": "tasks", "kind": "open", "label": "Napisz równanie reakcji", "page": 18,
+      "items": {
+        "16.2": {
+          "answer": "C₆H₅–CHO + HCHO + OH⁻ → C₆H₅–CH₂–OH + HCOO⁻\nMetanal utlenia się do anionu mrówczanowego, a aldehyd benzoesowy redukuje się do alkoholu benzylowego.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 17, "section": "tasks", "kind": "open", "label": "Napisz wzór ketonu", "page": 19,
+      "items": {
+        "17": {
+          "answer": "CH₃–C(CH₃)=CH–CO–CH₃ (4-metylopent-3-en-2-on). Grupa –CO–CH₃ przechodzi w –COOH, więc reszta R musi być taka jak w kwasie 3-metylobut-2-enowym: (CH₃)₂C=CH–.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 18, "section": "tasks", "kind": "open", "label": "Napisz wzór kwasu", "page": 20,
+      "items": {
+        "18.1": {
+          "answer": "CH₃–CH₂–COOH (kwas propanowy). Z dwóch reszt etylowych powstaje butan CH₃–CH₂–CH₂–CH₃.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 18, "section": "tasks", "kind": "choice", "label": "Wybierz jedną odpowiedź", "page": 21, "options": "ABCD",
+      "items": { "18.2": "C" }
+    },
+    {
+      "no": 19, "section": "tasks", "kind": "choice", "label": "Wybierz jedną odpowiedź", "page": 22, "options": "ABCD",
+      "items": { "19.1": "B" }
+    },
+    {
+      "no": 19, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę", "page": 23,
+      "items": {
+        "19.2": {
+          "answer": "Atom a: stopień utlenienia −I, hybrydyzacja sp².\nAtom b: stopień utlenienia 0, hybrydyzacja sp².",
+          "note": "1 pkt za jeden pełny wiersz albo za jedną pełną kolumnę.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 20, "section": "tasks", "kind": "open", "label": "Oblicz wydajność", "page": 23,
+      "items": {
+        "20": {
+          "calc": true,
+          "answer": "n(C₆H₅Br) = 0,1570 g / 157,0 g·mol⁻¹ = 0,00100 mol.\nn(C₃H₄O₂) = 0,1081 g / 72,0 g·mol⁻¹ = 0,00150 mol → kwas propenowy jest w nadmiarze, bromobenzen przereagował całkowicie.\nTeoretyczna masa kwasu cynamonowego: 0,00100 mol · 148 g·mol⁻¹ = 0,148 g.\nWydajność: 0,1245 / 0,148 · 100% ≈ 84%.\nW nadmiarze użyto kwasu propenowego (C₃H₄O₂).",
+          "note": "3 pkt tylko wtedy, gdy obliczeniem sprawdzono, który substrat jest w nadmiarze. Bez tego sprawdzenia albo z błędem rachunkowym: 2 pkt. Brak wskazania substancji w nadmiarze: najwyżej 2 pkt.",
+          "accepted": [],
+          "points": 3
+        }
+      }
+    },
+    {
+      "no": 21, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 24, "options": "PF",
+      "items": { "21": { "answer": "FP", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 22, "section": "tasks", "kind": "open", "label": "Wybierz odczynnik i uzasadnij", "page": 24,
+      "items": {
+        "22": {
+          "answer": "FeCl₃(aq). Kwas kawowy ma grupy –OH związane z pierścieniem benzenowym (fenolowe), których nie ma kwas cynamonowy, więc tylko kwas kawowy daje z jonami Fe³⁺ barwny związek kompleksowy.",
+          "note": "Uzasadnienie musi wskazać różnicę w budowie (grupy fenolowe) i jej skutek (barwny kompleks z FeCl₃).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 23, "section": "tasks", "kind": "open", "label": "Napisz wzory i równanie reakcji", "page": 25,
+      "items": {
+        "23.1": {
+          "answer": "Związek X: HO–CH₂–CH₂–CH₂–COOH (kwas 4-hydroksybutanowy).\nOpisany izomer: CH₃–CH(OH)–CH₂–COOH (kwas 3-hydroksybutanowy).\nRównanie: CH₃–CH(OH)–CH₂–COOH + NaOH → CH₃–CH(OH)–CH₂–COONa + H₂O",
+          "note": "Po 1 pkt za wzór X, wzór izomeru i równanie.",
+          "accepted": [],
+          "points": 3
+        }
+      }
+    },
+    {
+      "no": 23, "section": "tasks", "kind": "open", "label": "Napisz wzór produktu", "page": 25,
+      "items": {
+        "23.2": {
+          "answer": "Bezwodnik bursztynowy: pięcioczłonowy pierścień, w którym dwie grupy C=O są połączone atomem tlenu, a z drugiej strony mostkiem –CH₂–CH₂–. Zapis liniowy: –CO–O–CO–CH₂–CH₂– zamknięte w pierścień.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 24, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i uzasadnij", "page": 26,
+      "items": {
+        "24": {
+          "answer": "Projekt 2. Najpierw powstaje nitrobenzen, a grupa –NO₂ kieruje kolejny podstawnik (Cl) w położenie meta (3), czyli tam, gdzie ma być w produkcie. W projekcie 1. produktem pierwszego etapu jest chlorobenzen, a atom Cl kieruje w położenie orto i para (2 i 4), więc izomer meta nie powstałby z dobrą wydajnością.",
+          "note": "Trzeba nazwać podstawnik (grupa nitrowa / –NO₂ albo atom chloru / –Cl) i jego wpływ kierujący.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 25, "section": "tasks", "kind": "open", "label": "Wyjaśnij obserwację", "page": 27,
+      "items": {
+        "25.1": {
+          "answer": "Grupa aminowa benzokainy reaguje z kwasem solnym (przyłącza H⁺) i powstaje sól – związek jonowy, który dobrze rozpuszcza się w wodzie. Dlatego osad znika i roztwór staje się klarowny.",
+          "note": "Potrzebne trzy elementy: reakcja z kwasem, powstanie soli, jej rozpuszczalność w wodzie.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 25, "section": "tasks", "kind": "open", "label": "Uzupełnij równanie reakcji", "page": 27,
+      "items": {
+        "25.2": {
+          "answer": "H₂N–C₆H₄–COO–CH₂–CH₃ + OH⁻ → H₂N–C₆H₄–COO⁻ + CH₃–CH₂–OH\nProdukty: anion kwasu 4-aminobenzoesowego i etanol.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 25, "section": "tasks", "kind": "choice", "label": "Dokończ zdanie: wybierz A albo B oraz 1, 2 albo 3", "page": 27, "options": "AB123",
+      "hint": "Pierwszy wybór to typ reakcji (A albo B), drugi to mechanizm (1, 2 albo 3).",
+      "items": { "25.3": { "answer": "B1", "rows": ["typ reakcji", "mechanizm"], "rowOptions": ["AB", "123"] } }
+    },
+    {
+      "no": 26, "section": "tasks", "kind": "open", "label": "Napisz sekwencję tripeptydu", "page": 28,
+      "items": {
+        "26": {
+          "answer": "Gly-Ala-Cys.\nAchiralny aminokwas to glicyna (M = 75), grupę –SH ma cysteina (M = 121). Masa tripeptydu: 75 + x + 121 − 2·18 = 249, stąd x = 89, czyli alanina. Wolną grupę aminową ma najlżejszy aminokwas (Gly), wolną karboksylową – najcięższy (Cys).",
+          "accepted": ["gly-ala-cys", "gly ala cys", "gly–ala–cys"]
+        }
+      }
+    },
+    {
+      "no": 27, "section": "tasks", "kind": "open", "label": "Narysuj wzory w projekcji Fischera", "page": 28,
+      "items": {
+        "27": {
+          "answer": "Erytrol (od góry): CH₂OH | H–C–OH | H–C–OH | CH₂OH. Obie grupy OH po tej samej stronie, cząsteczka ma płaszczyznę symetrii, więc jest achiralna.\nL-treitol: CH₂OH | H–C–OH | HO–C–H | CH₂OH. Grupy OH po przeciwnych stronach, dolna grupa OH po lewej (szereg L).",
+          "note": "1 pkt za każdy poprawny wzór.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 28, "section": "tasks", "kind": "open", "label": "Uzupełnij wzór taflowy", "page": 29,
+      "items": {
+        "28": {
+          "answer": "Pierścień pięcioczłonowy (4 atomy węgla i atom tlenu). Podstawniki, które we wzorze Fischera są z prawej, we wzorze Hawortha są w dół, a z lewej – w górę.\nC1 (anomeryczny, po prawej przy tlenie): OH w dół, H w górę (odmiana α w szeregu D).\nC2: OH w górę, H w dół.\nC3: OH w dół, H w górę.\nC4 (po lewej przy tlenie): grupa CH₂OH w górę, H w dół.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 29, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 29, "options": "PF",
+      "items": { "29": { "answer": "PF", "rows": ["1.", "2."] } }
+    }
+  ]
+}

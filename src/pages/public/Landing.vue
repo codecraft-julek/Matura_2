@@ -35,7 +35,7 @@ function openDemo(tab = 'exercise') {
   <div class="landing">
     <section class="hero container" aria-labelledby="hero-heading">
       <div class="hero-copy">
-        <p class="hero-eyebrow">Matura 2027 i 2028 <span class="eyebrow-divider"></span> polski, angielski, biologia</p>
+        <p class="hero-eyebrow">Matura 2027 i 2028 <span class="eyebrow-divider"></span> polski, angielski, biologia, chemia</p>
         <h1 id="hero-heading">Matura?<br />Spokojnie,<br /><span class="highlight-word">ogarniesz.</span></h1>
         <p class="hero-description">Prawdziwe arkusze CKE sprawdzane od razu, feedback AI do wypracowań, notatki i fiszki. Twój plan na maturę. Bez spiny.</p>
         <div class="hero-buttons">
@@ -48,7 +48,7 @@ function openDemo(tab = 'exercise') {
       <ProductPreview @open-demo="openDemo" />
     </section>
 
-    <div class="benefits-strip"><div class="container benefits-inner"><span><FileCheck2 :size="20" /> Arkusze CKE 2023–2026</span><i></i><span><BookOpen :size="20" /> Polski, angielski, biologia</span><i></i><span><Heart :size="20" /> Twoje tempo</span></div></div>
+    <div class="benefits-strip"><div class="container benefits-inner"><span><FileCheck2 :size="20" /> Arkusze CKE 2023–2026</span><i></i><span><BookOpen :size="20" /> Polski, angielski, biologia, chemia</span><i></i><span><Heart :size="20" /> Twoje tempo</span></div></div>
 
     <section id="narzedzia" class="tools-section section-spacing container" aria-labelledby="tools-heading">
       <div class="section-label"><span>Narzędzia</span><span>4 narzędzia, jeden cel</span></div>

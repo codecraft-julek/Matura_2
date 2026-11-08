@@ -4,10 +4,12 @@
 //   choice            → letters (A–H, T/F, P/F, digits) as round radio buttons
 //   choice + meta.rows → one row of letters per part, answer = one character per row, "_" = empty
 //                        (meta.rowOptions: different letters per row, e.g. biology "A–C" then "1–3")
-//   open, section test → Polish open answer, textarea (3000); biology ("tasks") too
+//   open, section test → Polish open answer, textarea (3000); biology and chemistry ("tasks") too
+//   open + meta.calc  → chemistry calculation: worked on paper, only the result is typed (optional)
 //   open              → English short answer, input (200)
 //   writing           → textarea with word counter (meta.words), rules and criteria
 import { computed, useId } from 'vue'
+import { PencilRuler } from '@lucide/vue'
 import { countWords } from '@/lib/exams/labels'
 import { isSubtask, rowParts, setRowPart, wordsRule } from './sheet'
 import ResultBadge from './ResultBadge.vue'
@@ -80,7 +82,18 @@ const criteriaText = computed(() => (props.task.meta?.criteria ?? []).map(c => `
     <div v-if="result" class="result-line"><ResultBadge :result="result" /></div>
   </div>
 
-  <!-- Polish and biology open tasks need sentences, not a few words -->
+  <!-- Chemistry calculation: the working stays on paper, the result page shows the full solution -->
+  <div v-else-if="task.kind === 'open' && task.meta?.calc" class="task-input">
+    <label :for="fieldId" :class="isSubtask(task) ? 'task-no' : 'sr-only'">{{ isSubtask(task) ? task.number : `Wynik zadania ${task.number}` }}</label>
+    <p class="calc-note"><PencilRuler :size="15" aria-hidden="true" /> Policz na kartce. Tu wpisz tylko wynik z jednostką (możesz zostawić puste). Po sprawdzeniu zobaczysz całe rozwiązanie krok po kroku i sam przyznasz sobie punkty.</p>
+    <input
+      :id="fieldId" class="input calc-input" :value="modelValue" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="200"
+      placeholder="np. 0,12 mol·dm⁻³" @input="set($event.target.value)"
+    />
+    <div v-if="result" class="result-line"><ResultBadge :result="result" calc /></div>
+  </div>
+
+  <!-- Polish, biology and chemistry open tasks need sentences, not a few words -->
   <div v-else-if="task.kind === 'open' && (task.section === 'test' || task.section === 'tasks')" class="task-input">
     <label :for="fieldId" :class="isSubtask(task) ? 'task-no' : 'sr-only'">{{ isSubtask(task) ? task.number : `Odpowiedź do zadania ${task.number}` }}</label>
     <textarea :id="fieldId" class="textarea open-area" :value="modelValue" :rows="task.points >= 3 ? 7 : 3" maxlength="3000" placeholder="Twoja odpowiedź…" @input="set($event.target.value)"></textarea>
@@ -120,6 +133,9 @@ const criteriaText = computed(() => (props.task.meta?.criteria ?? []).map(c => `
 .multi-row .letter { width: 40px; height: 40px; }
 .short-input { flex: 1; min-width: 160px; width: auto; padding-block: 10px; }
 .result-line { display: flex; }
+.calc-note { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.55; color: var(--text-soft); }
+.calc-note svg { flex-shrink: 0; margin-top: 2px; color: var(--accent); }
+.calc-input { max-width: 320px; }
 .open-area { min-height: 0; }
 .writing-area { min-height: 280px; line-height: 1.7; }
 .words { font-size: 14px; color: var(--text-soft); font-variant-numeric: tabular-nums; }

@@ -16,6 +16,7 @@ import { useBillingStore } from '@/stores/billing'
 import { useUiStore } from '@/stores/ui'
 import { aiGradableCount, applySelfGrade, durationLabel, groupTasks, resultTone, sectionTotals, wordsRule } from '@/components/exams/sheet'
 import AiGradeOpenAnswers from '@/components/exams/AiGradeOpenAnswers.vue'
+import KeyAnswer from '@/components/exams/KeyAnswer.vue'
 import SelfCheck from '@/components/exams/SelfCheck.vue'
 import ExamWritingFeedback from '@/components/essays/ExamWritingFeedback.vue'
 import AskTutor from '@/components/tutor/AskTutor.vue'
@@ -78,7 +79,7 @@ const TONE = {
   review: { icon: CircleHelp, label: 'niepewna ocena AI — punkty szacunkowe' },
   wrong: { icon: X, label: 'źle' },
 }
-const verdictLabel = t => results.value[t.number]?.status === 'unchecked' ? 'czeka na ocenę AI' : TONE[toneOf(t)].label
+const verdictLabel = t => results.value[t.number]?.status === 'unchecked' ? 'czeka na ocenę' : TONE[toneOf(t)].label
 
 // Self-check: the database saved it, now update the page locally (no reload).
 function onGraded(number, points) {
@@ -161,7 +162,7 @@ async function onEssayChecked() {
     </section>
     <p v-if="toReview > 0" class="alert alert-warn review-note" role="status" aria-live="polite">
       <CircleHelp :size="18" />
-      <span>Na ocenę AI czeka: {{ toReview }}. {{ grading || refreshing ? 'Sprawdzamy odpowiedzi i uzupełnimy wynik automatycznie.' : 'Te odpowiedzi nie mają jeszcze przyznanych punktów. Stan sprawdzania znajdziesz poniżej.' }}</span>
+      <span>Do oceny: {{ toReview }}. {{ grading || refreshing ? 'Sprawdzamy odpowiedzi i uzupełnimy wynik automatycznie.' : 'Te odpowiedzi nie mają jeszcze punktów: porównaj je z rozwiązaniem i oceń sam albo sprawdź z AI poniżej.' }}</span>
     </p>
 
     <div v-if="sections.length" class="stat-grid section-tiles">
@@ -193,8 +194,8 @@ async function onEssayChecked() {
             <li v-for="t in g.shown" :key="t.number" class="answer" :class="`is-${toneOf(t)}`">
               <span class="answer-no">{{ t.number }}</span>
               <div class="answer-body">
-                <p><span class="muted">Twoja: </span><span class="given" :class="{ 'is-empty': !answers[t.number]?.trim() }">{{ answers[t.number]?.trim() || 'brak odpowiedzi' }}</span></p>
-                <p v-if="toneOf(t) !== 'ok' && results[t.number]"><span class="muted">Klucz: </span><strong>{{ results[t.number].answer }}</strong><span v-if="results[t.number].note" class="muted"> ({{ results[t.number].note }})</span></p>
+                <p><span class="muted">{{ t.meta?.calc ? 'Twój wynik: ' : 'Twoja: ' }}</span><span class="given" :class="{ 'is-empty': !answers[t.number]?.trim() }">{{ answers[t.number]?.trim() || (t.meta?.calc ? 'liczone na kartce' : 'brak odpowiedzi') }}</span></p>
+                <KeyAnswer v-if="toneOf(t) !== 'ok' && results[t.number]" :result="results[t.number]" :calc="Boolean(t.meta?.calc)" />
                 <p v-if="results[t.number]?.ai_reason !== undefined" class="ai-box">
                   <Sparkles :size="14" aria-hidden="true" />
                   <span>
@@ -203,8 +204,8 @@ async function onEssayChecked() {
                     <span v-if="results[t.number].ai_reason" class="muted"> · {{ results[t.number].ai_reason }}</span>
                   </span>
                 </p>
-                <details v-if="isReview(t) && !grading && !refreshing" class="manual-correction">
-                  <summary>{{ results[t.number].status === 'unchecked' ? 'Oceń samodzielnie (opcjonalnie)' : 'Zmień ocenę ręcznie (opcjonalnie)' }}</summary>
+                <details v-if="isReview(t) && !grading && !refreshing" class="manual-correction" :open="t.meta?.calc && results[t.number].status === 'unchecked' ? true : undefined">
+                  <summary>{{ results[t.number].status !== 'unchecked' ? 'Zmień ocenę ręcznie (opcjonalnie)' : t.meta?.calc ? 'Przyznaj sobie punkty według rozwiązania' : 'Oceń samodzielnie (opcjonalnie)' }}</summary>
                   <SelfCheck :attempt-id="attempt.id" :number="t.number" :current="results[t.number].status"
                   :max="results[t.number].max" :points="results[t.number].points" @graded="onGraded(t.number, $event)"
                   />

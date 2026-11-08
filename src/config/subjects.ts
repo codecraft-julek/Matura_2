@@ -25,6 +25,7 @@ export const SUBJECTS: readonly Subject[] = [
   { id: "polish", label: "Język polski", short: "Polski", from: "z polskiego", color: "#5a6f3d", tint: "#e8efd9" },
   { id: "english", label: "Język angielski", short: "Angielski", from: "z angielskiego", color: "#6b4fa0", tint: "#ebe4f6" },
   { id: "biology", label: "Biologia", short: "Biologia", from: "z biologii", color: "#1f7f6d", tint: "#dcf1ea" },
+  { id: "chemistry", label: "Chemia", short: "Chemia", from: "z chemii", color: "#1f5f8f", tint: "#dbe9f5" },
 ];
 
 export const SUBJECT_IDS: readonly SubjectId[] = SUBJECTS.map((s) => s.id);

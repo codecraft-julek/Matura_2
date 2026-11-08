@@ -1,0 +1,392 @@
+{
+  "id": "2024-maj-chemia-pr",
+  "subject": "chemistry",
+  "level": "extended",
+  "year": 2024,
+  "session": "main",
+  "title": "Chemia, poziom rozszerzony, maj 2024",
+  "durationMinutes": 180,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Chemia/MCHP-R0-100-A-2405-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Chemia/MCHP-R0-100-2405-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę i schemat konfiguracji", "page": 4,
+      "items": {
+        "1.1": {
+          "answer": "Pierwiastek A: P (fosfor), najwyższy stopień utlenienia V, 3 elektrony niesparowane.\nPierwiastek X: Cr (chrom), najwyższy stopień utlenienia VI, 6 elektronów niesparowanych.",
+          "note": "1 pkt za każdy w pełni poprawny wiersz albo za dwie pełne kolumny.",
+          "accepted": [],
+          "points": 2
+        },
+        "1.2": {
+          "answer": "Cr³⁺: 1s² 2s² 2p⁶ 3s² 3p⁶ 3d³. Po 3s dopisujemy 3p (trzy klatki ↑↓) i 3d (trzy klatki po jednej strzałce o tym samym zwrocie, dwie puste).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 1, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę i napisz równania reakcji", "page": 5,
+      "items": {
+        "1.3": {
+          "answer": "Wodorek A: PH₃ (AH₃). Tlenek A na najwyższym stopniu utlenienia: P₄O₁₀ (A₄O₁₀, 14 atomów). Tlenek X: CrO₃ (XO₃).\nReakcja 1.: P₄O₁₀ + 6H₂O → 4H₃PO₄\nReakcja 2.: CrO₃ + 2OH⁻ → CrO₄²⁻ + H₂O",
+          "note": "1 pkt za tabelę, po 1 pkt za każde równanie. W tabeli tlenek A musi być P₄O₁₀; w równaniu dopuszcza się P₂O₅.",
+          "accepted": [],
+          "points": 3
+        }
+      }
+    },
+    {
+      "no": 2, "section": "tasks", "kind": "open", "label": "Przemiany jądrowe", "page": 6,
+      "items": {
+        "2.1": {
+          "answer": "Rozpad β⁻: ⁷²Ga → ⁷²Ge + e⁻. Powstaje german, liczba masowa 72 (liczba atomowa rośnie o 1, masowa bez zmian).",
+          "accepted": ["72ge", "ge 72", "ge, 72", "german 72", "72 ge", "german, 72"]
+        },
+        "2.2": {
+          "answer": "⁶⁸Zn + ¹p (proton, ¹H) → ⁶⁷Ga + 2 ¹n. Bilans: Z: 30 + 1 = 31; A: 68 + 1 = 67 + 2.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 3, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania", "page": 7,
+      "items": {
+        "3": {
+          "answer": "x ≈ 840 kJ·mol⁻¹ (LiCl leży między LiF 1033 a LiBr 798), y ≈ 740 kJ·mol⁻¹ (NaBr między NaCl 778 a NaI 692). Temperatura topnienia NaI: 662 °C (mniejsza energia sieciowa niż NaCl, więc niższa niż 801 °C).",
+          "accepted": ["840 740 662", "840, 740, 662"]
+        }
+      }
+    },
+    {
+      "no": 4, "section": "tasks", "kind": "open", "label": "Wyjaśnij", "page": 7,
+      "items": {
+        "4": {
+          "answer": "W MgO jony mają ładunki 2+ i 2−, a w LiF tylko 1+ i 1−. Im większe ładunki przyciągających się jonów, tym silniejsze oddziaływanie i większa energia sieciowa, dlatego MgO ma ją znacznie większą.",
+          "note": "Wyjaśnienie musi odwołać się do ładunków jonów w obu związkach.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 5, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania", "page": 8,
+      "items": {
+        "5": {
+          "answer": "α-GeO₂: liczba koordynacyjna germanu wynosi sześć. β-GeO₂: hybrydyzacja sp³ (cztery atomy tlenu wokół germanu, tetraedr).",
+          "accepted": ["sześć sp3", "sześć, sp3", "sześć, sp³", "sześć sp³", "6 sp3", "6, sp3"]
+        }
+      }
+    },
+    {
+      "no": 6, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę i narysuj wykres", "page": 9,
+      "items": {
+        "6.1": {
+          "calc": true,
+          "answer": "Z równania 2 mol KMnO₄ reaguje z 5 mol H₂O₂, więc n(H₂O₂) = 2,5 · n(KMnO₄) = 2,5 · 0,0020 · V(KMnO₄), a stężenie to n podzielone przez 0,0020 dm³ próbki.\n19,1 cm³ → 0,048 mol·dm⁻³; 14,2 cm³ → 0,036; 9,9 cm³ → 0,025; 6,2 cm³ → 0,016 (po 30 minutach).\nWykres: cztery punkty (0; 0,048), (10; 0,036), (20; 0,025), (30; 0,016) połączone jedną malejącą linią.",
+          "note": "1 pkt za tabelę (tolerancja ±0,001), 1 pkt za wykres z czterema punktami połączonymi jedną malejącą linią.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 6, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania", "page": 9,
+      "items": {
+        "6.2": {
+          "answer": "Szybkość rozkładu z upływem czasu maleje (stężenie spada coraz wolniej). W 40 °C szybkość jest większa niż w 20 °C.",
+          "accepted": ["maleje większa niż", "maleje, większa niż", "maleje, większa", "maleje większa"]
+        }
+      }
+    },
+    {
+      "no": 7, "section": "tasks", "kind": "open", "label": "Oblicz objętość roztworu", "page": 10,
+      "items": {
+        "7": {
+          "calc": true,
+          "answer": "pH = 1,5 → [H⁺] = 10^(−1,5) = 0,0316 mol·dm⁻³; n(H⁺) = 0,0316 · 0,025 = 7,9·10⁻⁴ mol.\nZ mola Ba(OH)₂ powstają 2 mole OH⁻: n(OH⁻) = 2 · 0,020 · V = 0,040 · V (V w dm³).\nPo reakcji pH = 3,7 → [H⁺] = 10^(−3,7) = 2,0·10⁻⁴ mol·dm⁻³.\n(7,9·10⁻⁴ − 0,040 · V) / (0,025 + V) = 2,0·10⁻⁴ → V ≈ 0,0195 dm³.\nTrzeba dodać ok. 19,5 cm³ roztworu Ba(OH)₂ (19,5–19,8 cm³ zależnie od zaokrągleń).",
+          "note": "1 pkt za metodę z błędem rachunkowym, inną jednostką albo za samo równanie bilansu jonów H⁺ ze stechiometrią Ba(OH)₂.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 8, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania na podstawie obliczeń", "page": 11,
+      "items": {
+        "8": {
+          "calc": true,
+          "answer": "Po zmieszaniu równych objętości każde stężenie maleje dwukrotnie: [Ag⁺] = 5·10⁻⁵, [Cl⁻] = 1·10⁻⁶ mol·dm⁻³.\nIloczyn stężeń: 5·10⁻⁵ · 1·10⁻⁶ = 5·10⁻¹¹.\nJest mniejszy od iloczynu rozpuszczalności AgCl (z tablic ok. 1,6·10⁻¹⁰), dlatego osad się nie wytrąci.",
+          "note": "1 pkt za wartość iloczynu (błędna wartość: 0 pkt za całość), 1 pkt za oba wybory.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 9, "section": "tasks", "kind": "open", "label": "Dopasuj probówki do soli", "page": 12,
+      "items": {
+        "9.1": {
+          "answer": "NaHCO₃: probówka 3 (odczyn zasadowy). ZnCl₂: probówka 1 (odczyn kwasowy). CH₃COONH₄: probówka 2 (odczyn obojętny, hydrolizują i kation, i anion).",
+          "accepted": ["3 1 2", "3, 1, 2"]
+        }
+      }
+    },
+    {
+      "no": 9, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 12, "options": "PF",
+      "items": { "9.2": { "answer": "FP", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 10, "section": "tasks", "kind": "open", "label": "Oblicz stężenie procentowe", "page": 13,
+      "items": {
+        "10": {
+          "calc": true,
+          "answer": "Roztwór wyjściowy: m = 150 · 1,07 = 160,5 g; n(MnCl₂) = 0,678 · 0,150 = 0,1017 mol, czyli 0,1017 · 126 = 12,8 g MnCl₂.\nW 6,00 g hydratu MnCl₂·4H₂O jest 6,00 · 126/198 = 3,82 g MnCl₂.\nRazem MnCl₂: 12,8 + 3,82 = 16,6 g; masa roztworu: 160,5 + 6,00 = 166,5 g.\nStężenie procentowe: 16,6/166,5 · 100% ≈ 10%.",
+          "note": "1 pkt za metodę z błędem rachunkowym, wynikiem nie w procentach albo za samą masę MnCl₂ w roztworze.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 11, "section": "tasks", "kind": "open", "label": "Równanie utleniania i współczynniki", "page": 14,
+      "items": {
+        "11": {
+          "answer": "Utlenianie: Fe(OH)₃ + 5OH⁻ → FeO₄²⁻ + 4H₂O + 3e⁻\nSchemat: 2Fe(OH)₃ + 3ClO⁻ + 4OH⁻ → 2FeO₄²⁻ + 3Cl⁻ + 5H₂O",
+          "note": "1 pkt za równanie utleniania (z jonami OH⁻; zapis z jonami Fe³⁺ jest błędny), 1 pkt za współczynniki.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 12, "section": "tasks", "kind": "open", "label": "Uzupełnij schemat ogniwa", "page": 14,
+      "items": {
+        "12.1": {
+          "answer": "anoda (–) Pt | Fe²⁺, Fe³⁺ || MnO₄⁻, Mn²⁺, H⁺ | Pt (+) katoda\nPółogniwo B (Fe³⁺/Fe²⁺, niższy potencjał) jest anodą, półogniwo A (MnO₄⁻/Mn²⁺) katodą.",
+          "accepted": []
+        },
+        "12.2": {
+          "answer": "5Fe²⁺ + MnO₄⁻ + 8H⁺ → 5Fe³⁺ + Mn²⁺ + 4H₂O",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 13, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 15, "options": "PF",
+      "items": { "13.1": { "answer": "FP", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 13, "section": "tasks", "kind": "open", "label": "Oblicz początkowe liczby moli", "page": 15,
+      "items": {
+        "13.2": {
+          "calc": true,
+          "answer": "Niech x = początkowa liczba moli H₂, wtedy CO₂: 10 − x. Przereagowało 0,6x H₂ i tyle samo CO₂; powstało po 0,6x CO i H₂O.\nW równowadze (V = 1 dm³, więc stężenia są równe liczbom moli): CO₂: 10 − 1,6x; H₂: 0,4x; CO = H₂O = 0,6x.\nK = (0,6x)² / [(10 − 1,6x) · 0,4x] = 1 → 0,36x² = 4x − 0,64x² → x² = 4x → x = 4.\nPoczątkowo: 4 mol H₂ i 6 mol CO₂.",
+          "note": "1 pkt za metodę z błędem rachunkowym albo z błędną jednostką.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 14, "section": "tasks", "kind": "open", "label": "Nazwa i wzór", "page": 16,
+      "items": {
+        "14": {
+          "answer": "Związek A: 3-bromopentan (tylko z niego eliminacja daje wyłącznie pent-2-en, czyli X).\nZwiązek B: CH₃–CHBr–CH₂–CH₂–CH₃ (2-bromopentan).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 15, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i uzasadnij", "page": 16,
+      "items": {
+        "15": {
+          "answer": "Nie. Zgodnie z regułą Markownikowa atom H przyłącza się do tego atomu węgla przy wiązaniu podwójnym, który ma więcej atomów wodoru, a grupa OH do drugiego. Ze związku Y (2-metylobut-2-en) powstaje alkohol trzeciorzędowy, 2-metylobutan-2-ol, a ze związku Q (3-metylobut-1-en) alkohol drugorzędowy, 3-metylobutan-2-ol.",
+          "note": "Same równania albo same nazwy produktów bez odwołania do reguły nie wystarczą.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 16, "section": "tasks", "kind": "open", "label": "Produkty utleniania", "page": 17,
+      "items": {
+        "16.1": {
+          "answer": "Alken: 2-metylobut-2-en (związek Y, jedyny z atomem węgla =C< bez wodoru). Keton: CH₃–CO–CH₃ (propanon).",
+          "accepted": []
+        },
+        "16.2": {
+          "answer": "Z utleniania X (pent-2-enu) powstają kwas etanowy i kwas propanowy; wyższą stałą dysocjacji ma kwas etanowy CH₃COOH. Produkt jego reakcji z KOH: CH₃COOK (octan potasu, CH₃COO⁻K⁺).",
+          "accepted": ["ch3cook", "ch3coo-k+", "ch₃cook", "ch3coo- k+", "ch3coo-"]
+        }
+      }
+    },
+    {
+      "no": 17, "section": "tasks", "kind": "open", "label": "Identyfikacja węglowodorów", "page": 19,
+      "items": {
+        "17.1": {
+          "answer": "Związek manganu: MnO₂ (brunatny osad). Produkt organiczny: C₆H₅–CH(OH)–CH₂–OH (1-fenyloetano-1,2-diol): w środowisku obojętnym KMnO₄ utlenia wiązanie podwójne styrenu do diolu.",
+          "accepted": []
+        },
+        "17.2": {
+          "answer": "Nitrowanie odróżnia benzen od cykloheksanu: C₆H₆ + HNO₃ → C₆H₅NO₂ + H₂O (stężony H₂SO₄, ogrzewanie).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 18, "section": "tasks", "kind": "open", "label": "Uzupełnij równanie spalania", "page": 20,
+      "items": {
+        "18": {
+          "answer": "[CH₂–CHCl]₄ + 10O₂ → 8CO₂ + 4H₂O + 4HCl (gaz X to chlorowodór).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 19, "section": "tasks", "kind": "open", "label": "Oblicz masę karbidu", "page": 20,
+      "items": {
+        "19": {
+          "calc": true,
+          "answer": "Mer PVC ma M = 62,5 g·mol⁻¹: 100 g PVC to 1,6 mol merów; tyle samo etynu i CaC₂ potrzeba teoretycznie.\nm(CaC₂) teoretyczna = 1,6 · 64 = 102,4 g.\nWydajność 78%: m(CaC₂) = 102,4/0,78 = 131,3 g.\nKarbid zawiera 82% CaC₂: m(karbidu) = 131,3/0,82 ≈ 160 g.",
+          "note": "1 pkt za metodę z błędem rachunkowym albo złą jednostką.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 20, "section": "tasks", "kind": "open", "label": "Mechanizm jodowania acetonu", "page": 21,
+      "items": {
+        "20.1": {
+          "answer": "Etap 1. (wolny) decyduje o szybkości powstawania produktu.",
+          "accepted": ["1", "1.", "etap 1", "etap 1.", "pierwszy"]
+        },
+        "20.2": {
+          "answer": "CH₃–CO–CH₃ + I₂ → CH₃–CO–CH₂I + H⁺ + I⁻ (albo z udziałem wody: … + H₂O + I₂ → … + H₃O⁺ + I⁻), katalizator H₃O⁺.",
+          "accepted": []
+        },
+        "20.3": {
+          "answer": "Katalizator: H₃O⁺ (H⁺). Tak, reakcja jest autokatalityczna, bo jeden z jej produktów (jony H₃O⁺) jest zarazem jej katalizatorem.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 21, "section": "tasks", "kind": "open", "label": "Najmocniejszy kwas: wybór i wyjaśnienie", "page": 23,
+      "items": {
+        "21.1": {
+          "answer": "Probówka B; kwas CCl₃COOH (trichlorooctowy, pKa = 0,66).\nTrzy atomy chloru o dużej elektroujemności przy atomie węgla sąsiadującym z grupą karboksylową odciągają elektrony (efekt indukcyjny), co najbardziej ułatwia oderwanie protonu od grupy –COOH, więc ten kwas jest najmocniejszy.",
+          "note": "1 pkt za probówkę i wzór, 1 pkt za wyjaśnienie odwołujące się do budowy cząsteczki.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 21, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę", "page": 23,
+      "items": {
+        "21.2": {
+          "answer": "Najsłabszy kwas: CH₃COOH, pKa = 4,76 (bez atomów chloru).",
+          "accepted": ["ch3cooh 4,76", "ch3cooh, 4,76", "ch₃cooh 4,76", "ch3cooh 4.76", "ch₃cooh, 4,76"]
+        }
+      }
+    },
+    {
+      "no": 22, "section": "tasks", "kind": "open", "label": "Napisz równanie reakcji", "page": 24,
+      "items": {
+        "22": {
+          "answer": "C₆H₅–COOH + SOCl₂ → C₆H₅–COCl + SO₂ + HCl (ogrzewanie)",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 23, "section": "tasks", "kind": "open", "label": "Wyjaśnij", "page": 24,
+      "items": {
+        "23": {
+          "answer": "Reakcja chlorku kwasowego z alkoholem jest praktycznie nieodwracalna: powstający HCl jest gazem i opuszcza środowisko reakcji. Estryfikacja kwasu z alkoholem wobec H₂SO₄ jest odwracalna, bo powstająca woda zostaje w mieszaninie i ustala się stan równowagi, więc wydajność jest mniejsza.",
+          "note": "Trzeba porównać przebieg obu reakcji.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 24, "section": "tasks", "kind": "open", "label": "Ciąg przemian", "page": 25,
+      "items": {
+        "24.1": {
+          "answer": "A: CH₂=CH–CH₃ (propen). B: CH₃–CHBr–CH₃ (2-bromopropan). C: CH₃–CH(OH)–CH₃ (propan-2-ol).",
+          "note": "2 pkt za trzy wzory, 1 pkt za dwa.",
+          "accepted": [],
+          "points": 2
+        },
+        "24.2": {
+          "answer": "Reakcja 1.: addycja, mechanizm elektrofilowy.\nReakcja 2.: substytucja, mechanizm nukleofilowy.",
+          "note": "1 pkt za każdy wiersz.",
+          "accepted": ["addycja elektrofilowy substytucja nukleofilowy", "addycja, elektrofilowy, substytucja, nukleofilowy"],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 25, "section": "tasks", "kind": "open", "label": "Ustal wzory na podstawie obliczeń i napisz równanie", "page": 26,
+      "items": {
+        "25": {
+          "calc": true,
+          "answer": "Objętość molowa w warunkach pomiaru: Vm = RT/p = 83,14 · 293 / 1013 = 24,05 dm³·mol⁻¹.\nn(C) = n(CO₂) = 0,0360/24,05 = 0,0015 mol → 18 mg C.\nn(H) = 2 · n(H₂O) = 2 · 27/18 = 0,0030 mol → 3 mg H.\nm(O) = 45 − 18 − 3 = 24 mg → n(O) = 24/16 = 0,0015 mol.\nC : H : O = 1 : 2 : 1 → wzór elementarny CH₂O (M = 30); M związków = 90, więc wzór rzeczywisty C₃H₆O₃.\nX (chiralny, odczyn obojętny, z Cu(OH)₂ na zimno szafirowy roztwór, po ogrzaniu ceglasty osad, czyli diol z grupą aldehydową): CH₂(OH)–CH(OH)–CHO (aldehyd glicerynowy).\nY (chiralny, odczyn kwasowy): CH₃–CH(OH)–COOH (kwas mlekowy).\nQ (achiralny, te same grupy funkcyjne co Y): HO–CH₂–CH₂–COOH.\nRównanie: HO–CH₂–CH₂–COOH + NaOH → HO–CH₂–CH₂–COONa + H₂O",
+          "note": "4 pkt za obliczenia z oboma wzorami, wzory X i Y oraz równanie. Każdy brakujący albo błędny element to 1 pkt mniej; błąd rachunkowy w obliczeniach: najwyżej 1 pkt.",
+          "accepted": [],
+          "points": 4
+        }
+      }
+    },
+    {
+      "no": 26, "section": "tasks", "kind": "open", "label": "Uzupełnij równanie według teorii Brønsteda", "page": 28,
+      "items": {
+        "26": {
+          "answer": "CH₃–C₆H₄–NH₃⁺ + OH⁻ → CH₃–C₆H₄–NH₂ + H₂O\nKwas 1: kation metyloaniliniowy, zasada 2: OH⁻, zasada 1: metyloanilina (amina), kwas 2: H₂O.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 27, "section": "tasks", "kind": "open", "label": "Wzór produktu i uzupełnienie zdania", "page": 28,
+      "items": {
+        "27": {
+          "answer": "Produkt: BrCH₂–C₆H₄–NH₂ (brom podstawia atom wodoru w grupie metylowej; uznawany jest też produkt podstawienia w pierścieniu).\nPrzemiana jest reakcją utleniania-redukcji (zmieniają się stopnie utlenienia węgla i bromu).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 28, "section": "tasks", "kind": "open", "label": "Formy fenyloalaniny w roztworach", "page": 29,
+      "items": {
+        "28": {
+          "answer": "Probówka I (0,33 M HCl, silnie kwasowy): kation C₆H₅–CH₂–CH(NH₃⁺)–COOH.\nProbówka II (bardzo rozcieńczony HCl, pH ok. 5,5, blisko punktu izoelektrycznego): jon obojnaczy C₆H₅–CH₂–CH(NH₃⁺)–COO⁻.\nProbówka III (0,33 M KOH): anion C₆H₅–CH₂–CH(NH₂)–COO⁻.",
+          "note": "2 pkt za trzy wzory, 1 pkt za dwa.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 29, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i uzasadnij", "page": 30,
+      "items": {
+        "29": {
+          "answer": "Tak. D-mannoza różni się od D-glukozy tylko konfiguracją przy atomie C-2, a degradacja Ruffa usuwa atom C-1 (grupę aldehydową), więc z obu powstaje ta sama D-arabinoza.",
+          "note": "Uzasadnienie nie może zawierać błędnego opisu degradacji (np. usuwania atomu C-2).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 30, "section": "tasks", "kind": "open", "label": "Wybierz cukier", "page": 31,
+      "items": {
+        "30": {
+          "answer": "D-arabinoza. Po degradacji Ruffa powstaje tetroza, a jej utlenienie HNO₃ daje kwas winowy. Achiralny kwas mezo-winowy powstaje z D-erytrozy (obie grupy OH po tej samej stronie), czyli z D-arabinozy; z D-ksylozy powstałaby D-treoza i chiralny kwas winowy.",
+          "accepted": ["d-arabinoza", "arabinoza", "d arabinoza", "d–arabinoza"]
+        }
+      }
+    }
+  ]
+}
