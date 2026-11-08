@@ -61,7 +61,7 @@ describe('active subject', () => {
   it('offers every subject while the profile is not loaded yet', () => {
     auth.state.profile = null
     const s = useSubjectStore()
-    expect(s.available.map(x => x.id)).toEqual(['polish', 'english', 'biology'])
+    expect(s.available.map(x => x.id)).toEqual(['polish', 'english', 'biology', 'chemistry'])
   })
 
   it('follows the profile when it changes and starts over for another student', async () => {
@@ -81,9 +81,9 @@ describe('active subject', () => {
 describe('adding a subject', () => {
   it('lists the subjects the student could add and saves one to the profile', async () => {
     const s = useSubjectStore()
-    expect(s.others.map(x => x.id)).toEqual(['english'])
+    expect(s.others.map(x => x.id)).toEqual(['english', 'chemistry'])
     auth.state.profile = { display_name: 'Ala', subjects: ['polish'], matura_year: 2027 }
-    expect(s.others.map(x => x.id)).toEqual(['english', 'biology'])
+    expect(s.others.map(x => x.id)).toEqual(['english', 'biology', 'chemistry'])
     const result = await s.add('biology')
     expect(result.ok).toBe(true)
     expect(saveProfileMock).toHaveBeenCalledWith('student-a', { displayName: 'Ala', subjects: ['polish', 'biology'], maturaYear: 2027 })

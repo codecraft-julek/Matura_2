@@ -1,0 +1,403 @@
+{
+  "id": "2025-maj-chemia-pr",
+  "subject": "chemistry",
+  "level": "extended",
+  "year": 2025,
+  "session": "main",
+  "title": "Chemia, poziom rozszerzony, maj 2025",
+  "durationMinutes": 180,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Chemia/MCHP-R0-100-A-2505-arkusz.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MCHP-R0-100-2505-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1, "section": "tasks", "kind": "open", "label": "Budowa atomu: tabela, liczby kwantowe, konfiguracja", "page": 4,
+      "items": {
+        "1.1": {
+          "answer": "Pierwiastek E: Si (krzem), blok p, 4 elektrony w podpowłokach walencyjnych.\nPierwiastek X: Cl (chlor), blok p, 7 elektronów w podpowłokach walencyjnych.",
+          "note": "1 pkt za każdy w pełni poprawny wiersz albo za dwie pełne kolumny.",
+          "accepted": [],
+          "points": 2
+        },
+        "1.2": {
+          "answer": "n = 3, l = 1 (niesparowane elektrony atomu krzemu są na podpowłoce 3p).",
+          "accepted": ["3 1", "3, 1", "n 3 l 1", "n=3 l=1", "n = 3, l = 1"]
+        },
+        "1.3": {
+          "answer": "Cl⁻ (18 elektronów): 1s² 2s² 2p⁶ 3s² 3p⁶",
+          "accepted": ["1s2 2s2 2p6 3s2 3p6", "1s22s22p63s23p6", "1s² 2s² 2p⁶ 3s² 3p⁶", "1s²2s²2p⁶3s²3p⁶", "1s2 2s2p6 3s2p6"]
+        }
+      }
+    },
+    {
+      "no": 2, "section": "tasks", "kind": "open", "label": "Uzupełnij schemat przemiany jądrowej", "page": 5,
+      "items": {
+        "2.1": {
+          "answer": "Brakuje 3 neutronów: ²³⁵U + ¹n → ⁹²Kr + ¹⁴¹Ba + 3 ¹n (bilans liczb masowych: 235 + 1 = 92 + 141 + 3).",
+          "accepted": ["3", "3n", "3 1n", "3 neutrony", "trzy", "trzy neutrony"]
+        }
+      }
+    },
+    {
+      "no": 2, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania", "page": 5,
+      "items": {
+        "2.2": {
+          "answer": "Powstaje jądro ¹⁴⁰Xe (Z = 92 − 38 = 54, A = 236 − 93 − 3 = 140).\nWiększy stosunek liczby neutronów do protonów ma jądro ²³⁵U: 143/92 ≈ 1,55, a dla ⁹³Sr 55/38 ≈ 1,45.",
+          "accepted": ["xe, u", "xe u", "140xe, 235u", "140xe 235u", "xe; u", "ksenon, uran"]
+        }
+      }
+    },
+    {
+      "no": 3, "section": "tasks", "kind": "open", "label": "Napisz równania reakcji", "page": 6,
+      "items": {
+        "3.1": {
+          "answer": "I₂O₅ + H₂O → 2HIO₃",
+          "accepted": ["i2o5 + h2o → 2hio3", "i2o5 + h2o = 2hio3", "i2o5 + h2o -> 2hio3", "i₂o₅ + h₂o → 2hio₃"]
+        },
+        "3.2": {
+          "answer": "I₂O₅ + 5CO → I₂ + 5CO₂ (fioletowe pary jodu w kolbie)",
+          "accepted": ["i2o5 + 5co → i2 + 5co2", "i2o5 + 5co = i2 + 5co2", "i2o5 + 5co -> i2 + 5co2", "i₂o₅ + 5co → i₂ + 5co₂"]
+        }
+      }
+    },
+    {
+      "no": 4, "section": "tasks", "kind": "open", "label": "Ustal wzory na podstawie obliczeń", "page": 7,
+      "items": {
+        "4": {
+          "calc": true,
+          "answer": "W 100 g tlenku jest 20,14 g tlenu i 79,86 g jodu.\nn(O) = 20,14/16,00 = 1,26 mol; n(I) = 79,86/126,90 = 0,63 mol.\nn(I) : n(O) = 0,63 : 1,26 = 1 : 2.\nWzór empiryczny: IO₂.\nWzór rzeczywisty (dwa razy więcej atomów jodu): I₂O₄.",
+          "note": "1 pkt za sam stosunek molowy albo za tylko jeden z wzorów.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 5, "section": "tasks", "kind": "open", "label": "Równanie redukcji i współczynniki", "page": 8,
+      "items": {
+        "5.1": {
+          "answer": "Redukcja: IO₃⁻ + 3Cl⁻ + 6H⁺ + 2e⁻ → ICl₃ + 3H₂O\nSchemat: 3IO₃⁻ + I₂ + 18H⁺ + 15Cl⁻ → 5ICl₃ + 9H₂O",
+          "note": "1 pkt za równanie redukcji (ze środowiskiem kwasowym), 1 pkt za współczynniki.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 5, "section": "tasks", "kind": "open", "label": "Wzór elektronowy i kształt cząsteczki", "page": 9,
+      "items": {
+        "5.2": {
+          "answer": "Wzór elektronowy ICl₃: atom jodu w środku, trzy kreski wiązań do atomów chloru, na jodzie dwie wolne pary elektronowe, na każdym atomie chloru trzy wolne pary.\nRozstrzygnięcie: nie, model nie pasuje do ICl₃.\nLiczba przestrzenna: Lp = 3 + 2 = 5 (model odpowiada Lp = 4).",
+          "note": "2 pkt za wzór, rozstrzygnięcie i Lp. 1 pkt za sam poprawny wzór elektronowy.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 6, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i uzasadnij", "page": 10,
+      "items": {
+        "6": {
+          "answer": "Probówka I. W probówce II oprócz Cu(OH)₂ wytrąca się też trudno rozpuszczalny BaSO₄, więc po ogrzaniu zostaje mieszanina CuO i BaSO₄. W probówce I powstaje tylko Cu(OH)₂ (BaCl₂ zostaje w roztworze), a po rozkładzie – sam CuO.",
+          "note": "Samo stwierdzenie, że BaSO₄ jest trudno rozpuszczalny, bez odniesienia do tego, co powstaje w probówkach, nie wystarcza.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 7, "section": "tasks", "kind": "open", "label": "Rozpoznaj wodorotlenki", "page": 10,
+      "items": {
+        "7.1": {
+          "answer": "Probówka I: Ca(OH)₂ (biała zawiesina, która roztwarza się w HCl, a z H₂SO₄ daje trudno rozpuszczalny CaSO₄).\nProbówka II: Al(OH)₃ (biała zawiesina roztwarzająca się w obu kwasach).",
+          "accepted": ["ca(oh)2 al(oh)3", "ca(oh)2, al(oh)3", "ca(oh)₂, al(oh)₃", "ca(oh)₂ al(oh)₃"]
+        }
+      }
+    },
+    {
+      "no": 7, "section": "tasks", "kind": "open", "label": "Napisz równania reakcji", "page": 11,
+      "items": {
+        "7.2": {
+          "answer": "Reakcja 1. (probówka III, Cu(OH)₂, ogrzewanie): Cu(OH)₂ → CuO + H₂O\nReakcja 2. (probówka IV, Cr(OH)₃ w nadmiarze NaOH): Cr(OH)₃ + OH⁻ → [Cr(OH)₄]⁻ (albo Cr(OH)₃ + 3OH⁻ → [Cr(OH)₆]³⁻)",
+          "note": "1 pkt za każde równanie we właściwej formie.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 8, "section": "tasks", "kind": "open", "label": "Oblicz, jaka część soli przereagowała", "page": 12,
+      "items": {
+        "8": {
+          "calc": true,
+          "answer": "pH = 13 → [OH⁻] = 0,1 mol·dm⁻³; n(KOH) = 0,1 · 0,0069 = 0,00069 mol.\nZobojętnianie: n(HBr) w 1,0 cm³ kwasu = n(KOH) = 0,00069 mol.\nW całych 80 cm³: n(HBr) = 80 · 0,00069 = 0,0552 mol, tyle samo KBr przereagowało.\nm(KBr) = 0,0552 mol · 119 g·mol⁻¹ = 6,57 g.\nUdział: 6,57/9,5 · 100% ≈ 69%.",
+          "note": "1 pkt za poprawną metodę z błędem rachunkowym albo za samą liczbę moli (masę) HBr lub KBr.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 9, "section": "tasks", "kind": "open", "label": "Napisz równania w formie jonowej skróconej", "page": 13,
+      "items": {
+        "9": {
+          "answer": "Doświadczenie 1. (srebro i stężony kwas azotowy(V), brunatny gaz): Ag + NO₃⁻ + 2H⁺ → Ag⁺ + NO₂ + H₂O\nDoświadczenie 2. (cynk i kwas solny, bezbarwny gaz): Zn + 2H⁺ → Zn²⁺ + H₂",
+          "note": "1 pkt za każde równanie.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 10, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 14, "options": "PF",
+      "items": { "10.1": { "answer": "PF", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 10, "section": "tasks", "kind": "open", "label": "Ustal równanie kinetyczne i oblicz szybkość", "page": 15,
+      "items": {
+        "10.2": {
+          "calc": true,
+          "answer": "Z wykresów: szybkość rośnie liniowo ze stężeniem X₂ (a = 1) i z kwadratem stężenia Y₂ (b = 2): v = k · c(X₂) · c(Y₂)².\nDla obu stężeń równych 1 mol·dm⁻³ v = 1, więc k = 1 dm⁶·mol⁻²·s⁻¹.\nMieszanina stechiometryczna: n(X₂) : n(Y₂) = 1 : 2, razem 12 mol → 4 mol X₂ i 8 mol Y₂.\nGdy przereaguje x mol X₂: (4 − x) + (8 − 2x) + 2x = 9 → x = 3 mol. Zostaje 1 mol X₂ i 2 mol Y₂.\n[X₂] = 1/4 = 0,25 mol·dm⁻³, [Y₂] = 2/4 = 0,5 mol·dm⁻³.\nv = 1 · 0,25 · 0,5² = 0,0625 = 6,25·10⁻² mol·dm⁻³·s⁻¹.",
+          "note": "4 pkt za a i b, stałą k z jednostką, stężenia w chwili 9 mol gazów i szybkość z jednostką. Każda usterka (błąd rachunkowy, zła jednostka, brak kroku) to 1 pkt mniej.",
+          "accepted": [],
+          "points": 4
+        }
+      }
+    },
+    {
+      "no": 11, "section": "tasks", "kind": "open", "label": "Uzupełnij równania według teorii Brønsteda", "page": 16,
+      "items": {
+        "11": {
+          "answer": "Na₂HPO₄ (odczyn zasadowy): H₂O + HPO₄²⁻ ⇄ OH⁻ + H₂PO₄⁻ (kwas 1: H₂O, zasada 2: HPO₄²⁻, zasada 1: OH⁻, kwas 2: H₂PO₄⁻).\nNaH₂PO₄ (odczyn kwasowy): H₂PO₄⁻ + H₂O ⇄ HPO₄²⁻ + H₃O⁺ (kwas 1: H₂PO₄⁻, zasada 2: H₂O, zasada 1: HPO₄²⁻, kwas 2: H₃O⁺).",
+          "note": "1 pkt za każde równanie.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 12, "section": "tasks", "kind": "open", "label": "Oblicz pH i wybierz zdjęcie", "page": 17,
+      "items": {
+        "12": {
+          "calc": true,
+          "answer": "Z tablic Kb(NH₃) = 1,78·10⁻⁵, więc Ka(NH₄⁺) = Kw/Kb = 1,00·10⁻¹⁴ / 1,78·10⁻⁵ = 5,62·10⁻¹⁰.\nn(NH₄Cl) = 0,10 g / 53,5 g·mol⁻¹ = 0,00187 mol; c = 0,00187/0,100 = 0,0187 mol·dm⁻³.\n[H₃O⁺] = √(Ka · c) = √(5,62·10⁻¹⁰ · 0,0187) = 3,24·10⁻⁶ mol·dm⁻³.\npH = −log(3,24·10⁻⁶) ≈ 5,5.\nZdjęcie: B (roztwór kwasowy, błękit bromotymolowy jest w nim żółty).",
+          "note": "3 pkt za metodę, odczytaną stałą, pH z dokładnością do 0,1 i wybór zdjęcia. 2 pkt bez zdjęcia albo z błędem rachunkowym, ale ze zdjęciem pasującym do wyniku.",
+          "accepted": [],
+          "points": 3
+        }
+      }
+    },
+    {
+      "no": 13, "section": "tasks", "kind": "open", "label": "Oblicz stałą równowagi", "page": 18,
+      "items": {
+        "13": {
+          "calc": true,
+          "answer": "Stała objętość i temperatura: ciśnienie jest proporcjonalne do łącznego stężenia gazów, więc spadło ono do 0,75 · 0,8 = 0,6 mol·dm⁻³.\nBilans: N₂: 0,2 − x; H₂: 0,6 − 3x; NH₃: 2x; razem 0,8 − 2x = 0,6 → x = 0,1 mol·dm⁻³.\nStężenia równowagowe: [N₂] = 0,1; [H₂] = 0,3; [NH₃] = 0,2 mol·dm⁻³.\nK = [NH₃]² / ([N₂] · [H₂]³) = 0,2² / (0,1 · 0,3³) = 0,04/0,0027 ≈ 14,8 (bez jednostki).",
+          "note": "1 pkt za poprawne stężenia równowagowe albo za metodę z błędem rachunkowym lub wynikiem z jednostką.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 14, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania i wybierz półogniwo", "page": 19,
+      "items": {
+        "14.1": {
+          "answer": "Stężenie jonów H⁺ musi się zwiększać, więc w półogniwie A zachodzi utlenianie (Mn²⁺ → MnO₄⁻), a drugie półogniwo pełni funkcję katody.\nPółogniwo A trzeba połączyć z półogniwem C: tylko układ Co³⁺/Co²⁺ (E° = +1,92 V) ma potencjał wyższy niż MnO₄⁻/Mn²⁺ (+1,51 V), więc może je utlenić.",
+          "note": "1 pkt za uzupełnienie zdań, 1 pkt za wybór półogniwa.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 14, "section": "tasks", "kind": "open", "label": "Uzupełnij schemat ogniwa", "page": 19,
+      "items": {
+        "14.2": {
+          "answer": "(–) Pt | Br⁻, Br₂ || Co³⁺, Co²⁺ | Pt (+)\nAnodą jest półogniwo B (niższy potencjał, utlenianie Br⁻), katodą półogniwo C (redukcja Co³⁺).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 15, "section": "tasks", "kind": "open", "label": "Oblicz energię spalania", "page": 20,
+      "items": {
+        "15": {
+          "calc": true,
+          "answer": "Letni LPG: n(propan) : n(butan) = 30 : 70, gęstość 0,56 g·cm⁻³, więc 1,0 dm³ ma masę 560 g.\n44 · n(propan) + 58 · n(butan) = 560 oraz n(propan) = (3/7) · n(butan) → n(butan) = 7,29 mol, n(propan) = 3,12 mol.\nE = 7,29 · 2878 + 3,12 · 2219 ≈ 27 900 kJ.",
+          "note": "1 pkt za metodę z błędem rachunkowym, inną jednostką niż kJ albo za same liczby moli. Wynik ze znakiem minus: 1 pkt mniej.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 16, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania", "page": 21,
+      "items": {
+        "16": {
+          "answer": "Energia ze spalenia 1,0 dm³ zimowego LPG jest mniejsza niż z letniego (zimowy ma więcej propanu i mniejszą gęstość, więc w 1 dm³ jest mniej paliwa).\nWięcej CO₂ powstaje przy spalaniu letniego LPG.",
+          "accepted": ["mniejsza niż, letniego", "mniejsza, letniego", "mniejsza niż; letniego", "mniejsza letniego"]
+        }
+      }
+    },
+    {
+      "no": 17, "section": "tasks", "kind": "open", "label": "Uzupełnij schematy addycji wody", "page": 22,
+      "items": {
+        "17.1": {
+          "answer": "Schemat 1. (produkt: 3-etylopentan-3-ol, zgodnie z regułą Markownikowa): alken CH₃–CH=C(CH₂CH₃)₂ (3-etylopent-2-en), warunki: H₂O w środowisku kwasowym (H⁺).\nSchemat 2. (produkt: 2-metylobutan-1-ol, niezgodnie z regułą): alken CH₂=C(CH₃)–CH₂–CH₃ (2-metylobut-1-en), warunki: BH₃, a potem H₂O₂ i OH⁻.",
+          "note": "1 pkt za każdy schemat (wzór alkenu i warunki).",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 17, "section": "tasks", "kind": "open", "label": "Uzupełnij wzory produktów", "page": 23,
+      "items": {
+        "17.2": {
+          "answer": "Addycja HBr (zgodnie z regułą Markownikowa): atom Br przyłącza się do bardziej podstawionego atomu węgla wiązania podwójnego (atomu w pierścieniu), a H do grupy =CH₂, więc produkt ma na tym atomie pierścienia grupę –CH₃ i –Br.\nAddycja H₂O (niezgodnie z regułą): grupa –OH trafia na skrajny atom węgla (–CH₂–OH), a H na atom węgla pierścienia.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 18, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę: typ i mechanizm reakcji", "page": 24,
+      "items": {
+        "18": {
+          "answer": "Pod wpływem światła: substytucja, mechanizm rodnikowy (brom podstawia atom H w grupie –CH₃).\nW obecności Fe: substytucja, mechanizm elektrofilowy (brom podstawia atom H w pierścieniu).",
+          "accepted": ["substytucja rodnikowy substytucja elektrofilowy", "substytucja, rodnikowy, substytucja, elektrofilowy", "substytucja substytucja rodnikowy elektrofilowy", "substytucja, substytucja, rodnikowy, elektrofilowy"]
+        }
+      }
+    },
+    {
+      "no": 19, "section": "tasks", "kind": "open", "label": "Napisz równanie reakcji", "page": 25,
+      "items": {
+        "19": {
+          "answer": "CH₃–C₆H₄–CH₃ + Br₂ → CH₃–C₆H₄–CH₂Br + HBr (światło; brom podstawia atom wodoru w grupie metylowej, nie w pierścieniu)",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 20, "section": "tasks", "kind": "open", "label": "Napisz wzór kwasu", "page": 25,
+      "items": {
+        "20": {
+          "answer": "HOOC–C₆H₄–COOH: pierścień benzenowy z dwiema grupami –COOH w położeniu para (1,4).",
+          "accepted": ["hooc-c6h4-cooh", "hooc–c₆h₄–cooh", "hooc-c₆h₄-cooh", "c6h4(cooh)2", "c₆h₄(cooh)₂"]
+        }
+      }
+    },
+    {
+      "no": 21, "section": "tasks", "kind": "open", "label": "Uzupełnij schemat redukcji", "page": 26,
+      "items": {
+        "21": {
+          "answer": "(CH₃)₃C–CHO + NaBH₄ → (CH₃)₃C–CH₂–OH\n2,2-dimetylopropanal redukuje się do 2,2-dimetylopropan-1-olu.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 22, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i uzasadnij", "page": 26,
+      "items": {
+        "22": {
+          "answer": "Z butan-2-onem. Produkt tej redukcji, butan-2-ol CH₃–CH(OH)–CH₂–CH₃, ma asymetryczny atom węgla (cztery różne podstawniki), więc powstaje para enancjomerów. Z propan-2-onu powstaje propan-2-ol, który nie ma centrum stereogenicznego.",
+          "note": "Uzasadnienie musi dotyczyć budowy produktu (alkoholu), nie samego ketonu.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 23, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania", "page": 27,
+      "items": {
+        "23": {
+          "answer": "Redukcja jednego mola substratu wymaga dwóch moli elektronów (C=O → CH–OH, stopień utlenienia węgla maleje o 2).\nAtom węgla ulegający redukcji ma w substracie hybrydyzację sp², a w produkcie sp³.",
+          "note": "1 pkt za każde zdanie.",
+          "accepted": ["dwóch sp2 sp3", "dwóch, sp2, sp3", "dwóch, sp², sp³", "dwóch sp² sp³"],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 24, "section": "tasks", "kind": "open", "label": "Uszereguj estry", "page": 28,
+      "items": {
+        "24": {
+          "answer": "A, C, B (od najniższej do najwyższej temperatury wrzenia). Im bardziej rozgałęziony łańcuch, tym słabsze oddziaływania między cząsteczkami i niższa temperatura wrzenia: ester tert-butylowy (A) < sec-butylowy (C) < butylowy o prostym łańcuchu (B).",
+          "accepted": ["a c b", "a, c, b", "acb", "a < c < b", "a-c-b"]
+        }
+      }
+    },
+    {
+      "no": 25, "section": "tasks", "kind": "open", "label": "Uzupełnij schemat: enancjomery", "page": 28,
+      "items": {
+        "25.1": {
+          "answer": "Dwa wzory w projekcji Fischera będące swoim odbiciem lustrzanym: u góry COOH, u dołu CH₃, na środkowym atomie węgla H i OH. W jednym wzorze OH jest po prawej, a H po lewej, w drugim odwrotnie.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 25, "section": "tasks", "kind": "open", "label": "Napisz wzór polimeru", "page": 29,
+      "items": {
+        "25.2": {
+          "answer": "[–O–CH(CH₃)–CO–]ₙ: powtarzający się fragment to atom tlenu, grupa CH(CH₃) i grupa C=O, połączone wiązaniami estrowymi.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 26, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i napisz równanie reakcji", "page": 29,
+      "items": {
+        "26": {
+          "answer": "Probówka III. Kwas mlekowy reaguje z Cu(OH)₂ jak zwykły kwas i daje niebieski roztwór soli; glicerol tworzy szafirowy kompleks, a tripeptyd – fioletowy (reakcja biuretowa).\n2CH₃–CH(OH)–COOH + Cu(OH)₂ → (CH₃–CH(OH)–COO)₂Cu + 2H₂O",
+          "note": "Potrzebny numer probówki i równanie w formie cząsteczkowej.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 27, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 30, "options": "PF",
+      "items": { "27.1": { "answer": "PP", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 27, "section": "tasks", "kind": "open", "label": "Uzupełnij zdania", "page": 30,
+      "items": {
+        "27.2": {
+          "answer": "Rozcieńczony kwas solny reaguje z fragmentem B (zasadowa grupa aminowa –NH₂).\nFragment A (fenolowa grupa –OH przy pierścieniu) uległ reakcji z chlorkiem żelaza(III) – powstaje barwny kompleks.",
+          "accepted": ["b uległ", "b, uległ", "b; uległ"]
+        }
+      }
+    },
+    {
+      "no": 27, "section": "tasks", "kind": "open", "label": "Uzupełnij równanie reakcji", "page": 31,
+      "items": {
+        "27.3": {
+          "answer": "Produkt organiczny X: HO–C₆H₄–CH(OH)–CH₂–OH (grupa –NH₃⁺ zostaje zastąpiona grupą –OH; powstały diol daje z Cu(OH)₂ szafirowy roztwór).\nGaz: N₂ (M = 28 g·mol⁻¹).\nRównanie: HO–C₆H₄–CH(OH)–CH₂–NH₃⁺ + HNO₂ → HO–C₆H₄–CH(OH)–CH₂–OH + N₂ + H₃O⁺",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 28, "section": "tasks", "kind": "open", "label": "Napisz równania reakcji", "page": 32,
+      "items": {
+        "28.1": {
+          "answer": "CH₃–CH₂–COOH + Br₂ → CH₃–CHBr–COOH + HBr (w obecności fosforu; brom podstawia atom H przy węglu α)",
+          "accepted": []
+        },
+        "28.2": {
+          "answer": "CH₃–CHBr–COOH + 3NH₃ → CH₃–CH(NH₂)–COO⁻ + 2NH₄⁺ + Br⁻",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 29, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę", "page": 33,
+      "items": {
+        "29": {
+          "answer": "Pentozy: 1 i 4 (pięć atomów węgla w cząsteczce).\nPara anomerów: 2 i 3 (różnią się tylko położeniem grupy OH przy anomerycznym atomie węgla).",
+          "accepted": ["1, 4; 2, 3", "1 4 2 3", "1,4 2,3", "1 i 4, 2 i 3", "1, 4, 2, 3"]
+        }
+      }
+    }
+  ]
+}

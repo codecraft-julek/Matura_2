@@ -21,10 +21,19 @@ describe("content/exams/*.json", () => {
       // multi-row tasks ("PF", "14") store one character per row
       if (task.kind === "choice") for (const c of k.correct ?? "") expect(task.options).toContain(c);
     }
-    // Biology (formula 2023) is only extended: one sheet of 60 points, 180 minutes.
-    if (exam.subject === "biology") {
+    // Biology and chemistry (formula 2023) are only extended: one sheet of 60 points, 180 minutes.
+    if (exam.subject === "biology" || exam.subject === "chemistry") {
       expect([exam.level, exam.maxPoints, exam.durationMinutes]).toEqual(["extended", 60, 180]);
       expect(new Set(tasks.map((t) => t.section))).toEqual(new Set(["tasks"]));
+    }
+    // Chemistry calculations are marked, so the sheet asks for paper and the result page shows the steps.
+    if (exam.subject === "chemistry") {
+      const calc = tasks.filter((t) => t.meta.calc);
+      expect(calc.length).toBeGreaterThan(0);
+      for (const t of calc) {
+        expect(t.kind).toBe("open");
+        expect(keys.find((k) => k.task_id === t.id)!.display).toContain("\n");
+      }
     }
     // Polish extended (formula 2023) is one essay: 35 pts, min. 500 words (2023–2024) or 400 (from 2025).
     if (exam.subject === "polish" && exam.level === "extended") {

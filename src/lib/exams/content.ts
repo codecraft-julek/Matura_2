@@ -16,7 +16,7 @@ const taskNumber = z.string().regex(/^\d+(\.\d+)?$/);
 
 const multiItem = z.object({
   answer: z.string().regex(/^[A-HTPFN1-9]{2,8}$/), // one character per row
-  rows: z.array(z.string().max(12)).optional(), // row labels as printed in the sheet, e.g. ["A", "B"]
+  rows: z.array(z.string().max(16)).optional(), // row labels as printed in the sheet, e.g. ["A", "B"]
   // Different letters per row, e.g. biology "A–C and 1–3" (answer "C2"): ["ABC", "123"]. Default: the group's options.
   rowOptions: z.array(z.string().regex(/^([A-H]{2,8}|[1-9]{2,9}|TN|PF)$/)).optional(),
   points: z.number().int().positive().optional(),
@@ -38,10 +38,15 @@ const choiceGroup = z.object({
 });
 
 const openItem = z.object({
-  answer: z.string().min(1), // what earns the points, in OUR words (shown after grading)
+  // What earns the points, in OUR words (shown after grading). Several lines ("\n") for worked
+  // solutions: each step on its own line.
+  answer: z.string().min(1),
   note: z.string().optional(),
   accepted: z.array(z.string().min(1)),
   points: z.number().int().positive().optional(), // default 1; Polish open tasks can be worth 2–4
+  // Chemistry calculations: the student works on paper, types only the result (optional), then
+  // compares with the worked solution and grades it (an empty result still lets them do that).
+  calc: z.literal(true).optional(),
 });
 
 const openGroup = z.object({
@@ -72,7 +77,7 @@ const writingGroup = z.object({
 export const examContentSchema = z
   .object({
     id: z.string().regex(/^\d{4}-[a-z]+-[a-z]+-(pp|pr)$/),
-    subject: z.enum(["polish", "english", "biology"]),
+    subject: z.enum(["polish", "english", "biology", "chemistry"]),
     level: z.enum(["basic", "extended"]),
     year: z.number().int().min(2023),
     session: z.enum(["main", "june", "august", "sample"]),
@@ -208,7 +213,7 @@ export function toRows(exam: ExamContent): { tasks: TaskRow[]; keys: KeyRow[] } 
             rows: multi.rows ?? multi.answer.split("").map((_: string, i: number) => `${i + 1}.`),
             ...(multi.rowOptions ? { rowOptions: multi.rowOptions } : {}),
           }
-          : locate(g),
+          : { ...locate(g), ...(g.kind === "open" && (value as z.infer<typeof openItem>).calc ? { calc: true } : {}) },
       });
       if (g.kind === "choice") {
         const answer = typeof value === "string" ? value : (value as z.infer<typeof multiItem>).answer;

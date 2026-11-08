@@ -8,8 +8,8 @@ const UUID = /^[0-9a-f-]{36}$/i
 /** A note still "pending" after this long was interrupted (e.g. the function was stopped). */
 export const INTERRUPTED_AFTER_MS = 5 * 60_000
 
-export const NOTE_SUBJECT = { polish: 'polski', english: 'angielski', biology: 'biologia', other: 'inne' }
-export const NOTE_SUBJECT_LONG = { polish: 'Język polski', english: 'Język angielski', biology: 'Biologia', other: 'Notatka' }
+export const NOTE_SUBJECT = { polish: 'polski', english: 'angielski', biology: 'biologia', chemistry: 'chemia', other: 'inne' }
+export const NOTE_SUBJECT_LONG = { polish: 'Język polski', english: 'Język angielski', biology: 'Biologia', chemistry: 'Chemia', other: 'Notatka' }
 export const NOTE_SOURCE = {
   text: 'z tekstu',
   photo: 'ze zdjęć',

@@ -22,7 +22,7 @@ export const NOTE_LIMITS = {
   diagrams: 4,
 } as const;
 
-export const SUBJECTS = ["polish", "english", "biology", "other"] as const;
+export const SUBJECTS = ["polish", "english", "biology", "chemistry", "other"] as const;
 export type NoteSubject = (typeof SUBJECTS)[number];
 
 export const noteRequestSchema = z
@@ -225,6 +225,8 @@ const SUBJECT_HINT: Record<NoteSubject, string> = {
     "Przedmiot: język angielski (matura). Wyjaśnienia pisz po polsku, a przykłady, słówka i zwroty po angielsku. Fiszki: przód po angielsku, tył po polsku.",
   biology:
     "Przedmiot: biologia (matura rozszerzona). Typowe tematy: budowa i funkcje komórek, procesy (np. fotosynteza, oddychanie, ekspresja genów), fizjologia człowieka, genetyka, ewolucja, ekologia. Procesy pokazuj jako kolejne etapy, a porównania jako tabele.",
+  chemistry:
+    "Przedmiot: chemia (matura rozszerzona). Typowe tematy: budowa atomu i wiązania, stechiometria, roztwory i pH, kinetyka i równowaga, redoks i elektrochemia, systematyka związków nieorganicznych, chemia organiczna (węglowodory, pochodne, związki biologiczne). Wzory i równania zapisuj zwykłym tekstem z indeksami w Unicode (H₂SO₄, SO₄²⁻, →), bez LaTeX. Obliczenia pokazuj jako kolejne kroki z jednostkami.",
   other: "Przedmiot: inny. Dopasuj bloki do treści.",
 };
 

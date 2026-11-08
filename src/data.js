@@ -11,7 +11,7 @@ export const faqs = [
   },
   {
     question: 'Jakie przedmioty są dostępne?',
-    answer: 'Polski i angielski (poziom podstawowy i rozszerzony) oraz biologia rozszerzona: majowe arkusze 2023–2026. Matematyka jest w planach.',
+    answer: 'Polski i angielski (poziom podstawowy i rozszerzony) oraz biologia i chemia rozszerzona: majowe arkusze 2023–2026. Matematyka jest w planach.',
   },
   {
     question: 'Jak sprawdzacie otwarte odpowiedzi?',

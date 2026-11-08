@@ -1,0 +1,388 @@
+{
+  "id": "2023-maj-chemia-pr",
+  "subject": "chemistry",
+  "level": "extended",
+  "year": 2023,
+  "session": "main",
+  "title": "Chemia, poziom rozszerzony, maj 2023",
+  "durationMinutes": 180,
+  "maxPoints": 60,
+  "sources": {
+    "sheet": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Chemia/MCHP-R0-100-2305.pdf",
+    "key": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Chemia/MCHP-R0-100-2305-zasady.pdf"
+  },
+  "groups": [
+    {
+      "no": 1, "section": "tasks", "kind": "open", "label": "Budowa atomu: tabela, konfiguracja, liczby kwantowe", "page": 4,
+      "items": {
+        "1.1": {
+          "answer": "Pierwiastek A: Si (krzem; liczba masowa 28 = 2 · 14, a 28 to liczba atomowa niklu). Pierwiastek X: Br (brom; 79 nukleonów i 35 elektronów). Oba należą do bloku p.",
+          "accepted": ["si br p", "si, br, p", "krzem brom p", "si p br p"]
+        },
+        "1.2": {
+          "answer": "Elektrony walencyjne krzemu: 3s² 3p². Klatka 3s: ↑↓; trzy klatki 3p: ↑, ↑ i pusta (niesparowane elektrony o zgodnym spinie).",
+          "accepted": []
+        },
+        "1.3": {
+          "answer": "n = 4, l = 1 (niesparowany elektron bromu jest na podpowłoce 4p).",
+          "accepted": ["4 1", "4, 1", "n 4 l 1", "n=4 l=1", "n = 4, l = 1"]
+        }
+      }
+    },
+    {
+      "no": 2, "section": "tasks", "kind": "open", "label": "Uzupełnij równanie rozpadu", "page": 5,
+      "items": {
+        "2": {
+          "answer": "²⁹⁴Og → ²⁹⁰Lv + ⁴He (rozpad α). Jądro X to oganeson: Z = 98 + 20 = 118, A = 249 + 48 − 3 = 294.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 3, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 5, "options": "PF",
+      "items": { "3": { "answer": "FP", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 4, "section": "tasks", "kind": "open", "label": "Wzór elektronowy i uzupełnienie zdań", "page": 6,
+      "items": {
+        "4": {
+          "answer": "Wzór elektronowy: O=C=C=C=O, na każdym atomie tlenu dwie wolne pary elektronowe (cząsteczka liniowa).\nHybrydyzację sp mają orbitale trzech atomów węgla (każdy tworzy dwa wiązania podwójne). Liczba wiązań π: 4.",
+          "note": "1 pkt za wzór elektronowy z wolnymi parami, 1 pkt za oba zdania.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 5, "section": "tasks", "kind": "open", "label": "Napisz wzory produktów", "page": 7,
+      "items": {
+        "5": {
+          "answer": "Z wodą: kwas malonowy HOOC–CH₂–COOH.\nZ amoniakiem: diamid kwasu malonowego H₂N–CO–CH₂–CO–NH₂.",
+          "note": "1 pkt za każdy wzór; wzory szkieletowe zamiast grupowych to 1 pkt mniej.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 6, "section": "tasks", "kind": "open", "label": "Oblicz szybkość reakcji", "page": 7,
+      "items": {
+        "6": {
+          "calc": true,
+          "answer": "Przereagowało 50% B: ubyło 1,5 mol·dm⁻³, więc c(B) = 3 − 1,5 = 1,5 mol·dm⁻³.\nZ równania 2A + B: ubyło 2 · 1,5 = 3 mol·dm⁻³ A, więc c(A) = 4 − 3 = 1 mol·dm⁻³.\nv = k · c(A)² · c(B) = 6,7·10³ · 1² · 1,5 = 10,05·10³ ≈ 1,0·10⁴ mol·dm⁻³·s⁻¹.",
+          "note": "1 pkt za metodę z błędem rachunkowym, bez jednostki albo za same stężenia końcowe A i B.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 7, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i uzasadnij", "page": 8,
+      "items": {
+        "7": {
+          "answer": "HX. Dla tego samego stężenia roztworu kwas HX ma większy stopień dysocjacji niż HQ, czyli dysocjuje w większym stopniu, więc jest mocniejszy.",
+          "note": "Trzeba porównać stopnie dysocjacji przy tym samym stężeniu; samo „HX dysocjuje bardziej” nie wystarcza.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 8, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę i wykres, oblicz stężenia", "page": 8,
+      "items": {
+        "8": {
+          "calc": true,
+          "answer": "pH = −log(α · c₀). Dla 0,042 mol·dm⁻³: [H⁺] = 0,119 · 0,042 = 0,0050 → pH = 2,3. Dla 0,100 mol·dm⁻³: [H⁺] = 0,079 · 0,100 = 0,0079 → pH = 2,1.\nNa wykresie dorysowujemy punkty (0,042; 2,3) i (0,100; 2,1) i łączymy je z krzywą.\nZ wykresu: pH = 2,2 ma roztwór o stężeniu c₀ ≈ 0,068 mol·dm⁻³.\n[X⁻] = [H⁺] = 10^(−2,2) ≈ 0,006 mol·dm⁻³.\n[HX] = c₀ − [H⁺] = 0,068 − 0,006 = 0,062 mol·dm⁻³.",
+          "note": "2 pkt za oba pH i wykres, 2 pkt za stężenia (odczyt z wykresu z dokładnością do 0,002, wyniki z dokładnością do 0,001 i z jednostką).",
+          "accepted": [],
+          "points": 4
+        }
+      }
+    },
+    {
+      "no": 9, "section": "tasks", "kind": "open", "label": "Doświadczenie z Na₂SO₃", "page": 10,
+      "items": {
+        "9.1": {
+          "answer": "H₂O + SO₃²⁻ ⇄ OH⁻ + HSO₃⁻ (kwas 1: H₂O, zasada 2: SO₃²⁻, zasada 1: OH⁻, kwas 2: HSO₃⁻). Odczyn zasadowy, stąd malinowa barwa fenoloftaleiny.",
+          "accepted": []
+        },
+        "9.2": {
+          "answer": "Obserwacje: wydziela się bezbarwny gaz o ostrym zapachu (pęcherzyki).\nRównanie: 2H⁺ + SO₃²⁻ → SO₂ + H₂O (albo 2H₃O⁺ + SO₃²⁻ → SO₂ + 3H₂O).",
+          "note": "Równanie prowadzące do H₂SO₃ nie jest uznawane.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 10, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i podaj dwa argumenty", "page": 11,
+      "items": {
+        "10": {
+          "answer": "Nie.\n1) Roztwór kwasu 0,10 mol·dm⁻³ przed miareczkowaniem ma pH = 1,0; słaby kwas o tym stężeniu miałby pH wyraźnie wyższe niż 1.\n2) W punkcie równoważnikowym (po 20 cm³ KOH) pH = 7,0, czyli powstała sól mocnego kwasu i mocnej zasady; dla słabego kwasu pH w PR byłoby wyższe niż 7.",
+          "note": "1 pkt za rozstrzygnięcie z jednym argumentem, 2 pkt za dwa (początkowe pH i pH w punkcie równoważnikowym).",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 11, "section": "tasks", "kind": "open", "label": "Napisz równanie strącania", "page": 12,
+      "items": {
+        "11.1": {
+          "answer": "Pb²⁺ + 2Cl⁻ → PbCl₂↓",
+          "accepted": ["pb2+ + 2cl- → pbcl2", "pb2+ + 2cl- = pbcl2", "pb2+ + 2cl- -> pbcl2", "pb²⁺ + 2cl⁻ → pbcl₂"]
+        }
+      }
+    },
+    {
+      "no": 11, "section": "tasks", "kind": "open", "label": "Zaplanuj doświadczenie", "page": 13,
+      "items": {
+        "11.2": {
+          "answer": "I etap: co najmniej 4 cm³ KCl(aq) – wytrąca się biały osad PbCl₂.\nII etap: KI(aq) – biały osad przechodzi w żółty osad PbI₂, bo jodek jest znacznie mniej rozpuszczalny.\nOdwrotna kolejność to 0 pkt: po wytrąceniu PbI₂ dodanie chlorku nie dałoby widocznej zmiany.",
+          "note": "1 pkt za wybór obu odczynników, 1 pkt za obserwacje w obu etapach.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 12, "section": "tasks", "kind": "open", "label": "Oblicz zawartość węglanu wapnia", "page": 14,
+      "items": {
+        "12": {
+          "calc": true,
+          "answer": "n(CO₂) = 0,672/22,4 = 0,030 mol.\nx = n(CaCO₃), y = n(MgCO₃): x + y = 0,030 oraz 100x + 84y = 2,84 → x = 0,020 mol, y = 0,010 mol.\nm(CaCO₃) = 0,020 · 100 = 2,0 g.\nZawartość: 2,0/2,84 · 100% ≈ 70% (69,4–70,4% zależnie od przyjętych mas molowych).",
+          "note": "1 pkt za metodę z błędem rachunkowym, wynikiem nie w procentach albo za samą masę lub liczbę moli CaCO₃.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 13, "section": "tasks", "kind": "open", "label": "Metale i kwasy", "page": 15,
+      "items": {
+        "13.1": {
+          "answer": "Probówka III (cynk). Tylko cynk ma standardowy potencjał niższy (ujemny) od potencjału półogniwa wodorowego, więc wypiera wodór z kwasu. Miedź i srebro mają potencjały dodatnie, wyższe niż wodór, i nie reagują z HCl.",
+          "accepted": []
+        },
+        "13.2": {
+          "answer": "CuO + 2H⁺ → Cu²⁺ + H₂O (albo CuO + 2H₃O⁺ → Cu²⁺ + 3H₂O)",
+          "accepted": ["cuo + 2h+ → cu2+ + h2o", "cuo + 2h+ = cu2+ + h2o", "cuo + 2h+ -> cu2+ + h2o", "cuo + 2h⁺ → cu²⁺ + h₂o"]
+        },
+        "13.3": {
+          "answer": "NO₂ (brunatny gaz)",
+          "accepted": ["no2", "no₂"]
+        }
+      }
+    },
+    {
+      "no": 14, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę i napisz równanie", "page": 16,
+      "items": {
+        "14": {
+          "answer": "Probówka A: CrCl₃. Probówka C: AlCl₃.\nW probówce B: 2Fe³⁺ + Sn²⁺ → 2Fe²⁺ + Sn⁴⁺ (żółty roztwór jonów żelaza(III) się odbarwia).",
+          "note": "1 pkt za obie sole, 1 pkt za równanie w formie jonowej skróconej.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 15, "section": "tasks", "kind": "open", "label": "Oblicz i napisz wzór hydratu", "page": 16,
+      "items": {
+        "15": {
+          "calc": true,
+          "answer": "Masa roztworu: 767,4 + 100 = 867,4 g; CaCl₂ w nim: 0,5366 · 867,4 = 465,4 g.\nWoda pochodząca z hydratu: 767,4 − 465,4 = 302,0 g.\nn(CaCl₂) = 465,4/111 = 4,19 mol; n(H₂O) = 302,0/18 = 16,8 mol; stosunek ≈ 1 : 4.\nWzór hydratu: CaCl₂·4H₂O.",
+          "note": "1 pkt za metodę z błędem rachunkowym albo bez wzoru hydratu.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 16, "section": "tasks", "kind": "open", "label": "Uzupełnij współczynniki", "page": 17,
+      "items": {
+        "16": {
+          "answer": "S₂O₃²⁻ + 4Cl₂ + 15H₂O → 2SO₄²⁻ + 8Cl⁻ + 10H₃O⁺ (tiosiarczan oddaje 8 elektronów, więc redukuje 4 cząsteczki Cl₂).",
+          "accepted": ["1 4 15 2 8 10", "1, 4, 15, 2, 8, 10"]
+        }
+      }
+    },
+    {
+      "no": 17, "section": "tasks", "kind": "open", "label": "Napisz równanie redukcji", "page": 18,
+      "items": {
+        "17": {
+          "answer": "TcO₄²⁻ + 2e⁻ + 2H₂O → TcO₂ + 4OH⁻ (środowisko obojętne; uznawany jest też zapis TcO₄²⁻ + 2e⁻ + 4H⁺ → TcO₂ + 2H₂O).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 18, "section": "tasks", "kind": "open", "label": "Uzupełnij schemat doświadczenia", "page": 18,
+      "items": {
+        "18": {
+          "answer": "Probówka I: K₂SO₃(aq), probówka II: MnSO₄(aq), odczynnik: KMnO₄(aq).\nW obu probówkach powstaje brunatny osad MnO₂: siarczan(IV) redukuje MnO₄⁻ w środowisku obojętnym, a Mn²⁺ reaguje z MnO₄⁻ (synproporcjonowanie) również do MnO₂.",
+          "accepted": ["k2so3 mnso4 kmno4", "k2so3, mnso4, kmno4", "k₂so₃, mnso₄, kmno₄"]
+        }
+      }
+    },
+    {
+      "no": 19, "section": "tasks", "kind": "open", "label": "Ogniwo: SEM i wybór półogniw", "page": 19,
+      "items": {
+        "19.1": {
+          "answer": "SEM = E°(katody) − E°(anody) = 0,00 − (−0,28) = 0,28 V",
+          "accepted": ["0,28 v", "0.28 v", "0,28v", "0,28", "0.28"]
+        },
+        "19.2": {
+          "answer": "Fe | Fe²⁺, Ni | Ni²⁺ i Zn | Zn²⁺. Metale o ujemnym potencjale standardowym (niższym niż wodór) pozostają anodą, więc na katodzie dalej wydziela się wodór. Ag i Cu mają potencjały dodatnie i zamieniłyby role elektrod.",
+          "accepted": ["fe ni zn", "fe, ni, zn", "zn ni fe", "zn, ni, fe", "fe zn ni", "ni fe zn"]
+        }
+      }
+    },
+    {
+      "no": 20, "section": "tasks", "kind": "open", "label": "Oblicz i napisz wzór alkanu", "page": 19,
+      "items": {
+        "20": {
+          "calc": true,
+          "answer": "Gęstość 50 razy większa niż wodoru w tych samych warunkach → M = 50 · 2 = 100 g·mol⁻¹.\nAlkan CₙH₂ₙ₊₂: 12n + 2n + 2 = 100 → n = 7.\nAchiralny, rozgałęziony, 6 monochloropochodnych: 2-metyloheksan CH₃–CH(CH₃)–CH₂–CH₂–CH₂–CH₃.",
+          "note": "1 pkt za liczbę atomów węgla bez poprawnego wzoru albo za wzór bez obliczeń.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 21, "section": "tasks", "kind": "open", "label": "Wyjaśnij", "page": 20,
+      "items": {
+        "21": {
+          "answer": "Z 2 moli gazowych substratów powstaje 1 mol gazowego produktu, więc reakcja zmniejsza liczbę moli gazów (objętość układu). Zgodnie z regułą przekory wzrost ciśnienia przesuwa równowagę w stronę produktu, dlatego stopień przereagowania etenu rośnie.",
+          "note": "Bez odniesienia do stechiometrii (liczby moli gazów) odpowiedź nie jest wyjaśnieniem.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 22, "section": "tasks", "kind": "open", "label": "Rozstrzygnij i uzasadnij", "page": 20,
+      "items": {
+        "22": {
+          "answer": "Egzotermiczny. Ze wzrostem temperatury równowagowy stopień przereagowania maleje (równowaga przesuwa się w stronę substratów), a tak zachowuje się reakcja wydzielająca ciepło.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 23, "section": "tasks", "kind": "open", "label": "Napisz równania reakcji", "page": 21,
+      "items": {
+        "23": {
+          "answer": "Reakcja 1. (nadmiar NaOH, podwyższone p i T, powstaje fenolan): C₆H₅–Cl + 2OH⁻ → C₆H₅–O⁻ + Cl⁻ + H₂O\nReakcja 2.: C₆H₅–O⁻ + H₃O⁺ → C₆H₅–OH + H₂O (albo C₆H₅–O⁻ + H⁺ → C₆H₅–OH)",
+          "note": "1 pkt za każde równanie.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 24, "section": "tasks", "kind": "open", "label": "Uzupełnij zdanie", "page": 21,
+      "items": {
+        "24": {
+          "answer": "Substytucji (brom podstawia atomy wodoru w pierścieniu fenolu), według mechanizmu elektrofilowego.",
+          "accepted": ["substytucji elektrofilowego", "substytucji, elektrofilowego", "substytucja elektrofilowy", "substytucja, elektrofilowy"]
+        }
+      }
+    },
+    {
+      "no": 25, "section": "tasks", "kind": "open", "label": "Wybierz związek i uzasadnij", "page": 22,
+      "items": {
+        "25": {
+          "answer": "Związek A (butan-2-ol, CH₃–CH(OH)–CH₂–CH₃). Drugi atom węgla ma cztery różne podstawniki (H, OH, CH₃, C₂H₅), czyli jest centrum stereogenicznym, a cząsteczka nie ma płaszczyzny symetrii.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 26, "section": "tasks", "kind": "open", "label": "Narysuj wzory izomerów", "page": 22,
+      "items": {
+        "26": {
+          "answer": "A1 (izomer A, który utlenia się do aldehydu B): CH₃–CH(CH₃)–CH₂–OH (2-metylopropan-1-ol).\nB1 (izomer B, który redukuje się do alkoholu A): CH₃–CO–CH₂–CH₃ (butanon).\nC1 (izomer estru C, produkt utlenienia B): CH₃–CH(CH₃)–COOH (kwas 2-metylopropanowy).",
+          "note": "2 pkt za trzy wzory, 1 pkt za dwa; wzory szkieletowe to 1 pkt mniej.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 27, "section": "tasks", "kind": "open", "label": "Uzupełnij tabelę", "page": 23,
+      "items": {
+        "27.1": {
+          "answer": "Geranial (atom a w grupie –CHO): stopień utlenienia +I, hybrydyzacja sp².\nGeraniol (atom a w grupie –CH₂OH): stopień utlenienia −I, hybrydyzacja sp³.",
+          "note": "1 pkt za jeden pełny wiersz albo za oba stopnie utlenienia, albo za oba typy hybrydyzacji.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 27, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 23, "options": "PF",
+      "items": { "27.2": { "answer": "PP", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 28, "section": "tasks", "kind": "open", "label": "Oblicz stałą równowagi", "page": 24,
+      "items": {
+        "28": {
+          "calc": true,
+          "answer": "Przereagowało 80% Cl₂, czyli 0,16 mol: zostało 0,04 mol Cl₂ i 0,40 − 0,16 = 0,24 mol CO, powstało 0,16 mol COCl₂.\nStężenia równowagowe (V = 4,0 dm³): [CO] = 0,06, [Cl₂] = 0,01, [COCl₂] = 0,04 mol·dm⁻³.\nK = [COCl₂] / ([CO] · [Cl₂]) = 0,04 / (0,06 · 0,01) ≈ 67.",
+          "note": "1 pkt za metodę z błędem rachunkowym, błędną jednostką albo za same stężenia równowagowe.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 29, "section": "tasks", "kind": "open", "label": "Napisz równanie reakcji", "page": 25,
+      "items": {
+        "29": {
+          "answer": "COCl₂ + 2CH₃OH → CH₃O–CO–OCH₃ + 2HCl (powstaje węglan dimetylu, zapisywany też (CH₃O)₂CO)",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 30, "section": "tasks", "kind": "open", "label": "Uzupełnij równanie polikondensacji", "page": 25,
+      "items": {
+        "30": {
+          "answer": "Produkt: [–O–C₆H₄–C(CH₃)₂–C₆H₄–O–CO–]ₙ + 2n NaCl. Powtarzający się fragment to reszta bisfenolu A połączona przez oba atomy tlenu z grupą karbonylową (ugrupowania węglanowe –O–CO–O–).",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 31, "section": "tasks", "kind": "open", "label": "Formy alaniny", "page": 26,
+      "items": {
+        "31.1": {
+          "answer": "Jon obojnaczy CH₃–CH(NH₃⁺)–COO⁻. Nazwa: punkt izoelektryczny (pI).",
+          "accepted": []
+        },
+        "31.2": {
+          "answer": "W punkcie III są obecne jon obojnaczy CH₃–CH(NH₃⁺)–COO⁻ i anion CH₃–CH(NH₂)–COO⁻ (w stosunku 1 : 1). Nie ma formy protonowanej CH₃–CH(NH₃⁺)–COOH.",
+          "accepted": []
+        }
+      }
+    },
+    {
+      "no": 32, "section": "tasks", "kind": "open", "label": "Sformułuj wnioski", "page": 27,
+      "items": {
+        "32": {
+          "answer": "Budowa: glukoza ma co najmniej dwie grupy hydroksylowe przy sąsiednich atomach węgla (jest alkoholem polihydroksylowym), bo z Cu(OH)₂ na zimno daje szafirowy roztwór.\nWłaściwości: ma właściwości redukujące (ulega utlenieniu), bo po ogrzaniu wytrąca się ceglastoczerwony osad Cu₂O.",
+          "note": "1 pkt za każdy wniosek.",
+          "accepted": [],
+          "points": 2
+        }
+      }
+    },
+    {
+      "no": 33, "section": "tasks", "kind": "choice", "label": "Wybierz P albo F", "page": 28, "options": "PF",
+      "items": { "33": { "answer": "PF", "rows": ["1.", "2."] } }
+    },
+    {
+      "no": 34, "section": "tasks", "kind": "choice", "label": "Dokończ zdanie: wybierz A albo B oraz 1, 2 albo 3", "page": 28, "options": "AB123",
+      "hint": "Pierwszy wybór to A albo B, drugi to uzasadnienie 1., 2. albo 3.",
+      "items": { "34": { "answer": "A1", "rows": ["izomeria", "uzasadnienie"], "rowOptions": ["AB", "123"] } }
+    }
+  ]
+}

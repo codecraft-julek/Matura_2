@@ -12,6 +12,7 @@ export const SUBJECTS = [
   { value: "polish", label: "Polski" },
   { value: "english", label: "Angielski" },
   { value: "biology", label: "Biologia" },
+  { value: "chemistry", label: "Chemia" },
 ] as const;
 
 export type SubjectValue = (typeof SUBJECTS)[number]["value"];

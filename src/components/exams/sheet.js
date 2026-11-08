@@ -101,7 +101,7 @@ export function sectionPoints(tasks) {
 
 /** Saved open answers eligible for AI grading or showing an existing AI/manual grade. */
 export function aiGradableCount(exam, tasks, answers, results) {
-  if (!['polish', 'english', 'biology'].includes(exam.subject)) return 0
+  if (!['polish', 'english', 'biology', 'chemistry'].includes(exam.subject)) return 0
   return tasks.filter(t => t.kind === 'open' && answers[t.number]?.trim() && REVIEW_STATUSES.includes(results[t.number]?.status)).length
 }
 

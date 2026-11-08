@@ -121,7 +121,7 @@ export function completeGrades(tasks: GradableTask[], ai: AiGrades): Grade[] {
 
 // ─── Prompt ─────────────────────────────────────────────────────────────────
 /** Subjects whose open answers AI can grade (with the official CKE sheet and key). */
-export const GRADED_SUBJECT: Record<string, string> = { polish: "z języka polskiego", english: "z języka angielskiego", biology: "z biologii" };
+export const GRADED_SUBJECT: Record<string, string> = { polish: "z języka polskiego", english: "z języka angielskiego", biology: "z biologii", chemistry: "z chemii" };
 
 export function buildGradingInstructions(subject = "polish"): string {
   return [

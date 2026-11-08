@@ -1,10 +1,10 @@
 <script setup>
 // Our own pictogram for each subject, drawn to read at 12 px on a tinted square (SubjectIcon):
 // polski — an open book with a ribbon bookmark, angielski — two speech bubbles in conversation,
-// biologia — a leaf with its veins.
-// One stroke weight, round joins, same optical size, so the three look like a family.
+// biologia — a leaf with its veins, chemia — an Erlenmeyer flask with liquid.
+// One stroke weight, round joins, same optical size, so the four look like a family.
 defineProps({
-  /** 'polish' | 'english' | 'biology' */
+  /** 'polish' | 'english' | 'biology' | 'chemistry' */
   id: { type: String, required: true },
   size: { type: Number, default: 12 },
 })
@@ -20,6 +20,11 @@ defineProps({
     <template v-else-if="id === 'english'">
       <path d="M5.5 3.5h7A2.5 2.5 0 0 1 15 6v3a2.5 2.5 0 0 1-2.5 2.5H8.5L5 14v-2.6A2.5 2.5 0 0 1 3 9V6a2.5 2.5 0 0 1 2.5-2.5Z" />
       <path d="M13.5 13h5A2.5 2.5 0 0 1 21 15.5v2.5a2.5 2.5 0 0 1-2.5 2.5H18l-3 2.5v-2.5h-1.5A2.5 2.5 0 0 1 11 18v-2.5a2.5 2.5 0 0 1 2.5-2.5Z" />
+    </template>
+    <template v-else-if="id === 'chemistry'">
+      <path d="M9.5 3h5" />
+      <path d="M10 3v6.2L4.6 18.4A2 2 0 0 0 6.3 21.5h11.4a2 2 0 0 0 1.7-3.1L14 9.2V3" />
+      <path d="M7.2 15.5h9.6" />
     </template>
     <template v-else>
       <path d="M4.5 19.5C4.5 10 10.5 4.5 20 4.5c0 9.5-5.5 15.5-15.5 15Z" />

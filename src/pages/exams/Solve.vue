@@ -220,9 +220,9 @@ async function checkCurrent() {
   // Only keep results for this block (a group number can span two blocks).
   checked.value = { ...checked.value, ...Object.fromEntries(g.tasks.map(t => [t.number, res.results[t.number]]).filter(([, r]) => r)) }
   const summary = groupCheck(g, checked.value)
-  liveMessage.value = summary ? `Zadanie ${g.no} sprawdzone: ${summary.got} z ${summary.max} pkt${summary.review ? ', odpowiedzi otwarte oceni AI po zakończeniu arkusza' : ''}.` : ''
+  liveMessage.value = summary ? `Zadanie ${g.no} sprawdzone: ${summary.got} z ${summary.max} pkt${summary.review ? ', odpowiedzi otwarte ocenisz po zakończeniu arkusza (sam albo z AI)' : ''}.` : ''
 }
-const checkTitle = c => (c.tone === 'ok' ? 'Wszystko dobrze. Ogarniasz to!' : c.review ? 'Odpowiedź otwartą oceni AI po zakończeniu arkusza' : c.tone === 'warn' ? 'Prawie. Zobacz, co poprawić.' : 'To dobry moment na małą powtórkę.')
+const checkTitle = c => (c.tone === 'ok' ? 'Wszystko dobrze. Ogarniasz to!' : c.review ? 'Odpowiedź otwartą ocenisz po zakończeniu arkusza, sam albo z pomocą AI' : c.tone === 'warn' ? 'Prawie. Zobacz, co poprawić.' : 'To dobry moment na małą powtórkę.')
 
 // ---------- Timed: countdown ----------
 const now = ref(Date.now())
