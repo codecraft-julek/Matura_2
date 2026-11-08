@@ -219,7 +219,7 @@ defineExpose({ jumpToQuestion, selectFile })
       </div>
     </div>
 
-    <div class="pdf-sync-bar"><span><Link2 :size="14" /><span>{{ pdf ? `Powiązane zad. ${question.sourceTask} · str. ${question.sourcePage}` : 'Automatyczne przewijanie do ćwiczenia' }}</span></span><button v-if="pdf" @click="jumpToQuestion()">Wróć do zadania <ArrowRight :size="14" /></button></div>
+    <div class="pdf-sync-bar"><span><Link2 :size="14" /><span>{{ pdf ? `Zad. ${question.sourceTask} · str. ${question.sourcePage}` : 'Automatyczne przewijanie do ćwiczenia' }}</span></span><button v-if="pdf" @click="jumpToQuestion()">Wróć do zadania <ArrowRight :size="14" /></button></div>
     <div v-if="dragging" class="pdf-drop-overlay"><Upload :size="32" /><strong>Upuść arkusz tutaj</strong></div>
   </section>
 </template>

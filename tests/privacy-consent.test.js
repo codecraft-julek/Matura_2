@@ -43,7 +43,7 @@ describe('optional analytics consent', () => {
   it('clears only local study data, preserving authentication, privacy choices and other apps', () => {
     const values = new Map([
       ['ogarnij-mature:draft:essay-new', 'work'], ['om:sheet:exam:2026', 'answers'],
-      ['ogarnij-mature:polski-2026:v1', 'progress'], ['om:exam-pdf-panel', 'hidden'],
+      ['ogarnij-mature:polski-2026:v2', 'progress'], ['om:exam-pdf-panel', 'hidden'],
       ['sb-project-auth-token', 'session'], [PRIVACY_KEY, JSON.stringify(allowed)], ['unrelated', 'value'],
     ])
     const storage = { get length() { return values.size }, key: index => [...values.keys()][index], removeItem: key => values.delete(key) }

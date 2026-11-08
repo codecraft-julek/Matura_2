@@ -52,7 +52,7 @@ export function removeOtherStudentsData(storage, userId) {
 export function clearLocalStudyData(storage) {
   const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index))
   const owned = keys.filter(key => key && (STUDENT_PREFIXES.some(p => key.startsWith(p)) ||
-    key === 'ogarnij-mature:polski-2026:v1' || key === 'om:exam-pdf-panel'))
+    key.startsWith('ogarnij-mature:polski-2026:') || key === 'om:exam-pdf-panel'))
   for (const key of owned) storage.removeItem(key)
   return owned.length
 }

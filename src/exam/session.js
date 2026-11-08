@@ -1,6 +1,6 @@
 import { questions } from './examData.js'
 
-export const STORAGE_KEY = 'ogarnij-mature:polski-2026:v1'
+export const STORAGE_KEY = 'ogarnij-mature:polski-2026:v2'
 
 export function createSession() {
   return { version: 1, activeId: questions[0].id, answers: {}, checked: [], flags: [], selfAssessments: {}, elapsedSeconds: 0, complete: false }
