@@ -3,8 +3,10 @@
 // a glance everywhere: the header switcher, chips, tags, the dashboard badge.
 //   <SubjectIcon :subject="s" />            18 px square (chips, tags)
 //   <SubjectIcon :subject="s" size="md" />  28 px square (the switcher, menus)
+import SubjectGlyph from './SubjectGlyph.vue'
+
 defineProps({
-  /** A subject from config/subjects ({ icon, color, tint }). */
+  /** A subject from config/subjects ({ id, color, tint }). */
   subject: { type: Object, required: true },
   size: { type: String, default: 'sm' }, // 'sm' | 'md'
 })
@@ -12,7 +14,7 @@ defineProps({
 
 <template>
   <span class="subject-icon" :class="`is-${size}`" :style="{ '--subject': subject.color, '--subject-tint': subject.tint }" aria-hidden="true">
-    <component :is="subject.icon" :size="size === 'md' ? 16 : 12" :stroke-width="2.25" />
+    <SubjectGlyph :id="subject.id" :size="size === 'md' ? 16 : 12" />
   </span>
 </template>
 

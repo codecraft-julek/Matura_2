@@ -7,8 +7,11 @@ const auth = vi.hoisted(() => ({ state: null }))
 vi.mock('@/stores/auth', async () => {
   const { reactive } = await import('vue')
   auth.state = reactive({ user: null, profile: null })
+  auth.state.patchProfile = values => { auth.state.profile = { ...auth.state.profile, ...values } }
   return { useAuthStore: () => auth.state }
 })
+const saveProfileMock = vi.hoisted(() => vi.fn(async (_userId, values) => ({ ok: true, row: { display_name: values.displayName, subjects: values.subjects, matura_year: values.maturaYear } })))
+vi.mock('@/lib/api/account', () => ({ saveProfile: saveProfileMock }))
 
 import { SUBJECT_STORAGE_PREFIX, useSubjectStore } from './subject'
 
@@ -72,5 +75,27 @@ describe('active subject', () => {
     auth.state.profile = { subjects: ['polish', 'english'] }
     await nextTick()
     expect(s.active).toBe('english')
+  })
+})
+
+describe('adding a subject', () => {
+  it('lists the subjects the student could add and saves one to the profile', async () => {
+    const s = useSubjectStore()
+    expect(s.others.map(x => x.id)).toEqual(['english'])
+    auth.state.profile = { display_name: 'Ala', subjects: ['polish'], matura_year: 2027 }
+    expect(s.others.map(x => x.id)).toEqual(['english', 'biology'])
+    const result = await s.add('biology')
+    expect(result.ok).toBe(true)
+    expect(saveProfileMock).toHaveBeenCalledWith('student-a', { displayName: 'Ala', subjects: ['polish', 'biology'], maturaYear: 2027 })
+    expect(auth.state.profile.subjects).toEqual(['polish', 'biology'])
+    expect(s.active).toBe('biology')
+  })
+
+  it('refuses a subject the student already has and passes the save error on', async () => {
+    const s = useSubjectStore()
+    expect((await s.add('polish')).ok).toBe(false)
+    saveProfileMock.mockResolvedValueOnce({ ok: false, error: 'Brak połączenia.' })
+    expect(await s.add('english')).toEqual({ ok: false, error: 'Brak połączenia.' })
+    expect(s.active).toBe('polish')
   })
 })

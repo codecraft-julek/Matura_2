@@ -6,6 +6,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { SUBJECTS, isSubjectId } from '@/config/subjects'
+import { saveProfile } from '@/lib/api/account'
 import { useAuthStore } from '@/stores/auth'
 
 export const SUBJECT_STORAGE_PREFIX = 'om:subject:'
@@ -27,6 +28,8 @@ export const useSubjectStore = defineStore('subject', () => {
     return mine.length ? mine : SUBJECTS
   })
   const canSwitch = computed(() => available.value.length > 1)
+  /** Subjects the student could still add to their profile (none until the profile is loaded). */
+  const others = computed(() => (auth.profile?.subjects?.length ? SUBJECTS.filter(s => !auth.profile.subjects.includes(s.id)) : []))
 
   /** The id of the active subject: always one of `available`. */
   const active = computed(() => {
@@ -42,8 +45,19 @@ export const useSubjectStore = defineStore('subject', () => {
     try { window.localStorage.setItem(storageKey.value, id) } catch { /* storage blocked */ }
   }
 
+  /** Adds a subject to the profile (the same save as the account page) and makes it active. → { ok, error? } */
+  async function add(id) {
+    const profile = auth.profile
+    if (!isSubjectId(id) || !auth.user || !profile || profile.subjects?.includes(id)) return { ok: false, error: 'Nie udało się dodać przedmiotu.' }
+    const result = await saveProfile(auth.user.id, { displayName: profile.display_name ?? '', subjects: [...(profile.subjects ?? []), id], maturaYear: profile.matura_year })
+    if (!result.ok) return { ok: false, error: result.error }
+    auth.patchProfile(result.row)
+    set(id)
+    return { ok: true }
+  }
+
   // Another student in the same tab starts from their own remembered subject.
   watch(() => auth.user?.id, () => { chosen.value = null })
 
-  return { active, current, available, canSwitch, set }
+  return { active, current, available, others, canSwitch, set, add }
 })

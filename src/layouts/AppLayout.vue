@@ -42,7 +42,7 @@ const signOut = useSignOut()
           <RouterLink :to="ROUTES.premium" class="nav-premium"><Zap :size="15" fill="currentColor" />Premium</RouterLink>
         </nav>
         <div class="app-header-actions">
-          <SubjectSwitcher v-if="subject.canSwitch" />
+          <SubjectSwitcher />
           <RouterLink :to="ROUTES.account" class="icon-button" aria-label="Konto" title="Konto"><CircleUser :size="21" /></RouterLink>
           <button type="button" class="icon-button hide-mobile" aria-label="Wyloguj się" title="Wyloguj się" @click="signOut"><LogOut :size="19" /></button>
         </div>

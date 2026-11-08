@@ -1,7 +1,8 @@
 import { createRenderer, defineComponent, h, nextTick } from 'vue'
 
 // addEventListener: v-model attaches its listeners directly to the element. style: the chat input resizes itself.
-const node = (type, text = '') => ({ type, text, props: {}, children: [], parent: null, style: {}, addEventListener() {} })
+// focus: menus move focus between their items.
+const node = (type, text = '') => ({ type, text, props: {}, children: [], parent: null, style: {}, addEventListener() {}, focus() {} })
 const renderer = createRenderer({
   createElement: tag => node(tag), createText: text => node('text', text), createComment: text => node('comment', text),
   setText: (el, text) => { el.text = text },
