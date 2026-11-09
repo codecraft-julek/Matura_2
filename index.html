@@ -19,6 +19,29 @@
     <meta data-seo property="og:image" content="%VITE_SITE_URL%/og.png" />
     <meta data-seo name="twitter:card" content="summary_large_image" />
     <title>Ogarnij Maturę — małe kroki, duży progres.</title>
+    <!-- Meta Pixel Code. Editing this script needs a new sha256 in the CSP in vercel.json (tests/hosting.test.js checks it).
+         Only on the live domain and public pages (addresses of private pages can hold tokens); stops if the visitor refused ads. -->
+    <script>
+      (function () {
+        if (!/(^|\.)ogarnijmature\.com$/.test(location.hostname)) return;
+        if (['/', '/arkusze-maturalne', '/kontakt', '/regulamin', '/polityka-prywatnosci'].indexOf(location.pathname) < 0) return;
+        try { if (JSON.parse(localStorage.getItem('om:privacy-choice')).marketing === false) return; } catch (e) {}
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq.disablePushState = true;
+        fbq('set', 'autoConfig', false, '1488831509979158');
+        fbq('init', '1488831509979158');
+        fbq('track', 'PageView');
+        window.omPixelPath = location.pathname;
+      })();
+    </script>
+    <!-- End Meta Pixel Code -->
   </head>
   <body>
     <div id="app"></div>

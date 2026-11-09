@@ -16,9 +16,9 @@ async function enableAnalytics() {
   inject({ mode: 'production', beforeSend: event => filterAnalyticsEvent(event, choice.value, window.location.origin) })
 }
 
-/** Tells Meta about the current page if the visitor allowed ads. Called on every route change too. */
+/** Tells Meta about the current page unless the visitor refused ads. Called on every route change too. */
 export function reportPageToMeta() {
-  try { syncMetaPixel(Boolean(choice.value && parsePrivacyChoice(JSON.stringify(choice.value))?.marketing)) } catch { /* ads must never interrupt the app */ }
+  try { syncMetaPixel(parsePrivacyChoice(JSON.stringify(choice.value))?.marketing !== false) } catch { /* ads must never interrupt the app */ }
 }
 
 function applyChoice() {

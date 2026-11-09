@@ -10,7 +10,7 @@ beforeEach(async () => {
   vi.resetModules()
   vi.stubEnv('PROD', true)
   scripts = []
-  vi.stubGlobal('window', { location: { pathname: '/' } })
+  vi.stubGlobal('window', { location: { pathname: '/', hostname: 'www.ogarnijmature.com' } })
   vi.stubGlobal('document', { createElement: () => ({}), head: { appendChild: el => scripts.push(el) } })
   sync = (await import('../src/lib/privacy/metaPixel')).syncMetaPixel
 })
@@ -60,6 +60,24 @@ describe('Meta Pixel', () => {
     sync(true)
     expect(calls().slice(-2)).toEqual([['consent', 'grant'], ['track', 'PageView']])
     expect(scripts).toHaveLength(1)
+  })
+
+  it('does not count the page the script in index.html already reported', () => {
+    window.fbq = Object.assign((...args) => window.fbq.queue.push(args), { queue: [] })
+    window.omPixelPath = '/'
+    sync(true)
+    expect(calls()).toEqual([])
+    expect(scripts).toEqual([])
+    goTo('/kontakt'); sync(true)
+    expect(calls()).toEqual([['track', 'PageView']])
+    sync(false)
+    expect(calls().at(-1)).toEqual(['consent', 'revoke'])
+  })
+
+  it('does nothing on previews and localhost', () => {
+    window.location.hostname = 'matura-2-abc.vercel.app'
+    sync(true)
+    expect(scripts).toEqual([])
   })
 
   it('does nothing outside the production build', () => {

@@ -42,9 +42,9 @@ export { LEGAL_VERSION as TERMS_VERSION } from './legal.js';
 export const CAPTCHA_SITE_KEY: string | null = null;
 
 /**
- * Meta Pixel for the Facebook ads. Public by design. Loads only after the visitor allows ads in the
- * privacy banner and only on public pages (src/lib/privacy/metaPixel.js).
- *   null = off.
+ * Meta Pixel for the Facebook ads. Public by design. The same ID is in the script in index.html.
+ * Runs on public pages until the visitor refuses ads (src/lib/privacy/metaPixel.js).
+ *   null = no reports after the first page (to turn it off fully, also remove the script from index.html).
  */
 export const META_PIXEL_ID: string | null = "1488831509979158";
 

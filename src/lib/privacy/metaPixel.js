@@ -1,13 +1,14 @@
-// Meta Pixel for the Facebook ads. Same base code as Meta's snippet, with three differences:
-//   - it loads only after the visitor allows ads in the privacy banner (no script tag in index.html),
-//   - it reports only the public pages, so nothing about accounts, essays or payments reaches Meta,
+// Meta Pixel for the Facebook ads. The first page view comes from the script in index.html; this
+// module reports later route changes and handles the "Reklamy" answer in the privacy banner.
+//   - only the public pages are reported, so nothing about accounts, essays or payments reaches Meta,
 //   - automatic button/form capture and automatic route tracking are off, because they would
-//     send page contents and private page addresses on their own.
-// Meta's <noscript> image is left out on purpose: it fires without consent and the app needs JS anyway.
+//     send page contents and private page addresses on their own,
+//   - only on the live domain, so development and Vercel previews don't add fake visits.
 import { META_PIXEL_ID } from '@/config/site'
 import { PUBLIC_PATHS } from './consent'
 
 const SCRIPT_SRC = 'https://connect.facebook.net/en_US/fbevents.js'
+let started = false
 let granted = false
 let lastPath = null
 
@@ -30,7 +31,12 @@ function loadPixel() {
 
 /** Call on every route change and consent change. Reports the current page once, if allowed. */
 export function syncMetaPixel(allowed) {
-  if (!META_PIXEL_ID || !import.meta.env.PROD) return
+  if (!META_PIXEL_ID || !import.meta.env.PROD || !/(^|\.)ogarnijmature\.com$/.test(window.location.hostname ?? '')) return
+  if (!started) { // what the script in index.html has already done on this page load
+    started = true
+    granted = Boolean(window.fbq)
+    lastPath = window.omPixelPath ?? null
+  }
   if (!allowed) {
     if (granted) window.fbq?.('consent', 'revoke')
     granted = false

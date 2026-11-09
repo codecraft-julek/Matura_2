@@ -1,6 +1,8 @@
+import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { ROUTES, checkoutRoute } from '../src/config/routes'
+import { META_PIXEL_ID } from '../src/config/site'
 
 const config = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'))
 const rewrite = config.rewrites.find(rule => rule.destination.startsWith('/spa'))
@@ -9,6 +11,13 @@ const matcher = new RegExp(`^${rewrite.source}$`)
 describe('Content-Security-Policy', () => {
   const csp = config.headers.flatMap(rule => rule.headers).find(header => header.key === 'Content-Security-Policy').value
   const directive = name => csp.split('; ').find(part => part.startsWith(`${name} `))
+
+  it('allows the exact Meta Pixel script from index.html', () => {
+    const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8')
+    const inline = html.match(/<script>([\s\S]*?)<\/script>/)[1]
+    expect(inline).toContain(META_PIXEL_ID)
+    expect(directive('script-src')).toContain(`'sha256-${createHash('sha256').update(inline).digest('base64')}'`)
+  })
 
   it('lets the Meta Pixel load and report', () => {
     expect(directive('script-src')).toContain('https://connect.facebook.net')
