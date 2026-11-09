@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { LEGAL_OPERATOR, LEGAL_VERSION, missingOperatorDetails } from '../src/config/legal'
+import { LEGAL_OPERATOR, LEGAL_VERSION, PRIVACY_VERSION, missingOperatorDetails } from '../src/config/legal'
 import { TERMS_VERSION } from '../src/config/site'
 import { legalDocuments, termsDocument, privacyDocument, withdrawalForm } from '../src/content/legal/documents'
 import { documentDownloadPath, escapeHtml, renderLegalArticle, renderLegalBlocks, standaloneLegalDocument } from '../src/content/legal/render'
@@ -10,7 +10,12 @@ describe('checkout declarations and withdrawal rights', () => {
   it('keeps the accepted terms, generated documents and server consent text version aligned', () => {
     expect(TERMS_VERSION).toBe(LEGAL_VERSION)
     expect(PURCHASE_CONSENT_VERSION).toBe(LEGAL_VERSION)
-    for (const doc of legalDocuments) expect(doc.version).toBe(LEGAL_VERSION)
+    expect(termsDocument.version).toBe(LEGAL_VERSION)
+    expect(privacyDocument.version).toBe(PRIVACY_VERSION) // nobody "accepts" the policy, so it can change without a new terms version
+  })
+  it('names Meta and its pixel in the privacy policy', () => {
+    expect(renderLegalArticle(privacyDocument)).toContain('Meta Platforms Ireland Limited')
+    expect(renderLegalArticle(privacyDocument)).toContain('Meta Pixel')
   })
   it('requires explicit current declarations and rejects an old withdrawal waiver', () => {
     expect(validPurchaseConsents(consents, LEGAL_VERSION)).toBe(true)

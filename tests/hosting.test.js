@@ -6,6 +6,17 @@ const config = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url
 const rewrite = config.rewrites.find(rule => rule.destination.startsWith('/spa'))
 const matcher = new RegExp(`^${rewrite.source}$`)
 
+describe('Content-Security-Policy', () => {
+  const csp = config.headers.flatMap(rule => rule.headers).find(header => header.key === 'Content-Security-Policy').value
+  const directive = name => csp.split('; ').find(part => part.startsWith(`${name} `))
+
+  it('lets the Meta Pixel load and report', () => {
+    expect(directive('script-src')).toContain('https://connect.facebook.net')
+    expect(directive('img-src')).toContain('https://www.facebook.com')
+    expect(directive('connect-src')).toContain('https://www.facebook.com')
+  })
+})
+
 describe('external payment returns on Vercel', () => {
   it('uses extensionless rewrite targets when cleanUrls is enabled (the payment 404 regression)', () => {
     expect(config.cleanUrls).toBe(true)

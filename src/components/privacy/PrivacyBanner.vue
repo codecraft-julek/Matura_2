@@ -7,7 +7,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <aside v-if="privacyChoice === null && route.meta.layout === 'public' && route.path !== ROUTES.privacy" class="privacy-choice" aria-label="Wybór opcjonalnych statystyk">
+  <aside v-if="privacyChoice === null && route.meta.layout === 'public' && route.path !== ROUTES.privacy" class="privacy-choice" aria-label="Wybór opcjonalnych statystyk i reklam">
     <AnalyticsChoice compact />
   </aside>
 </template>

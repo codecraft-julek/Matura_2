@@ -22,6 +22,16 @@ describe('optional analytics consent', () => {
     expect(parsePrivacyChoice(JSON.stringify(createPrivacyChoice(false, false, now)), now)?.analytics).toBe(false)
   })
 
+  it('keeps ads a separate answer from statistics, with the same age confirmation', () => {
+    expect(allowed.marketing).toBe(false)
+    const adsOnly = createPrivacyChoice(false, true, now, true)
+    expect(parsePrivacyChoice(JSON.stringify(adsOnly), now)).toMatchObject({ analytics: false, marketing: true, age16: true })
+    expect(() => createPrivacyChoice(false, false, now, true)).toThrow()
+    expect(parsePrivacyChoice(JSON.stringify({ ...adsOnly, age16: false }), now)).toBeNull()
+    const { marketing, ...withoutAnswer } = adsOnly
+    expect(parsePrivacyChoice(JSON.stringify(withoutAnswer), now)).toBeNull()
+  })
+
   it('blocks all events before consent, after rejection, after revocation and after expiry', () => {
     for (const consent of [null, createPrivacyChoice(false, false, now), { ...allowed, at: now - CONSENT_TTL }]) {
       expect(filterAnalyticsEvent(event('/'), consent, origin, now)).toBeNull()
