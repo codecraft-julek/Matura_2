@@ -1,5 +1,5 @@
 // Authored, structured copy shared by Vue and static/downloadable documents. No runtime HTML.
-import { LEGAL_OPERATOR as operator, LEGAL_VERSION, LEGAL_UPDATED, PRIVACY_VERSION, PRIVACY_UPDATED, LEGAL_DRAFT_NOTICE, DATABASE_LOCATION, BACKUP_RETENTION, LOG_RETENTION } from '../../config/legal.js'
+import { LEGAL_OPERATOR as operator, LEGAL_VERSION, LEGAL_UPDATED, LEGAL_DRAFT_NOTICE, DATABASE_LOCATION, BACKUP_RETENTION, LOG_RETENTION } from '../../config/legal.js'
 import { PLANS } from '../../config/plans.ts'
 import { ROUTES } from '../../config/routes.ts'
 
@@ -114,8 +114,8 @@ export const termsDocument = {
 }
 
 export const privacyDocument = {
-  ...base, version: PRIVACY_VERSION, updated: PRIVACY_UPDATED, id: 'polityka-prywatnosci', title: 'Polityka prywatności', path: ROUTES.privacy,
-  summary: 'Opisujemy, jakie dane są potrzebne do nauki, co trafia do AI i operatora płatności oraz jak pobrać lub usunąć dane. Opcjonalne statystyki i piksel reklamowy Meta uruchamiamy dopiero po zgodzie.',
+  ...base, id: 'polityka-prywatnosci', title: 'Polityka prywatności', path: ROUTES.privacy,
+  summary: 'Opisujemy, jakie dane są potrzebne do nauki, co trafia do AI i operatora płatności oraz jak pobrać lub usunąć dane. Opcjonalne statystyki uruchamiamy dopiero po zgodzie.',
   sections: [
     section('administrator', '1. Administrator i kontakt', identity(),
       p('W sprawie swoich danych możesz skontaktować się z administratorem przez podane kanały lub formularz kontaktowy. Ta polityka dotyczy serwisu Ogarnij Maturę. Linki do stron zewnętrznych prowadzą do usług objętych także politykami ich operatorów.'),
@@ -129,7 +129,6 @@ export const privacyDocument = {
         'Płatności: identyfikatory klienta i subskrypcji Stripe, wybrany plan, status płatności, daty dostępu oraz potwierdzenia oświadczeń zakupowych. Przy odstąpieniu od umowy także imię i nazwisko, e-mail do potwierdzenia, czas otrzymania oświadczenia i kwoty rozliczenia. Pełne dane karty i CVC otrzymuje operator płatności, nie nasza baza danych.',
         'Kontakt i oceny AI: e-mail, opcjonalne imię, temat i treść wiadomości; przy kontakcie po zalogowaniu także identyfikator konta. Dobrowolne oceny odpowiedzi AI i komentarze służą obsłudze zgłoszeń i analizie jakości.',
         'Bezpieczeństwo: informacje techniczne żądania i logowania, np. IP, czas, przeglądarka, komunikaty błędów oraz token CAPTCHA. W licznikach ochrony formularzy zapisujemy skrót IP. Skrót nie oznacza, że dane automatycznie przestają być danymi osobowymi.',
-        'Reklamy, tylko jeżeli się zgodzisz: adres odwiedzanej publicznej strony, także z parametrami linku reklamowego, strona, z której przyszedłeś, adres IP, dane przeglądarki i urządzenia oraz identyfikator piksela zapisany w pliku cookie.',
         'Dawna lista oczekujących, jeżeli się na nią zapisałeś: e-mail, przedmioty, rok matury, zapis zgody oraz parametry źródła wejścia z linku. Nie traktujemy takiego zapisu jako zgody na dowolny marketing.',
       )),
     section('cele', '3. Cele i podstawy prawne',
@@ -138,10 +137,9 @@ export const privacyDocument = {
         ['Obowiązki podatkowe, obsługa ustawowych uprawnień konsumenta i realizacja praw dotyczących danych.', 'Art. 6 ust. 1 lit. c RODO — obowiązek prawny.'],
         ['Ochrona kont, zapobieganie nadużyciom, diagnozowanie awarii, pozostała korespondencja i dochodzenie lub obrona roszczeń.', 'Art. 6 ust. 1 lit. f RODO — uzasadniony interes polegający na bezpieczeństwie, obsłudze spraw i ochronie praw.'],
         ['Analiza dobrowolnych ocen AI i komentarzy w celu poprawy jakości usługi, bez automatycznego przekazywania ich do treningu modeli.', 'Art. 6 ust. 1 lit. f RODO — uzasadniony interes polegający na ocenie jakości narzędzi; możesz wnieść sprzeciw.'],
-        ['Pomiar skuteczności naszych reklam na Facebooku i Instagramie oraz ich dopasowanie (Meta Pixel).', 'Art. 6 ust. 1 lit. a RODO — zgoda; w zakresie urządzenia także właściwe przepisy Prawa komunikacji elektronicznej.'],
         ['Opcjonalne statystyki odwiedzin; powiadomienie, na które osobno się zapisałeś.', 'Art. 6 ust. 1 lit. a RODO — zgoda; w zakresie urządzenia lub komunikacji także właściwe przepisy Prawa komunikacji elektronicznej.'],
       ]),
-      p('E-mail i dane potrzebne do logowania są niezbędne do założenia konta. Bez treści pracy nie wykonamy jej oceny; bez danych wymaganych do płatności nie zrealizujemy zakupu. Pozostałe dane podajesz dobrowolnie. Odmowa opcjonalnych statystyk i reklam nie blokuje konta, nauki ani płatności.')),
+      p('E-mail i dane potrzebne do logowania są niezbędne do założenia konta. Bez treści pracy nie wykonamy jej oceny; bez danych wymaganych do płatności nie zrealizujemy zakupu. Pozostałe dane podajesz dobrowolnie. Odmowa opcjonalnych statystyk nie blokuje konta, nauki ani płatności.')),
     section('ai', '4. Co trafia do AI',
       p('Do OpenAI wysyłamy treść potrzebną do wybranej funkcji: pracę, odpowiedź i kontekst zadania, wiadomości i odpowiedni fragment rozmowy, tekst źródłowy albo obrazy. Nie dodajemy do zapytania Twojego e-maila ani nazwy profilu. Jeżeli sam umieścisz dane osobowe w treści lub na zdjęciu, mogą one zostać przesłane razem z materiałem.'),
       p('W żądaniach API wyłączamy zapisywanie odpowiedzi do późniejszego pobrania. Nie oznacza to zerowej retencji: według dokumentacji OpenAI standardowe logi bezpieczeństwa mogą zawierać treść i być przechowywane do 30 dni, z wyjątkami związanymi z obowiązkami prawnymi lub bezpieczeństwem. Dane API domyślnie nie są używane przez OpenAI do treningu modeli.'),
@@ -155,7 +153,6 @@ export const privacyDocument = {
         ['OpenAI', 'Przetwarzanie treści i obrazów potrzebnych do funkcji AI. Zasady retencji opisano powyżej.'],
         ['Stripe', 'Obsługa zakupu i subskrypcji. Przekazujemy m.in. e-mail i identyfikator konta. W zależności od czynności Stripe działa jako podmiot przetwarzający lub odrębny administrator, m.in. dla własnych obowiązków prawnych i przeciwdziałania oszustwom.'],
         ['Wirtualna Polska — poczta o2', 'Poczta kontaktowa: e-mail, dane podane w wiadomości, załączniki i odpowiedzi. Przetwarzanie przez dostawcę poczty zależy także od warunków używanego konta pocztowego.'],
-        ['Meta Platforms Ireland Limited', 'Po osobnej zgodzie: piksel reklamowy na publicznych stronach. Za zebranie danych przez piksel i ich przekazanie do Meta odpowiadamy wspólnie z Meta (art. 26 RODO). Za dalsze przetwarzanie, także łączenie z kontem w serwisach Meta, odpowiada Meta jako odrębny administrator.'],
         ['Cloudflare Turnstile', 'Weryfikacja formularzy: dane techniczne urządzenia i połączenia, w tym IP, oraz wynik sprawdzenia.'],
         ['ScrapeCreators', 'Pobranie napisów filmu po wskazaniu linku do YouTube. Usługa otrzymuje adres filmu i dane techniczne żądania naszego serwera, bez dodanego profilu lub e-maila ucznia.'],
         ['Dostawcy wysyłki wiadomości', 'Wiadomości uwierzytelniające są wysyłane przez infrastrukturę logowania i usługę Resend. Przez Resend wysyłamy też potwierdzenia odstąpienia od umowy: imię i nazwisko, e-mail, plan oraz daty. Web3Forms przesyła nam powiadomienie o formularzu kontaktowym zawierające jego treść i dane nadawcy; usługa otrzymuje je bezpośrednio z przeglądarki, razem z danymi technicznymi połączenia, w tym adresem IP.'],
@@ -177,26 +174,24 @@ export const privacyDocument = {
         ['Logi hostingu i uwierzytelniania', LOG_RETENTION],
         ['Kopie zapasowe', `${BACKUP_RETENTION}. Do czasu wygaśnięcia kopii usunięte dane mogą pozostawać w kopiach służących odtworzeniu systemu. Przy odtworzeniu należy ponownie wykonać wcześniejsze żądania usunięcia.`],
         ['Dawna lista oczekujących', 'Do wysłania zamówionego powiadomienia albo wcześniejszego wycofania zgody. Zachowanie minimalnego dowodu zgody lub obsługi żądania może wynikać z obrony roszczeń.'],
-        ['Piksel reklamowy Meta', 'Pliki cookie _fbp i _fbc pozostają w przeglądarce do 90 dni od ostatnich odwiedzin albo do ich wyczyszczenia. Okres przechowywania danych po stronie Meta określa Meta w swojej polityce.'],
-        ['Wybór opcjonalnych statystyk i reklam', 'Na urządzeniu przez 180 dni, do zmiany wyboru albo wyczyszczenia pamięci. Identyfikator odwiedzającego w Web Analytics według Vercel wygasa po 24 godzinach; to nie jest termin usunięcia wszystkich zbiorczych statystyk.'],
+        ['Wybór opcjonalnych statystyk', 'Na urządzeniu przez 180 dni, do zmiany wyboru albo wyczyszczenia pamięci. Identyfikator odwiedzającego w Web Analytics według Vercel wygasa po 24 godzinach; to nie jest termin usunięcia wszystkich zbiorczych statystyk.'],
       ]),
       p('Usunięcie konta nie oznacza natychmiastowego skasowania każdej informacji u każdego dostawcy. Nie zachowujemy wszystkich danych „na wszelki wypadek”; dłuższy okres dotyczy tylko informacji potrzebnych do konkretnego obowiązku lub sprawy.')),
-    section('pamiec', '8. Pamięć urządzenia, opcjonalne statystyki i reklamy',
+    section('pamiec', '8. Pamięć urządzenia i opcjonalne statystyki',
       list(
         'Sesja logowania: pamięć localStorage, aby utrzymać zalogowanie. Wylogowanie usuwa lokalną sesję. Niezbędne operacje wykonujemy dla usługi, o którą prosisz, na zasadach art. 399 ust. 3 Prawa komunikacji elektronicznej.',
         'Szkice, odpowiedzi w trakcie pracy, ustawienia widoku PDF i postęp treningu bez konta: lokalna pamięć przeglądarki, aby zachować pracę po odświeżeniu. Sam zapis szkicu nie wysyła jego treści do AI; przesłanie następuje przy użyciu odpowiedniej funkcji. Wylogowanie nie usuwa wszystkich szkiców. Na wspólnym urządzeniu usuń dane witryny lub skorzystaj z przycisku poniżej.',
         'Cloudflare Turnstile i operator płatności mogą korzystać z danych technicznych oraz pamięci niezbędnej do ochrony formularza lub wykonania zleconej płatności. Te funkcje nie są zgodą na statystyki odwiedzin.',
-        'Meta Pixel uruchamiamy wyłącznie po osobnej zgodzie na reklamy. Działa tylko na stronie głównej, liście arkuszy, kontakcie, regulaminie i tej polityce, nie na stronach konta, prac ani płatności, i wysyła jedynie informację o wyświetleniu strony. Nie przekazujemy Meta Twojego e-maila ani treści nauki. Jeżeli jesteś zalogowany w serwisie Meta, może ona powiązać te dane ze swoim kontem. Po wycofaniu zgody piksel przestaje wysyłać dane.',
         'Vercel Web Analytics uruchamiamy wyłącznie po osobnej zgodzie. Odmowa jest równie dostępna jak zgoda; wybór możesz zmienić w tej polityce. Nie przesyłamy zdarzeń analitycznych z prywatnych stron konta, prac ani płatności i usuwamy parametry zapytania oraz fragment adresu z przesyłanej lokalizacji strony.',
         'Vercel opisuje tę usługę jako statystyki bez cookies, z identyfikatorem odwiedzającego wyliczanym z żądania. Może ona przetwarzać adres odwiedzanej publicznej strony, źródło wejścia, dane przeglądarki, urządzenia i przybliżonej lokalizacji. Brak cookies nie jest sam w sobie wyłączeniem przepisów o prywatności.',
       ),
-      links(['Vercel Web Analytics — prywatność', 'https://vercel.com/docs/analytics/privacy-policy'], ['Meta — polityka prywatności', 'https://www.facebook.com/privacy/policy/'])),
+      links(['Vercel Web Analytics — prywatność', 'https://vercel.com/docs/analytics/privacy-policy'])),
     section('prawa', '9. Twoje prawa i sposób ich wykonania',
       list(
         'Dostęp do danych i ich kopia, sprostowanie, usunięcie oraz ograniczenie przetwarzania — w granicach przewidzianych przez RODO.',
         'Przenoszenie danych przetwarzanych automatycznie na podstawie zgody lub umowy, gdy spełnione są ustawowe warunki.',
         'Sprzeciw wobec przetwarzania opartego na uzasadnionym interesie, z przyczyn związanych z Twoją szczególną sytuacją. W przypadku marketingu bezpośredniego sprzeciw przysługuje bez takiego uzasadnienia.',
-        'Wycofanie zgody w dowolnym momencie, bez wpływu na zgodność wcześniejszego przetwarzania z prawem. Zmiana zgody na statystyki i reklamy działa w ustawieniach tej polityki; w innych sprawach napisz do administratora.',
+        'Wycofanie zgody w dowolnym momencie, bez wpływu na zgodność wcześniejszego przetwarzania z prawem. Zmiana zgody na statystyki działa w ustawieniach tej polityki; w innych sprawach napisz do administratora.',
         'Skarga do Prezesa Urzędu Ochrony Danych Osobowych, jeżeli uważasz, że przetwarzanie narusza przepisy. Nie musisz najpierw wyczerpać kontaktu z nami.',
       ),
       p('W ustawieniach konta możesz poprawić profil, pobrać podstawowe dane konta i nauki w JSON oraz zlecić usunięcie konta. Samodzielny eksport nie obejmuje całej korespondencji, dokumentacji operatora płatności ani logów infrastruktury. Pełnego dostępu do danych możesz zażądać przez kontakt; przycisk nie ogranicza zakresu Twoich praw.'),
@@ -204,7 +199,7 @@ export const privacyDocument = {
       links(['Ustawienia konta', ROUTES.account], ['Kontakt w sprawie danych', `${ROUTES.contact}?sprawa=dane`], ['UODO — prawa i skargi', 'https://uodo.gov.pl/'])),
     section('wiek', '10. Osoby niepełnoletnie',
       p('Serwis jest przeznaczony dla osób od 13. roku życia; zasady udziału rodzica lub opiekuna przy zawieraniu umów określa regulamin. Nie opieramy niezbędnej obsługi konta na ogólnej „zgodzie na politykę prywatności”. Wiek 16 lat z art. 8 RODO dotyczy określonego przetwarzania na podstawie zgody przy usługach społeczeństwa informacyjnego, a nie pełnoletności.'),
-      p('Opcjonalne zgody na statystyki i reklamy można wyrazić samodzielnie od 16. roku życia; młodsza osoba powinna pozostawić je wyłączone. Jeżeli dowiesz się, że dziecko korzysta z serwisu niezgodnie z tymi zasadami, skontaktuj się z nami.')),
+      p('Opcjonalną zgodę na statystyki można udzielić samodzielnie od 16. roku życia; młodsza osoba powinna pozostawić je wyłączone. Jeżeli dowiesz się, że dziecko korzysta z serwisu niezgodnie z tymi zasadami, skontaktuj się z nami.')),
     section('aktualizacje', '11. Aktualizacje polityki',
       p('Aktualizujemy tę informację, gdy zmieniają się faktyczne sposoby przetwarzania lub prawo. Istotne zmiany wyjaśnimy użytkownikom odpowiednio wcześniej. Publikacja nowej polityki nie zastępuje wymaganej zgody ani nie tworzy nowej podstawy prawnej. Datę i wersję dokumentu podajemy na początku; możesz zachować jego kopię.')),
   ],

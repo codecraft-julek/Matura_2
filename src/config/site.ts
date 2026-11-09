@@ -42,13 +42,6 @@ export { LEGAL_VERSION as TERMS_VERSION } from './legal.js';
 export const CAPTCHA_SITE_KEY: string | null = null;
 
 /**
- * Meta Pixel for the Facebook ads. Public by design. The same ID is in the script in index.html.
- * Runs on public pages until the visitor refuses ads (src/lib/privacy/metaPixel.js).
- *   null = no reports after the first page (to turn it off fully, also remove the script from index.html).
- */
-export const META_PIXEL_ID: string | null = "1488831509979158";
-
-/**
  * Stripe publishable key (pk_test_… in the sandbox, pk_live_… for real payments). Public by design,
  * like the Supabase key: it only lets the browser show Stripe's payment form. Set → the payment
  * form opens inside our payment page; null → students go to Stripe's own payment page.

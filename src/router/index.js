@@ -10,7 +10,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { AUTH_PAGES, PROTECTED_PREFIXES, ROUTES } from '@/config/routes'
 import { fullTitle } from '@/composables/usePageTitle'
 import { useAuthStore } from '@/stores/auth'
-import { reportPageToMeta } from '@/lib/privacy/analytics'
 
 const page = loader => loader // readability: every page is lazy-loaded
 
@@ -128,7 +127,6 @@ router.beforeEach(async to => {
 router.afterEach((to, from, failure) => {
   if (failure) return // e.g. "Zostaję" in the timed exam's leave dialog: the page didn't change
   if (to.meta.title !== undefined) document.title = fullTitle(to.meta.title)
-  reportPageToMeta()
 })
 
 // A new deploy removed the old lazy chunk: reload once to fetch the new version.

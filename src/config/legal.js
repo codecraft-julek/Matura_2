@@ -15,9 +15,6 @@ export const missingOperatorDetails = (op = LEGAL_OPERATOR) => ['fullName', 'pho
 
 export const LEGAL_VERSION = '2026-11-07'
 export const LEGAL_UPDATED = '7 listopada 2026'
-// The privacy policy has its own version: new recipients do not change the accepted terms or the checkout declarations.
-export const PRIVACY_VERSION = '2026-11-09'
-export const PRIVACY_UPDATED = '9 listopada 2026'
 export const LEGAL_DRAFT_NOTICE = null
 
 // Confirmed by the owner; no claim about EU-only processing by every subprocessor.
